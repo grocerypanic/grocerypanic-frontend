@@ -1,0 +1,33 @@
+name: panic_fe-Automation
+
+on:
+  push:
+  schedule:
+    - cron: "0 6 * * 1"
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Node Modules
+        run: |
+          npm install
+      - name: Run Linter
+        run: |
+          npm run lint
+      - name: Sec Test
+        run: |
+          npm audit --audit-level=moderate
+      - name: Unit Tests and Coverage
+        run: |
+          npm run coverage
+      - name: Report Job Status
+        if: always()
+        run: |
+          if [[ $status == "failure" ]]; then curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: build has failed!"}' "${WEBHOOK_URL}"; fi
+        env:
+
+          status: ${{job.status}}
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
