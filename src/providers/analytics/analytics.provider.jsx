@@ -1,6 +1,6 @@
 // Provides react-ga to all components that need to send data
 import ReactGA from "react-ga";
-import React, { useEffect, useState, createContext } from "react";
+import React, { useState, createContext } from "react";
 import { withRouter } from "react-router-dom";
 
 export const AnalyticsContext = createContext({
