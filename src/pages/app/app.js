@@ -3,27 +3,26 @@ import React, { Suspense, lazy } from "react";
 import { Switch, Route } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import AnalyticsProvider from "../../providers/analytics/analytics.provider";
+import RootProvider from "../../providers/root.provider";
 
 // Configuration
 import Routes from "../../configuration/routes";
 import Strings from "../../configuration/strings";
 
-// Lazy Loaded Components
-const PlaceHolder = lazy(() =>
-  import("../../components/placeholder/placeholder.component")
-);
+const SignIn = lazy(() => import("../signin/signin.container"));
+const Shelves = lazy(() => import("../shelves/shelves.page"));
 
 function App() {
   const { t } = useTranslation();
   return (
-    <AnalyticsProvider>
+    <RootProvider>
       <Suspense fallback={<div>{t(Strings.Suspense)}</div>}>
         <Switch>
-          <Route exact path={Routes.root} component={PlaceHolder} />
+          <Route exact path={Routes.root} component={SignIn} />
+          <Route exact path={Routes.shelves} component={Shelves} />
         </Switch>
       </Suspense>
-    </AnalyticsProvider>
+    </RootProvider>
   );
 }
 

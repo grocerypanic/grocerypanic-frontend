@@ -3,15 +3,15 @@ import { render, cleanup, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import App from "../app.js";
-import PlaceHolder from "../../../components/placeholder/placeholder.component";
+import SignIn from "../../../pages/signin/signin.container";
 import AnalyticsProvider from "../../../providers/analytics/analytics.provider";
 
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
 
-jest.mock("../../../components/placeholder/placeholder.component");
+jest.mock("../../../pages/signin/signin.container");
 jest.mock("../../../providers/analytics/analytics.provider");
-PlaceHolder.mockImplementation(() => <div>MockPlaceholder</div>);
+SignIn.mockImplementation(() => <div>MockPlaceholder</div>);
 AnalyticsProvider.mockImplementation(({ children }) => <div>{children}</div>);
 
 describe("Check Routing", () => {
@@ -20,7 +20,7 @@ describe("Check Routing", () => {
   let currentTest;
 
   beforeEach(() => {
-    PlaceHolder.mockClear();
+    SignIn.mockClear();
     AnalyticsProvider.mockClear();
     currentTest = tests.shift();
     utils = render(
@@ -34,7 +34,7 @@ describe("Check Routing", () => {
 
   it("should render the root page correctly", async (done) => {
     expect(utils.getByText(Strings.Suspense)).toBeTruthy();
-    await waitFor(() => expect(PlaceHolder).toBeCalledTimes(1));
+    await waitFor(() => expect(SignIn).toBeCalledTimes(1));
     expect(AnalyticsProvider).toBeCalledTimes(1);
     done();
   });

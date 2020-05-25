@@ -3,11 +3,15 @@ import withMiddleware from "../../util/user.middleware";
 import reducerLoggingMiddleware from "../../util/reducer.logger";
 
 const userReducer = (state, action) => {
-  const callback = { state, action, dispatch: userReducer };
-
   switch (action.type) {
     case UserActions.StartFetchUser:
-      return action.func(callback);
+      new Promise(function (resolve) {
+        action.func({ state, action, dispatch: wrappedReducer });
+      });
+      return {
+        ...state,
+        ready: false,
+      };
     case UserActions.ToggleReady:
       return {
         ...state,
@@ -15,7 +19,7 @@ const userReducer = (state, action) => {
       };
     case UserActions.FailureFetchUser:
       return {
-        username: action.payload,
+        username: action.payload.username,
         email: null,
         avatar: null,
         error: true,
@@ -33,4 +37,5 @@ const userReducer = (state, action) => {
 };
 
 const middlewares = [reducerLoggingMiddleware];
-export default withMiddleware(userReducer, middlewares);
+const wrappedReducer = withMiddleware(userReducer, middlewares);
+export default wrappedReducer;
