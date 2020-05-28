@@ -10,3 +10,7 @@ jest.mock("react-i18next", () => ({
   Trans: ({ children }) => children,
   I18nextProvider: ({ children }) => children,
 }));
+
+global.fail = (message) => {
+  throw new Error(message);
+};

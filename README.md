@@ -15,13 +15,18 @@ You'll need to install:
 
 - Set this to a valid Google Analytics code for collecting statistics and website events so your team can improve the website.
 
-2. GOOGLE_ACCOUNT_ID
+2. REACT_APP_GOOGLE_ACCOUNT_ID
 
 - Set this to a valid google service account address for login.
 
-3. FACEBOOK_ACCOUNT_ID
+3. REACT_APP_FACEBOOK_ACCOUNT_ID
 
 - Set this to a valid facebook application id for login.
+
+4. REACT_APP_PANIC_BACKEND
+
+- Set this to a valid root url of the panic backend.
+  - ie. `http://localhost:8080`
 
 ## Reference for npm commands
 
