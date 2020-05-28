@@ -3,7 +3,7 @@ const initialState = {
   email: "",
   avatar: "",
   ready: false,
-  error: false,
+  error: true,
   errorMessage: null,
 };
 
