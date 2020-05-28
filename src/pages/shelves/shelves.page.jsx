@@ -7,7 +7,7 @@ import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
 import { useTranslation } from "react-i18next";
 import Strings from "../../configuration/strings";
 
-const ShelvesContainer = () => {
+const ShelvesPage = () => {
   const { t } = useTranslation();
 
   return (
@@ -19,4 +19,4 @@ const ShelvesContainer = () => {
   );
 };
 
-export default ShelvesContainer;
+export default ShelvesPage;

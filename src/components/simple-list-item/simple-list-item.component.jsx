@@ -62,15 +62,20 @@ const SimpleListItem = ({
           e.preventDefault();
         }}
       >
-        <ListItem selected={selected} onClick={handleClick} item={item}>
+        <ListItem
+          data-testid="listElement"
+          selected={selected}
+          onClick={handleClick}
+          item={item}
+        >
           <div>
             <input
+              data-testid="inputElement"
               autoFocus
               id="newItem"
               type="newItem"
               ref={fieldItem}
               name="newItem"
-              data-testid="newItem"
               size={15}
               required
               defaultValue={item.name}
@@ -81,8 +86,11 @@ const SimpleListItem = ({
           </div>
           {!transaction ? (
             <div>
-              <button onClick={() => handleSave(fieldItem.current.value)}>
-                Save
+              <button
+                data-testid="saveButton"
+                onClick={() => handleSave(fieldItem.current.value)}
+              >
+                {t(Strings.SimpleListSave)}
               </button>
             </div>
           ) : (
@@ -94,11 +102,21 @@ const SimpleListItem = ({
   }
 
   return (
-    <ListItem selected={selected} onClick={handleClick} item={item}>
+    <ListItem
+      data-testid="listElement"
+      selected={selected}
+      onClick={handleClick}
+      item={item}
+    >
       {item.name}
       <div>
         {selected === item.id && !transaction ? (
-          <button onClick={() => handleDelete(item.id)}>delete</button>
+          <button
+            data-testid="deleteButton"
+            onClick={() => handleDelete(item.id)}
+          >
+            {t(Strings.SimpleListDelete)}
+          </button>
         ) : null}
       </div>
     </ListItem>

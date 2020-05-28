@@ -2,6 +2,9 @@ import React from "react";
 import { render, cleanup, act, waitFor } from "@testing-library/react";
 
 import Header from "../../header/header.component";
+
+import ApiActions from "../../../providers/api/api.actions";
+
 import SimpleListItem from "../../simple-list-item/simple-list-item.component";
 import SimpleList from "../simple-list.component";
 
@@ -26,10 +29,16 @@ const mockDataState = {
 
 describe("Setup Environment", () => {
   let tests = [
-    { extraState: null, transaction: false },
-    { extraState: null, transaction: false },
-    { extraState: null, transaction: false },
-    { extraState: null, transaction: false },
+    { transaction: false },
+    { transaction: false },
+    { transaction: false },
+    { transaction: false },
+    { transaction: false },
+    { transaction: true },
+    { transaction: false },
+    { transaction: true },
+    { transaction: false },
+    { transaction: true },
   ];
   let utils;
   let current;
@@ -47,7 +56,7 @@ describe("Setup Environment", () => {
     apiObjectState = {
       inventory: mockData,
       ...mockDataState,
-      ...current.extraState,
+      ...current,
     };
 
     ApiContext = React.createContext({
@@ -83,7 +92,7 @@ describe("Setup Environment", () => {
 
   afterEach(cleanup);
 
-  it("the intial render, outside of a transaction should call the header with the correct params", () => {
+  it("renders, outside of a transaction should call the header with the correct params", () => {
     expect(current.transaction).toBe(false);
 
     expect(Header).toHaveBeenCalledTimes(1);
@@ -95,7 +104,7 @@ describe("Setup Environment", () => {
     expect(headerCall.create.name).toBe("handleCreate");
   });
 
-  it("the intial render, outside of a transaction should call the simple list component(s) with the correct params", () => {
+  it("renders, outside of a transaction should call the simple list component(s) with the correct params", () => {
     expect(current.transaction).toBe(false);
 
     expect(SimpleListItem).toHaveBeenCalledTimes(3);
@@ -140,14 +149,14 @@ describe("Setup Environment", () => {
     expect(call3.transaction).toBe(false);
   });
 
-  it("the intial render, there should be no error message rendered", () => {
+  it("renders, there should be no error message rendered", () => {
     expect(SimpleListItem).toHaveBeenCalledTimes(3);
     const { errorMsg } = SimpleListItem.mock.calls[0][0];
     expect(utils.getByText(mockTitle)).toBeTruthy();
     expect(errorMsg).toBeNull();
   });
 
-  it("the intial render, when an error occurs during a create, it's rendered", () => {
+  it("renders, when an error occurs during a create, it's rendered", async (done) => {
     expect(SimpleListItem).toHaveBeenCalledTimes(3);
 
     const { setCreated, setErrorMsg } = SimpleListItem.mock.calls[0][0];
@@ -157,10 +166,107 @@ describe("Setup Environment", () => {
       setErrorMsg("Error");
       setCreated(true);
     });
-    waitFor(() => expect(utils.queryByText(mockTitle)).not.toBeInTheDocument());
+    await waitFor(() =>
+      expect(utils.queryByText(mockTitle)).not.toBeInTheDocument()
+    );
     expect(utils.getByText("Error")).toBeTruthy();
 
     // An Extra Simple List Item should now be rendered for the created item
     expect(SimpleListItem).toHaveBeenCalledTimes(4);
+
+    done();
+  });
+
+  it("renders, when handleCreate is called, it creates a new object", async (done) => {
+    expect(Header).toHaveBeenCalledTimes(1);
+    const { create } = Header.mock.calls[0][0];
+    expect(current.transaction).toBeFalsy();
+
+    SimpleListItem.mockClear(); // rerender
+    act(() => {
+      create();
+    });
+
+    await waitFor(() => expect(SimpleListItem).toHaveBeenCalledTimes(4));
+    const { item, selected } = SimpleListItem.mock.calls[3][0];
+    expect(item).toStrictEqual({ id: -1, name: "" });
+    expect(selected).toBe(-1);
+    done();
+  });
+
+  it("renders, and then when there is an transaction bypasses calls to handleCreate", async (done) => {
+    expect(Header).toHaveBeenCalledTimes(1);
+    const { create } = Header.mock.calls[0][0];
+    expect(current.transaction).toBeTruthy();
+
+    SimpleListItem.mockClear(); // no changes, no rerender
+    act(() => {
+      create();
+    });
+
+    expect(SimpleListItem).toHaveBeenCalledTimes(0);
+    done();
+  });
+
+  it("renders, and dispatches the API reducer when handleSave is called", async (done) => {
+    expect(SimpleListItem).toHaveBeenCalledTimes(3);
+    const { add } = SimpleListItem.mock.calls[0][0];
+    expect(current.transaction).toBeFalsy();
+
+    act(() => {
+      add();
+    });
+
+    expect(mockDispatch).toHaveBeenCalledTimes(1);
+    const apiCall = mockDispatch.mock.calls[0][0];
+    expect(apiCall.type).toBe(ApiActions.StartAdd);
+    expect(apiCall.func).toBeInstance(Function);
+    done();
+  });
+
+  it("renders, and then when there is an transaction bypasses calls to handleSave", async (done) => {
+    expect(SimpleListItem).toHaveBeenCalledTimes(3);
+    const { add } = SimpleListItem.mock.calls[0][0];
+    expect(current.transaction).toBeTruthy();
+
+    SimpleListItem.mockClear(); // no changes, no rerender
+    act(() => {
+      add();
+    });
+
+    expect(SimpleListItem).toHaveBeenCalledTimes(0);
+    expect(mockDispatch).toHaveBeenCalledTimes(0);
+    done();
+  });
+
+  it("renders,  and dispatches the API reducer when handleDelete is called", async (done) => {
+    expect(SimpleListItem).toHaveBeenCalledTimes(3);
+    const { del } = SimpleListItem.mock.calls[0][0];
+    expect(current.transaction).toBeFalsy();
+
+    act(() => {
+      del();
+    });
+
+    expect(mockDispatch).toHaveBeenCalledTimes(1);
+    const apiCall = mockDispatch.mock.calls[0][0];
+    expect(apiCall.type).toBe(ApiActions.StartDel);
+    expect(apiCall.func).toBeInstance(Function);
+    done();
+  });
+
+  it("renders, and then when there is an transaction bypasses calls to handleDelete", async (done) => {
+    expect(SimpleListItem).toHaveBeenCalledTimes(3);
+    const { del } = SimpleListItem.mock.calls[0][0];
+    expect(current.transaction).toBeTruthy();
+
+    SimpleListItem.mockClear(); // no changes, no rerender
+    act(() => {
+      del();
+    });
+
+    expect(SimpleListItem).toHaveBeenCalledTimes(0);
+    expect(mockDispatch).toHaveBeenCalledTimes(0);
+    done();
   });
 });

@@ -13,6 +13,8 @@ export const Strings = {
     CookieDeclineText: "I Decline",
     SimpleListValidationAlreadyExists: "This already exists",
     SimpleListValidationFailure: "Enter a valid name",
+    SimpleListSave: "save",
+    SimpleListDelete: "delete",
     ShelfPageTitle: "Shelves",
     ShelfPageHeaderTitle: "Manage Shelves",
   },
