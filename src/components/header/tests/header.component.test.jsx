@@ -5,6 +5,7 @@ import Header from "../header.component";
 import * as bootstrap from "react-bootstrap";
 import * as addIcon from "@material-ui/icons/Add";
 import { UserContext } from "../../../providers/user/user.provider";
+import initialState from "../../../providers/user/user.initial";
 
 jest.unmock("react-bootstrap");
 bootstrap.Spinner = jest.fn();
@@ -26,9 +27,7 @@ describe("Setup Environment", () => {
     currentTest = tests.shift();
     jest.clearAllMocks();
     utils = render(
-      <UserContext.Provider>
-        <Header title="Some Title" create={create} transaction={currentTest} />
-      </UserContext.Provider>
+      <Header title="Some Title" create={create} transaction={currentTest} />
     );
   });
 

@@ -2,8 +2,8 @@ const initialState = {
   username: "",
   email: "",
   avatar: "",
-  ready: false,
-  error: true,
+  login: false,
+  error: false,
   errorMessage: null,
 };
 

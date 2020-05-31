@@ -1,6 +1,9 @@
 import React from "react";
 import { render, cleanup, waitFor } from "@testing-library/react";
 
+import { UserContext } from "../../../providers/user/user.provider";
+import initialState from "../../../providers/user/user.initial";
+
 import SignIn from "../signin.page";
 import SignInContainer, {
   handleSocialLogin,
@@ -10,6 +13,7 @@ import SignInContainer, {
 jest.mock("../signin.page");
 
 SignIn.mockImplementation(() => <div>MockSignin</div>);
+const mockDispatch = jest.fn();
 
 describe("Setup Environment", () => {
   let tests = [1];
@@ -19,7 +23,13 @@ describe("Setup Environment", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     currentTest = tests.shift();
-    utils = render(<SignInContainer />);
+    utils = render(
+      <UserContext.Provider
+        value={{ user: initialState, dispatch: mockDispatch }}
+      >
+        <SignInContainer />
+      </UserContext.Provider>
+    );
   });
 
   afterEach(cleanup);
@@ -42,7 +52,13 @@ describe("Setup Environment for Handlers", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     currentTest = tests.shift();
-    utils = render(<SignInContainer />);
+    utils = render(
+      <UserContext.Provider
+        value={{ user: initialState, dispatch: mockDispatch }}
+      >
+        <SignInContainer />
+      </UserContext.Provider>
+    );
   });
 
   afterEach(cleanup);

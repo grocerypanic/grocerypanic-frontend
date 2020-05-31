@@ -220,6 +220,7 @@ describe("Setup Environment", () => {
     expect(mockDispatch).toHaveBeenCalledTimes(1);
     const apiCall = mockDispatch.mock.calls[0][0];
     expect(apiCall.type).toBe(ApiActions.StartAdd);
+    fail("Not yet implemented.");
     expect(apiCall.func).toBeInstance(Function);
     done();
   });
@@ -251,6 +252,7 @@ describe("Setup Environment", () => {
     expect(mockDispatch).toHaveBeenCalledTimes(1);
     const apiCall = mockDispatch.mock.calls[0][0];
     expect(apiCall.type).toBe(ApiActions.StartDel);
+    fail("Not yet implemented.");
     expect(apiCall.func).toBeInstance(Function);
     done();
   });

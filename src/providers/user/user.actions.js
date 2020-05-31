@@ -1,5 +1,5 @@
 const UserActions = {
-  ToggleReady: "ToggleReady",
+  ToggleLogin: "ToggleLogin",
   StartFetchUser: "StartFetchUser",
   SuccessFetchUser: "SuccessFetchUser",
   FailureFetchUser: "FailureFetchUser",

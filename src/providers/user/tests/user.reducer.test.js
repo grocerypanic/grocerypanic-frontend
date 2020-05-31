@@ -14,24 +14,24 @@ describe("Check The Reducer Functionality", () => {
     expect(received).toBe(InitialState);
   });
 
-  it("handles ToggleReady correctly", () => {
+  it("handles ToggleLogin correctly", () => {
     // toggle on
     received = UserReducer(InitialState, {
-      type: UserActions.ToggleReady,
+      type: UserActions.ToggleLogin,
     });
-    expect(received.ready).toBe(true);
+    expect(received.login).toBe(true);
     // toggle off
     received = UserReducer(received, {
-      type: UserActions.ToggleReady,
+      type: UserActions.ToggleLogin,
     });
-    expect(received.ready).toBe(false);
+    expect(received.login).toBe(false);
   });
 
   it("handles StartFetchUser correctly", () => {
     const mockAsync = jest.fn();
     const ModifiedInitialState = {
       ...InitialState,
-      ready: false,
+      login: false,
     };
     mockAsync.mockReturnValue("ReturnValue");
     const mockPayload = { mock: "data" };
@@ -39,6 +39,7 @@ describe("Check The Reducer Functionality", () => {
       type: UserActions.StartFetchUser,
       func: mockAsync,
       payload: mockPayload,
+      dispatch: UserReducer,
     };
     const received = UserReducer(InitialState, action);
     expect(received).toEqual(ModifiedInitialState);
@@ -47,7 +48,6 @@ describe("Check The Reducer Functionality", () => {
       {
         state: InitialState,
         action,
-        dispatch: UserReducer,
       },
     ]);
   });
@@ -66,7 +66,7 @@ describe("Check The Reducer Functionality", () => {
     expect(received.email).toBe("some@email");
     expect(received.username).toBe("someguy");
     expect(received.error).toBe(false);
-    expect(received.ready).toBe(true);
+    expect(received.login).toBe(true);
   });
 
   it("handles FailureFetchUser correctly", () => {
@@ -81,6 +81,6 @@ describe("Check The Reducer Functionality", () => {
     expect(received.email).toBe(null);
     expect(received.username).toBe("someguy");
     expect(received.error).toBe(true);
-    expect(received.ready).toBe(false);
+    expect(received.login).toBe(false);
   });
 });

@@ -4,26 +4,13 @@ import SignIn from "./signin.page";
 import ErrorDialogue from "../../components/error-dialogue/error-dialogue.component";
 
 import { UserContext } from "../../providers/user/user.provider";
-
-import { Paths, Providers } from "../../configuration/backend";
-import { Post } from "../../util/requests";
+import { triggerLogin } from "../../providers/user/user.async";
 
 const SignInContainer = () => {
   const { user, dispatch } = React.useContext(UserContext);
 
-  const handleSocialLogin = async (user) => {
-    if (Object.keys(Providers).includes(user._provider)) {
-      const data = {
-        access_token: user._token.accessToken,
-        code: user._token.idToken,
-      };
-      const [result, status] = await Post(Paths.googleLogin, data);
-      if (status === 200) {
-        console.log("Redirect");
-        return;
-      }
-      console.log("Login Error");
-    }
+  const handleSocialLogin = (response) => {
+    triggerLogin(dispatch, response);
   };
 
   const handleSocialLoginFailure = (err) => {

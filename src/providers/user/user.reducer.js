@@ -6,30 +6,34 @@ const userReducer = (state, action) => {
   switch (action.type) {
     case UserActions.StartFetchUser:
       new Promise(function (resolve) {
-        action.func({ state, action, dispatch: wrappedReducer });
+        action.func({ state, action });
       });
       return {
         ...state,
-        ready: false,
+        login: false,
       };
-    case UserActions.ToggleReady:
+    case UserActions.ToggleLogin:
       return {
         ...state,
-        ready: !state.ready,
+        login: !state.login,
       };
     case UserActions.FailureFetchUser:
       return {
+        ...state,
         username: action.payload.username,
         email: null,
         avatar: null,
         error: true,
-        ready: false,
+        login: false,
       };
     case UserActions.SuccessFetchUser:
       return {
+        ...state,
         error: false,
-        ready: true,
-        ...action.payload,
+        login: true,
+        username: action.payload.username,
+        avatar: action.payload.avatar,
+        email: action.payload.email,
       };
     default:
       return state;
