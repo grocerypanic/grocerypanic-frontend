@@ -3,6 +3,7 @@ const UserActions = {
   StartFetchUser: "StartFetchUser",
   SuccessFetchUser: "SuccessFetchUser",
   FailureFetchUser: "FailureFetchUser",
+  ResetUser: "ResetUser",
 };
 
 export default UserActions;

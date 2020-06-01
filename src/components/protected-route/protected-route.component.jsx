@@ -13,14 +13,22 @@ const ProtectedRoute = ({
 }) => {
   const { user } = React.useContext(UserContext);
 
-  React.useEffect(() => {
+  const handleRedirect = () => {
     if (negative && !user[attr]) {
       history.push(redirect);
     }
     if (!negative && user[attr]) {
       history.push(redirect);
     }
+  };
+
+  React.useEffect(() => {
+    handleRedirect();
   }, [user]);
+
+  React.useEffect(() => {
+    handleRedirect();
+  }, []);
 
   return <Route {...otherProps} />;
 };

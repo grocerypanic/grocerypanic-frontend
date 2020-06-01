@@ -2,6 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "../pages/app/app.js";
 import * as serviceWorker from "../serviceWorker";
+import RootProvider from "../providers/root.provider";
+
+jest.mock("../providers/root.provider");
+RootProvider.mockImplementation(({ children }) => <div>{children}</div>);
 
 jest.mock("../serviceWorker", () => ({
   __esModule: true,
@@ -35,5 +39,6 @@ describe("Check Main Rendering", () => {
     const { Index } = require("../index.js");
     const utils = render(<Index />);
     expect(utils.getByText("MockApp")).toBeTruthy();
+    expect(RootProvider).toBeCalledTimes(1);
   });
 });

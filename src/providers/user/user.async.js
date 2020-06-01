@@ -24,7 +24,9 @@ export const asyncLogin = async ({ state, action }) => {
     }
     return dispatch({
       type: UserActions.FailureFetchUser,
-      payload: { username: payload.username },
+      payload: {
+        username: payload.username,
+      },
     });
   }
 };
@@ -38,4 +40,10 @@ export const triggerLogin = async (dispatch, response) => {
       dispatch: dispatch,
     });
   }
+};
+
+export const resetLogin = async (dispatch) => {
+  dispatch({
+    type: UserActions.ResetUser,
+  });
 };

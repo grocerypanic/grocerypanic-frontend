@@ -16,7 +16,7 @@ import { Providers } from "../../configuration/backend";
 import { Paper, Container } from "../../global-styles/containers";
 import { LockBox, ButtonBox } from "./signin.styles";
 
-const SignIn = ({ handleSocialLogin, handleSocialLoginFailure }) => {
+const SignIn = ({ handleSocialLogin }) => {
   const { t } = useTranslation();
 
   return (
@@ -33,7 +33,6 @@ const SignIn = ({ handleSocialLogin, handleSocialLoginFailure }) => {
             provider={Providers.google}
             message={t(Strings.LoginMessageGoogle)}
             onLoginSuccess={handleSocialLogin}
-            onLoginFailure={handleSocialLoginFailure}
           />
         </ButtonBox>
         <ButtonBox>
@@ -43,7 +42,6 @@ const SignIn = ({ handleSocialLogin, handleSocialLoginFailure }) => {
             provider={Providers.facebook}
             message={t(Strings.LoginMessageFacebook)}
             onLoginSuccess={handleSocialLogin}
-            onLoginFailure={handleSocialLoginFailure}
           />
         </ButtonBox>
         <Copyright />

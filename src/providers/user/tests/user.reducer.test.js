@@ -72,15 +72,39 @@ describe("Check The Reducer Functionality", () => {
   it("handles FailureFetchUser correctly", () => {
     const payload = {
       username: "someguy",
+      email: "some@email",
+      avatar: "some://url",
     };
     const received = UserReducer(InitialState, {
       type: UserActions.FailureFetchUser,
       payload,
     });
-    expect(received.avatar).toBe(null);
-    expect(received.email).toBe(null);
-    expect(received.username).toBe("someguy");
+    expect(received.avatar).toBe("");
+    expect(received.email).toBe("");
+    expect(received.username).toBe(payload.username);
     expect(received.error).toBe(true);
     expect(received.login).toBe(false);
+    expect(received.errorMessage).toBe("LoginFailure");
+  });
+
+  it("handles ResetUser correctly", () => {
+    const payload = {
+      username: "someguy",
+      email: "someguy@payload.com",
+      avatar: "someAvatar",
+      login: true,
+      error: true,
+      errorMessage: "Error",
+    };
+    const received = UserReducer(InitialState, {
+      type: UserActions.ResetUser,
+      payload,
+    });
+    expect(received.avatar).toBe("");
+    expect(received.email).toBe("");
+    expect(received.username).toBe("");
+    expect(received.error).toBe(false);
+    expect(received.login).toBe(false);
+    expect(received.errorMessage).toBe(null);
   });
 });

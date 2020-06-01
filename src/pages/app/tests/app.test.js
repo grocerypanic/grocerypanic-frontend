@@ -5,7 +5,8 @@ import { MemoryRouter } from "react-router-dom";
 import App from "../app.js";
 import SignIn from "../../signin/signin.container";
 import ShelvesPage from "../../shelves/shelves.page";
-import AnalyticsProvider from "../../../providers/analytics/analytics.provider";
+
+import { UserContext } from "../../../providers/user/user.provider";
 
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
@@ -15,10 +16,14 @@ jest.mock("../../shelves/shelves.page");
 jest.mock("../../../providers/analytics/analytics.provider");
 SignIn.mockImplementation(() => <div>MockPlaceholder</div>);
 ShelvesPage.mockImplementation(() => <div>MockPlaceholder</div>);
-AnalyticsProvider.mockImplementation(({ children }) => <div>{children}</div>);
+
+const mockDispatch = jest.fn();
 
 describe("Check Routing", () => {
-  let tests = [{ path: Routes.root }, { path: Routes.shelves }];
+  let tests = [
+    { path: Routes.root, state: { login: false } },
+    { path: Routes.shelves, state: { login: true } },
+  ];
   let utils;
   let currentTest;
 
@@ -26,27 +31,29 @@ describe("Check Routing", () => {
     jest.clearAllMocks();
     currentTest = tests.shift();
     utils = render(
-      <MemoryRouter initialEntries={[currentTest.path]}>
-        <App />
-      </MemoryRouter>
+      <UserContext.Provider
+        value={{ user: currentTest.state, dispatch: mockDispatch }}
+      >
+        <MemoryRouter initialEntries={[currentTest.path]}>
+          <App />
+        </MemoryRouter>
+      </UserContext.Provider>
     );
   });
 
   afterEach(cleanup);
 
-  it("should render the root page correctly", async (done) => {
+  it("should render signin on root url, with login set to false", async (done) => {
     expect(utils.getByText(Strings.Suspense)).toBeTruthy();
     await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-    expect(ShelvesPage).toBeCalledTimes(0);
-    expect(AnalyticsProvider).toBeCalledTimes(1);
+    await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
     done();
   });
 
-  it("should render the shelves page correctly", async (done) => {
+  it("should render shelf on shelf url, with login set to true", async (done) => {
     expect(utils.getByText(Strings.Suspense)).toBeTruthy();
     await waitFor(() => expect(ShelvesPage).toBeCalledTimes(1));
-    expect(SignIn).toBeCalledTimes(0);
-    expect(AnalyticsProvider).toBeCalledTimes(1);
+    await waitFor(() => expect(SignIn).toBeCalledTimes(0));
     done();
   });
 });

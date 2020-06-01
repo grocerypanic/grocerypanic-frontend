@@ -17,7 +17,7 @@ describe("Setup Environment", () => {
   let currentTest;
 
   beforeEach(() => {
-    mockEvent.mockClear();
+    jest.clearAllMocks();
     currentTest = tests.shift();
     utils = render(
       <AnalyticsContext.Provider value={mockAnalyticsSettings}>

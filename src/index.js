@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 import { BrowserRouter } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
+import RootProvider from "./providers/root.provider";
 import i18n from "./configuration/localization";
 
 import App from "./pages/app/app";
@@ -15,7 +16,9 @@ export const Index = () => (
   <React.StrictMode>
     <I18nextProvider i18n={i18n}>
       <BrowserRouter>
-        <App />
+        <RootProvider>
+          <App />
+        </RootProvider>
       </BrowserRouter>
     </I18nextProvider>
   </React.StrictMode>

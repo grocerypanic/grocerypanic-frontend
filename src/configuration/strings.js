@@ -2,6 +2,9 @@ export const Strings = {
   en: {
     LoginMessageGoogle: "Login With Google",
     LoginMessageFacebook: "Login With Facebook",
+    LoginFailure: "Unable to authenticate! Please try again.",
+    ErrorDialogueConfirm: "OK",
+    ErrorDialogueTitle: "Error!",
     CopyrightDeclaration: "Copyright © ",
     CopyrightMessage: "Your Website",
     SignInMessage: "Sign In",
@@ -17,6 +20,7 @@ export const Strings = {
     SimpleListDelete: "delete",
     ShelfPageTitle: "Shelves",
     ShelfPageHeaderTitle: "Manage Shelves",
+    GenericTranslationTestString: "GenericTranslationTestString",
   },
 };
 

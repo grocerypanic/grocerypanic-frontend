@@ -4,6 +4,15 @@ import reducerLoggingMiddleware from "../../util/reducer.logger";
 
 const userReducer = (state, action) => {
   switch (action.type) {
+    case UserActions.ResetUser:
+      return {
+        ...state,
+        username: "",
+        avatar: "",
+        error: false,
+        errorMessage: null,
+        login: false,
+      };
     case UserActions.StartFetchUser:
       new Promise(function (resolve) {
         action.func({ state, action });
@@ -21,9 +30,10 @@ const userReducer = (state, action) => {
       return {
         ...state,
         username: action.payload.username,
-        email: null,
-        avatar: null,
+        email: "",
+        avatar: "",
         error: true,
+        errorMessage: "LoginFailure", // Strings Key
         login: false,
       };
     case UserActions.SuccessFetchUser:

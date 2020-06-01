@@ -5,7 +5,11 @@ class SocialLoginController extends React.Component {
   render() {
     const { ButtonType, message, triggerLogin } = this.props;
 
-    return <ButtonType onClick={triggerLogin}>{message}</ButtonType>;
+    return (
+      <div data-testid="SocialController">
+        <ButtonType onClick={triggerLogin}>{message}</ButtonType>
+      </div>
+    );
   }
 }
 

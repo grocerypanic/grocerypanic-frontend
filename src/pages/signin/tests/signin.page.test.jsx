@@ -29,7 +29,6 @@ jest.mock("@material-ui/icons/LockOutlined", () => ({
 }));
 jest.mock("../../../components/copyright/copyright.component");
 const handleSocialLogin = jest.fn();
-const handleSocialLoginFailure = jest.fn();
 
 Icons.default.mockImplementation(() => <div>MockLock</div>);
 SocialLoginController.mockImplementation(() => <div>SocialLoginButton</div>);
@@ -42,12 +41,7 @@ describe("Setup Environment", () => {
     jest.clearAllMocks();
     process.env.REACT_APP_FACEBOOK_ACCOUNT_ID = "MOCK_FACEBOOK_ACCOUNT";
     process.env.REACT_APP_GOOGLE_ACCOUNT_ID = "MOCK_GOOGLE_ACCOUNT";
-    render(
-      <Signin
-        handleSocialLogin={handleSocialLogin}
-        handleSocialLoginFailure={handleSocialLoginFailure}
-      />
-    );
+    render(<Signin handleSocialLogin={handleSocialLogin} />);
   });
   afterAll(() => {
     process.env = originalEnvironment;
@@ -72,7 +66,6 @@ describe("Setup Environment", () => {
     expect(call1.message).toBe(Strings.LoginMessageGoogle);
     expect(call1.provider).toBe(Providers.google);
     expect(call1.onLoginSuccess).toBe(handleSocialLogin);
-    expect(call1.onLoginFailure).toBe(handleSocialLoginFailure);
     done();
   });
 
@@ -86,7 +79,6 @@ describe("Setup Environment", () => {
     expect(call2.message).toBe(Strings.LoginMessageFacebook);
     expect(call2.provider).toBe(Providers.facebook);
     expect(call2.onLoginSuccess).toBe(handleSocialLogin);
-    expect(call2.onLoginFailure).toBe(handleSocialLoginFailure);
     done();
   });
 });
