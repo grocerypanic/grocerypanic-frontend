@@ -1,11 +1,5 @@
-const mockData = [
-  { id: 1, name: "Shelf1" },
-  { id: 2, name: "Shelf2" },
-  { id: 3, name: "Shelf3" },
-];
-
 const initialState = {
-  inventory: mockData,
+  inventory: [],
   transaction: false,
   error: false,
   errorMessage: null,

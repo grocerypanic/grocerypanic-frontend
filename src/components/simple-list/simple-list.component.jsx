@@ -4,6 +4,7 @@ import Header from "../header/header.component";
 import SimpleListItem from "../simple-list-item/simple-list-item.component";
 
 import ApiActions from "../../providers/api/api.actions";
+import ApiFuctions from "../../providers/api/api.functions";
 
 import { Paper, Container } from "../../global-styles/containers";
 import { ListBox, Banner } from "./simple-list.styles";
@@ -14,6 +15,22 @@ const SimpleList = ({ headerTitle, title, ApiObjectContext }) => {
   const [created, setCreated] = React.useState(null);
   const [errorMsg, setErrorMsg] = React.useState(null);
 
+  const [performAsync, setPerformAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
+
+  React.useEffect(() => {
+    if (!performAsync) return;
+    dispatch(performAsync);
+    setPerformAsync(null);
+  }, [performAsync]);
+
+  React.useEffect(() => {
+    dispatch({
+      type: ApiActions.StartList,
+      func: ApiFuctions.asyncList,
+      dispatch: setPerformAsync,
+    });
+  }, []);
+
   const handleCreate = () => {
     if (apiObject.transaction) return;
     setCreated({ id: -1, name: "" });
@@ -22,14 +39,21 @@ const SimpleList = ({ headerTitle, title, ApiObjectContext }) => {
 
   const handleSave = () => {
     if (apiObject.transaction) return;
-    dispatch({ type: ApiActions.StartAdd, func: console.log });
-    console.log("save");
+    setPerformAsync({
+      type: ApiActions.StartAdd,
+      func: console.log,
+      dispatch: setPerformAsync,
+    });
   };
 
   const handleDelete = (id) => {
     if (apiObject.transaction) return;
-    dispatch({ type: ApiActions.StartDel, func: console.log });
-    console.log("delete");
+    setPerformAsync({
+      type: ApiActions.StartDel,
+      func: ApiFuctions.asyncDel,
+      dispatch: setPerformAsync,
+      payload: { id },
+    });
   };
 
   return (

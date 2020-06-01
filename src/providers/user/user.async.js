@@ -1,5 +1,5 @@
 import { Paths, Providers } from "../../configuration/backend";
-import { Post } from "../../util/requests";
+import { Backend } from "../../util/requests";
 import UserActions from "./user.actions";
 
 export const asyncLogin = async ({ state, action }) => {
@@ -9,7 +9,7 @@ export const asyncLogin = async ({ state, action }) => {
       access_token: payload._token.accessToken,
       code: payload._token.idToken,
     };
-    const [, status] = await Post(Paths.googleLogin, data);
+    const [, status] = await Backend("POST", Paths.googleLogin, data);
     if (status === 200) {
       return new Promise(function (resolve) {
         dispatch({
@@ -45,5 +45,14 @@ export const triggerLogin = async (dispatch, response) => {
 export const resetLogin = async (dispatch) => {
   dispatch({
     type: UserActions.ResetUser,
+  });
+};
+
+export const loginError = async (dispatch) => {
+  dispatch({
+    type: UserActions.FailureFetchUser,
+    payload: {
+      username: "",
+    },
   });
 };

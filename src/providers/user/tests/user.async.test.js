@@ -1,10 +1,15 @@
 import { waitFor } from "@testing-library/react";
-import { triggerLogin, resetLogin, asyncLogin } from "../user.async";
+import {
+  triggerLogin,
+  resetLogin,
+  asyncLogin,
+  loginError,
+} from "../user.async";
 import UserActions from "../user.actions";
 
 import { Providers, Paths } from "../../../configuration/backend";
 
-import { Post } from "../../../util/requests";
+import { Backend } from "../../../util/requests";
 
 jest.mock("../../../util/requests");
 const mockDispatch = jest.fn();
@@ -34,7 +39,7 @@ describe("Setup for Testing asyncLogin", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockData = mockLoginState.shift();
-    Post.mockReturnValue([{}, mockData.status]);
+    Backend.mockReturnValue([{}, mockData.status]);
   });
 
   it("should skip all login activity if the provider is not supported", () => {
@@ -42,7 +47,7 @@ describe("Setup for Testing asyncLogin", () => {
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
     });
-    expect(Post).toBeCalledTimes(0);
+    expect(Backend).toBeCalledTimes(0);
     expect(mockDispatch).toBeCalledTimes(0);
   });
 
@@ -51,7 +56,7 @@ describe("Setup for Testing asyncLogin", () => {
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
     });
-    expect(Post).toBeCalledWith(mockData.path, {
+    expect(Backend).toBeCalledWith("POST", mockData.path, {
       access_token: mockData._token.accessToken,
       code: mockData._token.idToken,
     });
@@ -72,7 +77,7 @@ describe("Setup for Testing asyncLogin", () => {
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
     });
-    expect(Post).toBeCalledWith(mockData.path, {
+    expect(Backend).toBeCalledWith("POST", mockData.path, {
       access_token: mockData._token.accessToken,
       code: mockData._token.idToken,
     });
@@ -119,6 +124,19 @@ describe("Setup for Testing resetLogin", () => {
     resetLogin(mockDispatch);
     expect(mockDispatch).toBeCalledWith({
       type: UserActions.ResetUser,
+    });
+  });
+});
+
+describe("Setup for Testing loginError", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it("should dispatch the correct action to the user reducer", () => {
+    loginError(mockDispatch);
+    expect(mockDispatch).toBeCalledWith({
+      type: UserActions.FailureFetchUser,
+      payload: { username: "" },
     });
   });
 });

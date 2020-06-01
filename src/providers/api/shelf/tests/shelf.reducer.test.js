@@ -1,7 +1,12 @@
+import { waitFor } from "@testing-library/react";
 import ShelfReducer from "../shelf.reducer";
 import ApiActions from "../../api.actions";
+import ApiFunctions from "../../api.functions";
+import { asyncAdd, asyncDel, asyncList } from "../shelf.async";
 
 import InitialState from "../shelf.initial";
+
+jest.mock("../shelf.async");
 
 // TODO: remove the placeholder data used for development
 InitialState.inventory = [];
@@ -12,32 +17,31 @@ describe("Check The Shelf Reducer Implements all API Actions correctly", () => {
     expect(received).toBe(InitialState);
   });
 
-  it("handles StartAdd correctly", () => {
-    const mockAsync = jest.fn();
+  it("handles StartAdd correctly", async (done) => {
     const ExpectedState = {
       ...InitialState,
       transaction: true,
     };
-    mockAsync.mockReturnValue("ReturnValue");
     const mockPayload = { mock: "data" };
     const action = {
       type: ApiActions.StartAdd,
-      func: mockAsync,
+      func: ApiFunctions.asyncAdd,
       payload: mockPayload,
     };
     const received = ShelfReducer(InitialState, action);
     expect(received).toEqual(ExpectedState);
-    expect(mockAsync.mock.calls.length).toBe(1);
-    expect(mockAsync.mock.calls[0]).toEqual([
+
+    await waitFor(() => expect(asyncAdd).toHaveBeenCalledTimes(1));
+    expect(asyncAdd.mock.calls[0]).toEqual([
       {
         state: ExpectedState,
         action,
-        dispatch: ShelfReducer,
       },
     ]);
+    done();
   });
 
-  it("handles StartDel correctly", () => {
+  it("handles StartDel correctly", async (done) => {
     const mockPayload = [{ id: 0, name: "MyTestShelf" }];
     const stateWithPayload = {
       ...InitialState,
@@ -47,23 +51,45 @@ describe("Check The Shelf Reducer Implements all API Actions correctly", () => {
       ...stateWithPayload,
       transaction: true,
     };
-    const mockAsync = jest.fn();
-    mockAsync.mockReturnValue("ReturnValue");
     const action = {
       type: ApiActions.StartDel,
-      func: mockAsync,
+      func: ApiFunctions.asyncDel,
       payload: mockPayload,
     };
     const received = ShelfReducer(stateWithPayload, action);
     expect(received).toEqual(ExpectedState);
-    expect(mockAsync.mock.calls.length).toBe(1);
-    expect(mockAsync.mock.calls[0]).toEqual([
+    await waitFor(() => expect(asyncDel).toHaveBeenCalledTimes(1));
+    expect(asyncDel.mock.calls[0]).toEqual([
       {
         state: ExpectedState,
         action,
-        dispatch: ShelfReducer,
       },
     ]);
+    done();
+  });
+
+  it("handles StartList correctly", async (done) => {
+    const ExpectedState = {
+      ...InitialState,
+      transaction: true,
+    };
+    const mockPayload = { mock: "data" };
+    const action = {
+      type: ApiActions.StartList,
+      func: ApiFunctions.asyncList,
+      payload: mockPayload,
+    };
+    const received = ShelfReducer(InitialState, action);
+    expect(received).toEqual(ExpectedState);
+
+    await waitFor(() => expect(asyncList).toHaveBeenCalledTimes(1));
+    expect(asyncList.mock.calls[0]).toEqual([
+      {
+        state: ExpectedState,
+        action,
+      },
+    ]);
+    done();
   });
 
   it("handles SuccessAdd correctly", () => {
@@ -130,5 +156,17 @@ describe("Check The Shelf Reducer Implements all API Actions correctly", () => {
     expect(received.inventory).toEqual([]);
     expect(received.error).toBe(true);
     expect(received.transaction).toBe(false);
+  });
+
+  it("handles ClearErrors correctly", () => {
+    const payload = {
+      error: true,
+      errorMessage: "Error",
+    };
+    const received = ShelfReducer(payload, {
+      type: ApiActions.ClearErrors,
+    });
+    expect(received.error).toBe(false);
+    expect(received.errorMessage).toBe(null);
   });
 });

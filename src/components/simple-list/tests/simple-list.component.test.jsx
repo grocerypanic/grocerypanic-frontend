@@ -7,6 +7,7 @@ import ApiActions from "../../../providers/api/api.actions";
 
 import SimpleListItem from "../../simple-list-item/simple-list-item.component";
 import SimpleList from "../simple-list.component";
+import ApiFuctions from "../../../providers/api/api.functions";
 
 jest.mock("../../simple-list-item/simple-list-item.component");
 jest.mock("../../header/header.component");
@@ -29,6 +30,7 @@ const mockDataState = {
 
 describe("Setup Environment", () => {
   let tests = [
+    { transaction: false },
     { transaction: false },
     { transaction: false },
     { transaction: false },
@@ -177,6 +179,16 @@ describe("Setup Environment", () => {
     done();
   });
 
+  it("renders, calls StartList on first render", async (done) => {
+    expect(current.transaction).toBeFalsy();
+    await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
+    const call = mockDispatch.mock.calls[0][0];
+    expect(call.type).toBe(ApiActions.StartList);
+    expect(call.func).toBe(ApiFuctions.asyncList);
+    expect(call.dispatch).toBeInstanceOf(Function);
+    done();
+  });
+
   it("renders, when handleCreate is called, it creates a new object", async (done) => {
     expect(Header).toHaveBeenCalledTimes(1);
     const { create } = Header.mock.calls[0][0];
@@ -217,8 +229,10 @@ describe("Setup Environment", () => {
       add();
     });
 
-    expect(mockDispatch).toHaveBeenCalledTimes(1);
-    const apiCall = mockDispatch.mock.calls[0][0];
+    await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
+    expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
+
+    const apiCall = mockDispatch.mock.calls[1][0];
     expect(apiCall.type).toBe(ApiActions.StartAdd);
     fail("Not yet implemented.");
     expect(apiCall.func).toBeInstance(Function);
@@ -236,7 +250,8 @@ describe("Setup Environment", () => {
     });
 
     expect(SimpleListItem).toHaveBeenCalledTimes(0);
-    expect(mockDispatch).toHaveBeenCalledTimes(0);
+    expect(mockDispatch).toHaveBeenCalledTimes(1);
+    expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
     done();
   });
 
@@ -249,8 +264,10 @@ describe("Setup Environment", () => {
       del();
     });
 
-    expect(mockDispatch).toHaveBeenCalledTimes(1);
-    const apiCall = mockDispatch.mock.calls[0][0];
+    await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
+    expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
+
+    const apiCall = mockDispatch.mock.calls[1][0];
     expect(apiCall.type).toBe(ApiActions.StartDel);
     fail("Not yet implemented.");
     expect(apiCall.func).toBeInstance(Function);
@@ -268,7 +285,9 @@ describe("Setup Environment", () => {
     });
 
     expect(SimpleListItem).toHaveBeenCalledTimes(0);
-    expect(mockDispatch).toHaveBeenCalledTimes(0);
+    expect(mockDispatch).toHaveBeenCalledTimes(1);
+    expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
+
     done();
   });
 });
