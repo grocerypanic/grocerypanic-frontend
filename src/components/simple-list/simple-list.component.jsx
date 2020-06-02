@@ -7,9 +7,14 @@ import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
 
 import { Paper, Container } from "../../global-styles/containers";
-import { ListBox, Banner } from "./simple-list.styles";
+import { ListBox, Banner, PlaceHolderListItem } from "./simple-list.styles";
 
-const SimpleList = ({ headerTitle, title, ApiObjectContext }) => {
+const SimpleList = ({
+  headerTitle,
+  title,
+  ApiObjectContext,
+  placeHolderMessage,
+}) => {
   const { apiObject, dispatch } = React.useContext(ApiObjectContext);
   const [selected, setSelected] = React.useState(null);
   const [created, setCreated] = React.useState(null);
@@ -101,6 +106,9 @@ const SimpleList = ({ headerTitle, title, ApiObjectContext }) => {
                 setCreated={setCreated}
                 transaction={apiObject.transaction}
               />
+            ) : null}
+            {apiObject.inventory.length === 0 ? (
+              <PlaceHolderListItem>{placeHolderMessage}</PlaceHolderListItem>
             ) : null}
           </ListBox>
         </Paper>

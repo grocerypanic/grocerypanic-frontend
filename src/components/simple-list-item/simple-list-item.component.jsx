@@ -6,7 +6,7 @@ import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 
 import Strings from "../../configuration/strings";
 
-import { ListItem } from "./simple-list-item.styles";
+import { ListItem, ListTitle } from "./simple-list-item.styles";
 
 const SimpleListItem = ({
   item,
@@ -68,7 +68,7 @@ const SimpleListItem = ({
           onClick={handleClick}
           item={item}
         >
-          <div>
+          <ListTitle>
             <input
               data-testid="inputElement"
               autoFocus
@@ -83,12 +83,14 @@ const SimpleListItem = ({
               onChange={(e) => handleChange(e.currentTarget.value)}
               readOnly={transaction}
             />
-          </div>
+          </ListTitle>
           {!transaction ? (
             <div>
               <button
                 data-testid="saveButton"
                 onClick={() => handleSave(fieldItem.current.value)}
+                className="btn btn-success"
+                style={{ height: "40px" }}
               >
                 {t(Strings.SimpleListSave)}
               </button>
@@ -108,12 +110,14 @@ const SimpleListItem = ({
       onClick={handleClick}
       item={item}
     >
-      {item.name}
+      <ListTitle>{item.name}</ListTitle>
       <div>
         {selected === item.id && !transaction ? (
           <button
             data-testid="deleteButton"
             onClick={() => handleDelete(item.id)}
+            className="btn btn-danger"
+            style={{ height: "40px" }}
           >
             {t(Strings.SimpleListDelete)}
           </button>

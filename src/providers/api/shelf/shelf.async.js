@@ -46,15 +46,20 @@ export const asyncAdd = async (dispatch, payload) => {
 
 export const asyncDel = async ({ state, action }) => {
   const { dispatch } = action;
-  const [response, status] = await Backend(
+  const [, status] = await Backend(
     "DELETE",
     Paths.manageShelves + `${action.payload.id}/`
   );
-  if (status === 200) {
+  // Status Code is 2xx
+  if (status.toString()[0] === "2") {
     return new Promise(function (resolve) {
       dispatch({
         type: ApiActions.SuccessDel,
-        payload: { inventory: response },
+        payload: {
+          inventory: state.inventory.filter(
+            (item) => item.id !== action.payload.id
+          ),
+        },
       });
     });
   }

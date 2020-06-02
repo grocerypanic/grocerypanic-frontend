@@ -15,6 +15,7 @@ const ShelvesPage = () => {
       title={t(Strings.ShelfPageTitle)}
       headerTitle={t(Strings.ShelfPageHeaderTitle)}
       ApiObjectContext={ShelfContext}
+      placeHolderMessage={t(Strings.ShelfPlaceHolderMessage)}
     />
   );
 };

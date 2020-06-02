@@ -20,6 +20,7 @@ export const Strings = {
     SimpleListDelete: "delete",
     ShelfPageTitle: "Shelves",
     ShelfPageHeaderTitle: "Manage Shelves",
+    ShelfPlaceHolderMessage: "You Have No Shelves Yet.",
     GenericTranslationTestString: "GenericTranslationTestString",
   },
 };
