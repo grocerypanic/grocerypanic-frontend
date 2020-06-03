@@ -15,10 +15,18 @@ const reducerLoggingMiddleware = (reducer) => {
   if (productionRunning()) logging = false;
   const wrappedReducer = (state, action) => {
     if (logging)
-      console.log(`** ${name} BEFORE ${action.type}:\n`, { state, action });
+      console.log(
+        `%c ** ${name} BEFORE ${action.type}:\n`,
+        "color: blue; font-weight: bold;",
+        { state, action }
+      );
     state = reducer(state, action);
     if (logging)
-      console.log(`** ${name} AFTER ${action.type}:\n`, { state, action });
+      console.log(
+        `%c ** ${name} AFTER ${action.type}:\n`,
+        "color: blue; font-weight: bold;",
+        { state, action }
+      );
     return state;
   };
   return wrappedReducer;

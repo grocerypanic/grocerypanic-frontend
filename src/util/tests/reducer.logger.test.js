@@ -5,7 +5,8 @@ describe("Check Logging Functionality", () => {
   let originalLogger;
   let outputData;
   let reducer;
-  const storeLog = (input1, input2) => outputData.push([input1, input2]);
+  const storeLog = (input1, input2, input3) =>
+    outputData.push([input1, input2, input3]);
 
   beforeEach(() => {
     jest.resetModules();
@@ -40,15 +41,18 @@ describe("Check Logging Functionality", () => {
     delete process.env.JEST_WORKER_ID;
     const state = {};
     const action = { type: "BogusAction2" };
+    const inlineObject = { action, state };
     reducer(state, action);
-    expect(outputData).toStrictEqual([
+    expect(outputData).toEqual([
       [
-        "** TestReducer BEFORE BogusAction2:\n",
-        { action: { type: "BogusAction2" }, state: {} },
+        "%c ** TestReducer BEFORE BogusAction2:\n",
+        "color: blue; font-weight: bold;",
+        inlineObject,
       ],
       [
-        "** TestReducer AFTER BogusAction2:\n",
-        { action: { type: "BogusAction2" }, state: {} },
+        "%c ** TestReducer AFTER BogusAction2:\n",
+        "color: blue; font-weight: bold;",
+        inlineObject,
       ],
     ]);
   });
