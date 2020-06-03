@@ -192,11 +192,12 @@ describe("Check The Shelf Reducer Implements all API Actions correctly", () => {
   });
 
   it("handles ClearErrors correctly", () => {
-    const payload = {
+    const state = {
+      ...InitialState,
       error: true,
       errorMessage: "Error",
     };
-    const received = ShelfReducer(payload, {
+    const received = ShelfReducer(state, {
       type: ApiActions.ClearErrors,
     });
     expect(received.error).toBe(false);
@@ -204,12 +205,13 @@ describe("Check The Shelf Reducer Implements all API Actions correctly", () => {
   });
 
   it("handles FailureAuth correctly", () => {
-    const payload = {
+    const state = {
+      ...InitialState,
       error: true,
       errorMessage: "Error",
       transacton: true,
     };
-    const received = ShelfReducer(payload, {
+    const received = ShelfReducer(state, {
       type: ApiActions.FailureAuth,
     });
     expect(received.error).toBe(false);

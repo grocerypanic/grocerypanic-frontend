@@ -1,6 +1,10 @@
 import debug from "./debug";
 import { Paths, Constants, SafeMethods } from "../configuration/backend";
 
+export const match2xx = (statusCode) => {
+  return statusCode.toString()[0] === "2";
+};
+
 export const RefreshCSRF = async () => {
   const [response, status] = await PerformRequest("GET", Paths.refreshCSRF);
   if (status === 200)

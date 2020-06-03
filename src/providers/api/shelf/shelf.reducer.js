@@ -13,6 +13,7 @@ const shelfReducer = (state, action) => {
       // Triggers API Function, starts transaction
       const newState = {
         ...state,
+        inventory: [...state.inventory],
         transaction: true,
       };
       new Promise(function (resolve) {
@@ -25,6 +26,7 @@ const shelfReducer = (state, action) => {
       // Must return an error message to inform user
       return {
         ...state,
+        inventory: [...state.inventory],
         error: true,
         transaction: false,
         ...action.payload,
@@ -35,6 +37,7 @@ const shelfReducer = (state, action) => {
       // Must return a new list of shelves
       return {
         ...state,
+        inventory: [...state.inventory],
         errorMessage: null,
         error: false,
         transaction: false,
@@ -44,6 +47,7 @@ const shelfReducer = (state, action) => {
       // Clears out any error message
       return {
         ...state,
+        inventory: [...state.inventory],
         errorMessage: null,
         error: false,
       };
@@ -51,6 +55,7 @@ const shelfReducer = (state, action) => {
       // Clears out any error message, let's higher order components handle relogin
       return {
         ...state,
+        inventory: [...state.inventory],
         transaction: false,
         errorMessage: null,
         error: false,
