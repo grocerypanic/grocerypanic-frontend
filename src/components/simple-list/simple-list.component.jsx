@@ -14,6 +14,7 @@ const SimpleList = ({
   title,
   ApiObjectContext,
   placeHolderMessage,
+  handleExpiredAuth,
 }) => {
   const { apiObject, dispatch } = React.useContext(ApiObjectContext);
   const [selected, setSelected] = React.useState(null);
@@ -24,6 +25,7 @@ const SimpleList = ({
 
   React.useEffect(() => {
     if (!performAsync) return;
+    if (performAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
     dispatch(performAsync);
     setPerformAsync(null);
   }, [performAsync]);

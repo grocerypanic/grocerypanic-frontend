@@ -33,7 +33,17 @@ const userReducer = (state, action) => {
         email: "",
         avatar: "",
         error: true,
-        errorMessage: "LoginFailure", // Strings Key
+        errorMessage: "ErrorLoginFailure", // Strings Key
+        login: false,
+      };
+    case UserActions.AuthExpired:
+      return {
+        ...state,
+        username: action.payload.username,
+        email: "",
+        avatar: "",
+        error: true,
+        errorMessage: "ErrorAuthExpired", // Strings Key
         login: false,
       };
     case UserActions.SuccessFetchUser:

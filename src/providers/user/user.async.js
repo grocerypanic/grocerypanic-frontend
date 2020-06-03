@@ -56,3 +56,12 @@ export const loginError = async (dispatch) => {
     },
   });
 };
+
+export const authExpired = async (dispatch) => {
+  dispatch({
+    type: UserActions.AuthExpired,
+    payload: {
+      username: "",
+    },
+  });
+};

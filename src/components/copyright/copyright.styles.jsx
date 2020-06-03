@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import { primary, secondary, tertiary } from "../../configuration/theme";
+import { primary, tertiary } from "../../configuration/theme";
 
 export const CopyrightBox = styled.div`
   padding-top: 10px;

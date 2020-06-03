@@ -1,6 +1,6 @@
 // Package Imports
 import React, { Suspense, lazy } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import ProtectedRoute from "../../components/protected-route/protected-route.component";

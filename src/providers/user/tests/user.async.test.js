@@ -4,6 +4,7 @@ import {
   resetLogin,
   asyncLogin,
   loginError,
+  authExpired,
 } from "../user.async";
 import UserActions from "../user.actions";
 
@@ -136,6 +137,19 @@ describe("Setup for Testing loginError", () => {
     loginError(mockDispatch);
     expect(mockDispatch).toBeCalledWith({
       type: UserActions.FailureFetchUser,
+      payload: { username: "" },
+    });
+  });
+});
+
+describe("Setup for Testing authExpired", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it("should dispatch the correct action to the user reducer", () => {
+    authExpired(mockDispatch);
+    expect(mockDispatch).toBeCalledWith({
+      type: UserActions.AuthExpired,
       payload: { username: "" },
     });
   });

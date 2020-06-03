@@ -4,10 +4,10 @@ import { render, cleanup, act, waitFor } from "@testing-library/react";
 import Header from "../../header/header.component";
 
 import ApiActions from "../../../providers/api/api.actions";
+import ApiFunctions from "../../../providers/api/api.functions";
 
 import SimpleListItem from "../../simple-list-item/simple-list-item.component";
 import SimpleList from "../simple-list.component";
-import ApiFuctions from "../../../providers/api/api.functions";
 
 jest.mock("../../simple-list-item/simple-list-item.component");
 jest.mock("../../header/header.component");
@@ -15,6 +15,7 @@ jest.mock("../../header/header.component");
 SimpleListItem.mockImplementation(() => <div>MockListItem</div>);
 Header.mockImplementation(() => <div>MockHeader</div>);
 const mockDispatch = jest.fn();
+const mockHandleExpiredAuth = jest.fn();
 
 // Mock Api Data
 const mockData = [
@@ -27,6 +28,8 @@ const mockDataState = {
   error: false,
   errorMsg: null,
 };
+
+const mockPlaceHolderMessage = "I'm Right Here";
 
 describe("Setup Environment", () => {
   let tests = [
@@ -41,6 +44,8 @@ describe("Setup Environment", () => {
     { transaction: true },
     { transaction: false },
     { transaction: true },
+    { transaction: false, inventory: [] },
+    { transaction: false },
   ];
   let utils;
   let current;
@@ -86,6 +91,8 @@ describe("Setup Environment", () => {
           create={create}
           transaction={current.transaction}
           ApiObjectContext={ApiContext}
+          placeHolderMessage={mockPlaceHolderMessage}
+          handleExpiredAuth={mockHandleExpiredAuth}
         />
         }}
       </ApiProvider>
@@ -184,7 +191,7 @@ describe("Setup Environment", () => {
     await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
     const call = mockDispatch.mock.calls[0][0];
     expect(call.type).toBe(ApiActions.StartList);
-    expect(call.func).toBe(ApiFuctions.asyncList);
+    expect(call.func).toBe(ApiFunctions.asyncList);
     expect(call.dispatch).toBeInstanceOf(Function);
     done();
   });
@@ -226,7 +233,7 @@ describe("Setup Environment", () => {
     expect(current.transaction).toBeFalsy();
 
     act(() => {
-      add();
+      add("shelfname");
     });
 
     await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
@@ -234,8 +241,8 @@ describe("Setup Environment", () => {
 
     const apiCall = mockDispatch.mock.calls[1][0];
     expect(apiCall.type).toBe(ApiActions.StartAdd);
-    fail("Not yet implemented.");
-    expect(apiCall.func).toBeInstance(Function);
+    expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
+    expect(apiCall.payload).toStrictEqual({ name: "shelfname" });
     done();
   });
 
@@ -246,10 +253,11 @@ describe("Setup Environment", () => {
 
     SimpleListItem.mockClear(); // no changes, no rerender
     act(() => {
-      add();
+      add("name");
     });
 
     expect(SimpleListItem).toHaveBeenCalledTimes(0);
+    // MockDispatch only has a call for the initial item listing, not for the add
     expect(mockDispatch).toHaveBeenCalledTimes(1);
     expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
     done();
@@ -261,7 +269,7 @@ describe("Setup Environment", () => {
     expect(current.transaction).toBeFalsy();
 
     act(() => {
-      del();
+      del(2);
     });
 
     await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
@@ -269,8 +277,8 @@ describe("Setup Environment", () => {
 
     const apiCall = mockDispatch.mock.calls[1][0];
     expect(apiCall.type).toBe(ApiActions.StartDel);
-    fail("Not yet implemented.");
-    expect(apiCall.func).toBeInstance(Function);
+    expect(apiCall.func).toBe(ApiFunctions.asyncDel);
+    expect(apiCall.payload.id).toBe(2);
     done();
   });
 
@@ -281,12 +289,44 @@ describe("Setup Environment", () => {
 
     SimpleListItem.mockClear(); // no changes, no rerender
     act(() => {
-      del();
+      del(2);
     });
 
     expect(SimpleListItem).toHaveBeenCalledTimes(0);
     expect(mockDispatch).toHaveBeenCalledTimes(1);
     expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
+
+    done();
+  });
+
+  it("renders, outside of a transaction, with no items in the list, and renders the mockPlaceHolderMessage", () => {
+    expect(current.transaction).toBe(false);
+
+    expect(Header).toHaveBeenCalledTimes(1);
+    expect(SimpleListItem).toBeCalledTimes(0);
+    expect(utils.getByText(mockPlaceHolderMessage)).toBeTruthy();
+  });
+
+  it("renders,  and handles an auth failure condition as expected", async (done) => {
+    expect(SimpleListItem).toHaveBeenCalledTimes(3);
+    const { del } = SimpleListItem.mock.calls[0][0];
+    expect(current.transaction).toBeFalsy();
+
+    act(() => {
+      del(2);
+    });
+
+    await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
+    expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
+
+    const apiCall = mockDispatch.mock.calls[1][0];
+    const setPerformAsync = apiCall.dispatch;
+
+    act(() => {
+      setPerformAsync({ type: ApiActions.FailureAuth });
+    });
+
+    await waitFor(() => expect(mockHandleExpiredAuth).toHaveBeenCalledTimes(1));
 
     done();
   });

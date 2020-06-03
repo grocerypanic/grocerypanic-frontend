@@ -130,6 +130,25 @@ describe("Check The Shelf Reducer Implements all API Actions correctly", () => {
     expect(received.transaction).toBe(false);
   });
 
+  it("handles SuccessList correctly", () => {
+    const payload = {
+      inventory: [
+        {
+          id: 0,
+          name: "MyTestShelf",
+        },
+      ],
+    };
+    const received = ShelfReducer(InitialState, {
+      type: ApiActions.SuccessList,
+      payload,
+    });
+    expect(received.errorMessage).toBeNull();
+    expect(received.inventory).toEqual(payload.inventory);
+    expect(received.error).toBe(false);
+    expect(received.transaction).toBe(false);
+  });
+
   it("handles FailureAdd correctly", () => {
     const payload = {
       errorMessage: "Could Not Add The Shelf.",
@@ -158,6 +177,20 @@ describe("Check The Shelf Reducer Implements all API Actions correctly", () => {
     expect(received.transaction).toBe(false);
   });
 
+  it("handles FailureList correctly", () => {
+    const payload = {
+      errorMessage: "Could Not Add The Shelf.",
+    };
+    const received = ShelfReducer(InitialState, {
+      type: ApiActions.FailureList,
+      payload,
+    });
+    expect(received.errorMessage).toBe("Could Not Add The Shelf.");
+    expect(received.inventory).toEqual([]);
+    expect(received.error).toBe(true);
+    expect(received.transaction).toBe(false);
+  });
+
   it("handles ClearErrors correctly", () => {
     const payload = {
       error: true,
@@ -168,5 +201,19 @@ describe("Check The Shelf Reducer Implements all API Actions correctly", () => {
     });
     expect(received.error).toBe(false);
     expect(received.errorMessage).toBe(null);
+  });
+
+  it("handles FailureAuth correctly", () => {
+    const payload = {
+      error: true,
+      errorMessage: "Error",
+      transacton: true,
+    };
+    const received = ShelfReducer(payload, {
+      type: ApiActions.FailureAuth,
+    });
+    expect(received.error).toBe(false);
+    expect(received.errorMessage).toBe(null);
+    expect(received.transaction).toBe(false);
   });
 });

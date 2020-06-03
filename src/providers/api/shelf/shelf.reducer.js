@@ -47,6 +47,14 @@ const shelfReducer = (state, action) => {
         errorMessage: null,
         error: false,
       };
+    case ApiActions.FailureAuth:
+      // Clears out any error message, let's higher order components handle relogin
+      return {
+        ...state,
+        transaction: false,
+        errorMessage: null,
+        error: false,
+      };
     default:
       return state;
   }

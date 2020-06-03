@@ -2,6 +2,12 @@ import { Paths } from "../../../configuration/backend";
 import { Backend } from "../../../util/requests";
 import ApiActions from "../api.actions";
 
+const authFailure = (dispatch) => {
+  return new Promise(function (resolve) {
+    dispatch({ type: ApiActions.FailureAuth });
+  });
+};
+
 export const asyncAdd = async ({ state, action }) => {
   const { dispatch } = action;
   const [response, status] = await Backend("POST", Paths.manageShelves, {
@@ -19,6 +25,7 @@ export const asyncAdd = async ({ state, action }) => {
       });
     });
   }
+  if (status === 401) return authFailure(dispatch);
   return dispatch({
     type: ApiActions.FailureAdd,
   });
@@ -43,6 +50,7 @@ export const asyncDel = async ({ state, action }) => {
       });
     });
   }
+  if (status === 401) return authFailure(dispatch);
   return dispatch({
     type: ApiActions.FailureDel,
   });
@@ -59,6 +67,7 @@ export const asyncList = async ({ state, action }) => {
       });
     });
   }
+  if (status === 401) return authFailure(dispatch);
   return dispatch({
     type: ApiActions.FailureList,
   });

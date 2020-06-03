@@ -1,15 +1,21 @@
 import React from "react";
-import { render, cleanup, waitFor } from "@testing-library/react";
+import { render, cleanup, waitFor, act } from "@testing-library/react";
 
 import ShelvesPage from "../shelves.page";
 import SimpleList from "../../../components/simple-list/simple-list.component";
 
 import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
 
+import { UserContext } from "../../../providers/user/user.provider";
+import initialState from "../../../providers/user/user.initial";
+import UserActions from "../../../providers/user/user.actions";
+
 import Strings from "../../../configuration/strings";
 
 jest.mock("../../../components/simple-list/simple-list.component");
 SimpleList.mockImplementation(() => <div>MockList</div>);
+
+const mockDispatch = jest.fn();
 
 describe("Check the correct props are passed to simple list", () => {
   let tests = [1];
@@ -21,9 +27,13 @@ describe("Check the correct props are passed to simple list", () => {
 
     currentTest = tests.shift();
     utils = render(
-      <ShelfContext.Provider>
-        <ShelvesPage />
-      </ShelfContext.Provider>
+      <UserContext.Provider
+        value={{ user: initialState, dispatch: mockDispatch }}
+      >
+        <ShelfContext.Provider>
+          <ShelvesPage />
+        </ShelfContext.Provider>
+      </UserContext.Provider>
     );
   });
 
@@ -35,6 +45,24 @@ describe("Check the correct props are passed to simple list", () => {
     expect(props.title).toBe(Strings.ShelfPageTitle);
     expect(props.headerTitle).toBe(Strings.ShelfPageHeaderTitle);
     expect(props.ApiObjectContext).toBe(ShelfContext);
+    expect(props.handleExpiredAuth).toBeInstanceOf(Function);
+
+    expect(mockDispatch).toBeCalledTimes(0);
+    done();
+  });
+
+  it("should handle an expired auth as expected", async (done) => {
+    await waitFor(() => expect(SimpleList).toBeCalledTimes(1));
+    const props = SimpleList.mock.calls[0][0];
+    const handleExpiredAuth = props.handleExpiredAuth;
+
+    act(() => handleExpiredAuth());
+
+    await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+    expect(mockDispatch).toBeCalledWith({
+      payload: { username: "" },
+      type: UserActions.AuthExpired,
+    });
     done();
   });
 });

@@ -74,6 +74,7 @@ describe("Check The Reducer Functionality", () => {
       username: "someguy",
       email: "some@email",
       avatar: "some://url",
+      errorMessage: null,
     };
     const received = UserReducer(InitialState, {
       type: UserActions.FailureFetchUser,
@@ -84,7 +85,7 @@ describe("Check The Reducer Functionality", () => {
     expect(received.username).toBe(payload.username);
     expect(received.error).toBe(true);
     expect(received.login).toBe(false);
-    expect(received.errorMessage).toBe("LoginFailure");
+    expect(received.errorMessage).toBe("ErrorLoginFailure");
   });
 
   it("handles ResetUser correctly", () => {
@@ -106,5 +107,26 @@ describe("Check The Reducer Functionality", () => {
     expect(received.error).toBe(false);
     expect(received.login).toBe(false);
     expect(received.errorMessage).toBe(null);
+  });
+
+  it("handles AuthExpired correctly", () => {
+    const payload = {
+      username: "someguy",
+      email: "someguy@payload.com",
+      avatar: "someAvatar",
+      login: true,
+      error: false,
+      errorMessage: null,
+    };
+    const received = UserReducer(InitialState, {
+      type: UserActions.AuthExpired,
+      payload,
+    });
+    expect(received.avatar).toBe("");
+    expect(received.email).toBe("");
+    expect(received.username).toBe("someguy");
+    expect(received.error).toBe(true);
+    expect(received.login).toBe(false);
+    expect(received.errorMessage).toBe("ErrorAuthExpired");
   });
 });

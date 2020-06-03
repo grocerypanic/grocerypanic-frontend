@@ -2,7 +2,8 @@ export const Strings = {
   en: {
     LoginMessageGoogle: "Login With Google",
     LoginMessageFacebook: "Login With Facebook",
-    LoginFailure: "Unable to authenticate! Please try again.",
+    ErrorLoginFailure: "Unable to authenticate!\nPlease try again.",
+    ErrorAuthExpired: "Authentication Expired!\nPlease login again.",
     ErrorDialogueConfirm: "OK",
     ErrorDialogueTitle: "Error!",
     CopyrightDeclaration: "Copyright © ",
@@ -22,6 +23,8 @@ export const Strings = {
     ShelfPageHeaderTitle: "Manage Shelves",
     ShelfPlaceHolderMessage: "You Have No Shelves Yet.",
     GenericTranslationTestString: "GenericTranslationTestString",
+    GenericMultiLineTranslationTestString:
+      "GenericTranslationTestString\nGenericTranslationTestString",
   },
 };
 

@@ -11,6 +11,7 @@ const ApiActions = {
   SuccessDel: "SuccessDel",
   FailureDel: "FailureDel",
   ClearErrors: "ClearErrors",
+  FailureAuth: "FailureAuth",
 };
 
 export default ApiActions;
