@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import WarningOutlinedIcon from "@material-ui/icons/WarningOutlined";
 import { Paper, Container } from "../../global-styles/containers";
-import { NotePad, Page, OK, ErrorBox } from "./error-dialogue.styles";
+import { NotePad, Page, OK, ErrorBox, Centered } from "./error-dialogue.styles";
 
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 
@@ -34,7 +34,13 @@ const ErrorDialogue = ({
         </ErrorBox>
         <h1>{t(Strings.ErrorDialogueTitle)}</h1>
         <NotePad>
-          <Page className="alert alert-danger">{t(Strings[message])}</Page>
+          <Page className="alert alert-danger">
+            {t(Strings[message])
+              .split("\n")
+              .map((item, index) => {
+                return <Centered key={index}>{item}</Centered>;
+              })}
+          </Page>
         </NotePad>
         <OK
           data-testid="ErrorConfirmation"

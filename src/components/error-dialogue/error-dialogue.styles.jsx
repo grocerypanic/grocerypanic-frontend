@@ -34,3 +34,7 @@ export const ErrorBox = styled.div`
   text-align: center;
   overflow: hidden;
 `;
+
+export const Centered = styled.div`
+  text-align: center;
+`;
