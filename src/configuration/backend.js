@@ -1,3 +1,12 @@
+export const SafeMethods = ["GET", "HEAD", "OPTIONS", "TRACE"];
+
+export const Constants = {
+  csrfLocalStorage: "csrf-token",
+  csrfHeaderName: "X-CSRFToken",
+  genericAPIError: "API Error",
+  csrfErrorMessage: "Refresh csrf and try again.",
+};
+
 export const Providers = {
   google: "google",
   facebook: "facebook",
