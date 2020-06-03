@@ -2,45 +2,25 @@ import { Paths } from "../../../configuration/backend";
 import { Backend } from "../../../util/requests";
 import ApiActions from "../api.actions";
 
-export const performAdd = async ({ state, action }) => {
-  const { payload, dispatch } = action;
+export const asyncAdd = async ({ state, action }) => {
+  const { dispatch } = action;
   const [response, status] = await Backend("POST", Paths.manageShelves, {
-    name: payload,
+    name: action.payload.name,
   });
-  if (status === 200) {
+  // Status Code is 2xx
+  if (status.toString()[0] === "2") {
     return new Promise(function (resolve) {
+      state.inventory.push(response);
       dispatch({
         type: ApiActions.SuccessAdd,
-        payload: response,
+        payload: {
+          inventory: state.inventory,
+        },
       });
     });
   }
   return dispatch({
     type: ApiActions.FailureAdd,
-  });
-};
-
-export const performList = async ({ state, action }) => {
-  const { dispatch } = action;
-  const [response, status] = await Backend("GET", Paths.manageShelves);
-  if (status === 200) {
-    return new Promise(function (resolve) {
-      dispatch({
-        type: ApiActions.SuccessList,
-        payload: response,
-      });
-    });
-  }
-  return dispatch({
-    type: ApiActions.FailureList,
-  });
-};
-
-export const asyncAdd = async (dispatch, payload) => {
-  await dispatch({
-    type: ApiActions.StartAdd,
-    payload,
-    func: performAdd,
   });
 };
 
@@ -71,7 +51,7 @@ export const asyncDel = async ({ state, action }) => {
 export const asyncList = async ({ state, action }) => {
   const { dispatch } = action;
   const [response, status] = await Backend("GET", Paths.manageShelves);
-  if (status === 200) {
+  if (status.toString()[0] === "2") {
     return new Promise(function (resolve) {
       dispatch({
         type: ApiActions.SuccessList,

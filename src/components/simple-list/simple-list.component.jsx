@@ -42,13 +42,15 @@ const SimpleList = ({
     setSelected(-1);
   };
 
-  const handleSave = () => {
+  const handleSave = async (name) => {
     if (apiObject.transaction) return;
     setPerformAsync({
       type: ApiActions.StartAdd,
-      func: console.log,
+      func: ApiFuctions.asyncAdd,
       dispatch: setPerformAsync,
+      payload: { name },
     });
+    setCreated(null);
   };
 
   const handleDelete = (id) => {
@@ -107,7 +109,7 @@ const SimpleList = ({
                 transaction={apiObject.transaction}
               />
             ) : null}
-            {apiObject.inventory.length === 0 ? (
+            {apiObject.inventory.length === 0 && !created ? (
               <PlaceHolderListItem>{placeHolderMessage}</PlaceHolderListItem>
             ) : null}
           </ListBox>

@@ -4,4 +4,5 @@ import { primary } from "../../configuration/theme";
 
 export const NavContainer = styled(Navbar)`
   background-color: ${primary};
+  height: 50px;
 `;

@@ -8,7 +8,7 @@ const Header = ({ title, create, transaction }) => {
   React.useEffect(() => {}, []);
 
   return (
-    <NavContainer collapseOnSelect expand="lg" variant="dark">
+    <NavContainer collapseOnSelect variant="dark" fixed="top">
       <Navbar.Brand href="#home">{title}</Navbar.Brand>
       <Nav className="mr-auto"></Nav>
       <Nav>
