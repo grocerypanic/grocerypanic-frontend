@@ -8,9 +8,9 @@ import {
 } from "../user.async";
 import UserActions from "../user.actions";
 
-import { Providers, Paths } from "../../../configuration/backend";
+import { Providers, Paths, Constants } from "../../../configuration/backend";
 
-import { Backend } from "../../../util/requests";
+import { Backend, match2xx } from "../../../util/requests";
 
 jest.mock("../../../util/requests");
 const mockDispatch = jest.fn();
@@ -19,6 +19,7 @@ let mockData;
 let mockLoginState = [
   {
     _provider: "Invalid Provider",
+    match2xx: false,
   },
   {
     _provider: Providers.google,
@@ -26,6 +27,35 @@ let mockLoginState = [
     _profile: { name: "SomeGuy", avatar: "SomeAvatar", email: "SomeEmail" },
     path: Paths.googleLogin,
     status: 200,
+    response: {},
+    match2xx: true,
+  },
+  {
+    _provider: Providers.google,
+    _token: { accessToken: "MockAccessToken", idToken: "MockCode" },
+    _profile: { name: "SomeGuy", avatar: "SomeAvatar", email: "SomeEmail" },
+    path: Paths.googleLogin,
+    status: 404,
+    response: {},
+    match2xx: false,
+  },
+  {
+    _provider: Providers.facebook,
+    _token: { accessToken: "MockAccessToken", idToken: "MockCode" },
+    _profile: { name: "SomeGuy", avatar: "SomeAvatar", email: "SomeEmail" },
+    path: Paths.facebookLogin,
+    status: 200,
+    response: {},
+    match2xx: true,
+  },
+  {
+    _provider: Providers.facebook,
+    _token: { accessToken: "MockAccessToken", idToken: "MockCode" },
+    _profile: { name: "SomeGuy", avatar: "SomeAvatar", email: "SomeEmail" },
+    path: Paths.facebookLogin,
+    status: 404,
+    response: {},
+    match2xx: false,
   },
   {
     _provider: Providers.google,
@@ -33,6 +63,8 @@ let mockLoginState = [
     _profile: { name: "SomeGuy", avatar: "SomeAvatar", email: "SomeEmail" },
     path: Paths.googleLogin,
     status: 400,
+    response: { non_field_errors: [Constants.alreadyRegistered] },
+    match2xx: false,
   },
 ];
 
@@ -40,16 +72,24 @@ describe("Setup for Testing asyncLogin", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockData = mockLoginState.shift();
-    Backend.mockReturnValue([{}, mockData.status]);
+    Backend.mockReturnValue([mockData.response, mockData.status]);
+    match2xx.mockReturnValue(mockData.match2xx);
   });
 
-  it("should skip all login activity if the provider is not supported", () => {
+  it("should fail immediately if the provider is not supported", async (done) => {
     asyncLogin({
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
     });
     expect(Backend).toBeCalledTimes(0);
-    expect(mockDispatch).toBeCalledTimes(0);
+    await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+    expect(mockDispatch).toBeCalledWith({
+      type: UserActions.FailureFetchUser,
+      payload: {
+        username: "",
+      },
+    });
+    done();
   });
 
   it("should post google login data to the api, and then dispatch accordingly on success", async (done) => {
@@ -86,8 +126,64 @@ describe("Setup for Testing asyncLogin", () => {
     expect(mockDispatch).toBeCalledWith({
       type: UserActions.FailureFetchUser,
       payload: {
-        username: mockData.username,
+        username: mockData._profile.name,
       },
+    });
+    done();
+  });
+
+  it("should post facebook login data to the api, and then dispatch accordingly on success", async (done) => {
+    asyncLogin({
+      state: "MockState",
+      action: { payload: mockData, dispatch: mockDispatch },
+    });
+    expect(Backend).toBeCalledWith("POST", mockData.path, {
+      access_token: mockData._token.accessToken,
+      code: mockData._token.idToken,
+    });
+    await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+    expect(mockDispatch).toBeCalledWith({
+      type: UserActions.SuccessFetchUser,
+      payload: {
+        username: mockData._profile.name,
+        avatar: mockData._profile.profilePicURL,
+        email: mockData._profile.email,
+      },
+    });
+    done();
+  });
+
+  it("should post facebook login data to the api, and then dispatch accordingly on failures", async (done) => {
+    asyncLogin({
+      state: "MockState",
+      action: { payload: mockData, dispatch: mockDispatch },
+    });
+    expect(Backend).toBeCalledWith("POST", mockData.path, {
+      access_token: mockData._token.accessToken,
+      code: mockData._token.idToken,
+    });
+    await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+    expect(mockDispatch).toBeCalledWith({
+      type: UserActions.FailureFetchUser,
+      payload: {
+        username: mockData._profile.name,
+      },
+    });
+    done();
+  });
+
+  it("should post google login data to the api, and then dispatch accordingly on the duplicate account case", async (done) => {
+    asyncLogin({
+      state: "MockState",
+      action: { payload: mockData, dispatch: mockDispatch },
+    });
+    expect(Backend).toBeCalledWith("POST", mockData.path, {
+      access_token: mockData._token.accessToken,
+      code: mockData._token.idToken,
+    });
+    await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+    expect(mockDispatch).toBeCalledWith({
+      type: UserActions.DuplicateAccount,
     });
     done();
   });

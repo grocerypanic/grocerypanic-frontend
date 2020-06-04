@@ -5,6 +5,7 @@ export const Constants = {
   csrfHeaderName: "X-CSRFToken",
   genericAPIError: "API Error",
   csrfErrorMessage: "Refresh csrf and try again.",
+  alreadyRegistered: "User is already registered with this e-mail address.",
 };
 
 export const Providers = {

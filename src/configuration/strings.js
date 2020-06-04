@@ -4,6 +4,8 @@ export const Strings = {
     LoginMessageFacebook: "Login With Facebook",
     ErrorLoginFailure: "Unable to authenticate!\nPlease try again.",
     ErrorAuthExpired: "Authentication Expired!\nPlease login again.",
+    ErrorDuplicateAccount:
+      "You have already signed up!\nTry logging in with another social account.",
     ErrorDialogueConfirm: "OK",
     ErrorDialogueTitle: "Error!",
     CopyrightDeclaration: "Copyright © ",

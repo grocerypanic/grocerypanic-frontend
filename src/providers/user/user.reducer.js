@@ -46,6 +46,16 @@ const userReducer = (state, action) => {
         errorMessage: "ErrorAuthExpired", // Strings Key
         login: false,
       };
+    case UserActions.DuplicateAccount:
+      return {
+        ...state,
+        username: "",
+        email: "",
+        avatar: "",
+        error: true,
+        errorMessage: "ErrorDuplicateAccount", // Strings Key
+        login: false,
+      };
     case UserActions.SuccessFetchUser:
       return {
         ...state,

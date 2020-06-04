@@ -129,4 +129,25 @@ describe("Check The Reducer Functionality", () => {
     expect(received.login).toBe(false);
     expect(received.errorMessage).toBe("ErrorAuthExpired");
   });
+
+  it("handles DuplicateAccount correctly", () => {
+    const payload = {
+      username: "someguy",
+      email: "someguy@payload.com",
+      avatar: "someAvatar",
+      login: true,
+      error: false,
+      errorMessage: null,
+    };
+    const received = UserReducer(InitialState, {
+      type: UserActions.DuplicateAccount,
+      payload,
+    });
+    expect(received.avatar).toBe("");
+    expect(received.email).toBe("");
+    expect(received.username).toBe("");
+    expect(received.error).toBe(true);
+    expect(received.login).toBe(false);
+    expect(received.errorMessage).toBe("ErrorDuplicateAccount");
+  });
 });

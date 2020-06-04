@@ -5,6 +5,7 @@ const UserActions = {
   FailureFetchUser: "FailureFetchUser",
   ResetUser: "ResetUser",
   AuthExpired: "AuthExpired",
+  DuplicateAccount: "DuplicateAccount",
 };
 
 export default UserActions;
