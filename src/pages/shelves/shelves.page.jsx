@@ -32,6 +32,7 @@ const ShelvesPage = () => {
       ApiObjectContext={ShelfContext}
       placeHolderMessage={t(Strings.ShelfPlaceHolderMessage)}
       handleExpiredAuth={handleExpiredAuth}
+      helpText={t(Strings.ShelfHelpText)}
     />
   );
 };

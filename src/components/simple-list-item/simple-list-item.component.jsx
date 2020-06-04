@@ -5,31 +5,49 @@ import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 
 import Strings from "../../configuration/strings";
+import UseLongPress from "../../util/longpress";
 
 import { ListItem, ListTitle } from "./simple-list-item.styles";
 
-const SimpleListItem = ({
-  item,
-  allItems,
-  add,
-  del,
-  selected,
-  setSelected,
-  errorMsg,
-  setErrorMsg,
-  setCreated,
-  transaction,
-}) => {
+const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
   const { t } = useTranslation();
   const fieldItem = React.createRef();
   const { event } = React.useContext(AnalyticsContext);
 
-  const handleClick = (e) => {
-    e.preventDefault();
+  const {
+    add,
+    del,
+    setSelected,
+    setErrorMsg,
+    setCreated,
+    setLongPress,
+  } = listFunctions;
+
+  const { selected, errorMsg, transaction, longPress } = listValues;
+
+  const handleNavigateToItem = (e) => {
     if (transaction) return;
-    if (item.id !== selected) setCreated(false);
+    if (item.id !== selected) return;
+    if (longPress) return;
+    console.log("NAVIGATE");
+  };
+
+  const handleLongClick = (e) => {
+    if (transaction) return;
+    if (item.id !== selected) return;
+    setLongPress(true);
+  };
+
+  const handleShortClick = (e) => {
+    if (transaction) return;
+    if (item.id !== selected) {
+      setCreated(false);
+      setLongPress(false);
+    }
     setSelected(item.id);
   };
+
+  const handleClick = UseLongPress(handleLongClick, handleShortClick, 500);
 
   const handleChange = (value) => {
     if (errorMsg) {
@@ -65,7 +83,7 @@ const SimpleListItem = ({
         <ListItem
           data-testid="listElement"
           selected={selected}
-          onClick={handleClick}
+          {...handleClick}
           item={item}
         >
           <ListTitle>
@@ -79,7 +97,7 @@ const SimpleListItem = ({
               size={15}
               required
               defaultValue={item.name}
-              onFocus={(e) => handleClick(e)}
+              onFocus={(e) => handleShortClick(e)}
               onChange={(e) => handleChange(e.currentTarget.value)}
               readOnly={transaction}
             />
@@ -107,12 +125,14 @@ const SimpleListItem = ({
     <ListItem
       data-testid="listElement"
       selected={selected}
-      onClick={handleClick}
+      {...handleClick}
       item={item}
     >
-      <ListTitle>{item.name}</ListTitle>
+      <ListTitle onClick={(e) => handleNavigateToItem(e)}>
+        {item.name}
+      </ListTitle>
       <div>
-        {selected === item.id && !transaction ? (
+        {selected === item.id && !transaction && longPress ? (
           <button
             data-testid="deleteButton"
             onClick={() => handleDelete(item.id)}

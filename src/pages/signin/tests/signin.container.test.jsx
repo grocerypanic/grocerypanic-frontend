@@ -1,5 +1,6 @@
 import React from "react";
 import { render, cleanup, waitFor, act } from "@testing-library/react";
+import { propCount } from "../../../test.fixtures/objectComparison";
 
 import { UserContext } from "../../../providers/user/user.provider";
 import initialState from "../../../providers/user/user.initial";
@@ -84,11 +85,15 @@ describe("Setup Environment for Handlers", () => {
     await waitFor(() => expect(SignIn).toBeCalledTimes(1));
     await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(0));
     const call1 = SignIn.mock.calls[0][0];
+    propCount(call1, 2);
+
     call1.handleSocialLogin("mockResponse");
     expect(triggerLogin).toBeCalledTimes(1);
     expect(loginError).toBeCalledTimes(0);
     expect(resetLogin).toBeCalledTimes(0);
     const triggerCall = triggerLogin.mock.calls[0];
+    propCount(triggerCall, 2);
+
     expect(triggerCall[0]).toBeInstanceOf(Function);
     expect(triggerCall[1]).toBe("mockResponse");
     done();
@@ -98,10 +103,13 @@ describe("Setup Environment for Handlers", () => {
     await waitFor(() => expect(SignIn).toBeCalledTimes(1));
     await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(0));
     const call1 = SignIn.mock.calls[0][0];
+    propCount(call1, 2);
+
     call1.handleSocialLoginError("");
     expect(triggerLogin).toBeCalledTimes(0);
     expect(loginError).toBeCalledTimes(1);
     expect(resetLogin).toBeCalledTimes(0);
+
     const errorCall = loginError.mock.calls[0];
     expect(errorCall[0]).toBeInstanceOf(Function);
     done();
@@ -111,21 +119,21 @@ describe("Setup Environment for Handlers", () => {
     await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(1));
     await waitFor(() => expect(SignIn).toBeCalledTimes(0));
     const call1 = ErrorDialogue.mock.calls[0][0];
+    propCount(call1, 4);
+
+    expect(call1.eventError).toBe(AnalyticsActions.LoginError);
     expect(call1.clearError).toBeInstanceOf(Function);
     expect(call1.message).toBe(currentTest.errorMessage);
     expect(call1.redirect).toBe(Routes.root);
     done();
   });
 
-  it("should export a function handleSocialLoginError, that works as expected on an error", async (done) => {
+  it("should export a function clearError, that works as expected on an error", async (done) => {
     await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(1));
     await waitFor(() => expect(SignIn).toBeCalledTimes(0));
     const call1 = ErrorDialogue.mock.calls[0][0];
+
     call1.clearError("mockResponse");
-    expect(call1.eventError).toBe(AnalyticsActions.LoginError);
-    expect(triggerLogin).toBeCalledTimes(0);
-    expect(resetLogin).toBeCalledTimes(1);
-    expect(loginError).toBeCalledTimes(0);
     const resetCall = resetLogin.mock.calls[0];
     expect(resetCall[0]).toBeInstanceOf(Function);
     done();
@@ -156,7 +164,10 @@ describe("Setup Environment for Async Dispatch Test", () => {
     const call1 = SignIn.mock.calls[0][0];
     call1.handleSocialLogin("mockResponse");
     expect(triggerLogin).toBeCalledTimes(1);
+
     const modifyState = triggerLogin.mock.calls[0][0];
+    propCount(modifyState, 0);
+
     act(() => modifyState("Fake Async Action"));
     await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     expect(mockDispatch).toBeCalledWith("Fake Async Action");

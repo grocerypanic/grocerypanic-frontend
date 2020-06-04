@@ -1,0 +1,53 @@
+import { waitFor } from "@testing-library/react";
+
+import Backend from "../backend";
+import RefreshCSRF from "../csrf";
+
+import { Paths, Constants } from "../../../configuration/backend";
+
+const mockLocalStorage = jest.spyOn(Storage.prototype, "setItem");
+jest.mock("../backend");
+
+const mockToken = "MockToken";
+
+describe("test the RefreshCSRF method", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should call the refresh end point as expected and store the token", async (done) => {
+    Backend.mockImplementation(() => [
+      {
+        token: mockToken,
+      },
+      200,
+    ]);
+
+    RefreshCSRF();
+
+    await waitFor(() => expect(Backend).toBeCalledTimes(1));
+    expect(Backend).toBeCalledWith("GET", Paths.refreshCSRF);
+    expect(mockLocalStorage).toBeCalledTimes(1);
+    expect(mockLocalStorage).toBeCalledWith(
+      Constants.csrfLocalStorage,
+      mockToken
+    );
+    done();
+  });
+
+  it("should call the refresh end point as expected, if the call fails it should not store the token", async (done) => {
+    Backend.mockImplementation(() => [
+      {
+        token: mockToken,
+      },
+      400,
+    ]);
+
+    RefreshCSRF();
+
+    await waitFor(() => expect(Backend).toBeCalledTimes(1));
+    expect(Backend).toBeCalledWith("GET", Paths.refreshCSRF);
+    expect(mockLocalStorage).toBeCalledTimes(0);
+    done();
+  });
+});

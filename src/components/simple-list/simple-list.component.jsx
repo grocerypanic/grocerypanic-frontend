@@ -2,6 +2,7 @@ import React from "react";
 
 import Header from "../header/header.component";
 import SimpleListItem from "../simple-list-item/simple-list-item.component";
+import Help from "../simple-list-help/simple-list-help.component";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
@@ -15,11 +16,13 @@ const SimpleList = ({
   ApiObjectContext,
   placeHolderMessage,
   handleExpiredAuth,
+  helpText,
 }) => {
   const { apiObject, dispatch } = React.useContext(ApiObjectContext);
   const [selected, setSelected] = React.useState(null);
   const [created, setCreated] = React.useState(null);
   const [errorMsg, setErrorMsg] = React.useState(null);
+  const [longPress, setLongPress] = React.useState(false);
 
   const [performAsync, setPerformAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
 
@@ -65,6 +68,24 @@ const SimpleList = ({
     });
   };
 
+  // Bundle Up Props For List Items
+
+  const listFunctions = {
+    add: handleSave,
+    del: handleDelete,
+    setSelected,
+    setErrorMsg,
+    setCreated,
+    setLongPress,
+  };
+
+  const listValues = {
+    selected,
+    errorMsg,
+    transaction: apiObject.transaction,
+    longPress,
+  };
+
   return (
     <>
       <Header
@@ -83,17 +104,11 @@ const SimpleList = ({
             {apiObject.inventory.map((item) => {
               return (
                 <SimpleListItem
-                  selected={selected}
-                  setSelected={setSelected}
                   item={item}
                   allItems={apiObject.inventory}
                   key={item.id}
-                  add={handleSave}
-                  del={handleDelete}
-                  errorMsg={errorMsg}
-                  setErrorMsg={setErrorMsg}
-                  setCreated={setCreated}
-                  transaction={apiObject.transaction}
+                  listFunctions={listFunctions}
+                  listValues={listValues}
                 />
               );
             })}
@@ -101,14 +116,8 @@ const SimpleList = ({
               <SimpleListItem
                 item={created}
                 allItems={apiObject.inventory}
-                selected={selected}
-                setSelected={setSelected}
-                add={handleSave}
-                delete={handleDelete}
-                errorMsg={errorMsg}
-                setErrorMsg={setErrorMsg}
-                setCreated={setCreated}
-                transaction={apiObject.transaction}
+                listFunctions={listFunctions}
+                listValues={listValues}
               />
             ) : null}
             {apiObject.inventory.length === 0 && !created ? (
@@ -117,6 +126,7 @@ const SimpleList = ({
           </ListBox>
         </Paper>
       </Container>
+      <Help>{helpText}</Help>
     </>
   );
 };

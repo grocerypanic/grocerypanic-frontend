@@ -1,5 +1,6 @@
 import React from "react";
 import { render, cleanup, waitFor, act } from "@testing-library/react";
+import { propCount } from "../../../test.fixtures/objectComparison";
 
 import ShelvesPage from "../shelves.page";
 import SimpleList from "../../../components/simple-list/simple-list.component";
@@ -42,10 +43,13 @@ describe("Check the correct props are passed to simple list", () => {
   it("should render the root page correctly", async (done) => {
     await waitFor(() => expect(SimpleList).toBeCalledTimes(1));
     const props = SimpleList.mock.calls[0][0];
+    propCount(props, 6);
+
     expect(props.title).toBe(Strings.ShelfPageTitle);
     expect(props.headerTitle).toBe(Strings.ShelfPageHeaderTitle);
     expect(props.ApiObjectContext).toBe(ShelfContext);
     expect(props.handleExpiredAuth).toBeInstanceOf(Function);
+    expect(props.helpText).toBe(Strings.ShelfHelpText);
 
     expect(mockDispatch).toBeCalledTimes(0);
     done();

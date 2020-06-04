@@ -4,8 +4,6 @@ import { render, cleanup } from "@testing-library/react";
 import Header from "../header.component";
 import * as bootstrap from "react-bootstrap";
 import * as addIcon from "@material-ui/icons/Add";
-import { UserContext } from "../../../providers/user/user.provider";
-import initialState from "../../../providers/user/user.initial";
 
 jest.unmock("react-bootstrap");
 bootstrap.Spinner = jest.fn();

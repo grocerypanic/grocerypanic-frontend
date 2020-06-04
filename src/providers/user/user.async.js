@@ -1,5 +1,6 @@
 import { Paths, Providers } from "../../configuration/backend";
-import { Backend, match2xx } from "../../util/requests";
+import match2xx from "../../util/requests/status";
+import Request from "../../util/requests";
 import { Constants } from "../../configuration/backend";
 import UserActions from "./user.actions";
 
@@ -27,7 +28,7 @@ export const asyncLogin = async ({ state, action }) => {
       return loginError(dispatch);
   }
 
-  const [response, status] = await Backend("POST", path, data);
+  const [response, status] = await Request("POST", path, data);
 
   if (
     status === 400 &&

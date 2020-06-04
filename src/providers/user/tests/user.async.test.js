@@ -10,7 +10,7 @@ import UserActions from "../user.actions";
 
 import { Providers, Paths, Constants } from "../../../configuration/backend";
 
-import { Backend, match2xx } from "../../../util/requests";
+import Request from "../../../util/requests";
 
 jest.mock("../../../util/requests");
 const mockDispatch = jest.fn();
@@ -19,7 +19,6 @@ let mockData;
 let mockLoginState = [
   {
     _provider: "Invalid Provider",
-    match2xx: false,
   },
   {
     _provider: Providers.google,
@@ -28,7 +27,6 @@ let mockLoginState = [
     path: Paths.googleLogin,
     status: 200,
     response: {},
-    match2xx: true,
   },
   {
     _provider: Providers.google,
@@ -37,7 +35,6 @@ let mockLoginState = [
     path: Paths.googleLogin,
     status: 404,
     response: {},
-    match2xx: false,
   },
   {
     _provider: Providers.facebook,
@@ -46,7 +43,6 @@ let mockLoginState = [
     path: Paths.facebookLogin,
     status: 200,
     response: {},
-    match2xx: true,
   },
   {
     _provider: Providers.facebook,
@@ -55,7 +51,6 @@ let mockLoginState = [
     path: Paths.facebookLogin,
     status: 404,
     response: {},
-    match2xx: false,
   },
   {
     _provider: Providers.google,
@@ -64,7 +59,6 @@ let mockLoginState = [
     path: Paths.googleLogin,
     status: 400,
     response: { non_field_errors: [Constants.alreadyRegistered] },
-    match2xx: false,
   },
 ];
 
@@ -72,8 +66,7 @@ describe("Setup for Testing asyncLogin", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockData = mockLoginState.shift();
-    Backend.mockReturnValue([mockData.response, mockData.status]);
-    match2xx.mockReturnValue(mockData.match2xx);
+    Request.mockReturnValue([mockData.response, mockData.status]);
   });
 
   it("should fail immediately if the provider is not supported", async (done) => {
@@ -81,7 +74,7 @@ describe("Setup for Testing asyncLogin", () => {
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
     });
-    expect(Backend).toBeCalledTimes(0);
+    expect(Request).toBeCalledTimes(0);
     await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     expect(mockDispatch).toBeCalledWith({
       type: UserActions.FailureFetchUser,
@@ -97,7 +90,7 @@ describe("Setup for Testing asyncLogin", () => {
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
     });
-    expect(Backend).toBeCalledWith("POST", mockData.path, {
+    expect(Request).toBeCalledWith("POST", mockData.path, {
       access_token: mockData._token.accessToken,
       code: mockData._token.idToken,
     });
@@ -118,7 +111,7 @@ describe("Setup for Testing asyncLogin", () => {
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
     });
-    expect(Backend).toBeCalledWith("POST", mockData.path, {
+    expect(Request).toBeCalledWith("POST", mockData.path, {
       access_token: mockData._token.accessToken,
       code: mockData._token.idToken,
     });
@@ -137,7 +130,7 @@ describe("Setup for Testing asyncLogin", () => {
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
     });
-    expect(Backend).toBeCalledWith("POST", mockData.path, {
+    expect(Request).toBeCalledWith("POST", mockData.path, {
       access_token: mockData._token.accessToken,
       code: mockData._token.idToken,
     });
@@ -158,7 +151,7 @@ describe("Setup for Testing asyncLogin", () => {
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
     });
-    expect(Backend).toBeCalledWith("POST", mockData.path, {
+    expect(Request).toBeCalledWith("POST", mockData.path, {
       access_token: mockData._token.accessToken,
       code: mockData._token.idToken,
     });
@@ -177,7 +170,7 @@ describe("Setup for Testing asyncLogin", () => {
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
     });
-    expect(Backend).toBeCalledWith("POST", mockData.path, {
+    expect(Request).toBeCalledWith("POST", mockData.path, {
       access_token: mockData._token.accessToken,
       code: mockData._token.idToken,
     });

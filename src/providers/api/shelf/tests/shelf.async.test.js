@@ -1,9 +1,8 @@
 import { waitFor } from "@testing-library/react";
 
 import ApiActions from "../../api.actions";
-import ApiFunctions from "../../api.functions";
 
-import { Backend, match2xx } from "../../../../util/requests";
+import Request from "../../../../util/requests";
 import initialState from "../shelf.initial";
 
 import { Paths } from "../../../../configuration/backend";
@@ -24,8 +23,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       jest.clearAllMocks();
       State1 = { ...initialState, inventory: [...initialState.inventory] };
       responseCode = 201;
-      Backend.mockReturnValue([NewShelf, responseCode]);
-      match2xx.mockImplementation(() => true);
+      Request.mockReturnValue([NewShelf, responseCode]);
       done();
     });
 
@@ -41,7 +39,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
 
       asyncAdd({ state: State1, action });
 
-      expect(Backend).toBeCalledWith("POST", Paths.manageShelves, {
+      expect(Request).toBeCalledWith("POST", Paths.manageShelves, {
         name: action.payload.name,
       });
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
@@ -66,7 +64,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
 
       asyncDel({ state: State2, action });
 
-      expect(Backend).toBeCalledWith(
+      expect(Request).toBeCalledWith(
         "DELETE",
         Paths.manageShelves + `${action.payload.id}/`
       );
@@ -90,11 +88,11 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         ...State1,
       };
       State2.inventory.push(testShelf);
-      Backend.mockReturnValue([[testShelf], responseCode]);
+      Request.mockReturnValue([[testShelf], responseCode]);
 
       asyncList({ state: State2, action });
 
-      expect(Backend).toBeCalledWith("GET", Paths.manageShelves);
+      expect(Request).toBeCalledWith("GET", Paths.manageShelves);
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.SuccessList,
@@ -111,8 +109,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       jest.clearAllMocks();
       State1 = { ...initialState, inventory: [...initialState.inventory] };
       responseCode = 404;
-      Backend.mockReturnValue([NewShelf, responseCode]);
-      match2xx.mockImplementation(() => false);
+      Request.mockReturnValue([NewShelf, responseCode]);
       done();
     });
 
@@ -128,7 +125,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
 
       asyncAdd({ state: State1, action });
 
-      expect(Backend).toBeCalledWith("POST", Paths.manageShelves, {
+      expect(Request).toBeCalledWith("POST", Paths.manageShelves, {
         name: action.payload.name,
       });
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
@@ -150,7 +147,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
 
       asyncDel({ state: State2, action });
 
-      expect(Backend).toBeCalledWith(
+      expect(Request).toBeCalledWith(
         "DELETE",
         Paths.manageShelves + `${action.payload.id}/`
       );
@@ -171,11 +168,11 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         ...State1,
       };
       State2.inventory.push(testShelf);
-      Backend.mockReturnValue([[testShelf], responseCode]);
+      Request.mockReturnValue([[testShelf], responseCode]);
 
       asyncList({ state: State2, action });
 
-      expect(Backend).toBeCalledWith("GET", Paths.manageShelves);
+      expect(Request).toBeCalledWith("GET", Paths.manageShelves);
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.FailureList,
@@ -189,8 +186,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       jest.clearAllMocks();
       State1 = { ...initialState, inventory: [...initialState.inventory] };
       responseCode = 401;
-      Backend.mockReturnValue([NewShelf, responseCode]);
-      match2xx.mockImplementation(() => false);
+      Request.mockReturnValue([NewShelf, responseCode]);
       done();
     });
 
@@ -206,7 +202,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
 
       asyncAdd({ state: State1, action });
 
-      expect(Backend).toBeCalledWith("POST", Paths.manageShelves, {
+      expect(Request).toBeCalledWith("POST", Paths.manageShelves, {
         name: action.payload.name,
       });
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
@@ -228,7 +224,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
 
       asyncDel({ state: State2, action });
 
-      expect(Backend).toBeCalledWith(
+      expect(Request).toBeCalledWith(
         "DELETE",
         Paths.manageShelves + `${action.payload.id}/`
       );
@@ -249,11 +245,11 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         ...State1,
       };
       State2.inventory.push(testShelf);
-      Backend.mockReturnValue([[testShelf], responseCode]);
+      Request.mockReturnValue([[testShelf], responseCode]);
 
       asyncList({ state: State2, action });
 
-      expect(Backend).toBeCalledWith("GET", Paths.manageShelves);
+      expect(Request).toBeCalledWith("GET", Paths.manageShelves);
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.FailureAuth,

@@ -21,9 +21,11 @@ export const Strings = {
     SimpleListValidationFailure: "Enter a valid name",
     SimpleListSave: "save",
     SimpleListDelete: "delete",
-    ShelfPageTitle: "Shelves",
-    ShelfPageHeaderTitle: "Manage Shelves",
+    ShelfPageTitle: "Your Shelves",
+    ShelfPageHeaderTitle: "Shelves",
     ShelfPlaceHolderMessage: "You Have No Shelves Yet.",
+    ShelfHelpText:
+      "Click a shelf to select, click and hold to delete.\nUse the create button to add new shelves.",
     GenericTranslationTestString: "GenericTranslationTestString",
     GenericMultiLineTranslationTestString:
       "GenericTranslationTestString\nGenericTranslationTestString",

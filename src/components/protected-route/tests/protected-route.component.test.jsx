@@ -1,5 +1,7 @@
 import React from "react";
 import { render, cleanup } from "@testing-library/react";
+import { propCount } from "../../../test.fixtures/objectComparison";
+
 import { Router, Route } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
@@ -22,6 +24,7 @@ const mockDispatch = jest.fn();
 Route.mockImplementation(() => MockComponentContents);
 
 let utils;
+let call;
 let currentTest = {
   negative: false,
   exact: true,
@@ -44,7 +47,6 @@ const RenderFunction = ({ state, history, ...otherProps }) => {
 
 describe("Setup Environment", () => {
   beforeEach(() => {
-    currentTest.history.length = 1;
     jest.clearAllMocks();
   });
 
@@ -56,6 +58,7 @@ describe("Setup Environment", () => {
     });
     describe("When the route is not matching login", () => {
       beforeEach(() => {
+        currentTest.history.push("/");
         currentTest.attr = "login";
         const state = { ...initialState, login: true };
         utils = render(<RenderFunction state={state} {...currentTest} />);
@@ -63,15 +66,20 @@ describe("Setup Environment", () => {
 
       it("should render the component as expected", () => {
         expect(Route).toHaveBeenCalledTimes(1);
-        const call = Route.mock.calls[0][0];
+        call = Route.mock.calls[0][0];
+        propCount(call, 6);
+
         expect(call.component).toBe(MockComponent);
         expect(call.exact).toBeTruthy();
         expect(call.path).toBe("/");
+        expect(call.location).toBe(currentTest.history.location);
+        expect(call.staticContext).toBe(undefined);
         expect(currentTest.history.location.pathname).toBe(Routes.root);
       });
     });
     describe("When the route is matching login", () => {
       beforeEach(() => {
+        currentTest.history.push("/");
         currentTest.attr = "login";
         const state = { ...initialState, login: false };
         utils = render(<RenderFunction state={state} {...currentTest} />);
@@ -79,7 +87,15 @@ describe("Setup Environment", () => {
 
       it("should redirect as expected", () => {
         expect(Route).toHaveBeenCalledTimes(2);
-        expect(MockComponent).toHaveBeenCalledTimes(0);
+
+        call = Route.mock.calls[0][0];
+        propCount(call, 6);
+
+        expect(call.component).toBe(MockComponent);
+        expect(call.exact).toBeTruthy();
+        expect(call.path).toBe("/");
+        expect(call.location).not.toBe(currentTest.history.location);
+        expect(call.staticContext).toBe(undefined);
         expect(currentTest.history.location.pathname).toBe(Routes.shelves);
       });
     });
@@ -91,6 +107,7 @@ describe("Setup Environment", () => {
     });
     describe("When the route is not matching error", () => {
       beforeEach(() => {
+        currentTest.history.push("/");
         currentTest.attr = "error";
         const state = { ...initialState, error: false };
         utils = render(<RenderFunction state={state} {...currentTest} />);
@@ -98,15 +115,20 @@ describe("Setup Environment", () => {
 
       it("should render the component as expected", () => {
         expect(Route).toHaveBeenCalledTimes(1);
-        const call = Route.mock.calls[0][0];
+        call = Route.mock.calls[0][0];
+        propCount(call, 6);
+
         expect(call.component).toBe(MockComponent);
         expect(call.exact).toBeTruthy();
         expect(call.path).toBe("/");
-        expect(currentTest.history.location.pathname).toBe(Routes.shelves);
+        expect(call.location).toBe(currentTest.history.location);
+        expect(call.staticContext).toBe(undefined);
+        expect(currentTest.history.location.pathname).toBe(Routes.root);
       });
     });
     describe("When the route is matching error", () => {
       beforeEach(() => {
+        currentTest.history.push("/");
         currentTest.attr = "error";
         const state = { ...initialState, error: true };
         utils = render(<RenderFunction state={state} {...currentTest} />);
@@ -114,7 +136,14 @@ describe("Setup Environment", () => {
 
       it("should redirect as expected", () => {
         expect(Route).toHaveBeenCalledTimes(2);
-        expect(MockComponent).toHaveBeenCalledTimes(0);
+        call = Route.mock.calls[0][0];
+        propCount(call, 6);
+
+        expect(call.component).toBe(MockComponent);
+        expect(call.exact).toBeTruthy();
+        expect(call.path).toBe("/");
+        expect(call.location).not.toBe(currentTest.history.location);
+        expect(call.staticContext).toBe(undefined);
         expect(currentTest.history.location.pathname).toBe(Routes.shelves);
       });
     });

@@ -1,5 +1,6 @@
 import { Paths } from "../../../configuration/backend";
-import { Backend, match2xx } from "../../../util/requests";
+import match2xx from "../../../util/requests/status";
+import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
 
 const authFailure = (dispatch) => {
@@ -10,7 +11,7 @@ const authFailure = (dispatch) => {
 
 export const asyncAdd = async ({ state, action }) => {
   const { dispatch } = action;
-  const [response, status] = await Backend("POST", Paths.manageShelves, {
+  const [response, status] = await Request("POST", Paths.manageShelves, {
     name: action.payload.name,
   });
   // Status Code is 2xx
@@ -33,7 +34,7 @@ export const asyncAdd = async ({ state, action }) => {
 
 export const asyncDel = async ({ state, action }) => {
   const { dispatch } = action;
-  const [, status] = await Backend(
+  const [, status] = await Request(
     "DELETE",
     Paths.manageShelves + `${action.payload.id}/`
   );
@@ -58,7 +59,7 @@ export const asyncDel = async ({ state, action }) => {
 
 export const asyncList = async ({ state, action }) => {
   const { dispatch } = action;
-  const [response, status] = await Backend("GET", Paths.manageShelves);
+  const [response, status] = await Request("GET", Paths.manageShelves);
   if (match2xx(status)) {
     return new Promise(function (resolve) {
       dispatch({
