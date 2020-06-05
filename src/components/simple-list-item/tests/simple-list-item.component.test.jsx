@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  render,
-  cleanup,
-  act,
-  waitFor,
-  fireEvent,
-} from "@testing-library/react";
+import { render, cleanup, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import SimpleListItem from "../simple-list-item.component";
@@ -81,24 +75,75 @@ describe("Setup Environment", () => {
 
         it("handles a short click on items as expected", async (done) => {
           const itemComponent = utils.queryByTestId("listElement");
-          fireEvent.click(itemComponent, "click");
+          fireEvent.mouseDown(itemComponent, "click");
+          fireEvent.mouseUp(itemComponent, "click");
           await waitFor(() => expect(setCreated).toBeCalledWith(false));
           expect(setSelected).toBeCalledWith(current.item.id);
           done();
         });
+
+        it("handles a click on item names as expected (by doing nothing)", async (done) => {
+          const itemComponent = utils.getByTestId("ListTitle");
+          fireEvent.click(itemComponent, "click");
+          done();
+        });
       });
 
-      describe("when selected", () => {
+      describe("when selected, and longPress is not marked", () => {
         beforeEach(() => {
           current.listValues.selected = current.item.id;
+          current.listValues.longPress = false;
           jest.clearAllMocks();
           utils = render(<SimpleListItem {...current} />);
         });
         afterEach(cleanup);
 
-        it("renders only the expected components, including the delete button", () => {
-          expect(current.selected).toBe(current.item.id);
-          expect(current.transaction).toBeFalsy();
+        it("handles a short click on items as expected", async (done) => {
+          const itemComponent = utils.queryByTestId("listElement");
+          fireEvent.mouseDown(itemComponent, "click");
+          fireEvent.mouseUp(itemComponent, "click");
+          setTimeout(() => fireEvent.mouseUp(itemComponent, "click"), 500);
+          await waitFor(() => expect(setCreated).toBeCalledTimes(0));
+          expect(setSelected).toBeCalledWith(current.item.id);
+          done();
+        });
+
+        it("handles a long click on items as expected", async (done) => {
+          const itemComponent = utils.queryByTestId("listElement");
+          fireEvent.mouseDown(itemComponent, "click");
+          setTimeout(() => fireEvent.mouseUp(itemComponent, "click"), 500);
+          await waitFor(() => expect(setLongPress).toBeCalledTimes(1));
+          done();
+        });
+
+        it("handles a click on item names as expected (navigate)", () => {
+          const itemComponent = utils.getByTestId("ListTitle");
+          fireEvent.click(itemComponent, "click");
+          console.log("NAVIGATE");
+        });
+
+        it("renders only the expected components", () => {
+          expect(current.listValues.selected).toBe(current.item.id);
+          expect(current.listValues.transaction).toBeFalsy();
+          expect(utils.queryByTestId("listElement")).toBeTruthy();
+          expect(utils.queryByTestId("deleteButton")).toBeFalsy();
+          expect(utils.queryByTestId("inputElement")).toBeFalsy();
+          expect(utils.queryByTestId("saveButton")).toBeFalsy();
+        });
+      });
+
+      describe("when selected, and longPress is marked", () => {
+        beforeEach(() => {
+          current.listValues.selected = current.item.id;
+          current.listValues.longPress = true;
+          jest.clearAllMocks();
+          utils = render(<SimpleListItem {...current} />);
+        });
+        afterEach(cleanup);
+
+        it("renders only the expected components", () => {
+          expect(current.listValues.selected).toBe(current.item.id);
+          expect(current.listValues.transaction).toBeFalsy();
           expect(utils.queryByTestId("listElement")).toBeTruthy();
           expect(utils.queryByTestId("deleteButton")).toBeTruthy();
           expect(utils.queryByTestId("inputElement")).toBeFalsy();
@@ -110,6 +155,11 @@ describe("Setup Environment", () => {
           fireEvent.click(deleteButton, "click");
           expect(setSelected).toBeCalledWith(null);
           expect(mockDelete).toBeCalledWith(current.item.id);
+        });
+
+        it("handles a click on item names as expected (by doing nothing)", () => {
+          const itemComponent = utils.getByTestId("ListTitle");
+          fireEvent.click(itemComponent, "click");
         });
       });
     });
@@ -126,8 +176,8 @@ describe("Setup Environment", () => {
         afterEach(cleanup);
 
         it("renders only the expected components", () => {
-          expect(current.selected).not.toBe(current.item.id);
-          expect(current.transaction).toBeTruthy();
+          expect(current.listValues.selected).not.toBe(current.item.id);
+          expect(current.listValues.transaction).toBeTruthy();
           expect(utils.queryByTestId("listElement")).toBeTruthy();
           expect(utils.queryByTestId("deleteButton")).toBeFalsy();
           expect(utils.queryByTestId("inputElement")).toBeFalsy();
@@ -149,9 +199,14 @@ describe("Setup Environment", () => {
         });
         afterEach(cleanup);
 
+        it("handles a click on item names as expected (by doing nothing)", () => {
+          const itemComponent = utils.getByTestId("ListTitle");
+          fireEvent.click(itemComponent, "click");
+        });
+
         it("renders only the expected components, without the delete button", () => {
-          expect(current.selected).toBe(current.item.id);
-          expect(current.transaction).toBeTruthy();
+          expect(current.listValues.selected).toBe(current.item.id);
+          expect(current.listValues.transaction).toBeTruthy();
           expect(utils.queryByTestId("listElement")).toBeTruthy();
           expect(utils.queryByTestId("deleteButton")).toBeFalsy();
           expect(utils.queryByTestId("inputElement")).toBeFalsy();
@@ -180,8 +235,8 @@ describe("Setup Environment", () => {
         afterEach(cleanup);
 
         it("renders only the expected components, including the save button", () => {
-          expect(current.selected).not.toBe(current.item.id);
-          expect(current.transaction).toBeFalsy();
+          expect(current.listValues.selected).not.toBe(current.item.id);
+          expect(current.listValues.transaction).toBeFalsy();
           expect(utils.queryByTestId("listElement")).toBeTruthy();
           expect(utils.queryByTestId("deleteButton")).toBeFalsy();
           expect(utils.queryByTestId("inputElement")).toBeTruthy();
@@ -266,8 +321,8 @@ describe("Setup Environment", () => {
       afterEach(cleanup);
 
       it("renders only the expected components, without the save button", () => {
-        expect(current.selected).not.toBe(current.item.id);
-        expect(current.transaction).toBeTruthy();
+        expect(current.listValues.selected).not.toBe(current.item.id);
+        expect(current.listValues.transaction).toBeTruthy();
         expect(utils.queryByTestId("listElement")).toBeTruthy();
         expect(utils.queryByTestId("deleteButton")).toBeFalsy();
         expect(utils.queryByTestId("inputElement")).toBeTruthy();
@@ -279,6 +334,16 @@ describe("Setup Environment", () => {
         fireEvent.click(itemComponent, "click");
         expect(setCreated).toBeCalledTimes(0);
         expect(setSelected).toBeCalledTimes(0);
+      });
+
+      it("handles a long click on items as expected", async (done) => {
+        const itemComponent = utils.queryByTestId("listElement");
+        fireEvent.mouseDown(itemComponent, "click");
+        setTimeout(() => {
+          fireEvent.mouseUp(itemComponent, "click");
+          expect(setLongPress).toBeCalledTimes(0);
+          done();
+        }, 500);
       });
     });
   });

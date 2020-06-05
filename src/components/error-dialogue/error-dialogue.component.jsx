@@ -54,7 +54,7 @@ export default ErrorDialogue;
 
 ErrorDialogue.propTypes = {
   clearError: PropTypes.func.isRequired,
-  eventMessage: PropTypes.object.isRequired,
+  eventMessage: PropTypes.object,
   message: PropTypes.string.isRequired,
   redirect: PropTypes.string.isRequired,
 };

@@ -3,13 +3,15 @@ import { render, cleanup, act, waitFor } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
 import Header from "../../header/header.component";
-import Help from "../..//simple-list-help/simple-list-help.component";
+import Help from "../../simple-list-help/simple-list-help.component";
 
 import ApiActions from "../../../providers/api/api.actions";
 import ApiFunctions from "../../../providers/api/api.functions";
 
 import SimpleListItem from "../../simple-list-item/simple-list-item.component";
 import SimpleList from "../simple-list.component";
+
+import Strings from "../../../configuration/strings";
 
 jest.mock("../../simple-list-item/simple-list-item.component");
 jest.mock("../../header/header.component");
@@ -37,6 +39,7 @@ const mockPlaceHolderMessage = "I'm Right Here";
 
 describe("Setup Environment", () => {
   let tests = [
+    { transaction: false },
     { transaction: false },
     { transaction: false },
     { transaction: false },
@@ -97,6 +100,7 @@ describe("Setup Environment", () => {
           ApiObjectContext={ApiContext}
           placeHolderMessage={mockPlaceHolderMessage}
           handleExpiredAuth={mockHandleExpiredAuth}
+          helpText={Strings.GenericTranslationTestString}
         />
         }}
       </ApiProvider>
@@ -121,7 +125,7 @@ describe("Setup Environment", () => {
     expect(call.listFunctions.del.name).toBe("handleDelete");
   };
 
-  it("renders, outside of a transaction should call the header with the correct params", () => {
+  it("renders, outside of a transaction should call header with the correct params", () => {
     expect(current.transaction).toBe(false);
 
     expect(Header).toHaveBeenCalledTimes(1);
@@ -133,6 +137,16 @@ describe("Setup Environment", () => {
 
     expect(headerCall.create).toBeInstanceOf(Function);
     expect(headerCall.create.name).toBe("handleCreate");
+  });
+
+  it("renders, outside of a transaction should call help with the correct params", () => {
+    expect(current.transaction).toBe(false);
+
+    expect(Help).toHaveBeenCalledTimes(1);
+
+    const helpCall = Help.mock.calls[0][0];
+    propCount(helpCall, 1);
+    expect(helpCall.children).toBe(Strings.GenericTranslationTestString);
   });
 
   it("renders, outside of a transaction should call the simple list component(s) with the correct params", () => {

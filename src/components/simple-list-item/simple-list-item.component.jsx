@@ -35,7 +35,6 @@ const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
 
   const handleLongClick = (e) => {
     if (transaction) return;
-    if (item.id !== selected) return;
     setLongPress(true);
   };
 
@@ -129,7 +128,10 @@ const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
       {...handleClick}
       item={item}
     >
-      <ListTitle onClick={(e) => handleNavigateToItem(e)}>
+      <ListTitle
+        data-testid="ListTitle"
+        onClick={(e) => handleNavigateToItem(e)}
+      >
         {item.name}
       </ListTitle>
       <div>
