@@ -26,6 +26,11 @@ export const Strings = {
     ShelfPlaceHolderMessage: "You Have No Shelves Yet.",
     ShelfHelpText:
       "Click a shelf to select, click and hold to delete.\nUse the create button to add new shelves.",
+    StorePageTitle: "Your Stores",
+    StorePageHeaderTitle: "Stores",
+    StorePlaceHolderMessage: "You Have No Stores Yet.",
+    StoreHelpText:
+      "Click a store to select, click and hold to delete.\nUse the create button to add new stores.",
     GenericTranslationTestString: "GenericTranslationTestString",
     GenericMultiLineTranslationTestString:
       "GenericTranslationTestString\nGenericTranslationTestString",

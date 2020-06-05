@@ -3,14 +3,14 @@ import { waitFor } from "@testing-library/react";
 import ApiActions from "../../api.actions";
 
 import Request from "../../../../util/requests";
-import initialState from "../shelf.initial";
+import initialState from "../store.initial";
 
 import { Paths } from "../../../../configuration/backend";
-import { asyncAdd, asyncDel, asyncList } from "../shelf.async";
+import { asyncAdd, asyncDel, asyncList } from "../store.async";
 
 jest.mock("../../../../util/requests");
 const mockDispatch = jest.fn();
-const NewShelf = "NewShelf";
+const NewStore = "NewStore";
 
 let responseCode;
 let State1;
@@ -23,23 +23,23 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       jest.clearAllMocks();
       State1 = { ...initialState, inventory: [...initialState.inventory] };
       responseCode = 201;
-      Request.mockReturnValue([NewShelf, responseCode]);
+      Request.mockReturnValue([NewStore, responseCode]);
       done();
     });
 
     it("should call the API, and then dispatch correctly when asyncAdd is called", async (done) => {
       action = {
-        payload: { name: NewShelf },
+        payload: { name: NewStore },
         dispatch: mockDispatch,
       };
       State2 = {
         ...State1,
       };
-      State2.inventory.push(NewShelf);
+      State2.inventory.push(NewStore);
 
       asyncAdd({ state: State1, action });
 
-      expect(Request).toBeCalledWith("POST", Paths.manageShelves, {
+      expect(Request).toBeCalledWith("POST", Paths.manageStores, {
         name: action.payload.name,
       });
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
@@ -54,19 +54,19 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
 
     it("should call the API, and then dispatch correctly when asyncDel is called", async (done) => {
       action = {
-        payload: { name: NewShelf, id: 20 },
+        payload: { id: 20, name: "PlaceHolderStore" },
         dispatch: mockDispatch,
       };
       State2 = {
         ...State1,
       };
-      State2.inventory.push({ id: 99, name: NewShelf });
+      State2.inventory.push({ id: 99, name: NewStore });
 
       asyncDel({ state: State2, action });
 
       expect(Request).toBeCalledWith(
         "DELETE",
-        Paths.manageShelves + `${action.payload.id}/`
+        Paths.manageStores + `${action.payload.id}/`
       );
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
@@ -79,25 +79,25 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
     });
 
     it("should call the API, and then dispatch correctly when asyncList is called", async (done) => {
-      const testShelf = { id: 99, name: NewShelf };
+      const testStore = { id: 99, name: NewStore };
       action = {
-        payload: { name: NewShelf },
+        payload: { name: NewStore },
         dispatch: mockDispatch,
       };
       State2 = {
         ...State1,
       };
-      State2.inventory.push(testShelf);
-      Request.mockReturnValue([[testShelf], responseCode]);
+      State2.inventory.push(testStore);
+      Request.mockReturnValue([[testStore], responseCode]);
 
       asyncList({ state: State2, action });
 
-      expect(Request).toBeCalledWith("GET", Paths.manageShelves);
+      expect(Request).toBeCalledWith("GET", Paths.manageStores);
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.SuccessList,
         payload: {
-          inventory: [testShelf],
+          inventory: [testStore],
         },
       });
       done();
@@ -109,23 +109,23 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       jest.clearAllMocks();
       State1 = { ...initialState, inventory: [...initialState.inventory] };
       responseCode = 404;
-      Request.mockReturnValue([NewShelf, responseCode]);
+      Request.mockReturnValue([NewStore, responseCode]);
       done();
     });
 
     it("should call the API, and then dispatch correctly when asyncAdd is called", async (done) => {
       action = {
-        payload: { name: NewShelf },
+        payload: { name: NewStore },
         dispatch: mockDispatch,
       };
       State2 = {
         ...State1,
       };
-      State2.inventory.push(NewShelf);
+      State2.inventory.push(NewStore);
 
       asyncAdd({ state: State1, action });
 
-      expect(Request).toBeCalledWith("POST", Paths.manageShelves, {
+      expect(Request).toBeCalledWith("POST", Paths.manageStores, {
         name: action.payload.name,
       });
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
@@ -137,19 +137,19 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
 
     it("should call the API, and then dispatch correctly when asyncDel is called", async (done) => {
       action = {
-        payload: { name: NewShelf },
+        payload: { name: NewStore },
         dispatch: mockDispatch,
       };
       State2 = {
         ...State1,
       };
-      State2.inventory.push({ id: 99, name: NewShelf });
+      State2.inventory.push({ id: 99, name: NewStore });
 
       asyncDel({ state: State2, action });
 
       expect(Request).toBeCalledWith(
         "DELETE",
-        Paths.manageShelves + `${action.payload.id}/`
+        Paths.manageStores + `${action.payload.id}/`
       );
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
@@ -159,20 +159,20 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
     });
 
     it("should call the API, and then dispatch correctly when asyncList is called", async (done) => {
-      const testShelf = { id: 99, name: NewShelf };
+      const testStore = { id: 99, name: NewStore };
       action = {
-        payload: { name: NewShelf },
+        payload: { name: NewStore },
         dispatch: mockDispatch,
       };
       State2 = {
         ...State1,
       };
-      State2.inventory.push(testShelf);
-      Request.mockReturnValue([[testShelf], responseCode]);
+      State2.inventory.push(testStore);
+      Request.mockReturnValue([[testStore], responseCode]);
 
       asyncList({ state: State2, action });
 
-      expect(Request).toBeCalledWith("GET", Paths.manageShelves);
+      expect(Request).toBeCalledWith("GET", Paths.manageStores);
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.FailureList,
@@ -186,23 +186,23 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       jest.clearAllMocks();
       State1 = { ...initialState, inventory: [...initialState.inventory] };
       responseCode = 401;
-      Request.mockReturnValue([NewShelf, responseCode]);
+      Request.mockReturnValue([NewStore, responseCode]);
       done();
     });
 
     it("should call the API, and then dispatch correctly when asyncAdd is called", async (done) => {
       action = {
-        payload: { name: NewShelf },
+        payload: { name: NewStore },
         dispatch: mockDispatch,
       };
       State2 = {
         ...State1,
       };
-      State2.inventory.push(NewShelf);
+      State2.inventory.push(NewStore);
 
       asyncAdd({ state: State1, action });
 
-      expect(Request).toBeCalledWith("POST", Paths.manageShelves, {
+      expect(Request).toBeCalledWith("POST", Paths.manageStores, {
         name: action.payload.name,
       });
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
@@ -214,19 +214,19 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
 
     it("should call the API, and then dispatch correctly when asyncDel is called", async (done) => {
       action = {
-        payload: { name: NewShelf },
+        payload: { name: NewStore, id: 20 },
         dispatch: mockDispatch,
       };
       State2 = {
         ...State1,
       };
-      State2.inventory.push({ id: 99, name: NewShelf });
+      State2.inventory.push({ id: 99, name: NewStore });
 
       asyncDel({ state: State2, action });
 
       expect(Request).toBeCalledWith(
         "DELETE",
-        Paths.manageShelves + `${action.payload.id}/`
+        Paths.manageStores + `${action.payload.id}/`
       );
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
@@ -236,20 +236,20 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
     });
 
     it("should call the API, and then dispatch correctly when asyncList is called", async (done) => {
-      const testShelf = { id: 99, name: NewShelf };
+      const testStore = { id: 99, name: NewStore };
       action = {
-        payload: { name: NewShelf },
+        payload: { name: NewStore },
         dispatch: mockDispatch,
       };
       State2 = {
         ...State1,
       };
-      State2.inventory.push(testShelf);
-      Request.mockReturnValue([[testShelf], responseCode]);
+      State2.inventory.push(testStore);
+      Request.mockReturnValue([[testStore], responseCode]);
 
       asyncList({ state: State2, action });
 
-      expect(Request).toBeCalledWith("GET", Paths.manageShelves);
+      expect(Request).toBeCalledWith("GET", Paths.manageStores);
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.FailureAuth,
