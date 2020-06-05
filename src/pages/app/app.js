@@ -12,6 +12,8 @@ import Strings from "../../configuration/strings";
 const SignIn = lazy(() => import("../signin/signin.container"));
 const Shelves = lazy(() => import("../shelves/shelves.page"));
 const Stores = lazy(() => import("../stores/stores.page"));
+const Items = lazy(() => import("../items/items.page"));
+const Details = lazy(() => import("../details/details.page"));
 
 function App() {
   const { t } = useTranslation();
@@ -37,6 +39,21 @@ function App() {
           exact
           path={Routes.stores}
           component={Stores}
+          negative
+          attr={"login"}
+          redirect={Routes.root}
+        />
+        <ProtectedRoute
+          exact
+          path={Routes.items}
+          component={Items}
+          negative
+          attr={"login"}
+          redirect={Routes.root}
+        />
+        <ProtectedRoute
+          path={Routes.details}
+          component={Details}
           negative
           attr={"login"}
           redirect={Routes.root}

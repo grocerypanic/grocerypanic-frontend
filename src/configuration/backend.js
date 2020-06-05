@@ -18,5 +18,6 @@ export const Paths = {
   facebookLogin: "/api/v1/auth/social/facebook/",
   manageShelves: "/api/v1/shelf/",
   manageStores: "/api/v1/store/",
+  manageItems: "/api/v1/item/",
   refreshCSRF: "/api/v1/auth/csrf/",
 };
