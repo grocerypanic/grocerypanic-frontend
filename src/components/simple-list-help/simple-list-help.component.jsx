@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { ListDialogue, Centered } from "./simple-list-help.styles.jsx";
 
@@ -13,3 +14,7 @@ const Help = ({ children }) => {
 };
 
 export default Help;
+
+Help.propTypes = {
+  children: PropTypes.string.isRequired,
+};

@@ -1,6 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import WarningOutlinedIcon from "@material-ui/icons/WarningOutlined";
+import PropTypes from "prop-types";
+
 import { Paper, Container } from "../../global-styles/containers";
 import { NotePad, Page, OK, ErrorBox, Centered } from "./error-dialogue.styles";
 
@@ -8,13 +10,7 @@ import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 
 import Strings from "../../configuration/strings";
 
-const ErrorDialogue = ({
-  clearError,
-  eventMessage,
-  message,
-  redirect,
-  history,
-}) => {
+const ErrorDialogue = ({ clearError, eventMessage, message, redirect }) => {
   const { t } = useTranslation();
   const { event } = React.useContext(AnalyticsContext);
 
@@ -55,3 +51,10 @@ const ErrorDialogue = ({
 };
 
 export default ErrorDialogue;
+
+ErrorDialogue.propTypes = {
+  clearError: PropTypes.func.isRequired,
+  eventMessage: PropTypes.object.isRequired,
+  message: PropTypes.string.isRequired,
+  redirect: PropTypes.string.isRequired,
+};

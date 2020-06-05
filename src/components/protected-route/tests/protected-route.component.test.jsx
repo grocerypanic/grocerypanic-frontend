@@ -2,7 +2,7 @@ import React from "react";
 import { render, cleanup } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
-import { Router, Route } from "react-router-dom";
+import { Router, Route, withRouter } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import ProtectedRoute from "../protected-route.component";
@@ -36,6 +36,7 @@ let currentTest = {
 };
 
 const RenderFunction = ({ state, history, ...otherProps }) => {
+  const WrappedRouter = withRouter(ProtectedRoute);
   return (
     <UserContext.Provider value={{ user: state, dispatch: mockDispatch }}>
       <Router history={history}>

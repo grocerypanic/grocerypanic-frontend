@@ -17,6 +17,7 @@ const mockDelete = jest.fn();
 const setSelected = jest.fn();
 const setErrorMsg = jest.fn();
 const setCreated = jest.fn();
+const setLongPress = jest.fn();
 
 // Mock Api Data
 const mockData = [
@@ -30,14 +31,20 @@ const mockData = [
 let test = {
   item: mockData[0],
   allItems: mockData,
-  add: mockAdd,
-  del: mockDelete,
-  selected: null,
-  setSelected: setSelected,
-  errorMsg: null,
-  setErrorMsg: setErrorMsg,
-  setCreated: setCreated,
-  transaction: false,
+  listFunctions: {
+    add: mockAdd,
+    del: mockDelete,
+    setSelected: setSelected,
+    setErrorMsg: setErrorMsg,
+    setCreated: setCreated,
+    setLongPress: setLongPress,
+  },
+  listValues: {
+    transaction: false,
+    selected: null,
+    errorMsg: null,
+    longPress: false,
+  },
 };
 
 let utils;
@@ -53,36 +60,37 @@ describe("Setup Environment", () => {
     });
     describe("when outside of a transaction", () => {
       beforeEach(() => {
-        current.transaction = false;
+        current.listValues.transaction = false;
       });
       describe("when not selected", () => {
         beforeEach(() => {
-          current.selected = null;
+          current.listValues.selected = null;
           jest.clearAllMocks();
           utils = render(<SimpleListItem {...current} />);
         });
         afterEach(cleanup);
 
         it("renders only the expected components", () => {
-          expect(current.selected).not.toBe(current.item.id);
-          expect(current.transaction).toBeFalsy();
+          expect(current.listValues.selected).not.toBe(current.item.id);
+          expect(current.listValues.transaction).toBeFalsy();
           expect(utils.queryByTestId("listElement")).toBeTruthy();
           expect(utils.queryByTestId("deleteButton")).toBeFalsy();
           expect(utils.queryByTestId("inputElement")).toBeFalsy();
           expect(utils.queryByTestId("saveButton")).toBeFalsy();
         });
 
-        it("handles a click on items as expected", () => {
+        it("handles a short click on items as expected", async (done) => {
           const itemComponent = utils.queryByTestId("listElement");
           fireEvent.click(itemComponent, "click");
-          expect(setCreated).toBeCalledWith(false);
+          await waitFor(() => expect(setCreated).toBeCalledWith(false));
           expect(setSelected).toBeCalledWith(current.item.id);
+          done();
         });
       });
 
       describe("when selected", () => {
         beforeEach(() => {
-          current.selected = current.item.id;
+          current.listValues.selected = current.item.id;
           jest.clearAllMocks();
           utils = render(<SimpleListItem {...current} />);
         });
@@ -107,11 +115,11 @@ describe("Setup Environment", () => {
     });
     describe("when inside of a transaction", () => {
       beforeEach(() => {
-        current.transaction = true;
+        current.listValues.transaction = true;
       });
       describe("when not selected", () => {
         beforeEach(() => {
-          current.selected = null;
+          current.listValues.selected = null;
           jest.clearAllMocks();
           utils = render(<SimpleListItem {...current} />);
         });
@@ -135,7 +143,7 @@ describe("Setup Environment", () => {
 
       describe("when selected", () => {
         beforeEach(() => {
-          current.selected = current.item.id;
+          current.listValues.selected = current.item.id;
           jest.clearAllMocks();
           utils = render(<SimpleListItem {...current} />);
         });
@@ -159,12 +167,12 @@ describe("Setup Environment", () => {
     });
     describe("when outside of a transaction", () => {
       beforeEach(() => {
-        current.transaction = false;
+        current.listValues.transaction = false;
       });
       describe("when there is an error message", () => {
         beforeEach(() => {
-          current.errorMsg = "Some Existing Error Message";
-          current.selected = null;
+          current.listValues.errorMsg = "Some Existing Error Message";
+          current.listValues.selected = null;
 
           jest.clearAllMocks();
           utils = render(<SimpleListItem {...current} />);
@@ -190,8 +198,8 @@ describe("Setup Environment", () => {
       });
       describe("when there is no error message", () => {
         beforeEach(() => {
-          current.errorMsg = "";
-          current.selected = null;
+          current.listValues.errorMsg = "";
+          current.listValues.selected = null;
 
           jest.clearAllMocks();
           utils = render(<SimpleListItem {...current} />);
@@ -249,8 +257,8 @@ describe("Setup Environment", () => {
 
     describe("when inside of a transaction", () => {
       beforeEach(() => {
-        current.transaction = true;
-        current.selected = null;
+        current.listValues.transaction = true;
+        current.listValues.selected = null;
         jest.clearAllMocks();
         utils = render(<SimpleListItem {...current} />);
       });

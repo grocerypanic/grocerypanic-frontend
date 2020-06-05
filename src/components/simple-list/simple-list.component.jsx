@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Header from "../header/header.component";
 import SimpleListItem from "../simple-list-item/simple-list-item.component";
@@ -132,3 +133,12 @@ const SimpleList = ({
 };
 
 export default SimpleList;
+
+SimpleList.propTypes = {
+  headerTitle: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  ApiObjectContext: PropTypes.object.isRequired,
+  placeHolderMessage: PropTypes.string.isRequired,
+  handleExpiredAuth: PropTypes.func.isRequired,
+  helpText: PropTypes.string.isRequired,
+};

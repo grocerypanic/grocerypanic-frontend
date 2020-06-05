@@ -1,5 +1,6 @@
 import React from "react";
 import AddIcon from "@material-ui/icons/Add";
+import PropTypes from "prop-types";
 
 import { Navbar, Nav, Spinner } from "react-bootstrap";
 import { NavContainer } from "./header.styles";
@@ -21,3 +22,9 @@ const Header = ({ title, create, transaction }) => {
 };
 
 export default Header;
+
+Header.propTypes = {
+  create: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  transaction: PropTypes.bool.isRequired,
+};

@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
@@ -148,3 +149,22 @@ const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
 };
 
 export default SimpleListItem;
+
+SimpleListItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  allItems: PropTypes.arrayOf(PropTypes.object).isRequired,
+  listFunctions: PropTypes.shape({
+    add: PropTypes.func.isRequired,
+    del: PropTypes.func.isRequired,
+    setSelected: PropTypes.func.isRequired,
+    setErrorMsg: PropTypes.func.isRequired,
+    setCreated: PropTypes.func.isRequired,
+    setLongPress: PropTypes.func.isRequired,
+  }).isRequired,
+  listValues: PropTypes.shape({
+    selected: PropTypes.number,
+    errorMsg: PropTypes.string,
+    transaction: PropTypes.bool.isRequired,
+    longPress: PropTypes.bool.isRequired,
+  }).isRequired,
+};
