@@ -1,5 +1,6 @@
 const Routes = {
   root: "/",
+  signin: "/signin",
   shelves: "/shelves",
   stores: "/stores",
   items: "/items",

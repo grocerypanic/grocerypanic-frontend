@@ -8,6 +8,7 @@ import ShelvesPage from "../../shelves/shelves.page";
 import StoresPage from "../../stores/stores.page";
 import ItemsPage from "../../items/items.page";
 import DetailsPage from "../../details/details.page";
+import MenuPage from "../../menu/menu.page";
 
 import { UserContext } from "../../../providers/user/user.provider";
 
@@ -20,6 +21,7 @@ jest.mock("../../signin/signin.container");
 jest.mock("../../shelves/shelves.page");
 jest.mock("../../stores/stores.page");
 jest.mock("../../items/items.page");
+jest.mock("../../menu/menu.page");
 jest.mock("../../details/details.page");
 
 SignIn.mockImplementation(() => <div>MockPlaceholder</div>);
@@ -27,16 +29,18 @@ ShelvesPage.mockImplementation(() => <div>MockPlaceholder</div>);
 StoresPage.mockImplementation(() => <div>MockPlaceholder</div>);
 ItemsPage.mockImplementation(() => <div>MockPlaceholder</div>);
 DetailsPage.mockImplementation(() => <div>MockPlaceholder</div>);
+MenuPage.mockImplementation(() => <div>MockPlaceholder</div>);
 
 const mockDispatch = jest.fn();
 
 describe("Check Routing", () => {
   let tests = [
-    { path: Routes.root, state: { login: false } },
-    { path: Routes.shelves, state: { login: true } },
-    { path: Routes.stores, state: { login: true } },
-    { path: Routes.items, state: { login: true } },
-    { path: Routes.details, state: { login: true } },
+    { path: "InvalidRouteInvalidRoute", state: { error: false, login: true } },
+    { path: Routes.signin, state: { error: false, login: false } },
+    { path: Routes.shelves, state: { error: false, login: true } },
+    { path: Routes.stores, state: { error: false, login: true } },
+    { path: Routes.items, state: { error: false, login: true } },
+    { path: Routes.details, state: { error: false, login: true } },
   ];
   let utils;
   let currentTest;
@@ -57,6 +61,17 @@ describe("Check Routing", () => {
 
   afterEach(cleanup);
 
+  it("should render the menu root page on a non matching url", async (done) => {
+    expect(utils.getByText(Strings.Suspense)).toBeTruthy();
+    await waitFor(() => expect(SignIn).toBeCalledTimes(0));
+    await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
+    await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
+    await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
+    await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
+    await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
+    done();
+  });
+
   it("should render signin on root url, with login set to false", async (done) => {
     expect(utils.getByText(Strings.Suspense)).toBeTruthy();
     await waitFor(() => expect(SignIn).toBeCalledTimes(1));
@@ -64,6 +79,7 @@ describe("Check Routing", () => {
     await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
     await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
     await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
+    await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
     done();
   });
 
@@ -74,6 +90,7 @@ describe("Check Routing", () => {
     await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
     await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
     await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
+    await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
     done();
   });
 
@@ -84,6 +101,7 @@ describe("Check Routing", () => {
     await waitFor(() => expect(StoresPage).toBeCalledTimes(1));
     await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
     await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
+    await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
     done();
   });
 
@@ -94,6 +112,7 @@ describe("Check Routing", () => {
     await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
     await waitFor(() => expect(ItemsPage).toBeCalledTimes(1));
     await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
+    await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
     done();
   });
 
@@ -104,6 +123,7 @@ describe("Check Routing", () => {
     await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
     await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
     await waitFor(() => expect(DetailsPage).toBeCalledTimes(1));
+    await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
     done();
   });
 });

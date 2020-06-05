@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { secondary, highlight, selected } from "../../configuration/theme";
+import { highlight, secondary } from "../../configuration/theme";
 
 export const ListItem = styled.li`
   display: flex;
@@ -11,15 +11,10 @@ export const ListItem = styled.li`
   background: ${secondary};
   margin: 5px;
   padding: 5px;
-  color: ${(props) =>
-    props.selected === props.item.id ? selected : highlight};
+  color: ${highlight};
 
   min-width: 220px;
   cursor: pointer;
-
-  div:last-child {
-    margin-left: auto;
-  }
 `;
 
 export const ListTitle = styled.div`

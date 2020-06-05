@@ -1,6 +1,6 @@
 // Package Imports
 import React, { Suspense, lazy } from "react";
-import { Switch } from "react-router-dom";
+import { Switch, DefaultRoute } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import ProtectedRoute from "../../components/protected-route/protected-route.component";
@@ -14,6 +14,7 @@ const Shelves = lazy(() => import("../shelves/shelves.page"));
 const Stores = lazy(() => import("../stores/stores.page"));
 const Items = lazy(() => import("../items/items.page"));
 const Details = lazy(() => import("../details/details.page"));
+const Menu = lazy(() => import("../menu/menu.page"));
 
 function App() {
   const { t } = useTranslation();
@@ -22,10 +23,10 @@ function App() {
       <Switch>
         <ProtectedRoute
           exact
-          path={Routes.root}
+          path={Routes.signin}
           component={SignIn}
           attr={"login"}
-          redirect={Routes.shelves}
+          redirect={Routes.root}
         />
         <ProtectedRoute
           exact
@@ -33,7 +34,7 @@ function App() {
           component={Shelves}
           negative
           attr={"login"}
-          redirect={Routes.root}
+          redirect={Routes.signin}
         />
         <ProtectedRoute
           exact
@@ -41,7 +42,7 @@ function App() {
           component={Stores}
           negative
           attr={"login"}
-          redirect={Routes.root}
+          redirect={Routes.signin}
         />
         <ProtectedRoute
           exact
@@ -49,13 +50,27 @@ function App() {
           component={Items}
           negative
           attr={"login"}
-          redirect={Routes.root}
+          redirect={Routes.signin}
         />
         <ProtectedRoute
           path={Routes.details}
           component={Details}
           negative
           attr={"login"}
+          redirect={Routes.signin}
+        />
+        <ProtectedRoute
+          path={Routes.root}
+          component={Menu}
+          negative
+          attr={"login"}
+          redirect={Routes.signin}
+        />
+        <ProtectedRoute
+          path={""}
+          component={() => <div></div>}
+          negative
+          attr={"error"}
           redirect={Routes.root}
         />
       </Switch>
