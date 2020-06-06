@@ -27,12 +27,12 @@ const StoresPage = () => {
 
   return (
     <SimpleList
-      title={t(Strings.StorePageTitle)}
-      headerTitle={t(Strings.StorePageHeaderTitle)}
+      title={t(Strings.StorePage.Title)}
+      headerTitle={t(Strings.StorePage.HeaderTitle)}
       ApiObjectContext={StoreContext}
-      placeHolderMessage={t(Strings.StorePlaceHolderMessage)}
+      placeHolderMessage={t(Strings.StorePage.PlaceHolderMessage)}
       handleExpiredAuth={handleExpiredAuth}
-      helpText={t(Strings.StoreHelpText)}
+      helpText={t(Strings.StorePage.HelpText)}
     />
   );
 };

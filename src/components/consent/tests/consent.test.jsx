@@ -6,7 +6,7 @@ import { AnalyticsContext } from "../../../providers/analytics/analytics.provide
 
 import Consent from "../consent.component";
 
-import messages from "../../../configuration/strings";
+import Strings from "../../../configuration/strings";
 
 // Translate as English
 jest.mock("react-i18next", () => ({
@@ -45,7 +45,7 @@ describe("Check Error Rendering", () => {
     expect(CookieConsent).toHaveBeenCalledTimes(1);
     const props = CookieConsent.mock.calls[0][0];
     expect(props.acceptOnScroll).toBeFalsy();
-    expect(props.children).toBe(messages.CookieMessage);
+    expect(props.children).toBe(Strings.CookiePolicy.CookieMessage);
     expect(props.onAccept).toBe(mockSetup);
   });
 });

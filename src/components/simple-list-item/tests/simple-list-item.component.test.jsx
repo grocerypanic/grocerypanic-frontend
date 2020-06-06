@@ -146,6 +146,7 @@ describe("Setup Environment", () => {
           expect(current.listValues.transaction).toBeFalsy();
           expect(utils.queryByTestId("listElement")).toBeTruthy();
           expect(utils.queryByTestId("deleteButton")).toBeTruthy();
+          expect(utils.getByText(Strings.SimpleList.Delete)).toBeTruthy();
           expect(utils.queryByTestId("inputElement")).toBeFalsy();
           expect(utils.queryByTestId("saveButton")).toBeFalsy();
         });
@@ -241,6 +242,7 @@ describe("Setup Environment", () => {
           expect(utils.queryByTestId("deleteButton")).toBeFalsy();
           expect(utils.queryByTestId("inputElement")).toBeTruthy();
           expect(utils.queryByTestId("saveButton")).toBeTruthy();
+          expect(utils.getByText(Strings.SimpleList.Save)).toBeTruthy();
           expect(setErrorMsg).toBeCalledTimes(0);
         });
 
@@ -292,7 +294,7 @@ describe("Setup Environment", () => {
           const save = utils.queryByTestId("saveButton");
           fireEvent.click(save);
           expect(setErrorMsg).toBeCalledWith(
-            Strings.SimpleListValidationFailure
+            Strings.SimpleList.ValidationFailure
           );
           done();
         });
@@ -303,7 +305,7 @@ describe("Setup Environment", () => {
           const save = utils.queryByTestId("saveButton");
           fireEvent.click(save);
           expect(setErrorMsg).toBeCalledWith(
-            Strings.SimpleListValidationAlreadyExists
+            Strings.SimpleList.ValidationAlreadyExists
           );
           done();
         });

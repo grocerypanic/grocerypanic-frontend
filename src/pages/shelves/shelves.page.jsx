@@ -27,12 +27,12 @@ const ShelvesPage = () => {
 
   return (
     <SimpleList
-      title={t(Strings.ShelfPageTitle)}
-      headerTitle={t(Strings.ShelfPageHeaderTitle)}
+      title={t(Strings.ShelfPage.Title)}
+      headerTitle={t(Strings.ShelfPage.HeaderTitle)}
       ApiObjectContext={ShelfContext}
-      placeHolderMessage={t(Strings.ShelfPlaceHolderMessage)}
+      placeHolderMessage={t(Strings.ShelfPage.PlaceHolderMessage)}
       handleExpiredAuth={handleExpiredAuth}
-      helpText={t(Strings.ShelfHelpText)}
+      helpText={t(Strings.ShelfPage.HelpText)}
     />
   );
 };

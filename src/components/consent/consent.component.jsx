@@ -4,7 +4,7 @@ import CookieConsent from "react-cookie-consent";
 
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 
-import messages from "../../configuration/strings";
+import Strings from "../../configuration/strings";
 
 const Consent = () => {
   const { setup } = useContext(AnalyticsContext);
@@ -14,10 +14,10 @@ const Consent = () => {
     <CookieConsent
       enableDeclineButton
       onAccept={setup}
-      buttonText={t(messages.CookieAcceptText)}
-      declineButtonText={t(messages.CookieDeclineText)}
+      buttonText={t(Strings.CookiePolicy.CookieAcceptText)}
+      declineButtonText={t(Strings.CookiePolicy.CookieDeclineText)}
     >
-      {t(messages.CookieMessage)}
+      {t(Strings.CookiePolicy.CookieMessage)}
     </CookieConsent>
   );
 };

@@ -25,13 +25,13 @@ const SignIn = ({ handleSocialLogin, handleSocialLoginError }) => {
         <LockBox>
           <LockOutlinedIcon />
         </LockBox>
-        <h1>{t(Strings.SignInMessage)}</h1>
+        <h1>{t(Strings.SignIn.Title)}</h1>
         <ButtonBox>
           <SocialLoginController
             ButtonType={GoogleLoginButton}
             appId={process.env.REACT_APP_GOOGLE_ACCOUNT_ID}
             provider={Providers.google}
-            message={t(Strings.LoginMessageGoogle)}
+            message={t(Strings.SignIn.LoginMessageGoogle)}
             onLoginSuccess={handleSocialLogin}
             onLoginFailure={handleSocialLoginError}
           />
@@ -41,7 +41,7 @@ const SignIn = ({ handleSocialLogin, handleSocialLoginError }) => {
             ButtonType={FacebookLoginButton}
             appId={process.env.REACT_APP_FACEBOOK_ACCOUNT_ID}
             provider={Providers.facebook}
-            message={t(Strings.LoginMessageFacebook)}
+            message={t(Strings.SignIn.LoginMessageFacebook)}
             onLoginSuccess={handleSocialLogin}
             onLoginFailure={handleSocialLoginError}
           />

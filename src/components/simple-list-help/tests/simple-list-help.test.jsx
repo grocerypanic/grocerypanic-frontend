@@ -13,7 +13,7 @@ describe("Setup Environment", () => {
   beforeEach(() => {
     currentTest = tests.shift();
     utils = render(
-      <Help>{Strings.GenericMultiLineTranslationTestString}</Help>
+      <Help>{Strings.Testing.GenericMultiLineTranslationTestString}</Help>
     );
   });
 
@@ -24,7 +24,7 @@ describe("Setup Environment", () => {
     const node = utils.getByTestId("ListDialogue");
     expect(node).toBeTruthy();
     expect(
-      utils.getAllByText(Strings.GenericTranslationTestString).length
+      utils.getAllByText(Strings.Testing.GenericTranslationTestString).length
     ).toBe(2);
   });
 });

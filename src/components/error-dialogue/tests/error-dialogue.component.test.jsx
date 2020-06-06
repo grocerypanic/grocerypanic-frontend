@@ -22,7 +22,8 @@ const mockAnalyticsSettings = { event: mockEvent, initialized: true };
 let ErrorProps = {
   clearError: jest.fn(),
   eventMessage: AnalyticsActions.TestAction,
-  message: "GenericMultiLineTranslationTestString", // String Key
+  stringsRoot: Strings.Testing,
+  string: "GenericMultiLineTranslationTestString", // String Key
   redirect: Routes.root,
 };
 
@@ -46,7 +47,7 @@ describe("Setup Environment", () => {
   it("should render with the correct components and messages", () => {
     expect(currentTest).toBe(1);
     expect(
-      utils.getAllByText(Strings.GenericTranslationTestString).length
+      utils.getAllByText(Strings.Testing.GenericTranslationTestString).length
     ).toBe(2);
     expect(WarningOutlinedIcon).toHaveBeenCalledTimes(1);
     expect(mockEvent).toHaveBeenCalledTimes(1);

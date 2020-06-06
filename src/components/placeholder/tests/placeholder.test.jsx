@@ -30,7 +30,9 @@ describe("Setup Environment", () => {
 
   it("should render with the correct message", () => {
     expect(currentTest).toBe(1);
-    expect(utils.getByText(Strings.PlaceHolderMessage)).toBeTruthy();
+    expect(
+      utils.getByText(Strings.PlaceHolder.PlaceHolderMessage)
+    ).toBeTruthy();
     expect(mockEvent).toHaveBeenCalledTimes(1);
     expect(mockEvent).toHaveBeenCalledWith(AnalyticsActions.TestAction);
   });

@@ -12,9 +12,9 @@ const MenuPage = () => {
   return (
     <Menu
       options={Options}
-      title={t(Strings.MainMenuPageTitle)}
-      headerTitle={t(Strings.MainMenuPageHeaderTitle)}
-      helpText={t(Strings.MainMenuHelpText)}
+      title={t(Strings.MainMenu.Title)}
+      headerTitle={t(Strings.MainMenu.HeaderTitle)}
+      helpText={t(Strings.MainMenu.HelpText)}
     />
   );
 };

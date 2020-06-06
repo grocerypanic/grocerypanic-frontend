@@ -14,7 +14,7 @@ const PlaceHolder = () => {
     event(AnalyticsActions.TestAction);
   }, []);
 
-  return <div>{t(Strings.PlaceHolderMessage)}</div>;
+  return <div>{t(Strings.PlaceHolder.PlaceHolderMessage)}</div>;
 };
 
 export default PlaceHolder;

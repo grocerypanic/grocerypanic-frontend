@@ -19,7 +19,7 @@ const Menu = lazy(() => import("../menu/menu.page"));
 function App() {
   const { t } = useTranslation();
   return (
-    <Suspense fallback={<div>{t(Strings.Suspense)}</div>}>
+    <Suspense fallback={<div>{t(Strings.App.Suspense)}</div>}>
       <Switch>
         <ProtectedRoute
           exact

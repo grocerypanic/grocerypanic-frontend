@@ -57,12 +57,12 @@ const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
 
   const handleSave = (value) => {
     if (value.length < 2) {
-      setErrorMsg(t(Strings.SimpleListValidationFailure));
+      setErrorMsg(t(Strings.SimpleList.ValidationFailure));
       return;
     }
     const search = allItems.find((instance) => instance.name === value);
     if (search) {
-      setErrorMsg(t(Strings.SimpleListValidationAlreadyExists));
+      setErrorMsg(t(Strings.SimpleList.ValidationAlreadyExists));
       return;
     }
     add(value);
@@ -110,7 +110,7 @@ const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
                 className="btn btn-success"
                 style={{ height: "40px" }}
               >
-                {t(Strings.SimpleListSave)}
+                {t(Strings.SimpleList.Save)}
               </button>
             </div>
           ) : (
@@ -142,7 +142,7 @@ const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
             className="btn btn-danger"
             style={{ height: "40px" }}
           >
-            {t(Strings.SimpleListDelete)}
+            {t(Strings.SimpleList.Delete)}
           </button>
         ) : null}
       </div>

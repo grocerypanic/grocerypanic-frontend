@@ -16,6 +16,7 @@ import SignIn from "../signin.page";
 import ErrorDialogue from "../../../components/error-dialogue/error-dialogue.component";
 
 import Routes from "../../../configuration/routes";
+import Strings from "../../../configuration/strings";
 
 jest.mock("../signin.page");
 
@@ -61,8 +62,16 @@ describe("Setup Environment for Handlers", () => {
   let tests = [
     { ...initialState },
     { ...initialState },
-    { ...initialState, error: true, errorMessage: "Login Failures" },
-    { ...initialState, error: true, errorMessage: "Login Failures" },
+    {
+      ...initialState,
+      error: true,
+      errorMessage: "ErrorAuthExpired",
+    },
+    {
+      ...initialState,
+      error: true,
+      errorMessage: "ErrorAuthExpired",
+    },
   ];
   let utils;
   let currentTest;
@@ -119,11 +128,12 @@ describe("Setup Environment for Handlers", () => {
     await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(1));
     await waitFor(() => expect(SignIn).toBeCalledTimes(0));
     const call1 = ErrorDialogue.mock.calls[0][0];
-    propCount(call1, 4);
+    propCount(call1, 5);
 
     expect(call1.eventError).toBe(AnalyticsActions.LoginError);
     expect(call1.clearError).toBeInstanceOf(Function);
-    expect(call1.message).toBe(currentTest.errorMessage);
+    expect(call1.string).toBe(currentTest.errorMessage);
+    expect(call1.stringsRoot).toBe(Strings.SignIn);
     expect(call1.redirect).toBe(Routes.root);
     done();
   });

@@ -12,6 +12,7 @@ import {
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 
 import Routes from "../../configuration/routes";
+import Strings from "../../configuration/strings";
 
 const SignInContainer = () => {
   const { user, dispatch } = React.useContext(UserContext);
@@ -42,7 +43,8 @@ const SignInContainer = () => {
         <ErrorDialogue
           eventError={AnalyticsActions.LoginError}
           clearError={clearLogin}
-          message={user.errorMessage}
+          stringsRoot={Strings.SignIn}
+          string={user.errorMessage}
           redirect={Routes.root}
         />
       ) : (

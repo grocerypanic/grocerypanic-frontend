@@ -32,10 +32,10 @@ describe("Check the correct props are passed to the menu", () => {
     const props = Menu.mock.calls[0][0];
     propCount(props, 4);
 
-    expect(props.title).toBe(Strings.MainMenuPageTitle);
-    expect(props.headerTitle).toBe(Strings.MainMenuPageHeaderTitle);
+    expect(props.title).toBe(Strings.MainMenu.Title);
+    expect(props.headerTitle).toBe(Strings.MainMenu.HeaderTitle);
     expect(props.options).toBe(Options);
-    expect(props.helpText).toBe(Strings.MainMenuHelpText);
+    expect(props.helpText).toBe(Strings.MainMenu.HelpText);
 
     expect(mockDispatch).toBeCalledTimes(0);
     done();

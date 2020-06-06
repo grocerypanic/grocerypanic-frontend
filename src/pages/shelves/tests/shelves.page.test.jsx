@@ -45,11 +45,12 @@ describe("Check the correct props are passed to simple list", () => {
     const props = SimpleList.mock.calls[0][0];
     propCount(props, 6);
 
-    expect(props.title).toBe(Strings.ShelfPageTitle);
-    expect(props.headerTitle).toBe(Strings.ShelfPageHeaderTitle);
+    expect(props.title).toBe(Strings.ShelfPage.Title);
+    expect(props.headerTitle).toBe(Strings.ShelfPage.HeaderTitle);
     expect(props.ApiObjectContext).toBe(ShelfContext);
     expect(props.handleExpiredAuth).toBeInstanceOf(Function);
-    expect(props.helpText).toBe(Strings.ShelfHelpText);
+    expect(props.helpText).toBe(Strings.ShelfPage.HelpText);
+    expect(props.placeHolderMessage).toBe(Strings.ShelfPage.PlaceHolderMessage);
 
     expect(mockDispatch).toBeCalledTimes(0);
     done();

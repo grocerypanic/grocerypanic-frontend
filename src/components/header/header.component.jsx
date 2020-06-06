@@ -93,4 +93,7 @@ Header.propTypes = {
   create: PropTypes.func,
   title: PropTypes.string.isRequired,
   transaction: PropTypes.bool.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };

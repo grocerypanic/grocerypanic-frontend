@@ -10,7 +10,13 @@ import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 
 import Strings from "../../configuration/strings";
 
-const ErrorDialogue = ({ clearError, eventMessage, message, redirect }) => {
+const ErrorDialogue = ({
+  clearError,
+  eventMessage,
+  stringsRoot,
+  string,
+  redirect,
+}) => {
   const { t } = useTranslation();
   const { event } = React.useContext(AnalyticsContext);
 
@@ -28,10 +34,10 @@ const ErrorDialogue = ({ clearError, eventMessage, message, redirect }) => {
         <ErrorBox>
           <WarningOutlinedIcon />
         </ErrorBox>
-        <h1>{t(Strings.ErrorDialogueTitle)}</h1>
+        <h1>{t(Strings.ErrorDialogue.ErrorDialogueTitle)}</h1>
         <NotePad>
           <Page className="alert alert-danger">
-            {t(Strings[message])
+            {t(stringsRoot[string])
               .split("\n")
               .map((item, index) => {
                 return <Centered key={index}>{item}</Centered>;
@@ -43,7 +49,7 @@ const ErrorDialogue = ({ clearError, eventMessage, message, redirect }) => {
           onClick={handleClick}
           className="btn btn-success"
         >
-          {t(Strings.ErrorDialogueConfirm)}
+          {t(Strings.ErrorDialogue.ErrorDialogueConfirm)}
         </OK>
       </Paper>
     </Container>
@@ -55,6 +61,7 @@ export default ErrorDialogue;
 ErrorDialogue.propTypes = {
   clearError: PropTypes.func.isRequired,
   eventMessage: PropTypes.object,
-  message: PropTypes.string.isRequired,
+  stringsRoot: PropTypes.object.isRequired,
+  string: PropTypes.string.isRequired,
   redirect: PropTypes.string.isRequired,
 };

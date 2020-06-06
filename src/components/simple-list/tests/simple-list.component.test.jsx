@@ -100,7 +100,7 @@ describe("Setup Environment", () => {
           ApiObjectContext={ApiContext}
           placeHolderMessage={mockPlaceHolderMessage}
           handleExpiredAuth={mockHandleExpiredAuth}
-          helpText={Strings.GenericTranslationTestString}
+          helpText={Strings.Testing.GenericTranslationTestString}
         />
         }}
       </ApiProvider>
@@ -146,7 +146,9 @@ describe("Setup Environment", () => {
 
     const helpCall = Help.mock.calls[0][0];
     propCount(helpCall, 1);
-    expect(helpCall.children).toBe(Strings.GenericTranslationTestString);
+    expect(helpCall.children).toBe(
+      Strings.Testing.GenericTranslationTestString
+    );
   });
 
   it("renders, outside of a transaction should call the simple list component(s) with the correct params", () => {

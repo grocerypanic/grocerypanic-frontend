@@ -42,7 +42,7 @@ describe("Check the correct props are passed to simple list", () => {
 
   afterEach(cleanup);
 
-  it("should render the root page correctly", async (done) => {
+  it.skip("should render the root page correctly", async (done) => {
     await waitFor(() => expect(ItemDetails).toBeCalledTimes(1));
     const props = ItemDetails.mock.calls[0][0];
     propCount(props, 0);
@@ -50,7 +50,7 @@ describe("Check the correct props are passed to simple list", () => {
     done();
   });
 
-  it("should handle an expired auth as expected", async (done) => {
+  it.skip("should handle an expired auth as expected", async (done) => {
     await waitFor(() => expect(ItemDetails).toBeCalledTimes(1));
     const props = ItemDetails.mock.calls[0][0];
     const handleExpiredAuth = props.handleExpiredAuth;

@@ -62,7 +62,7 @@ describe("Check Routing", () => {
   afterEach(cleanup);
 
   it("should render the menu root page on a non matching url", async (done) => {
-    expect(utils.getByText(Strings.Suspense)).toBeTruthy();
+    expect(utils.getByText(Strings.App.Suspense)).toBeTruthy();
     await waitFor(() => expect(SignIn).toBeCalledTimes(0));
     await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
     await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -73,7 +73,7 @@ describe("Check Routing", () => {
   });
 
   it("should render signin on root url, with login set to false", async (done) => {
-    expect(utils.getByText(Strings.Suspense)).toBeTruthy();
+    expect(utils.getByText(Strings.App.Suspense)).toBeTruthy();
     await waitFor(() => expect(SignIn).toBeCalledTimes(1));
     await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
     await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -84,7 +84,7 @@ describe("Check Routing", () => {
   });
 
   it("should render shelf on shelf url, with login set to true", async (done) => {
-    expect(utils.getByText(Strings.Suspense)).toBeTruthy();
+    expect(utils.getByText(Strings.App.Suspense)).toBeTruthy();
     await waitFor(() => expect(ShelvesPage).toBeCalledTimes(1));
     await waitFor(() => expect(SignIn).toBeCalledTimes(0));
     await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -95,7 +95,7 @@ describe("Check Routing", () => {
   });
 
   it("should render stores on stores url, with login set to true", async (done) => {
-    expect(utils.getByText(Strings.Suspense)).toBeTruthy();
+    expect(utils.getByText(Strings.App.Suspense)).toBeTruthy();
     await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
     await waitFor(() => expect(SignIn).toBeCalledTimes(0));
     await waitFor(() => expect(StoresPage).toBeCalledTimes(1));
@@ -106,7 +106,7 @@ describe("Check Routing", () => {
   });
 
   it("should render items on items url, with login set to true", async (done) => {
-    expect(utils.getByText(Strings.Suspense)).toBeTruthy();
+    expect(utils.getByText(Strings.App.Suspense)).toBeTruthy();
     await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
     await waitFor(() => expect(SignIn).toBeCalledTimes(0));
     await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -117,7 +117,7 @@ describe("Check Routing", () => {
   });
 
   it("should render details on items details url, with login set to true", async (done) => {
-    expect(utils.getByText(Strings.Suspense)).toBeTruthy();
+    expect(utils.getByText(Strings.App.Suspense)).toBeTruthy();
     await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
     await waitFor(() => expect(SignIn).toBeCalledTimes(0));
     await waitFor(() => expect(StoresPage).toBeCalledTimes(0));

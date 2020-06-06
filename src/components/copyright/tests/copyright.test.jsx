@@ -30,8 +30,8 @@ describe("Setup Environment", () => {
     const node = utils.getByTestId("CopyRight");
     expect(node).toBeTruthy();
     const [declaration, link, space, yearEnding] = Array.from(node.childNodes);
-    expect(declaration.textContent).toBe(Strings.CopyrightDeclaration);
-    expect(link.textContent).toBe(`${Strings.CopyrightMessage}`);
+    expect(declaration.textContent).toBe(Strings.Copyight.CopyrightDeclaration);
+    expect(link.textContent).toBe(`${Strings.Copyight.CopyrightMessage}`);
     expect(link.getAttribute("href")).toEqual(Routes.root);
     expect(space.textContent).toBe(`${Assets.nonBreakingSpace}`);
     expect(yearEnding.textContent).toBe(`${year}.`);
