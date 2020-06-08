@@ -1,6 +1,5 @@
 import React from "react";
 
-import StopIcon from "@material-ui/icons/Stop";
 import AddIcon from "@material-ui/icons/Add";
 import HomeIcon from "@material-ui/icons/Home";
 import StoreIcon from "@material-ui/icons/Store";
@@ -67,19 +66,25 @@ const Header = ({ history, title, create, transaction }) => {
       <Nav>
         {create ? (
           <Nav.Item className="nav-link" onClick={create}>
-            <IconContainer>
+            <IconContainer data-testid="AddIcon">
               {transaction ? (
                 <Spinner size="sm" animation="border" />
               ) : (
-                <AddIcon className="AddIcon" />
+                <AddIcon />
               )}
             </IconContainer>
           </Nav.Item>
         ) : (
           <Nav.Item className="nav-link">
-            <OffIconContainer>
-              <StopIcon />
-            </OffIconContainer>
+            {transaction ? (
+              <IconContainer>
+                <Spinner size="sm" animation="border" />
+              </IconContainer>
+            ) : (
+              <OffIconContainer data-testid="noAddIcon">
+                <AddIcon />
+              </OffIconContainer>
+            )}
           </Nav.Item>
         )}
       </Nav>

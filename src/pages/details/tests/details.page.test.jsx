@@ -5,7 +5,7 @@ import { MemoryRouter, Route } from "react-router-dom";
 
 import ItemDetailsPage from "../details.page";
 
-import ItemDetails from "../../../components/item-details/item-details.component";
+import ItemDetailsContainer from "../../../components/item-details-form/item-details.container";
 
 import { ItemContext } from "../../../providers/api/item/item.provider";
 
@@ -16,8 +16,8 @@ import UserActions from "../../../providers/user/user.actions";
 import Strings from "../../../configuration/strings";
 import Routes from "../../../configuration/routes";
 
-jest.mock("../../../components/item-details/item-details.component");
-ItemDetails.mockImplementation(() => <div>MockDetails</div>);
+jest.mock("../../../components/item-details-form/item-details.container");
+ItemDetailsContainer.mockImplementation(() => <div>MockDetails</div>);
 
 const mockDispatch = jest.fn();
 const ItemId = "1";
@@ -45,8 +45,8 @@ describe("Check the correct props are passed to simple list", () => {
   afterEach(cleanup);
 
   it("should render the details page correctly", async (done) => {
-    await waitFor(() => expect(ItemDetails).toBeCalledTimes(1));
-    const props = ItemDetails.mock.calls[0][0];
+    await waitFor(() => expect(ItemDetailsContainer).toBeCalledTimes(1));
+    const props = ItemDetailsContainer.mock.calls[0][0];
     propCount(props, 6);
 
     expect(props.itemId).toBe(ItemId);
@@ -60,8 +60,8 @@ describe("Check the correct props are passed to simple list", () => {
   });
 
   it("should handle an expired auth as expected", async (done) => {
-    await waitFor(() => expect(ItemDetails).toBeCalledTimes(1));
-    const props = ItemDetails.mock.calls[0][0];
+    await waitFor(() => expect(ItemDetailsContainer).toBeCalledTimes(1));
+    const props = ItemDetailsContainer.mock.calls[0][0];
     const handleExpiredAuth = props.handleExpiredAuth;
 
     act(() => handleExpiredAuth());

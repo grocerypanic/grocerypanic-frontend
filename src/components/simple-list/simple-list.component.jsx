@@ -11,6 +11,10 @@ import ApiFuctions from "../../providers/api/api.functions";
 import { Paper, Container } from "../../global-styles/containers";
 import { ListBox, Banner, PlaceHolderListItem } from "./simple-list.styles";
 
+const preventContext = (e) => {
+  e.preventDefault();
+};
+
 const SimpleList = ({
   headerTitle,
   title,
@@ -26,6 +30,13 @@ const SimpleList = ({
   const [longPress, setLongPress] = React.useState(false);
 
   const [performAsync, setPerformAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
+
+  React.useEffect(() => {
+    window.addEventListener("contextmenu", preventContext);
+    return () => {
+      window.removeEventListener("contextmenu", preventContext);
+    };
+  }, []);
 
   React.useEffect(() => {
     if (!performAsync) return;

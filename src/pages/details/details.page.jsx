@@ -5,7 +5,7 @@ import { ItemContext } from "../../providers/api/item/item.provider";
 import { UserContext } from "../../providers/user/user.provider";
 import { authExpired } from "../../providers/user/user.async";
 
-import ItemDetails from "../../components/item-details/item-details.component";
+import ItemDetailsContainer from "../../components/item-details-form/item-details.container";
 
 import { useTranslation } from "react-i18next";
 import Strings from "../../configuration/strings";
@@ -27,7 +27,7 @@ const ItemDetailsPage = ({ match }) => {
   };
 
   return (
-    <ItemDetails
+    <ItemDetailsContainer
       itemId={match.params.id}
       title={t(Strings.ItemDetails.Title)}
       headerTitle={t(Strings.ItemDetails.HeaderTitle)}

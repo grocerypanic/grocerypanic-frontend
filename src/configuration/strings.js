@@ -34,7 +34,20 @@ export const Strings = {
     ItemDetails: {
       Title: "Item Details",
       HeaderTitle: "Details",
-      HelpText: "Fill out the values, click the save button to finalize.",
+      HelpText:
+        "Fill out the values, click the save button to finalize.\nDon't modify quantity here.",
+      NameLabel: "Name",
+      QuantityLabel: "Qty",
+      PriceLabel: "Price",
+      StoresLabel: "Stores",
+      SaveButton: "Save",
+      MultiSelectHelp: "",
+      ShelvesDetail: "Where do you keep this at home?",
+      ShelfLifeDetail: "How long does this item typically keep?",
+      PerferredLocationDetails: "Where do you prefer to buy this?",
+      ErrorUnselectedStore: "Choose a preferred stored.",
+      ErrorInvalidShelf: "Choose a storage shelf.",
+      ErrorInvalidShelfLife: "Choose a valid shelf life.",
     },
     SimpleList: {
       ValidationAlreadyExists: "This already exists",

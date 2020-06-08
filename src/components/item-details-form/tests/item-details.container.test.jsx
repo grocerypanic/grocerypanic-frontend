@@ -2,9 +2,8 @@ import React from "react";
 import { render, cleanup, waitFor } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
-import ItemDetails from "../item-details.component";
-import Header from "../../header/header.component";
-import Help from "../../simple-list-help/simple-list-help.component";
+import ItemDetails from "../item-details.form";
+import ItemDetailsContainer from "../item-details.container";
 
 import { ItemContext } from "../../../providers/api/item/item.provider";
 import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
@@ -18,30 +17,51 @@ import ApiFunctions from "../../../providers/api/api.functions";
 
 import Strings from "../../../configuration/strings";
 
-jest.mock("../../header/header.component");
-jest.mock("../../simple-list-help/simple-list-help.component");
+jest.mock("../item-details.form");
 
-Header.mockImplementation(() => <div>MockHeader</div>);
-Help.mockImplementation(() => <div>MockHelp</div>);
+ItemDetails.mockImplementation(() => <div>MockDetails</div>);
 
 const mockItemDispatch = jest.fn();
 const mockStoreDispatch = jest.fn();
 const mockShelfDispatch = jest.fn();
 const mockHandleExpiredAuth = jest.fn();
 
+const mockItem = {
+  expired: 0,
+  id: 1,
+  name: "Vegan Cheese",
+  next_expiry_date: "2020-06-15",
+  next_expiry_quantity: 0,
+  preferred_stores: [1],
+  price: "4.00",
+  quantity: 1,
+  shelf: 2,
+  shelf_life: 25,
+};
+
+const mockShelf = {
+  id: 1,
+  name: "Fridge",
+};
+
+const mockStore = {
+  id: 1,
+  name: "No Frills",
+};
+
 const mockItemsProvider = {
   dispatch: mockItemDispatch,
-  apiObject: { ...InitialValue },
+  apiObject: { ...InitialValue, inventory: [mockItem] },
 };
 
 const mockStoreProvider = {
   dispatch: mockStoreDispatch,
-  apiObject: { ...StoreInitialValue },
+  apiObject: { ...StoreInitialValue, inventory: [mockStore] },
 };
 
 const mockShelfProvider = {
   dispatch: mockShelfDispatch,
-  apiObject: { ...ShelfInitialValue },
+  apiObject: { ...ShelfInitialValue, inventory: [mockShelf] },
 };
 
 const props = {
@@ -74,31 +94,15 @@ describe("Setup Environment", () => {
             value={{ ...mockShelfProvider, transaction: false }}
           >
             <ItemContext.Provider
-              value={{ ...mockItemsProvider, transaction: false }}
+              value={{
+                ...mockItemsProvider,
+                transaction: false,
+              }}
             >
-              <ItemDetails {...current} />
+              <ItemDetailsContainer {...current} />
             </ItemContext.Provider>
           </ShelfContext.Provider>
         </StoreContext.Provider>
-      );
-    });
-
-    it("renders, outside of a transaction should call header with the correct params", () => {
-      expect(Header).toHaveBeenCalledTimes(3); // Three Renders for 3 Contexts
-
-      const headerCall = Header.mock.calls[0][0];
-      propCount(headerCall, 2);
-      expect(headerCall.title).toBe(props.headerTitle);
-      expect(headerCall.transaction).toBe(false);
-    });
-
-    it("renders, outside of a transaction should call help with the correct params", () => {
-      expect(Help).toHaveBeenCalledTimes(3); // Three Renders for 3 Contexts
-
-      const helpCall = Help.mock.calls[0][0];
-      propCount(helpCall, 1);
-      expect(helpCall.children).toBe(
-        Strings.Testing.GenericTranslationTestString
       );
     });
 
@@ -130,6 +134,36 @@ describe("Setup Environment", () => {
       expect(call.type).toBe(ApiActions.StartList);
       expect(call.func).toBe(ApiFunctions.asyncList);
       expect(call.dispatch).toBeInstanceOf(Function);
+      done();
+    });
+
+    it("renders ItemDetails with correct props", async (done) => {
+      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(2));
+      const call = ItemDetails.mock.calls[1][0];
+      propCount(call, 8);
+      expect(call.item).toBe(mockItem);
+      expect(call.headerTitle).toBe(props.headerTitle);
+      expect(call.title).toBe(props.title);
+      expect(call.helpText).toBe(props.helpText);
+      expect(call.transaction).toBe(false);
+      expect(call.stores).toStrictEqual([mockStore]);
+      expect(call.shelves).toStrictEqual([mockShelf]);
+      expect(call.handleSave).toBeInstanceOf(Function);
+      done();
+    });
+
+    it("handles a call to handleSave as expected", async (done) => {
+      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(2));
+
+      const mockObject = {};
+
+      const handleSave = ItemDetails.mock.calls[1][0].handleSave;
+      expect(handleSave).toBeInstanceOf(Function);
+      handleSave(mockObject);
+
+      // Test Implementation of Save
+      expect(true).toBe(false);
+
       done();
     });
   });

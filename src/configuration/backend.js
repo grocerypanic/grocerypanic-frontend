@@ -6,6 +6,13 @@ export const Constants = {
   genericAPIError: "API Error",
   csrfErrorMessage: "Refresh csrf and try again.",
   alreadyRegistered: "User is already registered with this e-mail address.",
+  minimumQuanity: 0,
+  maximumQuantity: 10000,
+  minimumShelfLife: 1,
+  maximumShelfLife: 365 * 3,
+  defaultShelfLife: 7,
+  minimumPrice: 0,
+  maximumPrice: 9999,
 };
 
 export const Providers = {
@@ -21,3 +28,20 @@ export const Paths = {
   manageItems: "/api/v1/item/",
   refreshCSRF: "/api/v1/auth/csrf/",
 };
+
+const month = 30;
+const year = 365;
+
+export const ShelfLifeConstants = [
+  { name: "3 Days", id: 3 },
+  { name: "1 Week", id: 7 },
+  { name: "2 Weeks", id: 14 },
+  { name: "3 Weeks", id: 21 },
+  { name: "1 Month", id: month },
+  { name: "2 Months", id: month * 2 },
+  { name: "3 Months", id: month * 3 },
+  { name: "6 Months", id: month * 6 },
+  { name: "1 Year", id: year },
+  { name: "2 Years", id: year * 2 },
+  { name: "3 Years", id: year * 3 },
+];

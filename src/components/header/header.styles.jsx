@@ -15,6 +15,8 @@ const container = css`
 export const NavContainer = styled(Navbar)`
   background-color: ${primary};
   height: 50px;
+  padding: 2px;
+  padding-left: 10px;
 `;
 
 export const OffIconContainer = styled.div`
