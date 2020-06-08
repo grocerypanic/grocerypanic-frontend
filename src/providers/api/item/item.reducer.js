@@ -9,7 +9,9 @@ const itemReducer = (state, action) => {
   switch (action.type) {
     case ApiActions.StartAdd:
     case ApiActions.StartDel:
+    case ApiActions.StartGet:
     case ApiActions.StartList:
+    case ApiActions.StartUpdate:
       // Triggers API Function, starts transaction
       const newState = {
         ...state,

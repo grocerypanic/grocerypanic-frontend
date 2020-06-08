@@ -31,6 +31,11 @@ export const Strings = {
       HeaderTitle: "Panic: Main Menu",
       HelpText: "Make a selection to proceed.",
     },
+    ItemDetails: {
+      Title: "Item Details",
+      HeaderTitle: "Details",
+      HelpText: "Fill out the values, click the save button to finalize.",
+    },
     SimpleList: {
       ValidationAlreadyExists: "This already exists",
       ValidationFailure: "Enter a valid name",

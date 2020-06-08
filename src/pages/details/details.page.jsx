@@ -1,15 +1,16 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 
-// import ItemDetails from "../../components/item-details/item-details.component";
-
-import { StoreContext } from "../../providers/api/store/store.provider";
+import { ItemContext } from "../../providers/api/item/item.provider";
 import { UserContext } from "../../providers/user/user.provider";
 import { authExpired } from "../../providers/user/user.async";
+
+import ItemDetails from "../../components/item-details/item-details.component";
 
 import { useTranslation } from "react-i18next";
 import Strings from "../../configuration/strings";
 
-const ItemDetailsPage = ({ id }) => {
+const ItemDetailsPage = ({ match }) => {
   const { t } = useTranslation();
   const { dispatch } = React.useContext(UserContext);
 
@@ -25,7 +26,16 @@ const ItemDetailsPage = ({ id }) => {
     authExpired(setPerformAsync);
   };
 
-  return <div>ItemDetails</div>;
+  return (
+    <ItemDetails
+      itemId={match.params.id}
+      title={t(Strings.ItemDetails.Title)}
+      headerTitle={t(Strings.ItemDetails.HeaderTitle)}
+      ApiObjectContext={ItemContext}
+      handleExpiredAuth={handleExpiredAuth}
+      helpText={t(Strings.ItemDetails.HelpText)}
+    />
+  );
 };
 
-export default ItemDetailsPage;
+export default withRouter(ItemDetailsPage);

@@ -2,7 +2,13 @@ import { waitFor } from "@testing-library/react";
 import ItemReducer from "../item.reducer";
 import ApiActions from "../../api.actions";
 import ApiFunctions from "../../api.functions";
-import { asyncAdd, asyncDel, asyncList } from "../item.async";
+import {
+  asyncAdd,
+  asyncDel,
+  asyncGet,
+  asyncList,
+  asyncUpdate,
+} from "../item.async";
 
 import InitialState from "../item.initial";
 
@@ -60,6 +66,54 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     expect(received).toEqual(ExpectedState);
     await waitFor(() => expect(asyncDel).toHaveBeenCalledTimes(1));
     expect(asyncDel.mock.calls[0]).toEqual([
+      {
+        state: ExpectedState,
+        action,
+      },
+    ]);
+    done();
+  });
+
+  it("handles StartGet correctly", async (done) => {
+    const ExpectedState = {
+      ...InitialState,
+      transaction: true,
+    };
+    const mockPayload = { mock: "data" };
+    const action = {
+      type: ApiActions.StartGet,
+      func: ApiFunctions.asyncGet,
+      payload: mockPayload,
+    };
+    const received = ItemReducer(InitialState, action);
+    expect(received).toEqual(ExpectedState);
+
+    await waitFor(() => expect(asyncAdd).toHaveBeenCalledTimes(1));
+    expect(asyncGet.mock.calls[0]).toEqual([
+      {
+        state: ExpectedState,
+        action,
+      },
+    ]);
+    done();
+  });
+
+  it("handles StartUpdate correctly", async (done) => {
+    const ExpectedState = {
+      ...InitialState,
+      transaction: true,
+    };
+    const mockPayload = { mock: "data" };
+    const action = {
+      type: ApiActions.StartUpdate,
+      func: ApiFunctions.asyncUpdate,
+      payload: mockPayload,
+    };
+    const received = ItemReducer(InitialState, action);
+    expect(received).toEqual(ExpectedState);
+
+    await waitFor(() => expect(asyncAdd).toHaveBeenCalledTimes(1));
+    expect(asyncUpdate.mock.calls[0]).toEqual([
       {
         state: ExpectedState,
         action,
@@ -130,6 +184,25 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     expect(received.transaction).toBe(false);
   });
 
+  it("handles SuccessGet correctly", () => {
+    const payload = {
+      inventory: [
+        {
+          id: 0,
+          name: "MyTestItem",
+        },
+      ],
+    };
+    const received = ItemReducer(InitialState, {
+      type: ApiActions.SuccessGet,
+      payload,
+    });
+    expect(received.errorMessage).toBeNull();
+    expect(received.inventory).toEqual(payload.inventory);
+    expect(received.error).toBe(false);
+    expect(received.transaction).toBe(false);
+  });
+
   it("handles SuccessList correctly", () => {
     const payload = {
       inventory: [
@@ -141,6 +214,25 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     };
     const received = ItemReducer(InitialState, {
       type: ApiActions.SuccessList,
+      payload,
+    });
+    expect(received.errorMessage).toBeNull();
+    expect(received.inventory).toEqual(payload.inventory);
+    expect(received.error).toBe(false);
+    expect(received.transaction).toBe(false);
+  });
+
+  it("handles SuccessUpdate correctly", () => {
+    const payload = {
+      inventory: [
+        {
+          id: 0,
+          name: "MyTestItem",
+        },
+      ],
+    };
+    const received = ItemReducer(InitialState, {
+      type: ApiActions.SuccessUpdate,
       payload,
     });
     expect(received.errorMessage).toBeNull();
@@ -177,6 +269,25 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     expect(received.transaction).toBe(false);
   });
 
+  it("handles FailureGet correctly", () => {
+    const payload = {
+      inventory: [
+        {
+          id: 0,
+          name: "MyTestItem",
+        },
+      ],
+    };
+    const received = ItemReducer(InitialState, {
+      type: ApiActions.FailureGet,
+      payload,
+    });
+    expect(received.errorMessage).toBeNull();
+    expect(received.inventory).toEqual(payload.inventory);
+    expect(received.error).toBe(true);
+    expect(received.transaction).toBe(false);
+  });
+
   it("handles FailureList correctly", () => {
     const payload = {
       errorMessage: "Could Not Add The Item.",
@@ -187,6 +298,25 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     });
     expect(received.errorMessage).toBe("Could Not Add The Item.");
     expect(received.inventory).toEqual([]);
+    expect(received.error).toBe(true);
+    expect(received.transaction).toBe(false);
+  });
+
+  it("handles FailureUpdate correctly", () => {
+    const payload = {
+      inventory: [
+        {
+          id: 0,
+          name: "MyTestItem",
+        },
+      ],
+    };
+    const received = ItemReducer(InitialState, {
+      type: ApiActions.FailureUpdate,
+      payload,
+    });
+    expect(received.errorMessage).toBeNull();
+    expect(received.inventory).toEqual(payload.inventory);
     expect(received.error).toBe(true);
     expect(received.transaction).toBe(false);
   });

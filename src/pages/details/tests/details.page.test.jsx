@@ -1,56 +1,65 @@
 import React from "react";
 import { render, cleanup, waitFor, act } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
+import { MemoryRouter, Route } from "react-router-dom";
 
 import ItemDetailsPage from "../details.page";
 
-//import SimpleList from "../../../components/simple-list/simple-list.component";
+import ItemDetails from "../../../components/item-details/item-details.component";
 
-import { StoreContext } from "../../../providers/api/store/store.provider";
+import { ItemContext } from "../../../providers/api/item/item.provider";
 
 import { UserContext } from "../../../providers/user/user.provider";
 import initialState from "../../../providers/user/user.initial";
 import UserActions from "../../../providers/user/user.actions";
 
 import Strings from "../../../configuration/strings";
+import Routes from "../../../configuration/routes";
 
-// jest.mock("../../../components/simple-list/simple-list.component");
-const ItemDetails = jest.fn();
-ItemDetails.mockImplementation(() => <div>MockList</div>);
+jest.mock("../../../components/item-details/item-details.component");
+ItemDetails.mockImplementation(() => <div>MockDetails</div>);
 
 const mockDispatch = jest.fn();
+const ItemId = "1";
 
 describe("Check the correct props are passed to simple list", () => {
-  let tests = [1];
   let utils;
-  let currentTest;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    const match = { params: { id: ItemId } };
 
-    currentTest = tests.shift();
     utils = render(
       <UserContext.Provider
         value={{ user: initialState, dispatch: mockDispatch }}
       >
-        <StoreContext.Provider>
-          <ItemDetailsPage />
-        </StoreContext.Provider>
+        <MemoryRouter initialEntries={[Routes.details.replace(":id", ItemId)]}>
+          <ItemContext.Provider>
+            <Route path={Routes.details} component={ItemDetailsPage} />
+          </ItemContext.Provider>
+        </MemoryRouter>
       </UserContext.Provider>
     );
   });
 
   afterEach(cleanup);
 
-  it.skip("should render the root page correctly", async (done) => {
+  it("should render the details page correctly", async (done) => {
     await waitFor(() => expect(ItemDetails).toBeCalledTimes(1));
     const props = ItemDetails.mock.calls[0][0];
-    propCount(props, 0);
+    propCount(props, 6);
+
+    expect(props.itemId).toBe(ItemId);
+    expect(props.title).toBe(Strings.ItemDetails.Title);
+    expect(props.headerTitle).toBe(Strings.ItemDetails.HeaderTitle);
+    expect(props.ApiObjectContext).toBe(ItemContext);
+    expect(props.handleExpiredAuth).toBeInstanceOf(Function);
+    expect(props.helpText).toBe(Strings.ItemDetails.HelpText);
 
     done();
   });
 
-  it.skip("should handle an expired auth as expected", async (done) => {
+  it("should handle an expired auth as expected", async (done) => {
     await waitFor(() => expect(ItemDetails).toBeCalledTimes(1));
     const props = ItemDetails.mock.calls[0][0];
     const handleExpiredAuth = props.handleExpiredAuth;
