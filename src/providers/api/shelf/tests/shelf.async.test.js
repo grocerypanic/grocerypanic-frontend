@@ -34,6 +34,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       };
       State2 = {
         ...State1,
+        inventory: [...State1.inventory],
       };
       State2.inventory.push(NewShelf);
 
@@ -54,11 +55,12 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
 
     it("should call the API, and then dispatch correctly when asyncDel is called", async (done) => {
       action = {
-        payload: { name: NewShelf, id: 20 },
+        payload: { id: 99, name: NewShelf },
         dispatch: mockDispatch,
       };
       State2 = {
         ...State1,
+        inventory: [...State1.inventory],
       };
       State2.inventory.push({ id: 99, name: NewShelf });
 
@@ -86,6 +88,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       };
       State2 = {
         ...State1,
+        inventory: [...State1.inventory],
       };
       State2.inventory.push(testShelf);
       Request.mockReturnValue([[testShelf], responseCode]);
@@ -120,6 +123,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       };
       State2 = {
         ...State1,
+        inventory: [...State1.inventory],
       };
       State2.inventory.push(NewShelf);
 
@@ -142,6 +146,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       };
       State2 = {
         ...State1,
+        inventory: [...State1.inventory],
       };
       State2.inventory.push({ id: 99, name: NewShelf });
 
@@ -166,6 +171,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       };
       State2 = {
         ...State1,
+        inventory: [...State1.inventory],
       };
       State2.inventory.push(testShelf);
       Request.mockReturnValue([[testShelf], responseCode]);
@@ -197,6 +203,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       };
       State2 = {
         ...State1,
+        inventory: [...State1.inventory],
       };
       State2.inventory.push(NewShelf);
 
@@ -219,6 +226,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       };
       State2 = {
         ...State1,
+        inventory: [...State1.inventory],
       };
       State2.inventory.push({ id: 99, name: NewShelf });
 
@@ -243,6 +251,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       };
       State2 = {
         ...State1,
+        inventory: [...State1.inventory],
       };
       State2.inventory.push(testShelf);
       Request.mockReturnValue([[testShelf], responseCode]);
