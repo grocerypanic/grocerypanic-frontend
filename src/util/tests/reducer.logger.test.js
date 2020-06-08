@@ -41,19 +41,22 @@ describe("Check Logging Functionality", () => {
     delete process.env.JEST_WORKER_ID;
     const state = {};
     const action = { type: "BogusAction2" };
-    const inlineObject = { action, state };
     reducer(state, action);
     expect(outputData).toEqual([
       [
-        "%c ** TestReducer BEFORE BogusAction2:\n",
+        "%c ** TestReducer BEFORE BogusAction2:",
         "color: blue; font-weight: bold;",
-        inlineObject,
+        undefined,
       ],
+      ["%c   State:", "color: green; font-weight: bold;", state],
+      ["%c   Action:", "color: green; font-weight: bold;", action],
       [
-        "%c ** TestReducer AFTER BogusAction2:\n",
+        "%c ** TestReducer AFTER BogusAction2:",
         "color: blue; font-weight: bold;",
-        inlineObject,
+        undefined,
       ],
+      ["%c   State:", "color: green; font-weight: bold;", state],
+      ["%c   Action:", "color: green; font-weight: bold;", action],
     ]);
   });
 });
