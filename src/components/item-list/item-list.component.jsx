@@ -1,35 +1,33 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
 import Header from "../header/header.component";
-import SimpleListItem from "../simple-list-item/simple-list-item.component";
+import ItemListRow from "../item-list-row/item-list-row.component";
 import Help from "../simple-list-help/simple-list-help.component";
 import Alert from "../alert/alert.component";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
 
-import { Paper, Container } from "../../global-styles/containers";
-import { ListBox, Banner, PlaceHolderListItem } from "./simple-list.styles";
-
 import preventContext from "../../util/preventDefault";
+import { calculateTitle } from "./item-list.util";
 
-const SimpleList = ({
+import { Paper, Container } from "../../global-styles/containers";
+import { ListBox, Banner, PlaceHolderListItem } from "./item-list.styles";
+
+const ItemList = ({
   headerTitle,
   title,
   ApiObjectContext,
   placeHolderMessage,
   handleExpiredAuth,
   helpText,
-  redirectTag,
+  history,
 }) => {
   const { apiObject, dispatch } = React.useContext(ApiObjectContext);
-  const [actionMsg, setActionMsg] = React.useState(null);
-  const [selected, setSelected] = React.useState(null);
-  const [created, setCreated] = React.useState(null);
   const [errorMsg, setErrorMsg] = React.useState(null);
-  const [longPress, setLongPress] = React.useState(false);
-
+  const [actionMsg, setActionMsg] = React.useState(null);
   const [performAsync, setPerformAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
 
   React.useEffect(() => {
@@ -47,57 +45,57 @@ const SimpleList = ({
   }, [performAsync]);
 
   React.useEffect(() => {
+    const filter = new URLSearchParams(window.location.search);
+
     dispatch({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
       dispatch: setPerformAsync,
+      filter: filter,
     });
   }, []);
 
   const handleCreate = () => {
-    if (apiObject.transaction) return;
-    setCreated({ id: -1, name: "" });
-    setSelected(-1);
+    console.log("PUSH TO CREATE PAGE");
   };
 
-  const handleSave = async (name) => {
+  const handleReStock = async (item, quantity) => {
     if (apiObject.transaction) return;
     setPerformAsync({
-      type: ApiActions.StartAdd,
-      func: ApiFuctions.asyncAdd,
+      type: ApiActions.StartUpdate,
+      func: ApiFuctions.asyncUpdate,
       dispatch: setPerformAsync,
-      payload: { name },
+      payload: {
+        ...item,
+        quantity: parseInt(item.quantity) + parseInt(quantity),
+      },
     });
-    setCreated(null);
   };
 
-  const handleDelete = (id) => {
+  const handleConsume = (item, quantity) => {
     if (apiObject.transaction) return;
     setPerformAsync({
-      type: ApiActions.StartDel,
-      func: ApiFuctions.asyncDel,
+      type: ApiActions.StartUpdate,
+      func: ApiFuctions.asyncUpdate,
       dispatch: setPerformAsync,
-      payload: { id },
+      payload: {
+        ...item,
+        quantity: parseInt(item.quantity) - parseInt(quantity),
+      },
     });
   };
 
   // Bundle Up Props For List Items
 
   const listFunctions = {
-    add: handleSave,
-    del: handleDelete,
-    setSelected,
+    restock: handleReStock,
+    consume: handleConsume,
     setErrorMsg,
-    setCreated,
-    setLongPress,
     setActionMsg,
   };
 
   const listValues = {
-    selected,
-    errorMsg,
     transaction: apiObject.transaction,
-    longPress,
   };
 
   return (
@@ -109,34 +107,26 @@ const SimpleList = ({
       />
       <Container>
         <Paper>
-          {errorMsg && created ? (
+          {errorMsg ? (
             <Banner className="alert alert-danger">{errorMsg}</Banner>
           ) : (
-            <Banner className="alert alert-success">{title}</Banner>
+            <Banner className="alert alert-success">
+              {calculateTitle(title)}
+            </Banner>
           )}
           <ListBox>
             {apiObject.inventory.map((item) => {
               return (
-                <SimpleListItem
+                <ItemListRow
                   item={item}
                   allItems={apiObject.inventory}
                   key={item.id}
                   listFunctions={listFunctions}
                   listValues={listValues}
-                  redirectTag={redirectTag}
                 />
               );
             })}
-            {created ? (
-              <SimpleListItem
-                item={created}
-                allItems={apiObject.inventory}
-                listFunctions={listFunctions}
-                listValues={listValues}
-                redirectTag={redirectTag}
-              />
-            ) : null}
-            {apiObject.inventory.length === 0 && !created ? (
+            {apiObject.inventory.length === 0 ? (
               <PlaceHolderListItem>{placeHolderMessage}</PlaceHolderListItem>
             ) : null}
           </ListBox>
@@ -148,14 +138,13 @@ const SimpleList = ({
   );
 };
 
-export default SimpleList;
+export default withRouter(ItemList);
 
-SimpleList.propTypes = {
+ItemList.propTypes = {
   headerTitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   ApiObjectContext: PropTypes.object.isRequired,
   placeHolderMessage: PropTypes.string.isRequired,
   handleExpiredAuth: PropTypes.func.isRequired,
   helpText: PropTypes.string.isRequired,
-  redirectTag: PropTypes.string.isRequired,
 };

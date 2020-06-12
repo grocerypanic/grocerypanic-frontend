@@ -20,6 +20,7 @@ const itemReducer = (state, action) => {
       };
       new Promise(function (resolve) {
         async[action.func]({ state: newState, action });
+        if (action.callback) action.callback(true);
       });
       return newState;
     case ApiActions.FailureAdd:

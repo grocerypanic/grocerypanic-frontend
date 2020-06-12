@@ -1,4 +1,6 @@
 export const SafeMethods = ["GET", "HEAD", "OPTIONS", "TRACE"];
+export const ItemFilters = ["preferred_stores", "shelf"];
+export const FilterTag = "filter_tag";
 
 export const Constants = {
   csrfLocalStorage: "csrf-token",

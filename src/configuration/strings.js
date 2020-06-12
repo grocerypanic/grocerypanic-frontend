@@ -1,3 +1,5 @@
+import assets from "./assets";
+
 export const Strings = {
   en: {
     SignIn: {
@@ -40,34 +42,54 @@ export const Strings = {
       QuantityLabel: "Qty",
       PriceLabel: "Price",
       StoresLabel: "Stores",
-      SaveButton: "Save",
+      SaveButton: `${assets.nonBreakingSpace}Save${assets.nonBreakingSpace}`,
+      DeleteButton: "Delete",
       MultiSelectHelp: "",
       ShelvesDetail: "Where do you keep this at home?",
       ShelfLifeDetail: "How long does this item typically keep?",
       PerferredLocationDetails: "Where do you prefer to buy this?",
       ErrorUnselectedStore: "Choose a preferred stored.",
-      ErrorInvalidShelf: "Choose a storage shelf.",
-      ErrorInvalidShelfLife: "Choose a valid shelf life.",
+    },
+    InventoryPage: {
+      Title: "Inventory (All)",
+      HeaderTitle: "Inventory",
+      HelpText:
+        "Click and hold the item's name for details.\nUse the create button (upper right) to add new items.\nIncrese or decrease quantity with the buttons.",
+      Save: "save",
+      Delete: "delete",
+      PlaceHolderMessage: "You have no items yet.",
+      ErrorInsufficientInventory: "You don't have that many.",
+      Quantity: {
+        Title: "Quantity",
+        Message: "This is how many items you have in stock.",
+      },
+      Expired: {
+        Title: "Expired",
+        Message:
+          "This is how many items you have in stock that may be expired.",
+      },
     },
     SimpleList: {
       ValidationAlreadyExists: "This already exists",
       ValidationFailure: "Enter a valid name",
-      Save: "save",
-      Delete: "delete",
+      SaveButton: "save",
+      DeleteButton: "delete",
+      CreatedAction: "Created",
+      DeletedAction: "Deleted",
     },
     ShelfPage: {
       Title: "Your Shelves",
       HeaderTitle: "Shelves",
       PlaceHolderMessage: "You Have No Shelves Yet.",
       HelpText:
-        "Click a shelf to select, click and hold to delete.\nUse the create button to add new shelves.",
+        "Click a shelf to select, click and hold to delete.\nUse the create button (upper right) to add new shelves.",
     },
     StorePage: {
       Title: "Your Stores",
       HeaderTitle: "Stores",
       PlaceHolderMessage: "You Have No Stores Yet.",
       HelpText:
-        "Click a store to select, click and hold to delete.\nUse the create button to add new stores.",
+        "Click a store to select, click and hold to delete.\nUse the create button (upper right) to add new stores.",
     },
     Testing: {
       GenericTranslationTestString: "GenericTranslationTestString",

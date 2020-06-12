@@ -4,9 +4,9 @@ import { propCount } from "../../../test.fixtures/objectComparison";
 
 import ItemPage from "../items.page";
 
-//import ItemList from "../../../components/simple-list/simple-list.component";
+import ItemList from "../../../components/item-list/item-list.component";
 
-import { StoreContext } from "../../../providers/api/store/store.provider";
+import { ItemContext } from "../../../providers/api/item/item.provider";
 
 import { UserContext } from "../../../providers/user/user.provider";
 import initialState from "../../../providers/user/user.initial";
@@ -14,8 +14,7 @@ import UserActions from "../../../providers/user/user.actions";
 
 import Strings from "../../../configuration/strings";
 
-// jest.mock("../../../components/simple-list/simple-list.component");
-const ItemList = jest.fn();
+jest.mock("../../../components/item-list/item-list.component");
 ItemList.mockImplementation(() => <div>MockList</div>);
 
 const mockDispatch = jest.fn();
@@ -33,24 +32,32 @@ describe("Check the correct props are passed to simple list", () => {
       <UserContext.Provider
         value={{ user: initialState, dispatch: mockDispatch }}
       >
-        <StoreContext.Provider>
+        <ItemContext.Provider>
           <ItemPage />
-        </StoreContext.Provider>
+        </ItemContext.Provider>
       </UserContext.Provider>
     );
   });
 
   afterEach(cleanup);
 
-  it.skip("should render the root page correctly", async (done) => {
+  it("should render the root page correctly", async (done) => {
     await waitFor(() => expect(ItemList).toBeCalledTimes(1));
     const props = ItemList.mock.calls[0][0];
-    propCount(props, 0);
+    propCount(props, 6);
 
+    expect(props.title).toBe(Strings.InventoryPage.Title);
+    expect(props.headerTitle).toBe(Strings.InventoryPage.HeaderTitle);
+    expect(props.ApiObjectContext).toBe(ItemContext);
+    expect(props.handleExpiredAuth).toBeInstanceOf(Function);
+    expect(props.helpText).toBe(Strings.InventoryPage.HelpText);
+    expect(props.placeHolderMessage).toBe(
+      Strings.InventoryPage.PlaceHolderMessage
+    );
     done();
   });
 
-  it.skip("should handle an expired auth as expected", async (done) => {
+  it("should handle an expired auth as expected", async (done) => {
     await waitFor(() => expect(ItemList).toBeCalledTimes(1));
     const props = ItemList.mock.calls[0][0];
     const handleExpiredAuth = props.handleExpiredAuth;

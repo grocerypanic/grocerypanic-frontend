@@ -5,7 +5,8 @@ import { ItemContext } from "../../providers/api/item/item.provider";
 import { UserContext } from "../../providers/user/user.provider";
 import { authExpired } from "../../providers/user/user.async";
 
-import ItemDetailsContainer from "../../components/item-details-form/item-details.container";
+import ItemDetailsContainer from "../../components/item-details-form/item-details.edit.container";
+import ItemDetails from "../../components/item-details-form/item-details.form";
 
 import { useTranslation } from "react-i18next";
 import Strings from "../../configuration/strings";
@@ -34,6 +35,7 @@ const ItemDetailsPage = ({ match }) => {
       ApiObjectContext={ItemContext}
       handleExpiredAuth={handleExpiredAuth}
       helpText={t(Strings.ItemDetails.HelpText)}
+      FormComponent={ItemDetails}
     />
   );
 };

@@ -33,6 +33,7 @@ const ShelvesPage = () => {
       placeHolderMessage={t(Strings.ShelfPage.PlaceHolderMessage)}
       handleExpiredAuth={handleExpiredAuth}
       helpText={t(Strings.ShelfPage.HelpText)}
+      redirectTag={"shelf"}
     />
   );
 };

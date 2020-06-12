@@ -4,8 +4,8 @@ import { propCount } from "../../../test.fixtures/objectComparison";
 import { MemoryRouter, Route } from "react-router-dom";
 
 import ItemDetailsPage from "../details.page";
-
-import ItemDetailsContainer from "../../../components/item-details-form/item-details.container";
+import ItemDetailsContainer from "../../../components/item-details-form/item-details.edit.container";
+import ItemDetails from "../../../components/item-details-form/item-details.form";
 
 import { ItemContext } from "../../../providers/api/item/item.provider";
 
@@ -16,7 +16,7 @@ import UserActions from "../../../providers/user/user.actions";
 import Strings from "../../../configuration/strings";
 import Routes from "../../../configuration/routes";
 
-jest.mock("../../../components/item-details-form/item-details.container");
+jest.mock("../../../components/item-details-form/item-details.edit.container");
 ItemDetailsContainer.mockImplementation(() => <div>MockDetails</div>);
 
 const mockDispatch = jest.fn();
@@ -47,7 +47,7 @@ describe("Check the correct props are passed to simple list", () => {
   it("should render the details page correctly", async (done) => {
     await waitFor(() => expect(ItemDetailsContainer).toBeCalledTimes(1));
     const props = ItemDetailsContainer.mock.calls[0][0];
-    propCount(props, 6);
+    propCount(props, 7);
 
     expect(props.itemId).toBe(ItemId);
     expect(props.title).toBe(Strings.ItemDetails.Title);
@@ -55,6 +55,7 @@ describe("Check the correct props are passed to simple list", () => {
     expect(props.ApiObjectContext).toBe(ItemContext);
     expect(props.handleExpiredAuth).toBeInstanceOf(Function);
     expect(props.helpText).toBe(Strings.ItemDetails.HelpText);
+    expect(props.FormComponent).toBe(ItemDetails);
 
     done();
   });

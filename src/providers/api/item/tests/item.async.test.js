@@ -124,8 +124,9 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         ...State1,
         inventory: [...State1.inventory],
       };
-      State2.inventory.push(mockItem1);
+      // Enforces Sort Order
       State2.inventory.push(mockItem2);
+      State2.inventory.push(mockItem1);
 
       asyncList({ state: State2, action });
 

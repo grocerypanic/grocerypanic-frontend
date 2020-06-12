@@ -2,6 +2,7 @@ import { Paths } from "../../../configuration/backend";
 import match2xx from "../../../util/requests/status";
 import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
+import { apiResultCompare } from "../api.util.js";
 
 const authFailure = (dispatch) => {
   return new Promise(function (resolve) {
@@ -17,11 +18,12 @@ export const asyncAdd = async ({ state, action }) => {
   // Status Code is 2xx
   if (match2xx(status)) {
     return new Promise(function (resolve) {
-      state.inventory.push(response);
+      const newInventory = [...state.inventory];
+      newInventory.push(response);
       dispatch({
         type: ApiActions.SuccessAdd,
         payload: {
-          inventory: state.inventory,
+          inventory: [...newInventory].sort(apiResultCompare),
         },
       });
     });
@@ -44,9 +46,9 @@ export const asyncDel = async ({ state, action }) => {
       dispatch({
         type: ApiActions.SuccessDel,
         payload: {
-          inventory: state.inventory.filter(
-            (item) => item.id !== action.payload.id
-          ),
+          inventory: state.inventory
+            .filter((item) => item.id !== action.payload.id)
+            .sort(apiResultCompare),
         },
       });
     });
@@ -64,7 +66,7 @@ export const asyncList = async ({ state, action }) => {
     return new Promise(function (resolve) {
       dispatch({
         type: ApiActions.SuccessList,
-        payload: { inventory: response },
+        payload: { inventory: response.sort(apiResultCompare) },
       });
     });
   }

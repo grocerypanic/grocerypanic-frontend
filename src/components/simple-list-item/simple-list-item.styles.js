@@ -11,14 +11,17 @@ export const ListItem = styled.li`
   background: ${secondary};
   margin: 5px;
   padding: 5px;
-  color: ${(props) =>
-    props.selected === props.item.id ? selected : highlight};
+  color: ${highlight};
 
   min-width: 220px;
   cursor: pointer;
 
   div:last-child {
     margin-left: auto;
+  }
+
+  *:hover {
+    color: ${selected};
   }
 `;
 

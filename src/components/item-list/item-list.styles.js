@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { primary, secondary, tertiary } from "../../configuration/theme";
 
-export const Outline = styled.div`
+export const ListBox = styled.ul`
   list-style-type: none;
   list-style-position: outside;
   padding-left: 0px;
@@ -19,23 +19,16 @@ export const Banner = styled.div`
   text-align: center;
 `;
 
-export const FormBox = styled.div`
+export const PlaceHolderListItem = styled.li`
   display: flex;
   justify-content: center;
-  align-items: left;
-  flex-direction: column;
+  align-items: center;
 
   background: ${secondary};
   margin: 5px;
-  padding: 10px;
-  padding-top: 20px;
+  padding: 5px;
+  color: ${primary};
 
   min-width: 220px;
-  max-width: 350px;
-`;
-
-export const ButtonBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  cursor: pointer;
 `;

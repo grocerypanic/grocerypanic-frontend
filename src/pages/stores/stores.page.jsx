@@ -33,6 +33,7 @@ const StoresPage = () => {
       placeHolderMessage={t(Strings.StorePage.PlaceHolderMessage)}
       handleExpiredAuth={handleExpiredAuth}
       helpText={t(Strings.StorePage.HelpText)}
+      redirectTag={"preferred_stores"}
     />
   );
 };

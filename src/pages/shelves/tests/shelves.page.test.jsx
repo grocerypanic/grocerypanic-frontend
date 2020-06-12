@@ -43,7 +43,7 @@ describe("Check the correct props are passed to simple list", () => {
   it("should render the root page correctly", async (done) => {
     await waitFor(() => expect(SimpleList).toBeCalledTimes(1));
     const props = SimpleList.mock.calls[0][0];
-    propCount(props, 6);
+    propCount(props, 7);
 
     expect(props.title).toBe(Strings.ShelfPage.Title);
     expect(props.headerTitle).toBe(Strings.ShelfPage.HeaderTitle);
@@ -51,6 +51,7 @@ describe("Check the correct props are passed to simple list", () => {
     expect(props.handleExpiredAuth).toBeInstanceOf(Function);
     expect(props.helpText).toBe(Strings.ShelfPage.HelpText);
     expect(props.placeHolderMessage).toBe(Strings.ShelfPage.PlaceHolderMessage);
+    expect(props.redirectTag).toBe("shelf");
 
     expect(mockDispatch).toBeCalledTimes(0);
     done();

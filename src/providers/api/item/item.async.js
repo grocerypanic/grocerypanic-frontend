@@ -2,6 +2,9 @@ import { Paths } from "../../../configuration/backend";
 import match2xx from "../../../util/requests/status";
 import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
+import { apiResultCompare } from "../api.util.js";
+
+import { ItemFilters, FilterTag } from "../../../configuration/backend";
 
 const authFailure = (dispatch) => {
   return new Promise(function (resolve) {
@@ -22,7 +25,7 @@ export const asyncAdd = async ({ state, action }) => {
       dispatch({
         type: ApiActions.SuccessAdd,
         payload: {
-          inventory: [...newInventory],
+          inventory: [...newInventory].sort(apiResultCompare),
         },
       });
     });
@@ -45,9 +48,9 @@ export const asyncDel = async ({ state, action }) => {
       dispatch({
         type: ApiActions.SuccessDel,
         payload: {
-          inventory: state.inventory.filter(
-            (item) => item.id !== action.payload.id
-          ),
+          inventory: state.inventory
+            .filter((item) => item.id !== action.payload.id)
+            .sort(apiResultCompare),
         },
       });
     });
@@ -75,7 +78,7 @@ export const asyncGet = async ({ state, action }) => {
       dispatch({
         type: ApiActions.SuccessGet,
         payload: {
-          inventory: [...newInventory],
+          inventory: [...newInventory].sort(apiResultCompare),
         },
       });
     });
@@ -87,13 +90,28 @@ export const asyncGet = async ({ state, action }) => {
 };
 
 export const asyncList = async ({ state, action }) => {
-  const { dispatch } = action;
-  const [response, status] = await Request("GET", Paths.manageItems);
+  const { dispatch, filter } = action;
+  let filterPath = "";
+  let FilterNames = [...ItemFilters, FilterTag];
+  if (filter) {
+    for (const filterName of FilterNames) {
+      const filterValue = filter.get(filterName);
+      if (filterValue) {
+        if (filterPath === "") filterPath += "?";
+        if (filterPath !== "?") filterPath += "&";
+        filterPath += `${filterName}=${filterValue}`;
+      }
+    }
+  }
+  const [response, status] = await Request(
+    "GET",
+    Paths.manageItems + filterPath
+  );
   if (match2xx(status)) {
     return new Promise(function (resolve) {
       dispatch({
         type: ApiActions.SuccessList,
-        payload: { inventory: response },
+        payload: { inventory: response.sort(apiResultCompare) },
       });
     });
   }
@@ -121,7 +139,7 @@ export const asyncUpdate = async ({ state, action }) => {
       dispatch({
         type: ApiActions.SuccessUpdate,
         payload: {
-          inventory: [...newInventory],
+          inventory: [...newInventory].sort(apiResultCompare),
         },
       });
     });

@@ -1,16 +1,27 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 
 import Strings from "../../configuration/strings";
+import Routes from "../../configuration/routes";
+import { FilterTag } from "../../configuration/backend";
+import { ui } from "../../configuration/theme";
 import UseLongPress from "../../util/longpress";
 
 import { ListItem, ListTitle } from "./simple-list-item.styles";
 
-const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
+const SimpleListItem = ({
+  item,
+  allItems,
+  listFunctions,
+  listValues,
+  history,
+  redirectTag,
+}) => {
   const { t } = useTranslation();
   const fieldItem = React.createRef();
   const { event } = React.useContext(AnalyticsContext);
@@ -22,6 +33,7 @@ const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
     setErrorMsg,
     setCreated,
     setLongPress,
+    setActionMsg,
   } = listFunctions;
 
   const { selected, errorMsg, transaction, longPress } = listValues;
@@ -30,7 +42,11 @@ const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
     if (transaction) return;
     if (item.id !== selected) return;
     if (longPress) return;
-    console.log("NAVIGATE");
+    history.push(
+      `${Routes.items}?${FilterTag}=${encodeURIComponent(
+        item.name
+      )}&${redirectTag}=${item.id}`
+    );
   };
 
   const handleLongClick = (e) => {
@@ -65,12 +81,16 @@ const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
       setErrorMsg(t(Strings.SimpleList.ValidationAlreadyExists));
       return;
     }
+    setActionMsg(`${t(Strings.SimpleList.CreatedAction)} ${value}`);
     add(value);
+    return setTimeout(() => setActionMsg(null), ui.alertTimeout);
   };
 
   const handleDelete = (id) => {
     setSelected(null);
+    setActionMsg(`${t(Strings.SimpleList.DeletedAction)} ${item.name}`);
     del(item.id);
+    return setTimeout(() => setActionMsg(null), ui.alertTimeout);
   };
 
   if (item.id === -1) {
@@ -110,7 +130,7 @@ const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
                 className="btn btn-success"
                 style={{ height: "40px" }}
               >
-                {t(Strings.SimpleList.Save)}
+                {t(Strings.SimpleList.SaveButton)}
               </button>
             </div>
           ) : (
@@ -142,7 +162,7 @@ const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
             className="btn btn-danger"
             style={{ height: "40px" }}
           >
-            {t(Strings.SimpleList.Delete)}
+            {t(Strings.SimpleList.DeleteButton)}
           </button>
         ) : null}
       </div>
@@ -150,7 +170,7 @@ const SimpleListItem = ({ item, allItems, listFunctions, listValues }) => {
   );
 };
 
-export default SimpleListItem;
+export default withRouter(SimpleListItem);
 
 SimpleListItem.propTypes = {
   item: PropTypes.object.isRequired,
@@ -162,6 +182,7 @@ SimpleListItem.propTypes = {
     setErrorMsg: PropTypes.func.isRequired,
     setCreated: PropTypes.func.isRequired,
     setLongPress: PropTypes.func.isRequired,
+    setActionMsg: PropTypes.func.isRequired,
   }).isRequired,
   listValues: PropTypes.shape({
     selected: PropTypes.number,
@@ -169,4 +190,6 @@ SimpleListItem.propTypes = {
     transaction: PropTypes.bool.isRequired,
     longPress: PropTypes.bool.isRequired,
   }).isRequired,
+  redirectTag: PropTypes.string.isRequired,
+  history: PropTypes.object.isRequired,
 };

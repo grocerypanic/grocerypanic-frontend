@@ -3,7 +3,7 @@ import { render, cleanup, waitFor } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
 import ItemDetails from "../item-details.form";
-import ItemDetailsContainer from "../item-details.container";
+import ItemDetailsContainer from "../item-details.edit.container";
 
 import { ItemContext } from "../../../providers/api/item/item.provider";
 import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
@@ -70,6 +70,7 @@ const props = {
   headerTitle: "mockHeaderTitle",
   handleExpiredAuth: mockHandleExpiredAuth,
   helpText: Strings.Testing.GenericTranslationTestString,
+  FormComponent: ItemDetails,
 };
 
 describe("Setup Environment", () => {
@@ -140,7 +141,7 @@ describe("Setup Environment", () => {
     it("renders ItemDetails with correct props", async (done) => {
       await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(2));
       const call = ItemDetails.mock.calls[1][0];
-      propCount(call, 8);
+      propCount(call, 9);
       expect(call.item).toBe(mockItem);
       expect(call.headerTitle).toBe(props.headerTitle);
       expect(call.title).toBe(props.title);
@@ -149,6 +150,7 @@ describe("Setup Environment", () => {
       expect(call.stores).toStrictEqual([mockStore]);
       expect(call.shelves).toStrictEqual([mockShelf]);
       expect(call.handleSave).toBeInstanceOf(Function);
+      expect(call.handleDelete).toBeInstanceOf(Function);
       done();
     });
 
@@ -162,6 +164,21 @@ describe("Setup Environment", () => {
       handleSave(mockObject);
 
       // Test Implementation of Save
+      expect(true).toBe(false);
+
+      done();
+    });
+
+    it("handles a call to handleDelete as expected", async (done) => {
+      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(2));
+
+      const mockObject = {};
+
+      const handleDelete = ItemDetails.mock.calls[1][0].handleDelete;
+      expect(handleDelete).toBeInstanceOf(Function);
+      handleDelete(mockObject);
+
+      // Test Implementation of Delete
       expect(true).toBe(false);
 
       done();

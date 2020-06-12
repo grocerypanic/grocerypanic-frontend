@@ -33,6 +33,7 @@ const ItemDetails = ({
   stores,
   shelves,
   handleSave,
+  handleDelete,
 }) => {
   const { t } = useTranslation();
 
@@ -89,6 +90,10 @@ const ItemDetails = ({
       shelf: normalizeId(shelfState, shelves),
     };
     handleSave(newItem);
+  };
+
+  const handleDeleteButton = (e) => {
+    handleDelete(item);
   };
 
   return (
@@ -199,6 +204,14 @@ const ItemDetails = ({
                 </Form.Group>
                 <ButtonBox>
                   <button
+                    data-testid="delete"
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={handleDeleteButton}
+                  >
+                    {Strings.ItemDetails.DeleteButton}
+                  </button>
+                  <button
                     data-testid="submit"
                     type="submit"
                     className="btn btn-success"
@@ -227,4 +240,5 @@ ItemDetails.propTypes = {
   stores: PropTypes.arrayOf(PropTypes.object).isRequired,
   shelves: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleSave: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func,
 };

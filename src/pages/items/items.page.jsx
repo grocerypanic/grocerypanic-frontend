@@ -1,8 +1,8 @@
 import React from "react";
 
-// import ItemList from "../../components/item-details/item-details.component";
+import ItemList from "../../components/item-list/item-list.component";
 
-import { StoreContext } from "../../providers/api/store/store.provider";
+import { ItemContext } from "../../providers/api/item/item.provider";
 import { UserContext } from "../../providers/user/user.provider";
 import { authExpired } from "../../providers/user/user.async";
 
@@ -25,7 +25,16 @@ const ItemsPage = () => {
     authExpired(setPerformAsync);
   };
 
-  return <div>ItemList</div>;
+  return (
+    <ItemList
+      title={t(Strings.InventoryPage.Title)}
+      headerTitle={t(Strings.InventoryPage.HeaderTitle)}
+      ApiObjectContext={ItemContext}
+      placeHolderMessage={t(Strings.InventoryPage.PlaceHolderMessage)}
+      handleExpiredAuth={handleExpiredAuth}
+      helpText={t(Strings.InventoryPage.HelpText)}
+    />
+  );
 };
 
 export default ItemsPage;

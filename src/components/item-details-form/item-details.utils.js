@@ -9,13 +9,13 @@ export const normalizeNameArray = (idList, objectList) => {
 export const normalizeName = (id, objectList) => {
   const search = objectList.find((o) => o.id === id);
   if (search) return search.name;
-  return null;
+  return "";
 };
 
 export const normalizeId = (name, objectList) => {
   const search = objectList.find((o) => o.name === name);
   if (search) return search.id;
-  return null;
+  return "";
 };
 
 export const normalizeShelfLifeName = (value) => {

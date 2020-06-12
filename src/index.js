@@ -12,6 +12,8 @@ import * as serviceWorker from "./serviceWorker";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// TODO: wrap strict mode if a dev only HOC
+
 export const Index = () => (
   <React.StrictMode>
     <I18nextProvider i18n={i18n}>

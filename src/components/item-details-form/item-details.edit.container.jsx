@@ -3,8 +3,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import ItemDetails from "./item-details.form";
-
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
 
@@ -27,6 +25,7 @@ const ItemDetailsContainer = ({
   title,
   handleExpiredAuth,
   helpText,
+  FormComponent,
 }) => {
   const { apiObject: item, dispatch: itemDispatch } = React.useContext(
     ItemContext
@@ -105,14 +104,21 @@ const ItemDetailsContainer = ({
   }, []);
 
   const handleSave = (newItem) => {
+    console.log("PUT");
     console.log(newItem);
   };
 
+  const handleDelete = (newItem) => {
+    console.log("DELETE");
+    console.log(newItem);
+  };
+
+  // TODO: Complete error handling
   // Prevents rendering too early and is a place to catch fetch errors
   if (calculatedItem === defaultItem) return <div>Waiting....</div>;
 
   return (
-    <ItemDetails
+    <FormComponent
       item={calculatedItem}
       headerTitle={headerTitle}
       title={title}
@@ -121,6 +127,7 @@ const ItemDetailsContainer = ({
       stores={store.inventory}
       shelves={shelf.inventory}
       handleSave={handleSave}
+      handleDelete={handleDelete}
     />
   );
 };
@@ -133,4 +140,5 @@ ItemDetailsContainer.propTypes = {
   title: PropTypes.string.isRequired,
   handleExpiredAuth: PropTypes.func.isRequired,
   helpText: PropTypes.string.isRequired,
+  FormComponent: PropTypes.func.isRequired,
 };
