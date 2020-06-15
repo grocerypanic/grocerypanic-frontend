@@ -6,14 +6,14 @@ import { apiResultCompare } from "../api.util.js";
 
 import { ItemFilters, FilterTag } from "../../../configuration/backend";
 
-const authFailure = (dispatch) => {
+const authFailure = (dispatch, callback) => {
   return new Promise(function (resolve) {
-    dispatch({ type: ApiActions.FailureAuth });
+    dispatch({ type: ApiActions.FailureAuth, callback });
   });
 };
 
 export const asyncAdd = async ({ state, action }) => {
-  const { dispatch } = action;
+  const { dispatch, callback } = action;
   const [response, status] = await Request("POST", Paths.manageItems, {
     ...action.payload,
   });
@@ -27,17 +27,19 @@ export const asyncAdd = async ({ state, action }) => {
         payload: {
           inventory: [...newInventory].sort(apiResultCompare),
         },
+        callback,
       });
     });
   }
-  if (status === 401) return authFailure(dispatch);
+  if (status === 401) return authFailure(dispatch, callback);
   return dispatch({
     type: ApiActions.FailureAdd,
+    callback,
   });
 };
 
 export const asyncDel = async ({ state, action }) => {
-  const { dispatch } = action;
+  const { dispatch, callback } = action;
   const [, status] = await Request(
     "DELETE",
     Paths.manageItems + `${action.payload.id}/`
@@ -52,17 +54,19 @@ export const asyncDel = async ({ state, action }) => {
             .filter((item) => item.id !== action.payload.id)
             .sort(apiResultCompare),
         },
+        callback,
       });
     });
   }
-  if (status === 401) return authFailure(dispatch);
+  if (status === 401) return authFailure(dispatch, callback);
   return dispatch({
     type: ApiActions.FailureDel,
+    callback,
   });
 };
 
 export const asyncGet = async ({ state, action }) => {
-  const { dispatch } = action;
+  const { dispatch, callback } = action;
   const [response, status] = await Request(
     "GET",
     Paths.manageItems + `${action.payload.id}/`
@@ -80,17 +84,19 @@ export const asyncGet = async ({ state, action }) => {
         payload: {
           inventory: [...newInventory].sort(apiResultCompare),
         },
+        callback,
       });
     });
   }
-  if (status === 401) return authFailure(dispatch);
+  if (status === 401) return authFailure(dispatch, callback);
   return dispatch({
     type: ApiActions.FailureGet,
+    callback,
   });
 };
 
 export const asyncList = async ({ state, action }) => {
-  const { dispatch, filter } = action;
+  const { dispatch, filter, callback } = action;
   let filterPath = "";
   let FilterNames = [...ItemFilters, FilterTag];
   if (filter) {
@@ -112,17 +118,19 @@ export const asyncList = async ({ state, action }) => {
       dispatch({
         type: ApiActions.SuccessList,
         payload: { inventory: response.sort(apiResultCompare) },
+        callback,
       });
     });
   }
-  if (status === 401) return authFailure(dispatch);
+  if (status === 401) return authFailure(dispatch, callback);
   return dispatch({
     type: ApiActions.FailureList,
+    callback,
   });
 };
 
 export const asyncUpdate = async ({ state, action }) => {
-  const { dispatch } = action;
+  const { dispatch, callback } = action;
   const [response, status] = await Request(
     "PUT",
     Paths.manageItems + `${action.payload.id}/`,
@@ -141,11 +149,13 @@ export const asyncUpdate = async ({ state, action }) => {
         payload: {
           inventory: [...newInventory].sort(apiResultCompare),
         },
+        callback,
       });
     });
   }
-  if (status === 401) return authFailure(dispatch);
+  if (status === 401) return authFailure(dispatch, callback);
   return dispatch({
     type: ApiActions.FailureUpdate,
+    callback,
   });
 };

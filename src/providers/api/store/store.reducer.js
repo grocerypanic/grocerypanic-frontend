@@ -17,14 +17,17 @@ const storeReducer = (state, action) => {
         transaction: true,
       };
       new Promise(function (resolve) {
+        if (action.callback) action.callback(false);
         async[action.func]({ state: newState, action });
-        if (action.callback) action.callback(true);
       });
       return newState;
     case ApiActions.FailureList:
     case ApiActions.FailureAdd:
     case ApiActions.FailureDel:
       // Must return an error message to inform user
+      new Promise(function (resolve) {
+        if (action.callback) action.callback(true);
+      });
       return {
         ...state,
         inventory: [...state.inventory],
@@ -36,6 +39,9 @@ const storeReducer = (state, action) => {
     case ApiActions.SuccessAdd:
     case ApiActions.SuccessDel:
       // Must return a new list of shelves
+      new Promise(function (resolve) {
+        if (action.callback) action.callback(true);
+      });
       return {
         ...state,
         inventory: [...state.inventory],
@@ -46,6 +52,9 @@ const storeReducer = (state, action) => {
       };
     case ApiActions.ClearErrors:
       // Clears out any error message
+      new Promise(function (resolve) {
+        if (action.callback) action.callback(false);
+      });
       return {
         ...state,
         inventory: [...state.inventory],
@@ -54,6 +63,9 @@ const storeReducer = (state, action) => {
       };
     case ApiActions.FailureAuth:
       // Clears out any error message, let's higher order components handle relogin
+      new Promise(function (resolve) {
+        if (action.callback) action.callback(true);
+      });
       return {
         ...state,
         inventory: [...state.inventory],

@@ -10,6 +10,7 @@ import { asyncAdd, asyncDel, asyncList } from "../store.async";
 
 jest.mock("../../../../util/requests");
 const mockDispatch = jest.fn();
+const mockCallBack = jest.fn();
 const NewStore = "NewStore";
 
 let responseCode;
@@ -57,6 +58,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       action = {
         payload: { id: 99, name: NewStore },
         dispatch: mockDispatch,
+        callback: mockCallBack,
       };
       State2 = {
         ...State1,
@@ -76,6 +78,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         payload: {
           inventory: State1.inventory,
         },
+        callback: mockCallBack,
       });
       done();
     });
@@ -85,6 +88,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       action = {
         payload: { name: NewStore },
         dispatch: mockDispatch,
+        callback: mockCallBack,
       };
       State2 = {
         ...State1,
@@ -102,6 +106,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         payload: {
           inventory: [testStore],
         },
+        callback: mockCallBack,
       });
       done();
     });
@@ -120,6 +125,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       action = {
         payload: { name: NewStore },
         dispatch: mockDispatch,
+        callback: mockCallBack,
       };
       State2 = {
         ...State1,
@@ -135,6 +141,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.FailureAdd,
+        callback: mockCallBack,
       });
       done();
     });
@@ -143,6 +150,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       action = {
         payload: { name: NewStore },
         dispatch: mockDispatch,
+        callback: mockCallBack,
       };
       State2 = {
         ...State1,
@@ -159,6 +167,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.FailureDel,
+        callback: mockCallBack,
       });
       done();
     });
@@ -168,6 +177,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       action = {
         payload: { name: NewStore },
         dispatch: mockDispatch,
+        callback: mockCallBack,
       };
       State2 = {
         ...State1,
@@ -182,6 +192,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.FailureList,
+        callback: mockCallBack,
       });
       done();
     });
@@ -200,6 +211,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       action = {
         payload: { name: NewStore },
         dispatch: mockDispatch,
+        callback: mockCallBack,
       };
       State2 = {
         ...State1,
@@ -215,6 +227,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.FailureAuth,
+        callback: mockCallBack,
       });
       done();
     });
@@ -223,6 +236,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       action = {
         payload: { name: NewStore, id: 20 },
         dispatch: mockDispatch,
+        callback: mockCallBack,
       };
       State2 = {
         ...State1,
@@ -239,6 +253,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.FailureAuth,
+        callback: mockCallBack,
       });
       done();
     });
@@ -248,6 +263,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       action = {
         payload: { name: NewStore },
         dispatch: mockDispatch,
+        callback: mockCallBack,
       };
       State2 = {
         ...State1,
@@ -262,6 +278,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.FailureAuth,
+        callback: mockCallBack,
       });
       done();
     });

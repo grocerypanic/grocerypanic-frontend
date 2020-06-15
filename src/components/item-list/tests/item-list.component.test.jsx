@@ -135,6 +135,7 @@ describe("Setup Environment", () => {
             placeHolderMessage={mockPlaceHolderMessage}
             handleExpiredAuth={mockHandleExpiredAuth}
             helpText={Strings.Testing.GenericTranslationTestString}
+            waitForApi={false}
           />
           }}
         </MemoryRouter>
@@ -246,10 +247,13 @@ describe("Setup Environment", () => {
   it("renders, calls StartList on first render", async (done) => {
     expect(current.transaction).toBeFalsy();
     await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
-    const call = mockDispatch.mock.calls[0][0];
-    expect(call.type).toBe(ApiActions.StartList);
-    expect(call.func).toBe(ApiFunctions.asyncList);
-    expect(call.dispatch).toBeInstanceOf(Function);
+    const apiCall = mockDispatch.mock.calls[0][0];
+    propCount(apiCall, 5);
+    expect(apiCall.type).toBe(ApiActions.StartList);
+    expect(apiCall.func).toBe(ApiFunctions.asyncList);
+    expect(apiCall.dispatch).toBeInstanceOf(Function);
+    expect(apiCall.callback).toBeInstanceOf(Function);
+    expect(apiCall.filter).toBeInstanceOf(URLSearchParams);
     done();
   });
 
@@ -298,12 +302,14 @@ describe("Setup Environment", () => {
     expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList); // Initial List
 
     const apiCall = mockDispatch.mock.calls[1][0];
+    propCount(apiCall, 4);
     expect(apiCall.type).toBe(ApiActions.StartUpdate);
     expect(apiCall.func).toBe(ApiFunctions.asyncUpdate);
     expect(apiCall.payload).toStrictEqual({
       ...mockItems[0],
       quantity: parseInt(mockItems[0].quantity + 22),
     });
+    expect(apiCall.dispatch).toBeInstanceOf(Function);
     done();
   });
 
@@ -337,12 +343,14 @@ describe("Setup Environment", () => {
     expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
 
     const apiCall = mockDispatch.mock.calls[1][0];
+    propCount(apiCall, 4);
     expect(apiCall.type).toBe(ApiActions.StartUpdate);
     expect(apiCall.func).toBe(ApiFunctions.asyncUpdate);
     expect(apiCall.payload).toStrictEqual({
       ...mockItems[0],
       quantity: parseInt(mockItems[0].quantity) - 1,
     });
+    expect(apiCall.dispatch).toBeInstanceOf(Function);
     done();
   });
 

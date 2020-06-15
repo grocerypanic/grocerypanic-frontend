@@ -5,6 +5,7 @@ import Header from "../header/header.component";
 import SimpleListItem from "../simple-list-item/simple-list-item.component";
 import Help from "../simple-list-help/simple-list-help.component";
 import Alert from "../alert/alert.component";
+import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
@@ -22,6 +23,7 @@ const SimpleList = ({
   handleExpiredAuth,
   helpText,
   redirectTag,
+  waitForApi = true,
 }) => {
   const { apiObject, dispatch } = React.useContext(ApiObjectContext);
   const [actionMsg, setActionMsg] = React.useState(null);
@@ -31,6 +33,7 @@ const SimpleList = ({
   const [longPress, setLongPress] = React.useState(false);
 
   const [performAsync, setPerformAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
+  const [ready, setReady] = React.useState(false);
 
   React.useEffect(() => {
     window.addEventListener("contextmenu", preventContext);
@@ -51,6 +54,7 @@ const SimpleList = ({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
       dispatch: setPerformAsync,
+      callback: setReady,
     });
   }, []);
 
@@ -107,43 +111,47 @@ const SimpleList = ({
         transaction={apiObject.transaction}
         create={handleCreate}
       />
-      <Container>
-        <Paper>
-          {errorMsg && created ? (
-            <Banner className="alert alert-danger">{errorMsg}</Banner>
-          ) : (
-            <Banner className="alert alert-success">{title}</Banner>
-          )}
-          <ListBox>
-            {apiObject.inventory.map((item) => {
-              return (
+      <HoldingPattern condition={!ready && waitForApi}>
+        <Container>
+          <Paper>
+            {errorMsg && created ? (
+              <Banner className="alert alert-danger">{errorMsg}</Banner>
+            ) : (
+              <Banner className="alert alert-success">
+                <div>{title}</div>
+              </Banner>
+            )}
+            <ListBox>
+              {apiObject.inventory.map((item) => {
+                return (
+                  <SimpleListItem
+                    item={item}
+                    allItems={apiObject.inventory}
+                    key={item.id}
+                    listFunctions={listFunctions}
+                    listValues={listValues}
+                    redirectTag={redirectTag}
+                  />
+                );
+              })}
+              {created ? (
                 <SimpleListItem
-                  item={item}
+                  item={created}
                   allItems={apiObject.inventory}
-                  key={item.id}
                   listFunctions={listFunctions}
                   listValues={listValues}
                   redirectTag={redirectTag}
                 />
-              );
-            })}
-            {created ? (
-              <SimpleListItem
-                item={created}
-                allItems={apiObject.inventory}
-                listFunctions={listFunctions}
-                listValues={listValues}
-                redirectTag={redirectTag}
-              />
-            ) : null}
-            {apiObject.inventory.length === 0 && !created ? (
-              <PlaceHolderListItem>{placeHolderMessage}</PlaceHolderListItem>
-            ) : null}
-          </ListBox>
-        </Paper>
-      </Container>
-      <Alert message={actionMsg} />
-      <Help>{helpText}</Help>
+              ) : null}
+              {apiObject.inventory.length === 0 && !created ? (
+                <PlaceHolderListItem>{placeHolderMessage}</PlaceHolderListItem>
+              ) : null}
+            </ListBox>
+          </Paper>
+        </Container>
+        <Alert message={actionMsg} />
+        <Help>{helpText}</Help>
+      </HoldingPattern>
     </>
   );
 };

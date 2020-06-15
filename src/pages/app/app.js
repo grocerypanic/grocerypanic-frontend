@@ -4,10 +4,10 @@ import { Switch, DefaultRoute } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import ProtectedRoute from "../../components/protected-route/protected-route.component";
+import HoldingPattern from "../../components/holding-pattern/holding-pattern.component";
 
 // Configuration
 import Routes from "../../configuration/routes";
-import Strings from "../../configuration/strings";
 
 const SignIn = lazy(() => import("../signin/signin.container"));
 const Shelves = lazy(() => import("../shelves/shelves.page"));
@@ -19,7 +19,7 @@ const Menu = lazy(() => import("../menu/menu.page"));
 function App() {
   const { t } = useTranslation();
   return (
-    <Suspense fallback={<div>{t(Strings.App.Suspense)}</div>}>
+    <Suspense fallback={<HoldingPattern condition={true} />}>
       <Switch>
         <ProtectedRoute
           exact

@@ -11,6 +11,7 @@ import {
 } from "../item.async";
 
 import InitialState from "../item.initial";
+const mockCallBack = jest.fn();
 
 jest.mock("../item.async");
 
@@ -18,6 +19,9 @@ jest.mock("../item.async");
 InitialState.inventory = [];
 
 describe("Check The Item Reducer Implements all API Actions correctly", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   it("should have the expected default values", () => {
     const received = ItemReducer(InitialState, { type: "NoAction" });
     expect(received).toBe(InitialState);
@@ -44,6 +48,7 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
         action,
       },
     ]);
+    expect(mockCallBack).toBeCalledTimes(0);
     done();
   });
 
@@ -61,6 +66,7 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
       type: ApiActions.StartDel,
       func: ApiFunctions.asyncDel,
       payload: mockPayload,
+      callback: mockCallBack,
     };
     const received = ItemReducer(stateWithPayload, action);
     expect(received).toEqual(ExpectedState);
@@ -71,6 +77,7 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
         action,
       },
     ]);
+    expect(mockCallBack).toBeCalledWith(false);
     done();
   });
 
@@ -84,17 +91,19 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
       type: ApiActions.StartGet,
       func: ApiFunctions.asyncGet,
       payload: mockPayload,
+      callback: mockCallBack,
     };
     const received = ItemReducer(InitialState, action);
     expect(received).toEqual(ExpectedState);
 
-    await waitFor(() => expect(asyncAdd).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(asyncGet).toHaveBeenCalledTimes(1));
     expect(asyncGet.mock.calls[0]).toEqual([
       {
         state: ExpectedState,
         action,
       },
     ]);
+    expect(mockCallBack).toBeCalledWith(false);
     done();
   });
 
@@ -108,17 +117,19 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
       type: ApiActions.StartUpdate,
       func: ApiFunctions.asyncUpdate,
       payload: mockPayload,
+      callback: mockCallBack,
     };
     const received = ItemReducer(InitialState, action);
     expect(received).toEqual(ExpectedState);
 
-    await waitFor(() => expect(asyncAdd).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(asyncUpdate).toHaveBeenCalledTimes(1));
     expect(asyncUpdate.mock.calls[0]).toEqual([
       {
         state: ExpectedState,
         action,
       },
     ]);
+    expect(mockCallBack).toBeCalledWith(false);
     done();
   });
 
@@ -132,6 +143,7 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
       type: ApiActions.StartList,
       func: ApiFunctions.asyncList,
       payload: mockPayload,
+      callback: mockCallBack,
     };
     const received = ItemReducer(InitialState, action);
     expect(received).toEqual(ExpectedState);
@@ -143,6 +155,7 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
         action,
       },
     ]);
+    expect(mockCallBack).toBeCalledWith(false);
     done();
   });
 
@@ -177,11 +190,13 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     const received = ItemReducer(InitialState, {
       type: ApiActions.SuccessDel,
       payload,
+      callback: mockCallBack,
     });
     expect(received.errorMessage).toBeNull();
     expect(received.inventory).toEqual(payload.inventory);
     expect(received.error).toBe(false);
     expect(received.transaction).toBe(false);
+    expect(mockCallBack).toBeCalledWith(true);
   });
 
   it("handles SuccessGet correctly", () => {
@@ -196,11 +211,13 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     const received = ItemReducer(InitialState, {
       type: ApiActions.SuccessGet,
       payload,
+      callback: mockCallBack,
     });
     expect(received.errorMessage).toBeNull();
     expect(received.inventory).toEqual(payload.inventory);
     expect(received.error).toBe(false);
     expect(received.transaction).toBe(false);
+    expect(mockCallBack).toBeCalledWith(true);
   });
 
   it("handles SuccessList correctly", () => {
@@ -215,6 +232,7 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     const received = ItemReducer(InitialState, {
       type: ApiActions.SuccessList,
       payload,
+      callback: mockCallBack,
     });
     expect(received.errorMessage).toBeNull();
     expect(received.inventory).toEqual(payload.inventory);
@@ -234,11 +252,13 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     const received = ItemReducer(InitialState, {
       type: ApiActions.SuccessUpdate,
       payload,
+      callback: mockCallBack,
     });
     expect(received.errorMessage).toBeNull();
     expect(received.inventory).toEqual(payload.inventory);
     expect(received.error).toBe(false);
     expect(received.transaction).toBe(false);
+    expect(mockCallBack).toBeCalledWith(true);
   });
 
   it("handles FailureAdd correctly", () => {
@@ -253,6 +273,7 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     expect(received.inventory).toEqual([]);
     expect(received.error).toBe(true);
     expect(received.transaction).toBe(false);
+    expect(mockCallBack).toBeCalledTimes(0);
   });
 
   it("handles FailureDel correctly", () => {
@@ -262,11 +283,13 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     const received = ItemReducer(InitialState, {
       type: ApiActions.FailureDel,
       payload,
+      callback: mockCallBack,
     });
     expect(received.errorMessage).toBe("Could Not Add The Item.");
     expect(received.inventory).toEqual([]);
     expect(received.error).toBe(true);
     expect(received.transaction).toBe(false);
+    expect(mockCallBack).toBeCalledWith(true);
   });
 
   it("handles FailureGet correctly", () => {
@@ -281,11 +304,13 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     const received = ItemReducer(InitialState, {
       type: ApiActions.FailureGet,
       payload,
+      callback: mockCallBack,
     });
     expect(received.errorMessage).toBeNull();
     expect(received.inventory).toEqual(payload.inventory);
     expect(received.error).toBe(true);
     expect(received.transaction).toBe(false);
+    expect(mockCallBack).toBeCalledWith(true);
   });
 
   it("handles FailureList correctly", () => {
@@ -295,11 +320,13 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     const received = ItemReducer(InitialState, {
       type: ApiActions.FailureList,
       payload,
+      callback: mockCallBack,
     });
     expect(received.errorMessage).toBe("Could Not Add The Item.");
     expect(received.inventory).toEqual([]);
     expect(received.error).toBe(true);
     expect(received.transaction).toBe(false);
+    expect(mockCallBack).toBeCalledWith(true);
   });
 
   it("handles FailureUpdate correctly", () => {
@@ -314,11 +341,13 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     const received = ItemReducer(InitialState, {
       type: ApiActions.FailureUpdate,
       payload,
+      callback: mockCallBack,
     });
     expect(received.errorMessage).toBeNull();
     expect(received.inventory).toEqual(payload.inventory);
     expect(received.error).toBe(true);
     expect(received.transaction).toBe(false);
+    expect(mockCallBack).toBeCalledWith(true);
   });
 
   it("handles ClearErrors correctly", () => {
@@ -329,12 +358,45 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     };
     const received = ItemReducer(state, {
       type: ApiActions.ClearErrors,
+      callback: mockCallBack,
     });
     expect(received.error).toBe(false);
     expect(received.errorMessage).toBe(null);
+    expect(mockCallBack).toBeCalledWith(false);
   });
 
   it("handles FailureAuth correctly", () => {
+    const state = {
+      ...InitialState,
+      error: true,
+      errorMessage: "Error",
+      transacton: true,
+    };
+    const received = ItemReducer(state, {
+      type: ApiActions.FailureAuth,
+      callback: mockCallBack,
+    });
+    expect(received.error).toBe(false);
+    expect(received.errorMessage).toBe(null);
+    expect(received.transaction).toBe(false);
+    expect(mockCallBack).toBeCalledWith(true);
+  });
+
+  it("handles ClearErrors correctly, no callback", () => {
+    const state = {
+      ...InitialState,
+      error: true,
+      errorMessage: "Error",
+    };
+    const received = ItemReducer(state, {
+      type: ApiActions.ClearErrors,
+    });
+    expect(received.error).toBe(false);
+    expect(received.errorMessage).toBe(null);
+    expect(mockCallBack).toBeCalledTimes(0);
+  });
+
+  it("handles FailureAuth correctly, no callback", () => {
     const state = {
       ...InitialState,
       error: true,
@@ -347,5 +409,6 @@ describe("Check The Item Reducer Implements all API Actions correctly", () => {
     expect(received.error).toBe(false);
     expect(received.errorMessage).toBe(null);
     expect(received.transaction).toBe(false);
+    expect(mockCallBack).toBeCalledTimes(0);
   });
 });

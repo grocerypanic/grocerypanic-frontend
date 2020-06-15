@@ -103,6 +103,7 @@ describe("Setup Environment", () => {
           handleExpiredAuth={mockHandleExpiredAuth}
           helpText={Strings.Testing.GenericTranslationTestString}
           redirectTag={mockRedirectTag}
+          waitForApi={false}
         />
         }}
       </ApiProvider>
@@ -243,10 +244,12 @@ describe("Setup Environment", () => {
   it("renders, calls StartList on first render", async (done) => {
     expect(current.transaction).toBeFalsy();
     await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
-    const call = mockDispatch.mock.calls[0][0];
-    expect(call.type).toBe(ApiActions.StartList);
-    expect(call.func).toBe(ApiFunctions.asyncList);
-    expect(call.dispatch).toBeInstanceOf(Function);
+    const apiCall = mockDispatch.mock.calls[0][0];
+    propCount(apiCall, 4);
+    expect(apiCall.type).toBe(ApiActions.StartList);
+    expect(apiCall.func).toBe(ApiFunctions.asyncList);
+    expect(apiCall.dispatch).toBeInstanceOf(Function);
+    expect(apiCall.callback).toBeInstanceOf(Function);
     done();
   });
 
@@ -295,9 +298,11 @@ describe("Setup Environment", () => {
     expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
 
     const apiCall = mockDispatch.mock.calls[1][0];
+    propCount(apiCall, 4);
     expect(apiCall.type).toBe(ApiActions.StartAdd);
     expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
     expect(apiCall.payload).toStrictEqual({ name: "shelfname" });
+    expect(apiCall.dispatch).toBeInstanceOf(Function);
     done();
   });
 
@@ -331,9 +336,11 @@ describe("Setup Environment", () => {
     expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
 
     const apiCall = mockDispatch.mock.calls[1][0];
+    propCount(apiCall, 4);
     expect(apiCall.type).toBe(ApiActions.StartDel);
     expect(apiCall.func).toBe(ApiFunctions.asyncDel);
     expect(apiCall.payload.id).toBe(2);
+    expect(apiCall.dispatch).toBeInstanceOf(Function);
     done();
   });
 
