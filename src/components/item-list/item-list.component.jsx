@@ -60,6 +60,7 @@ const ItemList = ({
   }, []);
 
   const handleCreate = () => {
+    if (apiObject.transaction) return;
     console.log("PUSH TO CREATE PAGE");
   };
 

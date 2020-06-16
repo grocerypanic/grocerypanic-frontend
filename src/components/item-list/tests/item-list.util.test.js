@@ -5,17 +5,16 @@ import Strings from "../../../configuration/strings";
 const mockTag = "FitlerName";
 
 describe("Setup Environment", () => {
-  let tests = [
-    `localhost`,
-    `localhost?${FilterTag}=${mockTag}`,
-    `localhost?not_a_filter_tag=1`,
-  ];
+  let tests = [``, `?${FilterTag}=${mockTag}`, `?not_a_filter_tag=1`];
   const { location } = window;
 
   beforeEach(() => {
     jest.clearAllMocks();
     delete window.location;
-    window.location = { search: tests.shift() };
+    const query_string = tests.shift();
+    window.location = {
+      search: query_string,
+    };
   });
 
   afterAll(() => {
@@ -30,7 +29,7 @@ describe("Setup Environment", () => {
 
   it("should tag the title when there is a filter_tag string", () => {
     expect(calculateTitle(Strings.InventoryPage.Title)).toBe(
-      Strings.InventoryPage.Title
+      Strings.InventoryPage.Title.replace(/\(.*\)/gi, `(${mockTag})`)
     );
   });
 

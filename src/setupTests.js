@@ -9,6 +9,10 @@ jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key) => key }),
   Trans: ({ children }) => children,
   I18nextProvider: ({ children }) => children,
+  withTranslation: () => (Component) => {
+    Component.defaultProps = { ...Component.defaultProps, t: (key) => key };
+    return Component;
+  },
 }));
 
 global.fail = (message) => {

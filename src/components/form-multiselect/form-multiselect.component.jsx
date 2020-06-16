@@ -35,6 +35,7 @@ const MultiDropDown = ({
           })
         );
         break;
+      /* istanbul ignore next */
       default:
         break;
     }

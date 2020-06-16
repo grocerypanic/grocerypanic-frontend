@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { Navbar } from "react-bootstrap";
 import { primary } from "../../configuration/theme";
 
-import { secondary } from "../../configuration/theme";
+import { white } from "../../configuration/theme";
 
 const container = css`
   height: 50px;
@@ -33,6 +33,6 @@ export const IconContainer = styled.div`
 export const MenuContainer = styled.div`
   ${(props) =>
     props.route === props.history.location.pathname
-      ? `color: ${secondary};`
+      ? `color: ${white};`
       : null};
 `;

@@ -2,6 +2,9 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+
+import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
@@ -26,6 +29,7 @@ const ItemDetailsContainer = ({
   handleExpiredAuth,
   helpText,
   FormComponent,
+  history,
 }) => {
   const { apiObject: item, dispatch: itemDispatch } = React.useContext(
     ItemContext
@@ -39,7 +43,6 @@ const ItemDetailsContainer = ({
   const [performItemAsync, setPerformItemAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performShelfAsync, setPerformShelfAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performStoreAsync, setPerformStoreAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
-
   const [transaction, setTransaction] = React.useState(true);
   const [calculatedItem, setCalculatedItem] = React.useState(defaultItem);
 
@@ -60,6 +63,7 @@ const ItemDetailsContainer = ({
   React.useEffect(() => {
     if (!performItemAsync) return;
     if (performItemAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
+    if (performItemAsync.type === ApiActions.SuccessDel) history.goBack();
     itemDispatch(performItemAsync);
     setPerformItemAsync(null);
   }, [performItemAsync]);
@@ -104,35 +108,41 @@ const ItemDetailsContainer = ({
   }, []);
 
   const handleSave = (newItem) => {
-    console.log("PUT");
-    console.log(newItem);
+    setPerformItemAsync({
+      type: ApiActions.StartUpdate,
+      func: ApiFuctions.asyncUpdate,
+      dispatch: setPerformItemAsync,
+      payload: { ...newItem },
+    });
   };
 
   const handleDelete = (newItem) => {
-    console.log("DELETE");
-    console.log(newItem);
+    setPerformItemAsync({
+      type: ApiActions.StartDel,
+      func: ApiFuctions.asyncDel,
+      dispatch: setPerformItemAsync,
+      payload: { id: newItem.id },
+    });
   };
 
-  // TODO: Complete error handling
-  // Prevents rendering too early and is a place to catch fetch errors
-  if (calculatedItem === defaultItem) return <div>Waiting....</div>;
-
   return (
-    <FormComponent
-      item={calculatedItem}
-      headerTitle={headerTitle}
-      title={title}
-      helpText={helpText}
-      transaction={transaction}
-      stores={store.inventory}
-      shelves={shelf.inventory}
-      handleSave={handleSave}
-      handleDelete={handleDelete}
-    />
+    <HoldingPattern condition={calculatedItem === defaultItem}>
+      <FormComponent
+        item={calculatedItem}
+        headerTitle={headerTitle}
+        title={title}
+        helpText={helpText}
+        transaction={transaction}
+        stores={store.inventory}
+        shelves={shelf.inventory}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+      />
+    </HoldingPattern>
   );
 };
 
-export default ItemDetailsContainer;
+export default withRouter(ItemDetailsContainer);
 
 ItemDetailsContainer.propTypes = {
   itemId: PropTypes.string.isRequired,

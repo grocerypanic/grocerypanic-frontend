@@ -8,6 +8,7 @@ import {
 } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
+import Alert from "../../alert/alert.component";
 import ItemDetails from "../item-details.form";
 import Header from "../../header/header.component";
 import Help from "../../simple-list-help/simple-list-help.component";
@@ -25,12 +26,22 @@ import { ShelfLifeConstants, Constants } from "../../../configuration/backend";
 import Strings from "../../../configuration/strings";
 import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
 
+jest.mock("../../alert/alert.component");
 jest.mock("../../header/header.component");
 jest.mock("../../simple-list-help/simple-list-help.component");
 jest.mock("../../form-input/form-input.component");
 jest.mock("../../form-dropdown/form-dropdown.component");
 jest.mock("../../form-multiselect/form-multiselect.component");
 
+jest.mock("../../../configuration/theme", () => {
+  return {
+    ui: {
+      alertTimeout: 10,
+    },
+  };
+});
+
+Alert.mockImplementation(() => <div>MockAlert</div>);
 Header.mockImplementation(() => <div>MockHeader</div>);
 Help.mockImplementation(() => <div>MockHelp</div>);
 FormInput.mockImplementation(() => <div>MockInput</div>);
@@ -41,6 +52,7 @@ const mockItemDispatch = jest.fn();
 const mockStoreDispatch = jest.fn();
 const mockShelfDispatch = jest.fn();
 const mockHandleSave = jest.fn();
+const mockHandleDelete = jest.fn();
 
 const mockItem = {
   expired: 0,
@@ -85,6 +97,7 @@ const props = {
   errorMsg: null,
   transaction: false,
   handleSave: mockHandleSave,
+  handleDelete: mockHandleDelete,
 };
 
 describe("Setup Environment, Render Tests", () => {
@@ -153,7 +166,7 @@ describe("Setup Environment, Render Tests", () => {
       expect(qtyInput.type).toBe("number");
       expect(qtyInput.label).toBe(Strings.ItemDetails.QuantityLabel + ":");
       expect(qtyInput.details).toBe("");
-      expect(qtyInput.itemColumn).toBe("col-4");
+      expect(qtyInput.itemColumn).toBe("col-10");
       expect(qtyInput.min).toBe(Constants.minimumQuanity);
       expect(qtyInput.max).toBe(Constants.maximumQuantity);
       expect(qtyInput.step).toBe("1");
@@ -169,7 +182,7 @@ describe("Setup Environment, Render Tests", () => {
       expect(priceInput.type).toBe("number");
       expect(priceInput.label).toBe(Strings.ItemDetails.PriceLabel + ":");
       expect(priceInput.details).toBe("");
-      expect(priceInput.itemColumn).toBe("col-4");
+      expect(priceInput.itemColumn).toBe("col-10");
       expect(priceInput.min).toBe(Constants.minimumPrice);
       expect(priceInput.max).toBe(Constants.maximumPrice);
       expect(priceInput.step).toBe("0.01");
@@ -261,7 +274,7 @@ describe("Setup Environment, Render Tests", () => {
   });
 });
 
-describe("Setup Environment For Save Tests", () => {
+describe("Setup Environment For Action Tests", () => {
   let utils;
   let current;
 
@@ -280,6 +293,7 @@ describe("Setup Environment For Save Tests", () => {
 
     it("saves the default item as expected", async (done) => {
       await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
+      Alert.mockClear();
       const button = utils.getByTestId("submit");
       fireEvent.click(button, "click");
       await waitFor(() => expect(mockHandleSave).toBeCalledTimes(1));
@@ -292,6 +306,11 @@ describe("Setup Environment For Save Tests", () => {
         quantity: mockItem.quantity,
         shelf_life: mockItem.shelf_life,
       });
+      await waitFor(() => expect(Alert).toBeCalledTimes(2));
+      expect(Alert.mock.calls[0][0]).toStrictEqual({
+        message: Strings.ItemDetails.SaveAction,
+      });
+      expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
       done();
     });
 
@@ -301,6 +320,7 @@ describe("Setup Environment For Save Tests", () => {
       await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
       const nameInput = FormInput.mock.calls[3][0];
       act(() => nameInput.handleState(modified_value));
+      Alert.mockClear();
 
       const button = utils.getByTestId("submit");
       fireEvent.click(button, "click");
@@ -314,6 +334,11 @@ describe("Setup Environment For Save Tests", () => {
         quantity: mockItem.quantity,
         shelf_life: mockItem.shelf_life,
       });
+      await waitFor(() => expect(Alert).toBeCalledTimes(2));
+      expect(Alert.mock.calls[0][0]).toStrictEqual({
+        message: Strings.ItemDetails.SaveAction,
+      });
+      expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
       done();
     });
 
@@ -323,6 +348,7 @@ describe("Setup Environment For Save Tests", () => {
       await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
       const qtyInput = FormInput.mock.calls[4][0];
       act(() => qtyInput.handleState(modified_value));
+      Alert.mockClear();
 
       const button = utils.getByTestId("submit");
       fireEvent.click(button, "click");
@@ -336,6 +362,11 @@ describe("Setup Environment For Save Tests", () => {
         quantity: modified_value,
         shelf_life: mockItem.shelf_life,
       });
+      await waitFor(() => expect(Alert).toBeCalledTimes(2));
+      expect(Alert.mock.calls[0][0]).toStrictEqual({
+        message: Strings.ItemDetails.SaveAction,
+      });
+      expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
       done();
     });
 
@@ -345,6 +376,7 @@ describe("Setup Environment For Save Tests", () => {
       await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
       const priceInput = FormInput.mock.calls[5][0];
       act(() => priceInput.handleState(modified_value));
+      Alert.mockClear();
 
       const button = utils.getByTestId("submit");
       fireEvent.click(button, "click");
@@ -358,6 +390,11 @@ describe("Setup Environment For Save Tests", () => {
         quantity: mockItem.quantity,
         shelf_life: mockItem.shelf_life,
       });
+      await waitFor(() => expect(Alert).toBeCalledTimes(2));
+      expect(Alert.mock.calls[0][0]).toStrictEqual({
+        message: Strings.ItemDetails.SaveAction,
+      });
+      expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
       done();
     });
 
@@ -368,6 +405,7 @@ describe("Setup Environment For Save Tests", () => {
       await waitFor(() => expect(DropDown).toHaveBeenCalledTimes(4));
       const shelfLife = DropDown.mock.calls[2][0];
       act(() => shelfLife.handleState(modified_value));
+      Alert.mockClear();
 
       const button = utils.getByTestId("submit");
       fireEvent.click(button, "click");
@@ -381,6 +419,11 @@ describe("Setup Environment For Save Tests", () => {
         quantity: mockItem.quantity,
         shelf_life: end_value,
       });
+      await waitFor(() => expect(Alert).toBeCalledTimes(2));
+      expect(Alert.mock.calls[0][0]).toStrictEqual({
+        message: Strings.ItemDetails.SaveAction,
+      });
+      expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
       done();
     });
 
@@ -390,6 +433,7 @@ describe("Setup Environment For Save Tests", () => {
       await waitFor(() => expect(DropDown).toHaveBeenCalledTimes(4));
       const shelf = DropDown.mock.calls[3][0];
       act(() => shelf.handleState(modified_value.name));
+      Alert.mockClear();
 
       const button = utils.getByTestId("submit");
       fireEvent.click(button, "click");
@@ -403,6 +447,11 @@ describe("Setup Environment For Save Tests", () => {
         quantity: mockItem.quantity,
         shelf_life: mockItem.shelf_life,
       });
+      await waitFor(() => expect(Alert).toBeCalledTimes(2));
+      expect(Alert.mock.calls[0][0]).toStrictEqual({
+        message: Strings.ItemDetails.SaveAction,
+      });
+      expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
       done();
     });
 
@@ -412,6 +461,7 @@ describe("Setup Environment For Save Tests", () => {
       await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
       const preferredStores = MultiDropDown.mock.calls[1][0];
       act(() => preferredStores.handleState(modified_value));
+      Alert.mockClear();
 
       const button = utils.getByTestId("submit");
       fireEvent.click(button, "click");
@@ -425,6 +475,24 @@ describe("Setup Environment For Save Tests", () => {
         quantity: mockItem.quantity,
         shelf_life: mockItem.shelf_life,
       });
+      await waitFor(() => expect(Alert).toBeCalledTimes(2));
+      expect(Alert.mock.calls[0][0]).toStrictEqual({
+        message: Strings.ItemDetails.SaveAction,
+      });
+      expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
+      done();
+    });
+
+    it("handles delete as expected", async (done) => {
+      await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
+      Alert.mockClear();
+      const button = utils.getByTestId("delete");
+      fireEvent.click(button, "click");
+      await waitFor(() => expect(mockHandleDelete).toBeCalledTimes(1));
+      await waitFor(() => expect(Alert).toBeCalledTimes(1));
+      expect(Alert.mock.calls[0][0]).toStrictEqual({
+        message: Strings.ItemDetails.DeleteAction,
+      });
       done();
     });
   });
@@ -434,6 +502,7 @@ describe("Setup Environment For Save Tests", () => {
       jest.clearAllMocks();
       utils = render(<ItemDetails {...current} />);
     });
+    afterEach(cleanup);
 
     it("does not save an invalid shelflife, will revert to the original value", async (done) => {
       const modified_value = "Not A Valid ShelfLife";
@@ -441,6 +510,7 @@ describe("Setup Environment For Save Tests", () => {
       await waitFor(() => expect(DropDown).toHaveBeenCalledTimes(4));
       const shelfLife = DropDown.mock.calls[2][0];
       act(() => shelfLife.handleState(modified_value));
+      Alert.mockClear();
 
       const button = utils.getByTestId("submit");
       fireEvent.click(button, "click");
@@ -454,6 +524,12 @@ describe("Setup Environment For Save Tests", () => {
         quantity: mockItem.quantity,
         shelf_life: mockItem.shelf_life,
       });
+      await waitFor(() => expect(Alert).toBeCalledTimes(2));
+      expect(Alert.mock.calls[0][0]).toStrictEqual({
+        message: Strings.ItemDetails.SaveAction,
+      });
+      expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
+      done();
       done();
     });
 
@@ -466,12 +542,42 @@ describe("Setup Environment For Save Tests", () => {
 
       const button = utils.getByTestId("submit");
       fireEvent.click(button, "click");
-      await waitFor(() => expect(mockHandleSave).toBeCalledTimes(0));
       await waitFor(() =>
         expect(
           utils.getByText(Strings.ItemDetails.ErrorUnselectedStore)
         ).toBeTruthy()
       );
+      await waitFor(() => expect(utils.getByText(current.title)).toBeTruthy());
+      expect(mockHandleSave).toBeCalledTimes(0);
+      done();
+    });
+  });
+
+  describe("inside of a transaction, valid data", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      const updatedProps = { ...current, transaction: true };
+      utils = render(<ItemDetails {...updatedProps} />);
+    });
+    afterEach(cleanup);
+
+    it("handles delete as expected, by doing nothing", async (done) => {
+      await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
+      Alert.mockClear();
+      const button = utils.getByTestId("delete");
+      fireEvent.click(button, "click");
+      await waitFor(() => expect(mockHandleDelete).toBeCalledTimes(0));
+      await waitFor(() => expect(Alert).toBeCalledTimes(0));
+      done();
+    });
+
+    it("handles save as expected, by doing nothing", async (done) => {
+      await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
+      Alert.mockClear();
+      const button = utils.getByTestId("submit");
+      fireEvent.click(button, "click");
+      await waitFor(() => expect(mockHandleSave).toBeCalledTimes(0));
+      await waitFor(() => expect(Alert).toBeCalledTimes(0));
       done();
     });
   });

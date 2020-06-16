@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { highlight, secondary } from "../../configuration/theme";
+import { highlight, white } from "../../configuration/theme";
 
 export const ListItem = styled.li`
   display: flex;
@@ -8,7 +8,7 @@ export const ListItem = styled.li`
   align-items: left;
   flex-direction: row;
 
-  background: ${secondary};
+  background: ${white};
   margin: 5px;
   padding: 5px;
   color: ${highlight};

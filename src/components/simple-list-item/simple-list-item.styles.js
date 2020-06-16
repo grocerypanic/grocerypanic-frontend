@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { secondary, highlight, selected } from "../../configuration/theme";
+import { white, highlight, selected } from "../../configuration/theme";
 
 export const ListItem = styled.li`
   display: flex;
@@ -8,7 +8,7 @@ export const ListItem = styled.li`
   align-items: left;
   flex-direction: row;
 
-  background: ${secondary};
+  background: ${white};
   margin: 5px;
   padding: 5px;
   color: ${highlight};
@@ -20,7 +20,7 @@ export const ListItem = styled.li`
     margin-left: auto;
   }
 
-  *:hover {
+  .simple-list-item-title-div:hover {
     color: ${selected};
   }
 `;

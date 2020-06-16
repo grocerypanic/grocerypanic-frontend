@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { primary, secondary } from "../../configuration/theme";
+import { primary, white } from "../../configuration/theme";
 
 export const ButtonBox = styled.div`
   padding-bottom: 10px;
@@ -17,7 +17,7 @@ export const LockBox = styled.div`
   border-radius: 50%;
 
   background-color: ${primary};
-  color: ${secondary};
+  color: ${white};
   text-align: center;
   overflow: hidden;
 `;

@@ -10,6 +10,7 @@ export const Strings = {
       ErrorAuthExpired: "Authentication Expired!\nPlease login again.",
       ErrorDuplicateAccount:
         "You have already signed up!\nTry logging in with another social account.",
+      PendingSocialConnection: "Connecting . . .",
     },
     ErrorDialogue: {
       ErrorDialogueConfirm: "OK",
@@ -34,7 +35,7 @@ export const Strings = {
       HelpText: "Make a selection to proceed.",
     },
     ItemDetails: {
-      Title: "Item Details",
+      Title: "Edit Item Details",
       HeaderTitle: "Details",
       HelpText:
         "Fill out the values, click the save button to finalize.\nDon't modify quantity here.",
@@ -49,6 +50,8 @@ export const Strings = {
       ShelfLifeDetail: "How long does this item typically keep?",
       PerferredLocationDetails: "Where do you prefer to buy this?",
       ErrorUnselectedStore: "Choose a preferred stored.",
+      SaveAction: "Saved",
+      DeleteAction: "Deleting ... :(",
     },
     InventoryPage: {
       Title: "Inventory (All)",

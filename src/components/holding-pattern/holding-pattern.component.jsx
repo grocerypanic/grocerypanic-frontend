@@ -6,7 +6,7 @@ import { CenterBox } from "./holding-pattern.styles";
 const HoldingPattern = ({ condition, children }) => {
   if (!condition) return children;
   return (
-    <CenterBox>
+    <CenterBox data-testid="HoldingPattern">
       <Spinner
         animation="grow"
         variant="success"

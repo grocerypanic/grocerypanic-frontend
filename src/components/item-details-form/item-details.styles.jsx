@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { primary, secondary, tertiary } from "../../configuration/theme";
+import { primary, white, tertiary } from "../../configuration/theme";
 
 export const Outline = styled.div`
   list-style-type: none;
@@ -25,7 +25,7 @@ export const FormBox = styled.div`
   align-items: left;
   flex-direction: column;
 
-  background: ${secondary};
+  background: ${white};
   margin: 5px;
   padding: 10px;
   padding-top: 20px;

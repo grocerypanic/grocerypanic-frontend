@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {
   highlight,
   primary,
-  secondary,
+  white,
   selected,
   danger,
   success,
@@ -20,7 +20,7 @@ export const Row = styled.li`
     ${buttonWidth};
   grid-gap: 4px;
 
-  background: ${secondary};
+  background: ${white};
   margin: 3px;
   padding: 2px;
   color: ${primary};

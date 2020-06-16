@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
+import Alert from "../alert/alert.component";
 import Header from "../header/header.component";
 import Help from "../simple-list-help/simple-list-help.component";
 import FormInput from "../form-input/form-input.component";
@@ -16,6 +17,7 @@ import { FormBox, Outline, Banner, ButtonBox } from "./item-details.styles";
 
 import { Constants, ShelfLifeConstants } from "../../configuration/backend";
 import Strings from "../../configuration/strings";
+import { ui } from "../../configuration/theme";
 
 import {
   normalizeNameArray,
@@ -46,6 +48,7 @@ const ItemDetails = ({
   const [shelfState, setShelfState] = React.useState("");
   const [errorMsg, setErrorMsg] = React.useState(null);
   const [shelfOptions, setShelfOptions] = React.useState([]);
+  const [actionMsg, setActionMsg] = React.useState(null);
 
   // Normalize the api data as it comes in
   React.useEffect(() => {
@@ -75,10 +78,11 @@ const ItemDetails = ({
   // Reassemble the form data into an object and pass back to handleSave
   // Perform validation as needed
   const handleSubmit = () => {
+    if (transaction) return;
     const derivedShelfLife = normalizeId(shelfLifeState, ShelfLifeConstants);
     if (preferredStoresState.length === 0) {
       setErrorMsg(t(Strings.ItemDetails.ErrorUnselectedStore));
-      return;
+      return setTimeout(() => setErrorMsg(null), ui.alertTimeout);
     }
     const newItem = {
       id: item.id,
@@ -90,10 +94,14 @@ const ItemDetails = ({
       shelf: normalizeId(shelfState, shelves),
     };
     handleSave(newItem);
+    setActionMsg(t(Strings.ItemDetails.SaveAction));
+    return setTimeout(() => setActionMsg(null), ui.alertTimeout);
   };
 
   const handleDeleteButton = (e) => {
+    if (transaction) return;
     handleDelete(item);
+    setActionMsg(t(Strings.ItemDetails.DeleteAction));
   };
 
   return (
@@ -141,7 +149,7 @@ const ItemDetails = ({
                     type="number"
                     label={`${t(Strings.ItemDetails.QuantityLabel)}:`}
                     details={""}
-                    itemColumn={"col-4"}
+                    itemColumn={"col-10"}
                     min={Constants.minimumQuanity}
                     max={Constants.maximumQuantity}
                     step="1"
@@ -157,7 +165,7 @@ const ItemDetails = ({
                     type="number"
                     label={`${t(Strings.ItemDetails.PriceLabel)}:`}
                     details={""}
-                    itemColumn={"col-4"}
+                    itemColumn={"col-10"}
                     min={Constants.minimumPrice}
                     max={Constants.maximumPrice}
                     step="0.01"
@@ -206,7 +214,9 @@ const ItemDetails = ({
                   <button
                     data-testid="delete"
                     type="button"
-                    className="btn btn-danger"
+                    className={`btn ${
+                      transaction ? "btn-secondary" : "btn-danger"
+                    }`}
                     onClick={handleDeleteButton}
                   >
                     {Strings.ItemDetails.DeleteButton}
@@ -214,7 +224,9 @@ const ItemDetails = ({
                   <button
                     data-testid="submit"
                     type="submit"
-                    className="btn btn-success"
+                    className={`btn ${
+                      transaction ? "btn-secondary" : "btn-success"
+                    }`}
                   >
                     {Strings.ItemDetails.SaveButton}
                   </button>
@@ -224,6 +236,7 @@ const ItemDetails = ({
           </Outline>
         </Paper>
       </Container>
+      <Alert message={actionMsg} />
       <Help>{helpText}</Help>
     </>
   );

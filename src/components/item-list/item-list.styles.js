@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { primary, secondary, tertiary } from "../../configuration/theme";
+import { primary, white, tertiary } from "../../configuration/theme";
 
 export const ListBox = styled.ul`
   list-style-type: none;
@@ -24,7 +24,7 @@ export const PlaceHolderListItem = styled.li`
   justify-content: center;
   align-items: center;
 
-  background: ${secondary};
+  background: ${white};
   margin: 5px;
   padding: 5px;
   color: ${primary};

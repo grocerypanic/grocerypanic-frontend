@@ -149,6 +149,7 @@ const SimpleListItem = ({
       item={item}
     >
       <ListTitle
+        className="simple-list-item-title-div"
         data-testid="ListTitle"
         onClick={(e) => handleNavigateToItem(e)}
       >

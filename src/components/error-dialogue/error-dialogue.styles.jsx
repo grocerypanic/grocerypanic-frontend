@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { secondary, tertiary, error } from "../../configuration/theme";
+import { white, tertiary, error } from "../../configuration/theme";
 
 export const NotePad = styled.ul`
   padding-left: 0px;
@@ -30,7 +30,7 @@ export const ErrorBox = styled.div`
   border-radius: 50%;
 
   background-color: ${error};
-  color: ${secondary};
+  color: ${white};
   text-align: center;
   overflow: hidden;
 `;
