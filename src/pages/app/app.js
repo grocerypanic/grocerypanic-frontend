@@ -1,7 +1,6 @@
 // Package Imports
 import React, { Suspense, lazy } from "react";
-import { Switch, DefaultRoute } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { Switch } from "react-router-dom";
 
 import ProtectedRoute from "../../components/protected-route/protected-route.component";
 import HoldingPattern from "../../components/holding-pattern/holding-pattern.component";
@@ -17,7 +16,6 @@ const Details = lazy(() => import("../details/details.page"));
 const Menu = lazy(() => import("../menu/menu.page"));
 
 function App() {
-  const { t } = useTranslation();
   return (
     <Suspense fallback={<HoldingPattern condition={true} />}>
       <Switch>
