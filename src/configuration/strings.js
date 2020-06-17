@@ -52,6 +52,10 @@ export const Strings = {
       ErrorUnselectedStore: "Choose a preferred stored.",
       SaveAction: "Saved",
       DeleteAction: "Deleting ... :(",
+      Tabs: {
+        Edit: "Edit",
+        Stats: "Stats",
+      },
     },
     InventoryPage: {
       Title: "Inventory (All)",

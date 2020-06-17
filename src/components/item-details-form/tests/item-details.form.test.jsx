@@ -9,25 +9,18 @@ import {
 import { propCount } from "../../../test.fixtures/objectComparison";
 
 import Alert from "../../alert/alert.component";
-import ItemDetails from "../item-details.form";
-import Header from "../../header/header.component";
+import ItemDetailsForm from "../item-details.form";
 import Help from "../../simple-list-help/simple-list-help.component";
 
 import FormInput from "../../form-input/form-input.component";
 import DropDown from "../../form-dropdown/form-dropdown.component";
 import MultiDropDown from "../../form-multiselect/form-multiselect.component";
 
-import InitialValue from "../../../providers/api/item/item.initial";
-import ShelfInitialValue from "../../../providers/api/shelf/shelf.initial";
-import StoreInitialValue from "../../../providers/api/store/store.initial";
-
 import { ShelfLifeConstants, Constants } from "../../../configuration/backend";
 
 import Strings from "../../../configuration/strings";
-import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
 
 jest.mock("../../alert/alert.component");
-jest.mock("../../header/header.component");
 jest.mock("../../simple-list-help/simple-list-help.component");
 jest.mock("../../form-input/form-input.component");
 jest.mock("../../form-dropdown/form-dropdown.component");
@@ -42,15 +35,11 @@ jest.mock("../../../configuration/theme", () => {
 });
 
 Alert.mockImplementation(() => <div>MockAlert</div>);
-Header.mockImplementation(() => <div>MockHeader</div>);
 Help.mockImplementation(() => <div>MockHelp</div>);
 FormInput.mockImplementation(() => <div>MockInput</div>);
 DropDown.mockImplementation(() => <div>MockDropDown</div>);
 MultiDropDown.mockImplementation(() => <div>MockDropDown</div>);
 
-const mockItemDispatch = jest.fn();
-const mockStoreDispatch = jest.fn();
-const mockShelfDispatch = jest.fn();
 const mockHandleSave = jest.fn();
 const mockHandleDelete = jest.fn();
 
@@ -114,16 +103,7 @@ describe("Setup Environment, Render Tests", () => {
   describe("outside of a transaction", () => {
     beforeEach(() => {
       jest.clearAllMocks();
-      utils = render(<ItemDetails {...current} />);
-    });
-
-    it("renders, outside of a transaction should call header with the correct params", () => {
-      expect(Header).toHaveBeenCalledTimes(2);
-
-      const headerCall = Header.mock.calls[0][0];
-      propCount(headerCall, 2);
-      expect(headerCall.title).toBe(props.headerTitle);
-      expect(headerCall.transaction).toBe(false);
+      utils = render(<ItemDetailsForm {...current} />);
     });
 
     it("renders, outside of a transaction should call help with the correct params", () => {
@@ -154,7 +134,7 @@ describe("Setup Environment, Render Tests", () => {
       expect(nameInput.details).toBe("");
       expect(nameInput.itemColumn).toBe("col-10");
       expect(nameInput.minLength).toBe(2);
-      expect(nameInput.maxLength).toBe(255);
+      expect(nameInput.maxLength).toBe(24);
 
       propCount(qtyInput, 14);
       expect(qtyInput.setErrorMsg).toBeInstanceOf(Function);
@@ -260,7 +240,7 @@ describe("Setup Environment, Render Tests", () => {
       jest.clearAllMocks();
       const updatedItem = { ...mockItem, shelf_life: 1095 };
       const updatedCurrent = { ...current, item: updatedItem };
-      utils = render(<ItemDetails {...updatedCurrent} />);
+      utils = render(<ItemDetailsForm {...updatedCurrent} />);
     });
 
     it("calculates the options for shelf_life correctly", async (done) => {
@@ -288,7 +268,7 @@ describe("Setup Environment For Action Tests", () => {
   describe("outside of a transaction, valid data", () => {
     beforeEach(() => {
       jest.clearAllMocks();
-      utils = render(<ItemDetails {...current} />);
+      utils = render(<ItemDetailsForm {...current} />);
     });
 
     it("saves the default item as expected", async (done) => {
@@ -500,7 +480,7 @@ describe("Setup Environment For Action Tests", () => {
   describe("outside of a transaction, invalid data", () => {
     beforeEach(() => {
       jest.clearAllMocks();
-      utils = render(<ItemDetails {...current} />);
+      utils = render(<ItemDetailsForm {...current} />);
     });
     afterEach(cleanup);
 
@@ -557,7 +537,7 @@ describe("Setup Environment For Action Tests", () => {
     beforeEach(() => {
       jest.clearAllMocks();
       const updatedProps = { ...current, transaction: true };
-      utils = render(<ItemDetails {...updatedProps} />);
+      utils = render(<ItemDetailsForm {...updatedProps} />);
     });
     afterEach(cleanup);
 

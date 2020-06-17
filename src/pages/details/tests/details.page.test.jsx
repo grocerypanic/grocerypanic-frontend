@@ -5,7 +5,7 @@ import { MemoryRouter, Route } from "react-router-dom";
 
 import ItemDetailsPage from "../details.page";
 import ItemDetailsContainer from "../../../components/item-details-form/item-details.edit.container";
-import ItemDetails from "../../../components/item-details-form/item-details.form";
+import ItemDetails from "../../../components/item-details-form/item-details.component";
 
 import { ItemContext } from "../../../providers/api/item/item.provider";
 

@@ -186,35 +186,38 @@ describe("Setup Environment", () => {
         expect(ItemListRow).toHaveBeenCalledTimes(3);
 
         const call1 = ItemListRow.mock.calls[0][0];
-        propCount(call1, 4);
+        propCount(call1, 5);
         propCount(call1.listFunctions, 4);
         propCount(call1.listValues, 1);
 
         expect(call1.item).toBe(mockItems[0]);
         expect(call1.allItems).toStrictEqual(mockItems);
         expect(call1.listValues.transaction).toBe(false);
+        expect(call1.history.push).toBeInstanceOf(Function);
 
         validateFunctions(call1);
 
         const call2 = ItemListRow.mock.calls[1][0];
-        propCount(call1, 4);
+        propCount(call1, 5);
         propCount(call1.listFunctions, 4);
         propCount(call1.listValues, 1);
 
         expect(call2.item).toBe(mockItems[1]);
         expect(call2.allItems).toStrictEqual(mockItems);
         expect(call2.listValues.transaction).toBe(false);
+        expect(call1.history.push).toBeInstanceOf(Function);
 
         validateFunctions(call2);
 
         const call3 = ItemListRow.mock.calls[2][0];
-        propCount(call1, 4);
+        propCount(call1, 5);
         propCount(call1.listFunctions, 4);
         propCount(call1.listValues, 1);
 
         expect(call3.item).toBe(mockItems[2]);
         expect(call3.allItems).toStrictEqual(mockItems);
         expect(call3.listValues.transaction).toBe(false);
+        expect(call1.history.push).toBeInstanceOf(Function);
 
         validateFunctions(call3);
       });

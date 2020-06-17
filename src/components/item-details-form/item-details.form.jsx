@@ -2,11 +2,11 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+
 import { useTranslation } from "react-i18next";
 
 import Alert from "../alert/alert.component";
-import Header from "../header/header.component";
 import Help from "../simple-list-help/simple-list-help.component";
 import FormInput from "../form-input/form-input.component";
 import DropDown from "../form-dropdown/form-dropdown.component";
@@ -26,9 +26,8 @@ import {
   normalizeShelfLifeName,
 } from "./item-details.utils";
 
-const ItemDetails = ({
+const ItemDetailsForm = ({
   item,
-  headerTitle,
   title,
   helpText,
   transaction,
@@ -106,147 +105,143 @@ const ItemDetails = ({
 
   return (
     <>
-      <Header title={headerTitle} transaction={transaction} />
-      <Container>
-        <Paper>
-          {errorMsg ? (
-            <Banner className="alert alert-danger">{errorMsg}</Banner>
-          ) : (
-            <Banner className="alert alert-success">{title}</Banner>
-          )}
-          <Outline>
-            <FormBox>
-              <Form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit();
-                }}
-              >
-                <Form.Group className="row">
-                  <FormInput
-                    setErrorMsg={setErrorMsg}
-                    storeState={nameState}
-                    handleState={setNameState}
-                    fieldName="name"
-                    item={item}
-                    transaction={transaction}
-                    type="text"
-                    label={`${t(Strings.ItemDetails.NameLabel)}:`}
-                    details={""}
-                    itemColumn={"col-10"}
-                    minLength={2}
-                    maxLength={255}
-                  />
-                </Form.Group>
-                <Form.Group className="row">
-                  <FormInput
-                    setErrorMsg={setErrorMsg}
-                    storeState={quantityState}
-                    handleState={setQuantityState}
-                    fieldName="quantity"
-                    item={item}
-                    transaction={transaction}
-                    type="number"
-                    label={`${t(Strings.ItemDetails.QuantityLabel)}:`}
-                    details={""}
-                    itemColumn={"col-10"}
-                    min={Constants.minimumQuanity}
-                    max={Constants.maximumQuantity}
-                    step="1"
-                    readOnly={true}
-                  />
-                  <FormInput
-                    setErrorMsg={setErrorMsg}
-                    storeState={priceState}
-                    handleState={setPriceState}
-                    fieldName="price"
-                    item={item}
-                    transaction={transaction}
-                    type="number"
-                    label={`${t(Strings.ItemDetails.PriceLabel)}:`}
-                    details={""}
-                    itemColumn={"col-10"}
-                    min={Constants.minimumPrice}
-                    max={Constants.maximumPrice}
-                    step="0.01"
-                  />
-                </Form.Group>
-                <Form.Group className="row">
-                  <DropDown
-                    setErrorMsg={setErrorMsg}
-                    storeState={shelfLifeState}
-                    handleState={setShelfLifeState}
-                    fieldName="shelf_life"
-                    options={shelfOptions}
-                    transaction={transaction}
-                    details={t(Strings.ItemDetails.ShelfLifeDetail)}
-                    labelColumn={""}
-                    itemColumn={"col-12"}
-                  />
-                </Form.Group>
-                <Form.Group className="row">
-                  <MultiDropDown
-                    setErrorMsg={setErrorMsg}
-                    storeState={preferredStoresState}
-                    handleState={setPreferredStoresState}
-                    fieldName="preferred_stores"
-                    options={stores}
-                    transaction={transaction}
-                    details={t(Strings.ItemDetails.PerferredLocationDetails)}
-                    labelColumn={""}
-                    itemColumn={"col-12"}
-                  />
-                </Form.Group>
-                <Form.Group className="row">
-                  <DropDown
-                    setErrorMsg={setErrorMsg}
-                    storeState={shelfState}
-                    handleState={setShelfState}
-                    fieldName="shelf"
-                    options={shelves}
-                    transaction={transaction}
-                    details={t(Strings.ItemDetails.ShelvesDetail)}
-                    labelColumn={""}
-                    itemColumn={"col-12"}
-                  />
-                </Form.Group>
-                <ButtonBox>
-                  <button
-                    data-testid="delete"
-                    type="button"
-                    className={`btn ${
-                      transaction ? "btn-secondary" : "btn-danger"
-                    }`}
-                    onClick={handleDeleteButton}
-                  >
-                    {Strings.ItemDetails.DeleteButton}
-                  </button>
-                  <button
-                    data-testid="submit"
-                    type="submit"
-                    className={`btn ${
-                      transaction ? "btn-secondary" : "btn-success"
-                    }`}
-                  >
-                    {Strings.ItemDetails.SaveButton}
-                  </button>
-                </ButtonBox>
-              </Form>
-            </FormBox>
-          </Outline>
-        </Paper>
-      </Container>
+      <Paper>
+        {errorMsg ? (
+          <Banner className="alert alert-danger">{errorMsg}</Banner>
+        ) : (
+          <Banner className="alert alert-success">{title}</Banner>
+        )}
+        <Outline>
+          <FormBox>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+            >
+              <Form.Group className="row">
+                <FormInput
+                  setErrorMsg={setErrorMsg}
+                  storeState={nameState}
+                  handleState={setNameState}
+                  fieldName="name"
+                  item={item}
+                  transaction={transaction}
+                  type="text"
+                  label={`${t(Strings.ItemDetails.NameLabel)}:`}
+                  details={""}
+                  itemColumn={"col-10"}
+                  minLength={2}
+                  maxLength={24}
+                />
+              </Form.Group>
+              <Form.Group className="row">
+                <FormInput
+                  setErrorMsg={setErrorMsg}
+                  storeState={quantityState}
+                  handleState={setQuantityState}
+                  fieldName="quantity"
+                  item={item}
+                  transaction={transaction}
+                  type="number"
+                  label={`${t(Strings.ItemDetails.QuantityLabel)}:`}
+                  details={""}
+                  itemColumn={"col-10"}
+                  min={Constants.minimumQuanity}
+                  max={Constants.maximumQuantity}
+                  step="1"
+                  readOnly={true}
+                />
+                <FormInput
+                  setErrorMsg={setErrorMsg}
+                  storeState={priceState}
+                  handleState={setPriceState}
+                  fieldName="price"
+                  item={item}
+                  transaction={transaction}
+                  type="number"
+                  label={`${t(Strings.ItemDetails.PriceLabel)}:`}
+                  details={""}
+                  itemColumn={"col-10"}
+                  min={Constants.minimumPrice}
+                  max={Constants.maximumPrice}
+                  step="0.01"
+                />
+              </Form.Group>
+              <Form.Group className="row">
+                <DropDown
+                  setErrorMsg={setErrorMsg}
+                  storeState={shelfLifeState}
+                  handleState={setShelfLifeState}
+                  fieldName="shelf_life"
+                  options={shelfOptions}
+                  transaction={transaction}
+                  details={t(Strings.ItemDetails.ShelfLifeDetail)}
+                  labelColumn={""}
+                  itemColumn={"col-12"}
+                />
+              </Form.Group>
+              <Form.Group className="row">
+                <MultiDropDown
+                  setErrorMsg={setErrorMsg}
+                  storeState={preferredStoresState}
+                  handleState={setPreferredStoresState}
+                  fieldName="preferred_stores"
+                  options={stores}
+                  transaction={transaction}
+                  details={t(Strings.ItemDetails.PerferredLocationDetails)}
+                  labelColumn={""}
+                  itemColumn={"col-12"}
+                />
+              </Form.Group>
+              <Form.Group className="row">
+                <DropDown
+                  setErrorMsg={setErrorMsg}
+                  storeState={shelfState}
+                  handleState={setShelfState}
+                  fieldName="shelf"
+                  options={shelves}
+                  transaction={transaction}
+                  details={t(Strings.ItemDetails.ShelvesDetail)}
+                  labelColumn={""}
+                  itemColumn={"col-12"}
+                />
+              </Form.Group>
+              <ButtonBox>
+                <button
+                  data-testid="delete"
+                  type="button"
+                  className={`btn ${
+                    transaction ? "btn-secondary" : "btn-danger"
+                  }`}
+                  onClick={handleDeleteButton}
+                >
+                  {Strings.ItemDetails.DeleteButton}
+                </button>
+                <button
+                  data-testid="submit"
+                  type="submit"
+                  className={`btn ${
+                    transaction ? "btn-secondary" : "btn-success"
+                  }`}
+                >
+                  {Strings.ItemDetails.SaveButton}
+                </button>
+              </ButtonBox>
+            </Form>
+          </FormBox>
+        </Outline>
+      </Paper>
       <Alert message={actionMsg} />
       <Help>{helpText}</Help>
     </>
   );
 };
 
-export default ItemDetails;
+export default ItemDetailsForm;
 
-ItemDetails.propTypes = {
+ItemDetailsForm.propTypes = {
   item: PropTypes.object.isRequired,
-  headerTitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   helpText: PropTypes.string.isRequired,
   transaction: PropTypes.bool.isRequired,

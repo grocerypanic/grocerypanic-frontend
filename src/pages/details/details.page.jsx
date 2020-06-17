@@ -6,7 +6,7 @@ import { UserContext } from "../../providers/user/user.provider";
 import { authExpired } from "../../providers/user/user.async";
 
 import ItemDetailsContainer from "../../components/item-details-form/item-details.edit.container";
-import ItemDetails from "../../components/item-details-form/item-details.form";
+import ItemDetails from "../../components/item-details-form/item-details.component";
 
 import { useTranslation } from "react-i18next";
 import Strings from "../../configuration/strings";

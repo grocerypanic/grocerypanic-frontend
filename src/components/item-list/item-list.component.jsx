@@ -129,6 +129,7 @@ const ItemList = ({
                     key={item.id}
                     listFunctions={listFunctions}
                     listValues={listValues}
+                    history={history}
                   />
                 );
               })}

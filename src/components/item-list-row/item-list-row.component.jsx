@@ -16,13 +16,20 @@ import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 
 import Strings from "../../configuration/strings";
+import Routes from "../../configuration/routes";
 import UseLongPress from "../../util/longpress";
 import GeneratePopOver from "./item-list-popover";
 
 import { ui } from "../../configuration/theme";
 import { Control, Digit, Symbol, Row, ListTitle } from "./item-list-row.styles";
 
-const ItemListRow = ({ item, allItems, listFunctions, listValues }) => {
+const ItemListRow = ({
+  item,
+  allItems,
+  listFunctions,
+  listValues,
+  history,
+}) => {
   const { t } = useTranslation();
   const { event } = React.useContext(AnalyticsContext);
   const { restock, consume, setErrorMsg, setActionMsg } = listFunctions;
@@ -30,12 +37,10 @@ const ItemListRow = ({ item, allItems, listFunctions, listValues }) => {
 
   const range = (n) => [...Array(n).keys()];
 
-  const handleLongClick = (e) => {
+  const handleClick = (e) => {
     if (transaction) return;
-    console.log("PUSH TO EDIT PAGE");
+    history.push(Routes.details.replace(":id", item.id));
   };
-
-  const handleClick = UseLongPress(handleLongClick, () => {}, 500);
 
   const handleRestock = (quantity, e) => {
     if (transaction) return;
@@ -92,7 +97,7 @@ const ItemListRow = ({ item, allItems, listFunctions, listValues }) => {
         </GeneratePopOver>
       </Digit>
       <ListTitle data-testid="ListTitle">
-        <div {...handleClick}>{item.name}</div>
+        <div onClick={handleClick}>{item.name}</div>
       </ListTitle>
       <Control type="restock" data-testid="restock">
         <Dropdown alignRight as={ButtonGroup} onSelect={handleRestock}>
@@ -148,4 +153,7 @@ ItemListRow.propTypes = {
   listValues: PropTypes.shape({
     transaction: PropTypes.bool.isRequired,
   }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }),
 };
