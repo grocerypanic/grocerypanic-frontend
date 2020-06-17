@@ -12,7 +12,7 @@ import FormInput from "../form-input/form-input.component";
 import DropDown from "../form-dropdown/form-dropdown.component";
 import MultiDropDown from "../form-multiselect/form-multiselect.component";
 
-import { Paper, Container } from "../../global-styles/containers";
+import { Paper } from "../../global-styles/containers";
 import { FormBox, Outline, Banner, ButtonBox } from "./item-details.styles";
 
 import { Constants, ShelfLifeConstants } from "../../configuration/backend";
