@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
 
 const DropDown = ({
   setErrorMsg,

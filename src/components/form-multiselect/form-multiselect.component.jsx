@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
-import { Form } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
 
 const MultiDropDown = ({
   setErrorMsg,
