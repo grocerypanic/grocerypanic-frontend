@@ -1,3 +1,5 @@
+import moment from "moment";
+
 import { Paths } from "../../../configuration/backend";
 import match2xx from "../../../util/requests/status";
 import Request from "../../../util/requests";
@@ -12,6 +14,19 @@ const authFailure = (dispatch, callback) => {
   });
 };
 
+export const convertDatesToLocal = (item) => {
+  if (typeof item.next_expiry_date === "object") return item;
+  let newItem = { ...item };
+  newItem.next_expiry_date = moment
+    .utc(item.next_expiry_date)
+    .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+    .unix();
+  newItem.next_expiry_date = moment
+    .unix(newItem.next_expiry_date)
+    .add(moment().utcOffset(), "minutes");
+  return newItem;
+};
+
 export const asyncAdd = async ({ state, action }) => {
   const { dispatch, callback } = action;
   const [response, status] = await Request("POST", Paths.manageItems, {
@@ -21,7 +36,7 @@ export const asyncAdd = async ({ state, action }) => {
   if (match2xx(status)) {
     return new Promise(function (resolve) {
       const newInventory = [...state.inventory];
-      newInventory.push(response);
+      newInventory.push(convertDatesToLocal(response));
       dispatch({
         type: ApiActions.SuccessAdd,
         payload: {
@@ -74,10 +89,12 @@ export const asyncGet = async ({ state, action }) => {
   // Status Code is 2xx
   if (match2xx(status)) {
     // Update the item in state if it exists, otherwise add it as a new item
-    const index = state.inventory.find((item) => item.id === action.payload.id);
+    const index = state.inventory.findIndex(
+      (item) => item.id === action.payload.id
+    );
     const newInventory = [...state.inventory];
-    if (index) newInventory[index] = response;
-    if (!index) newInventory.push(response);
+    if (index >= 0) newInventory[index] = convertDatesToLocal(response);
+    if (index < 0) newInventory.push(convertDatesToLocal(response));
     return new Promise(function (resolve) {
       dispatch({
         type: ApiActions.SuccessGet,
@@ -114,10 +131,11 @@ export const asyncList = async ({ state, action }) => {
     Paths.manageItems + filterPath
   );
   if (match2xx(status)) {
+    const processedResponse = response.map((i) => convertDatesToLocal(i));
     return new Promise(function (resolve) {
       dispatch({
         type: ApiActions.SuccessList,
-        payload: { inventory: response.sort(apiResultCompare) },
+        payload: { inventory: processedResponse.sort(apiResultCompare) },
         callback,
       });
     });
@@ -138,12 +156,12 @@ export const asyncUpdate = async ({ state, action }) => {
   );
   // Status Code is 2xx
   if (match2xx(status)) {
+    const newInventory = [...state.inventory];
+    const index = newInventory.findIndex(
+      (item) => item.id === action.payload.id
+    );
+    newInventory[index] = convertDatesToLocal(response);
     return new Promise(function (resolve) {
-      const newInventory = [...state.inventory];
-      const index = newInventory.findIndex(
-        (item) => item.id === action.payload.id
-      );
-      newInventory[index] = response;
       dispatch({
         type: ApiActions.SuccessUpdate,
         payload: {

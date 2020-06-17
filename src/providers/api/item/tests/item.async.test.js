@@ -1,4 +1,5 @@
 import { waitFor } from "@testing-library/react";
+import moment from "moment";
 
 import ApiActions from "../../api.actions";
 
@@ -13,6 +14,7 @@ import {
   asyncGet,
   asyncList,
   asyncUpdate,
+  convertDatesToLocal,
 } from "../item.async";
 const NewStore = "NewStore";
 
@@ -76,7 +78,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         ...State1,
         inventory: [...State1.inventory],
       };
-      State2.inventory.push(mockItem2);
+      State2.inventory.push({ ...mockItem2 });
 
       asyncAdd({ state: State1, action });
 
@@ -84,6 +86,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         ...mockItem2,
       });
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+      State2.inventory = State2.inventory.map((i) => convertDatesToLocal(i));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.SuccessAdd,
         payload: {
@@ -105,7 +108,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         ...State1,
         inventory: [...State1.inventory],
       };
-      State2.inventory.push(mockItem2);
+      State2.inventory.push({ ...mockItem2 });
 
       asyncDel({ state: State2, action });
 
@@ -136,13 +139,14 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         inventory: [...State1.inventory],
       };
       // Enforces Sort Order
-      State2.inventory.push(mockItem2);
-      State2.inventory.push(mockItem1);
+      State2.inventory.push({ ...mockItem2 });
+      State2.inventory.push({ ...mockItem1 });
 
       asyncList({ state: State2, action });
 
       expect(Request).toBeCalledWith("GET", Paths.manageItems);
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+      State2.inventory = State2.inventory.map((i) => convertDatesToLocal(i));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.SuccessList,
         payload: {
@@ -167,8 +171,8 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         inventory: [...State1.inventory],
       };
       // Enforces Sort Order
-      State2.inventory.push(mockItem2);
-      State2.inventory.push(mockItem1);
+      State2.inventory.push({ ...mockItem2 });
+      State2.inventory.push({ ...mockItem1 });
 
       asyncList({ state: State2, action });
 
@@ -181,6 +185,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
           filter.get(ItemFilters[0])
       );
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+      State2.inventory = State2.inventory.map((i) => convertDatesToLocal(i));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.SuccessList,
         payload: {
@@ -205,8 +210,8 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         inventory: [...State1.inventory],
       };
       // Enforces Sort Order
-      State2.inventory.push(mockItem2);
-      State2.inventory.push(mockItem1);
+      State2.inventory.push({ ...mockItem2 });
+      State2.inventory.push({ ...mockItem1 });
 
       asyncList({ state: State2, action });
 
@@ -219,6 +224,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
           filter.get(ItemFilters[1])
       );
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+      State2.inventory = State2.inventory.map((i) => convertDatesToLocal(i));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.SuccessList,
         payload: {
@@ -243,8 +249,8 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         inventory: [...State1.inventory],
       };
       // Enforces Sort Order
-      State2.inventory.push(mockItem2);
-      State2.inventory.push(mockItem1);
+      State2.inventory.push({ ...mockItem2 });
+      State2.inventory.push({ ...mockItem1 });
 
       asyncList({ state: State2, action });
 
@@ -261,6 +267,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
           filter.get(ItemFilters[1])
       );
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+      State2.inventory = State2.inventory.map((i) => convertDatesToLocal(i));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.SuccessList,
         payload: {
@@ -301,6 +308,8 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         Paths.manageItems + `${mockItem1.id}/`
       );
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+      State2.inventory = State2.inventory.map((i) => convertDatesToLocal(i));
+
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.SuccessGet,
         payload: {
@@ -334,7 +343,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.SuccessGet,
         payload: {
-          inventory: [...State2.inventory, mockItem1],
+          inventory: [...State2.inventory, convertDatesToLocal(mockItem1)],
         },
         callback: mockCallBack,
       });
@@ -378,6 +387,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
         }
       );
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+      State2.inventory = State2.inventory.map((i) => convertDatesToLocal(i));
       expect(mockDispatch).toBeCalledWith({
         type: ApiActions.SuccessUpdate,
         payload: {
@@ -407,7 +417,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       State2 = {
         ...State1,
       };
-      State2.inventory.push(NewStore);
+      State2.inventory.push({ ...mockItem2 });
 
       asyncAdd({ state: State1, action });
 
@@ -431,7 +441,7 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       State2 = {
         ...State1,
       };
-      State2.inventory.push({ id: 99, name: NewStore });
+      State2.inventory.push({ ...mockItem2 });
 
       asyncDel({ state: State2, action });
 
@@ -448,7 +458,6 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
     });
 
     it("should call the API, and then dispatch correctly when asyncList is called", async (done) => {
-      const testStore = { id: 99, name: NewStore };
       action = {
         payload: { name: NewStore },
         dispatch: mockDispatch,
@@ -457,8 +466,8 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       State2 = {
         ...State1,
       };
-      State2.inventory.push(testStore);
-      Request.mockReturnValue([[testStore], responseCode]);
+      State2.inventory.push({ ...mockItem2 });
+      Request.mockReturnValue([[{ ...mockItem2 }], responseCode]);
 
       asyncList({ state: State2, action });
 
@@ -534,19 +543,19 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
 
     it("should call the API, and then dispatch correctly when asyncAdd is called", async (done) => {
       action = {
-        payload: { name: NewStore },
+        payload: { ...mockItem2 },
         dispatch: mockDispatch,
         callback: mockCallBack,
       };
       State2 = {
         ...State1,
       };
-      State2.inventory.push(NewStore);
+      State2.inventory.push({ ...mockItem2 });
 
       asyncAdd({ state: State1, action });
 
       expect(Request).toBeCalledWith("POST", Paths.manageItems, {
-        name: action.payload.name,
+        ...mockItem2,
       });
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({
@@ -558,14 +567,14 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
 
     it("should call the API, and then dispatch correctly when asyncDel is called", async (done) => {
       action = {
-        payload: { name: NewStore, id: 20 },
+        payload: { ...mockItem2 },
         dispatch: mockDispatch,
         callback: mockCallBack,
       };
       State2 = {
         ...State1,
       };
-      State2.inventory.push({ id: 99, name: NewStore });
+      State2.inventory.push({ ...mockItem2 });
 
       asyncDel({ state: State2, action });
 
@@ -582,17 +591,16 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
     });
 
     it("should call the API, and then dispatch correctly when asyncList is called", async (done) => {
-      const testStore = { id: 99, name: NewStore };
       action = {
-        payload: { name: NewStore },
+        payload: { ...mockItem2 },
         dispatch: mockDispatch,
         callback: mockCallBack,
       };
       State2 = {
         ...State1,
       };
-      State2.inventory.push(testStore);
-      Request.mockReturnValue([[testStore], responseCode]);
+      State2.inventory.push({ ...mockItem2 });
+      Request.mockReturnValue([[{ ...mockItem2 }], responseCode]);
 
       asyncList({ state: State2, action });
 
@@ -655,5 +663,28 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
       });
       done();
     });
+  });
+});
+
+describe("Check convertDatesToLocal works as expect", () => {
+  it("should convert next_expiry when given a string as input", () => {
+    const testDate = "2020-01-01";
+    const testDateAsDate = moment.utc(testDate).unix();
+    const expected = testDateAsDate + moment().utcOffset() * 60;
+
+    const testObject = { ...mockItem1, next_expiry_date: testDate };
+    const converted = convertDatesToLocal(testObject);
+
+    expect(expected).toBe(converted.next_expiry_date.unix());
+  });
+
+  it("should return an untouched next_expiry when given a moment object as input", () => {
+    const testDate = "2020-01-01";
+    const testDateAsDate = moment.utc(testDate);
+
+    const testObject = { ...mockItem1, next_expiry_date: testDateAsDate };
+    const converted = convertDatesToLocal(testObject);
+
+    expect(converted).toBe(testObject);
   });
 });
