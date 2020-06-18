@@ -56,6 +56,10 @@ export const Strings = {
         Edit: "Edit",
         Stats: "Stats",
       },
+      NeedShelvesAndStores:
+        "Create some shelves and stores first!\nYour items need to have stores you prefer\n to shop at, and a place to be kept at home.",
+      ApiCommunicationError:
+        "Something went wrong!\nMaybe you're asking for a non existent object?\nGive it another try before giving up.",
       ApiError:
         "Unable to retrieve data from the API!\nDoes this content really exist?\nRetry, or change your query.",
     },

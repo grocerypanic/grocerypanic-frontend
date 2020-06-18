@@ -31,7 +31,7 @@ const ErrorDialogue = ({
   };
 
   React.useEffect(() => {
-    event(eventMessage);
+    if (eventMessage) event(eventMessage);
   }, []);
 
   return (

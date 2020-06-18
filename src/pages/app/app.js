@@ -13,6 +13,7 @@ const Shelves = lazy(() => import("../shelves/shelves.page"));
 const Stores = lazy(() => import("../stores/stores.page"));
 const Items = lazy(() => import("../items/items.page"));
 const Details = lazy(() => import("../details/details.page"));
+const Create = lazy(() => import("../create/create.page"));
 const Menu = lazy(() => import("../menu/menu.page"));
 
 function App() {
@@ -53,6 +54,13 @@ function App() {
         <ProtectedRoute
           path={Routes.details}
           component={Details}
+          negative
+          attr={"login"}
+          redirect={Routes.signin}
+        />
+        <ProtectedRoute
+          path={Routes.create}
+          component={Create}
           negative
           attr={"login"}
           redirect={Routes.signin}

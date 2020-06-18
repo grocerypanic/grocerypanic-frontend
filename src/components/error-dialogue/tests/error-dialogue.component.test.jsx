@@ -43,107 +43,156 @@ describe("Setup Environment", () => {
     history.push(Routes.root);
   });
 
-  describe("when given a redirect to go back", () => {
+  describe("when given a valid analytics event message", () => {
     beforeEach(() => {
-      current.redirect = Routes.goBack;
-      history.push(testRoute);
-      utils = render(
-        <Router history={history}>
-          <AnalyticsContext.Provider value={mockAnalyticsSettings}>
-            <ErrorDialogue {...current} history={history} />
-          </AnalyticsContext.Provider>
-        </Router>
-      );
+      jest.clearAllMocks();
+      current.eventMessage = AnalyticsActions.TestAction;
     });
 
-    it("should render with the correct components and messages", () => {
-      expect(
-        utils.getAllByText(Strings.Testing.GenericTranslationTestString).length
-      ).toBe(2);
-      expect(WarningOutlinedIcon).toHaveBeenCalledTimes(1);
-      expect(mockEvent).toHaveBeenCalledTimes(1);
-      expect(mockEvent).toHaveBeenCalledWith(AnalyticsActions.TestAction);
-      expect(utils.getByTestId("ErrorConfirmation")).toBeTruthy();
+    describe("when given a redirect to go back", () => {
+      beforeEach(() => {
+        current.redirect = Routes.goBack;
+        history.push(testRoute);
+        utils = render(
+          <Router history={history}>
+            <AnalyticsContext.Provider value={mockAnalyticsSettings}>
+              <ErrorDialogue {...current} history={history} />
+            </AnalyticsContext.Provider>
+          </Router>
+        );
+      });
+
+      it("should render with the correct components and messages", () => {
+        expect(
+          utils.getAllByText(Strings.Testing.GenericTranslationTestString)
+            .length
+        ).toBe(2);
+        expect(WarningOutlinedIcon).toHaveBeenCalledTimes(1);
+        expect(utils.getByTestId("ErrorConfirmation")).toBeTruthy();
+      });
+
+      it("should send the event as expected", () => {
+        expect(mockEvent).toHaveBeenCalledTimes(1);
+        expect(mockEvent).toHaveBeenCalledWith(AnalyticsActions.TestAction);
+      });
+
+      it("should handle the confirmation button as expected, route goes back", async (done) => {
+        const button = utils.getByTestId("ErrorConfirmation");
+        expect(ErrorProps.clearError).toHaveBeenCalledTimes(0);
+        fireEvent.click(button);
+        expect(ErrorProps.clearError).toHaveBeenCalledTimes(1);
+        await waitFor(() =>
+          expect(history.location.pathname).not.toBe(testRoute)
+        );
+        await waitFor(() =>
+          expect(history.location.pathname).toBe(Routes.root)
+        );
+        done();
+      });
     });
 
-    it("should handle the confirmation button as expected, route goes back", async (done) => {
-      const button = utils.getByTestId("ErrorConfirmation");
-      expect(ErrorProps.clearError).toHaveBeenCalledTimes(0);
-      fireEvent.click(button);
-      expect(ErrorProps.clearError).toHaveBeenCalledTimes(1);
-      await waitFor(() =>
-        expect(history.location.pathname).not.toBe(testRoute)
-      );
-      await waitFor(() => expect(history.location.pathname).toBe(Routes.root));
-      done();
+    describe("when given a route with no redirect", () => {
+      beforeEach(() => {
+        delete current.redirect;
+        history.push(testRoute);
+        utils = render(
+          <Router history={history}>
+            <AnalyticsContext.Provider value={mockAnalyticsSettings}>
+              <ErrorDialogue {...current} history={history} />
+            </AnalyticsContext.Provider>
+          </Router>
+        );
+      });
+
+      it("should render with the correct components and messages", () => {
+        expect(
+          utils.getAllByText(Strings.Testing.GenericTranslationTestString)
+            .length
+        ).toBe(2);
+        expect(WarningOutlinedIcon).toHaveBeenCalledTimes(1);
+        expect(mockEvent).toHaveBeenCalledTimes(1);
+        expect(mockEvent).toHaveBeenCalledWith(AnalyticsActions.TestAction);
+        expect(utils.getByTestId("ErrorConfirmation")).toBeTruthy();
+      });
+
+      it("should handle the confirmation button as expected, route goes back", async (done) => {
+        const button = utils.getByTestId("ErrorConfirmation");
+        expect(ErrorProps.clearError).toHaveBeenCalledTimes(0);
+        fireEvent.click(button);
+        expect(ErrorProps.clearError).toHaveBeenCalledTimes(1);
+        await waitFor(() => expect(history.location.pathname).toBe(testRoute));
+        done();
+      });
+    });
+
+    describe("when given a redirect", () => {
+      beforeEach(() => {
+        current.redirect = "/brand/new/route";
+        history.push(testRoute);
+        utils = render(
+          <Router history={history}>
+            <AnalyticsContext.Provider value={mockAnalyticsSettings}>
+              <ErrorDialogue {...current} history={history} />
+            </AnalyticsContext.Provider>
+          </Router>
+        );
+      });
+
+      it("should render with the correct components and messages", () => {
+        expect(
+          utils.getAllByText(Strings.Testing.GenericTranslationTestString)
+            .length
+        ).toBe(2);
+        expect(WarningOutlinedIcon).toHaveBeenCalledTimes(1);
+        expect(mockEvent).toHaveBeenCalledTimes(1);
+        expect(mockEvent).toHaveBeenCalledWith(AnalyticsActions.TestAction);
+        expect(utils.getByTestId("ErrorConfirmation")).toBeTruthy();
+      });
+
+      it("should handle the confirmation button as expected, route goes back", async (done) => {
+        const button = utils.getByTestId("ErrorConfirmation");
+        expect(ErrorProps.clearError).toHaveBeenCalledTimes(0);
+        fireEvent.click(button);
+        expect(ErrorProps.clearError).toHaveBeenCalledTimes(1);
+        await waitFor(() =>
+          expect(history.location.pathname).toBe(current.redirect)
+        );
+        done();
+      });
     });
   });
 
-  describe("when given a route with no redirect", () => {
+  describe("when given an invalid analytics event message", () => {
     beforeEach(() => {
-      delete current.redirect;
-      history.push(testRoute);
-      utils = render(
-        <Router history={history}>
-          <AnalyticsContext.Provider value={mockAnalyticsSettings}>
-            <ErrorDialogue {...current} history={history} />
-          </AnalyticsContext.Provider>
-        </Router>
-      );
+      jest.clearAllMocks();
+      current.eventMessage = null;
     });
 
-    it("should render with the correct components and messages", () => {
-      expect(
-        utils.getAllByText(Strings.Testing.GenericTranslationTestString).length
-      ).toBe(2);
-      expect(WarningOutlinedIcon).toHaveBeenCalledTimes(1);
-      expect(mockEvent).toHaveBeenCalledTimes(1);
-      expect(mockEvent).toHaveBeenCalledWith(AnalyticsActions.TestAction);
-      expect(utils.getByTestId("ErrorConfirmation")).toBeTruthy();
-    });
+    describe("when given any redirect type", () => {
+      beforeEach(() => {
+        current.redirect = Routes.goBack;
+        history.push(testRoute);
+        utils = render(
+          <Router history={history}>
+            <AnalyticsContext.Provider value={mockAnalyticsSettings}>
+              <ErrorDialogue {...current} history={history} />
+            </AnalyticsContext.Provider>
+          </Router>
+        );
+      });
 
-    it("should handle the confirmation button as expected, route goes back", async (done) => {
-      const button = utils.getByTestId("ErrorConfirmation");
-      expect(ErrorProps.clearError).toHaveBeenCalledTimes(0);
-      fireEvent.click(button);
-      expect(ErrorProps.clearError).toHaveBeenCalledTimes(1);
-      await waitFor(() => expect(history.location.pathname).toBe(testRoute));
-      done();
-    });
-  });
+      it("should render with the correct components and messages", () => {
+        expect(
+          utils.getAllByText(Strings.Testing.GenericTranslationTestString)
+            .length
+        ).toBe(2);
+        expect(WarningOutlinedIcon).toHaveBeenCalledTimes(1);
+        expect(utils.getByTestId("ErrorConfirmation")).toBeTruthy();
+      });
 
-  describe("when given a redirect", () => {
-    beforeEach(() => {
-      current.redirect = "/brand/new/route";
-      history.push(testRoute);
-      utils = render(
-        <Router history={history}>
-          <AnalyticsContext.Provider value={mockAnalyticsSettings}>
-            <ErrorDialogue {...current} history={history} />
-          </AnalyticsContext.Provider>
-        </Router>
-      );
-    });
-
-    it("should render with the correct components and messages", () => {
-      expect(
-        utils.getAllByText(Strings.Testing.GenericTranslationTestString).length
-      ).toBe(2);
-      expect(WarningOutlinedIcon).toHaveBeenCalledTimes(1);
-      expect(mockEvent).toHaveBeenCalledTimes(1);
-      expect(mockEvent).toHaveBeenCalledWith(AnalyticsActions.TestAction);
-      expect(utils.getByTestId("ErrorConfirmation")).toBeTruthy();
-    });
-
-    it("should handle the confirmation button as expected, route goes back", async (done) => {
-      const button = utils.getByTestId("ErrorConfirmation");
-      expect(ErrorProps.clearError).toHaveBeenCalledTimes(0);
-      fireEvent.click(button);
-      expect(ErrorProps.clearError).toHaveBeenCalledTimes(1);
-      await waitFor(() =>
-        expect(history.location.pathname).toBe(current.redirect)
-      );
-      done();
+      it("should not send any the event", () => {
+        expect(mockEvent).toHaveBeenCalledTimes(0);
+      });
     });
   });
 

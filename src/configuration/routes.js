@@ -4,6 +4,7 @@ const Routes = {
   shelves: "/shelves",
   stores: "/stores",
   items: "/items",
+  create: "/create",
   details: "/details/:id",
   goBack: "back",
 };

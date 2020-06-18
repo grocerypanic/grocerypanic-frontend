@@ -1,16 +1,15 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 
 import { ItemContext } from "../../providers/api/item/item.provider";
 import { UserContext } from "../../providers/user/user.provider";
 import { authExpired } from "../../providers/user/user.async";
 
-import ItemDetailsEditContainer from "../../components/item-details-form/item-details.edit.container";
+import ItemDetailsCreateContainer from "../../components/item-details-form/item-details.create.container";
 
 import { useTranslation } from "react-i18next";
 import Strings from "../../configuration/strings";
 
-const ItemDetailsPage = ({ match }) => {
+const ItemCreatePage = () => {
   const { t } = useTranslation();
   const { dispatch } = React.useContext(UserContext);
 
@@ -27,8 +26,7 @@ const ItemDetailsPage = ({ match }) => {
   };
 
   return (
-    <ItemDetailsEditContainer
-      itemId={match.params.id}
+    <ItemDetailsCreateContainer
       title={t(Strings.ItemDetails.Title)}
       headerTitle={t(Strings.ItemDetails.HeaderTitle)}
       ApiObjectContext={ItemContext}
@@ -38,4 +36,4 @@ const ItemDetailsPage = ({ match }) => {
   );
 };
 
-export default withRouter(ItemDetailsPage);
+export default ItemCreatePage;

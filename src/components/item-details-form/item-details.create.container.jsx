@@ -1,16 +1,13 @@
-// For editing existing components
+// For creating new components
 
 import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
+import Header from "../header/header.component";
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 import ErrorHandler from "../error-handler/error-handler.component";
-import ItemDetails from "./item-details.component";
-
-import { ItemContext } from "../../providers/api/item/item.provider";
-import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
-import { StoreContext } from "../../providers/api/store/store.provider";
+import ItemDetailsForm from "./item-details.form";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
@@ -18,7 +15,13 @@ import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import Strings from "../../configuration/strings";
 import Routes from "../../configuration/routes";
 
-const defaultItem = {
+import { ItemContext } from "../../providers/api/item/item.provider";
+import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
+import { StoreContext } from "../../providers/api/store/store.provider";
+
+import { Container } from "../../global-styles/containers";
+
+export const defaultItem = {
   name: "",
   preferred_stores: [],
   price: "",
@@ -27,8 +30,7 @@ const defaultItem = {
   shelf_life: 14,
 };
 
-const ItemDetailsEditContainer = ({
-  itemId,
+const ItemDetailsCreateContainer = ({
   headerTitle,
   title,
   handleExpiredAuth,
@@ -48,7 +50,11 @@ const ItemDetailsEditContainer = ({
   const [performShelfAsync, setPerformShelfAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performStoreAsync, setPerformStoreAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [transaction, setTransaction] = React.useState(true);
-  const [calculatedItem, setCalculatedItem] = React.useState(defaultItem);
+  const [defaults, setDefaults] = React.useState(defaultItem);
+
+  const [receivedShelves, setReceivedShelves] = React.useState(false);
+  const [receivedStores, setReceivedStores] = React.useState(false);
+  const [saveComplete, setSaveComplete] = React.useState(false);
 
   React.useEffect(() => {
     // Detect Transactions on Any API Plane
@@ -56,28 +62,11 @@ const ItemDetailsEditContainer = ({
   }, [item, store, shelf]);
 
   React.useEffect(() => {
-    if (item.inventory.length > 0) {
-      const thisItem = item.inventory.find((i) => i.id === parseInt(itemId));
-      setCalculatedItem(thisItem);
-    }
-  }, [item]);
-
-  React.useEffect(() => {
     if (!performItemAsync) return;
     if (performItemAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
-    if (performItemAsync.type === ApiActions.SuccessDel) history.goBack();
     itemDispatch(performItemAsync);
     setPerformItemAsync(null);
   }, [performItemAsync]);
-
-  React.useEffect(() => {
-    setPerformItemAsync({
-      type: ApiActions.StartGet,
-      func: ApiFuctions.asyncGet,
-      dispatch: setPerformItemAsync,
-      payload: { id: itemId },
-    });
-  }, []);
 
   React.useEffect(() => {
     if (!performShelfAsync) return;
@@ -87,50 +76,56 @@ const ItemDetailsEditContainer = ({
   }, [performShelfAsync]);
 
   React.useEffect(() => {
-    setPerformShelfAsync({
-      type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
-      dispatch: setPerformShelfAsync,
-    });
-  }, []);
-
-  React.useEffect(() => {
     if (!performStoreAsync) return;
     if (performStoreAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
     storeDispatch(performStoreAsync);
     setPerformStoreAsync(null);
   }, [performStoreAsync]);
 
+  // Set the first shelf by default
   React.useEffect(() => {
+    if (defaults.shelf !== "") return;
+    if (shelf.inventory.length > 0)
+      setDefaults({ ...defaultItem, shelf: shelf.inventory[0].id });
+  }, [shelf]);
+
+  React.useEffect(() => {
+    setPerformShelfAsync({
+      type: ApiActions.StartList,
+      func: ApiFuctions.asyncList,
+      dispatch: setPerformShelfAsync,
+      callback: setReceivedShelves,
+    });
     setPerformStoreAsync({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
       dispatch: setPerformStoreAsync,
+      callback: setReceivedStores,
     });
   }, []);
 
   const handleSave = (newItem) => {
     setPerformItemAsync({
-      type: ApiActions.StartUpdate,
-      func: ApiFuctions.asyncUpdate,
+      type: ApiActions.StartAdd,
+      func: ApiFuctions.asyncAdd,
       dispatch: setPerformItemAsync,
       payload: { ...newItem },
+      callback: setSaveComplete,
     });
   };
 
-  const handleDelete = (newItem) => {
-    setPerformItemAsync({
-      type: ApiActions.StartDel,
-      func: ApiFuctions.asyncDel,
-      dispatch: setPerformItemAsync,
-      payload: { id: newItem.id },
-    });
-  };
+  React.useEffect(() => {
+    if (saveComplete) history.goBack();
+  }, [saveComplete]);
 
   const clearError = () => {
     if (item.error) setPerformItemAsync({ type: ApiActions.ClearErrors });
     if (store.error) setPerformStoreAsync({ type: ApiActions.ClearErrors });
     if (shelf.error) setPerformShelfAsync({ type: ApiActions.ClearErrors });
+  };
+
+  const checkForEmptyContent = () => {
+    return !receivedStores && !receivedShelves;
   };
 
   return (
@@ -139,30 +134,39 @@ const ItemDetailsEditContainer = ({
       clearError={clearError}
       eventMessage={AnalyticsActions.ApiError}
       stringsRoot={Strings.ItemDetails}
-      string={"ApiError"}
+      string={"ApiCommunicationError"}
       redirect={Routes.goBack}
     >
-      <HoldingPattern condition={calculatedItem === defaultItem}>
-        <ItemDetails
-          item={calculatedItem}
-          headerTitle={headerTitle}
-          title={title}
-          helpText={helpText}
-          transaction={transaction}
-          stores={store.inventory}
-          shelves={shelf.inventory}
-          handleSave={handleSave}
-          handleDelete={handleDelete}
-        />
+      <Header title={headerTitle} transaction={transaction} />
+      <HoldingPattern condition={checkForEmptyContent()}>
+        <ErrorHandler
+          condition={item.shelves === [] || receivedStores === []}
+          clearError={() => {}}
+          eventMessage={null}
+          stringsRoot={Strings.ItemDetails}
+          string={"NeedShelvesAndStores"}
+          redirect={Routes.goBack}
+        >
+          <Container>
+            <ItemDetailsForm
+              item={defaults}
+              title={title}
+              helpText={helpText}
+              transaction={transaction}
+              stores={store.inventory}
+              shelves={shelf.inventory}
+              handleSave={handleSave}
+            />
+          </Container>
+        </ErrorHandler>
       </HoldingPattern>
     </ErrorHandler>
   );
 };
 
-export default withRouter(ItemDetailsEditContainer);
+export default withRouter(ItemDetailsCreateContainer);
 
-ItemDetailsEditContainer.propTypes = {
-  itemId: PropTypes.string.isRequired,
+ItemDetailsCreateContainer.propTypes = {
   headerTitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   handleExpiredAuth: PropTypes.func.isRequired,

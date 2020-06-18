@@ -208,16 +208,18 @@ const ItemDetailsForm = ({
                 />
               </Form.Group>
               <ButtonBox>
-                <button
-                  data-testid="delete"
-                  type="button"
-                  className={`btn ${
-                    transaction ? "btn-secondary" : "btn-danger"
-                  }`}
-                  onClick={handleDeleteButton}
-                >
-                  {Strings.ItemDetails.DeleteButton}
-                </button>
+                {handleDelete ? (
+                  <button
+                    data-testid="delete"
+                    type="button"
+                    className={`btn ${
+                      transaction ? "btn-secondary" : "btn-danger"
+                    }`}
+                    onClick={handleDeleteButton}
+                  >
+                    {Strings.ItemDetails.DeleteButton}
+                  </button>
+                ) : null}
                 <button
                   data-testid="submit"
                   type="submit"

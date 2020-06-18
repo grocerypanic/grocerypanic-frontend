@@ -3,8 +3,8 @@ import { render, cleanup, waitFor, act } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 import { MemoryRouter, Route } from "react-router-dom";
 
-import ItemDetailsPage from "../details.page";
-import ItemDetailsEditContainer from "../../../components/item-details-form/item-details.edit.container";
+import ItemDetailsPage from "../create.page";
+import ItemDetailsCreateContainer from "../../../components/item-details-form/item-details.create.container";
 
 import { ItemContext } from "../../../providers/api/item/item.provider";
 
@@ -15,8 +15,10 @@ import UserActions from "../../../providers/user/user.actions";
 import Strings from "../../../configuration/strings";
 import Routes from "../../../configuration/routes";
 
-jest.mock("../../../components/item-details-form/item-details.edit.container");
-ItemDetailsEditContainer.mockImplementation(() => <div>MockDetails</div>);
+jest.mock(
+  "../../../components/item-details-form/item-details.create.container"
+);
+ItemDetailsCreateContainer.mockImplementation(() => <div>MockDetails</div>);
 
 const mockDispatch = jest.fn();
 const ItemId = "1";
@@ -44,11 +46,10 @@ describe("Check the correct props are passed to simple list", () => {
   afterEach(cleanup);
 
   it("should render the details page correctly", async (done) => {
-    await waitFor(() => expect(ItemDetailsEditContainer).toBeCalledTimes(1));
-    const props = ItemDetailsEditContainer.mock.calls[0][0];
-    propCount(props, 6);
+    await waitFor(() => expect(ItemDetailsCreateContainer).toBeCalledTimes(1));
+    const props = ItemDetailsCreateContainer.mock.calls[0][0];
+    propCount(props, 5);
 
-    expect(props.itemId).toBe(ItemId);
     expect(props.title).toBe(Strings.ItemDetails.Title);
     expect(props.headerTitle).toBe(Strings.ItemDetails.HeaderTitle);
     expect(props.ApiObjectContext).toBe(ItemContext);
@@ -59,8 +60,8 @@ describe("Check the correct props are passed to simple list", () => {
   });
 
   it("should handle an expired auth as expected", async (done) => {
-    await waitFor(() => expect(ItemDetailsEditContainer).toBeCalledTimes(1));
-    const props = ItemDetailsEditContainer.mock.calls[0][0];
+    await waitFor(() => expect(ItemDetailsCreateContainer).toBeCalledTimes(1));
+    const props = ItemDetailsCreateContainer.mock.calls[0][0];
     const handleExpiredAuth = props.handleExpiredAuth;
 
     act(() => handleExpiredAuth());

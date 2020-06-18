@@ -6,8 +6,10 @@ import { createBrowserHistory } from "history";
 
 import ErrorHandler from "../../error-handler/error-handler.component";
 import HoldingPattern from "../../holding-pattern/holding-pattern.component";
-import ItemDetails from "../item-details.component";
-import ItemDetailsEditContainer from "../item-details.edit.container";
+import ItemDetailsForm from "../item-details.form";
+import ItemDetailsCreateContainer, {
+  defaultItem,
+} from "../item-details.create.container";
 
 import { ItemContext } from "../../../providers/api/item/item.provider";
 import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
@@ -22,13 +24,14 @@ import ApiFunctions from "../../../providers/api/api.functions";
 import Strings from "../../../configuration/strings";
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import Routes from "../../../configuration/routes";
+import initialState from "../../../providers/user/user.initial";
 
-jest.mock("../item-details.component");
+jest.mock("../item-details.form");
 jest.mock("../../holding-pattern/holding-pattern.component");
 jest.mock("../../error-handler/error-handler.component");
 
 ErrorHandler.mockImplementation(({ children }) => children);
-ItemDetails.mockImplementation(() => <div>MockDetails</div>);
+ItemDetailsForm.mockImplementation(() => <div>MockDetails</div>);
 HoldingPattern.mockImplementation(({ children }) => children);
 
 const mockItemDispatch = jest.fn();
@@ -117,12 +120,26 @@ describe("Setup Environment", () => {
                   transaction: false,
                 }}
               >
-                <ItemDetailsEditContainer {...current} />
+                <ItemDetailsCreateContainer {...current} />
               </ItemContext.Provider>
             </ShelfContext.Provider>
           </StoreContext.Provider>
         </Router>
       );
+    });
+
+    it("renders, bypasses ErrorHandler1 as expected", async (done) => {
+      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
+      const call = ErrorHandler.mock.calls[2][0];
+      propCount(call, 7);
+      expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
+      expect(call.condition).toBe(false);
+      expect(call.clearError).toBeInstanceOf(Function);
+      expect(call.stringsRoot).toBe(Strings.ItemDetails);
+      expect(call.string).toBe("ApiCommunicationError");
+      expect(call.redirect).toBe(Routes.goBack);
+      expect(call.children).toBeTruthy();
+      done();
     });
 
     it("renders, bypasses HoldingPattern as expected", async (done) => {
@@ -133,35 +150,28 @@ describe("Setup Environment", () => {
       done();
     });
 
-    it("renders, calls items.StartGet on first render", async (done) => {
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
-      const call = mockItemDispatch.mock.calls[0][0];
-      propCount(call, 4);
-      expect(call.type).toBe(ApiActions.StartGet);
-      expect(call.func).toBe(ApiFunctions.asyncGet);
-      expect(call.dispatch).toBeInstanceOf(Function);
-      expect(call.payload).toStrictEqual({ id: props.itemId });
-      done();
-    });
-
-    it("renders, calls items auth failure as expected", async (done) => {
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
-      const itemDispatch = mockItemDispatch.mock.calls[0][0].dispatch;
-
-      expect(mockHandleExpiredAuth).toBeCalledTimes(0);
-      act(() => itemDispatch({ type: ApiActions.FailureAuth }));
-      await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
-
+    it("renders, bypasses ErrorHandler2 as expected", async (done) => {
+      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
+      const call = ErrorHandler.mock.calls[5][0];
+      propCount(call, 7);
+      expect(call.eventMessage).toBe(null);
+      expect(call.condition).toBe(false);
+      expect(call.clearError).toBeInstanceOf(Function);
+      expect(call.stringsRoot).toBe(Strings.ItemDetails);
+      expect(call.string).toBe("NeedShelvesAndStores");
+      expect(call.redirect).toBe(Routes.goBack);
+      expect(call.children).toBeTruthy();
       done();
     });
 
     it("renders, calls shelves.StartList on first render", async (done) => {
       await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
       const call = mockShelfDispatch.mock.calls[0][0];
-      propCount(call, 3);
+      propCount(call, 4);
       expect(call.type).toBe(ApiActions.StartList);
       expect(call.func).toBe(ApiFunctions.asyncList);
       expect(call.dispatch).toBeInstanceOf(Function);
+      expect(call.callback).toBeInstanceOf(Function);
       done();
     });
 
@@ -179,10 +189,11 @@ describe("Setup Environment", () => {
     it("renders, calls stores.StartList on first render", async (done) => {
       await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
       const call = mockStoreDispatch.mock.calls[0][0];
-      propCount(call, 3);
+      propCount(call, 4);
       expect(call.type).toBe(ApiActions.StartList);
       expect(call.func).toBe(ApiFunctions.asyncList);
       expect(call.dispatch).toBeInstanceOf(Function);
+      expect(call.callback).toBeInstanceOf(Function);
       done();
     });
 
@@ -198,101 +209,62 @@ describe("Setup Environment", () => {
     });
 
     it("renders ItemDetails with correct props", async (done) => {
-      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
-      const call = ItemDetails.mock.calls[2][0];
-      propCount(call, 9);
-      expect(call.item).toBe(mockItem);
-      expect(call.headerTitle).toBe(props.headerTitle);
+      await waitFor(() => expect(ItemDetailsForm).toHaveBeenCalledTimes(3));
+      const call = ItemDetailsForm.mock.calls[1][0];
+      propCount(call, 7);
+      expect(call.item).toStrictEqual({ ...defaultItem, shelf: 1 });
       expect(call.title).toBe(props.title);
       expect(call.helpText).toBe(props.helpText);
       expect(call.transaction).toBe(false);
       expect(call.stores).toStrictEqual([mockStore]);
       expect(call.shelves).toStrictEqual([mockShelf]);
       expect(call.handleSave).toBeInstanceOf(Function);
-      expect(call.handleDelete).toBeInstanceOf(Function);
       done();
     });
 
     it("handles a call to handleSave as expected", async (done) => {
-      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+      await waitFor(() => expect(ItemDetailsForm).toHaveBeenCalledTimes(3));
 
       const mockObject = { id: 99 };
 
-      const handleSave = ItemDetails.mock.calls[1][0].handleSave;
+      const handleSave = ItemDetailsForm.mock.calls[2][0].handleSave;
       expect(handleSave).toBeInstanceOf(Function);
       act(() => handleSave(mockObject));
 
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
-      const updateDispatch = mockItemDispatch.mock.calls[1][0];
-      propCount(updateDispatch, 4);
+      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+      const updateDispatch = mockItemDispatch.mock.calls[0][0];
+      propCount(updateDispatch, 5);
 
-      expect(updateDispatch.type).toBe(ApiActions.StartUpdate);
-      expect(updateDispatch.func).toBe(ApiFunctions.asyncUpdate);
+      expect(updateDispatch.type).toBe(ApiActions.StartAdd);
+      expect(updateDispatch.func).toBe(ApiFunctions.asyncAdd);
       expect(updateDispatch.dispatch.name).toBe("bound dispatchAction");
+      expect(updateDispatch.callback.name).toBe("bound dispatchAction");
       expect(updateDispatch.payload).toStrictEqual({ id: mockObject.id });
 
       done();
     });
 
-    it("handles a call to handleDelete as expected", async (done) => {
-      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+    it("handles a successful save as expected", async (done) => {
+      await waitFor(() => expect(ItemDetailsForm).toHaveBeenCalledTimes(3));
 
-      // Perform Initial Get and Lists on API Data
+      const mockObject = { id: 99 };
+
+      const handleSave = ItemDetailsForm.mock.calls[2][0].handleSave;
+      expect(handleSave).toBeInstanceOf(Function);
+      act(() => handleSave(mockObject));
+
       await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
-      await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
-      await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
+      const updateDispatch = mockItemDispatch.mock.calls[0][0];
 
-      const mockObject = { id: 7 };
-
-      const handleDelete = ItemDetails.mock.calls[1][0].handleDelete;
-      expect(handleDelete).toBeInstanceOf(Function);
-
-      act(() => handleDelete(mockObject));
-
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
-      const deleteDispatch = mockItemDispatch.mock.calls[1][0];
-      propCount(deleteDispatch, 4);
-
-      expect(deleteDispatch.type).toBe(ApiActions.StartDel);
-      expect(deleteDispatch.func).toBe(ApiFunctions.asyncDel);
-      expect(deleteDispatch.dispatch.name).toBe("bound dispatchAction");
-      expect(deleteDispatch.payload).toStrictEqual({ id: mockObject.id });
-
-      done();
-    });
-
-    it("handles successful delete as expected", async (done) => {
-      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
-
-      // Perform Initial Get and Lists on API Data
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
-      await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
-      await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
-
-      const mockObject = { id: 7 };
-
-      // Get Perform Async By Using The Delete Handler
-
-      const handleDelete = ItemDetails.mock.calls[1][0].handleDelete;
-      expect(handleDelete).toBeInstanceOf(Function);
-
-      act(() => handleDelete(mockObject));
-
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
-      const deleteDispatch = mockItemDispatch.mock.calls[1][0].dispatch;
-
-      expect(mockGoBack).toBeCalledTimes(0);
-      act(() => deleteDispatch({ type: ApiActions.SuccessDel }));
-
-      // The successful delete should trigger the back button
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(3));
-      expect(mockGoBack).toBeCalledTimes(1);
+      // After save goes back to the previous page
+      act(() => updateDispatch.callback(true));
+      await waitFor(() => expect(mockGoBack).toBeCalledTimes(1));
 
       done();
     });
   });
 
-  describe("during an error", () => {
+  describe("during an api error", () => {
     describe("during a store api error", () => {
       beforeEach(() => {
         jest.clearAllMocks();
@@ -315,7 +287,7 @@ describe("Setup Environment", () => {
                     transaction: false,
                   }}
                 >
-                  <ItemDetailsEditContainer {...current} />
+                  <ItemDetailsCreateContainer {...current} />
                 </ItemContext.Provider>
               </ShelfContext.Provider>
             </StoreContext.Provider>
@@ -324,20 +296,21 @@ describe("Setup Environment", () => {
       });
 
       it("renders, calls the ErrorHandler with the correct params", () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(3);
+        expect(ErrorHandler).toHaveBeenCalledTimes(6);
 
-        const errorHandlerCall = ErrorHandler.mock.calls[0][0];
+        const errorHandlerCall = ErrorHandler.mock.calls[2][0];
         propCount(errorHandlerCall, 7);
         expect(errorHandlerCall.condition).toBe(true);
         expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
         expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
         expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
         expect(errorHandlerCall.redirect).toBe(Routes.goBack);
+        expect(errorHandlerCall.string).toBe("ApiCommunicationError");
         expect(errorHandlerCall.children).toBeTruthy();
       });
 
       it("renders, clear error works as expected", async (done) => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(3); // Three rerenders for API data
+        expect(ErrorHandler).toHaveBeenCalledTimes(6); // Three rerenders for API data
         const clearError = ErrorHandler.mock.calls[0][0].clearError;
         jest.clearAllMocks();
 
@@ -373,7 +346,7 @@ describe("Setup Environment", () => {
                     transaction: false,
                   }}
                 >
-                  <ItemDetailsEditContainer {...current} />
+                  <ItemDetailsCreateContainer {...current} />
                 </ItemContext.Provider>
               </ShelfContext.Provider>
             </StoreContext.Provider>
@@ -382,7 +355,7 @@ describe("Setup Environment", () => {
       });
 
       it("renders, calls the ErrorHandler with the correct params", () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(3);
+        expect(ErrorHandler).toHaveBeenCalledTimes(6);
 
         const errorHandlerCall = ErrorHandler.mock.calls[0][0];
         propCount(errorHandlerCall, 7);
@@ -395,7 +368,7 @@ describe("Setup Environment", () => {
       });
 
       it("renders, clear error works as expected", async (done) => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(3); // Three rerenders for API data
+        expect(ErrorHandler).toHaveBeenCalledTimes(6); // Three rerenders for API data
         const clearError = ErrorHandler.mock.calls[0][0].clearError;
         jest.clearAllMocks();
 
@@ -431,7 +404,7 @@ describe("Setup Environment", () => {
                 }}
               >
                 <ItemContext.Provider value={TestContext}>
-                  <ItemDetailsEditContainer {...current} />
+                  <ItemDetailsCreateContainer {...current} />
                 </ItemContext.Provider>
               </ShelfContext.Provider>
             </StoreContext.Provider>
@@ -440,7 +413,7 @@ describe("Setup Environment", () => {
       });
 
       it("renders, calls the ErrorHandler with the correct params", () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(3);
+        expect(ErrorHandler).toHaveBeenCalledTimes(6);
 
         const errorHandlerCall = ErrorHandler.mock.calls[0][0];
         propCount(errorHandlerCall, 7);
@@ -453,7 +426,7 @@ describe("Setup Environment", () => {
       });
 
       it("renders, clear error works as expected", async (done) => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(3); // Three rerenders for API data
+        expect(ErrorHandler).toHaveBeenCalledTimes(6); // Three rerenders for API data
         const clearError = ErrorHandler.mock.calls[0][0].clearError;
         jest.clearAllMocks();
 
