@@ -72,8 +72,6 @@ const mockItem = {
 // Test Data Defaults
 
 let testData = {
-  item: mockItem,
-  allItems: [mockItem],
   listFunctions: {
     restock: mockReStock,
     consume: mockConsume,
@@ -83,6 +81,7 @@ let testData = {
   listValues: {
     transaction: false,
   },
+  history: { push: jest.fn() },
 };
 
 let utils;
@@ -90,178 +89,264 @@ let current;
 
 describe("Setup Environment", () => {
   beforeEach(() => {
-    current = testData;
+    current = { ...testData, item: { ...mockItem }, allItems: [mockItem] };
   });
   describe("when outside of a transaction", () => {
-    beforeEach(() => {
-      current.listValues.transaction = false;
-      jest.clearAllMocks();
-      utils = render(<ItemListRow {...current} />);
-    });
-    afterEach(cleanup);
+    describe("with short item names", () => {
+      beforeEach(() => {
+        current.item.name = "Corn";
+        current.listValues.transaction = false;
+        jest.clearAllMocks();
+        utils = render(<ItemListRow {...current} />);
+      });
+      afterEach(cleanup);
 
-    it("renders the expected components", () => {
-      expect(current.listValues.transaction).toBeFalsy();
-      expect(utils.queryByTestId("quantity")).toBeTruthy();
-      expect(utils.queryByTestId("expired")).toBeTruthy();
-      expect(utils.queryByTestId("restock")).toBeTruthy();
-      expect(utils.queryByTestId("consume")).toBeTruthy();
-    });
+      it("Renders the restock menu as expected", () => {
+        expect(DropdownMenu).toBeCalledTimes(2);
+        const call = DropdownMenu.mock.calls[0][0];
+        const name = current.item.name;
 
-    it("handles a long click on items as expected", async (done) => {
-      const itemComponent = utils.queryByTestId("listElement");
-      fireEvent.mouseDown(itemComponent, "click");
-      setTimeout(() => fireEvent.mouseUp(itemComponent, "click"), 500);
+        expect(call.children[0].props.eventKey).toBe(1);
+        expect(call.children[0].props.children.props.children).toEqual([
+          name,
+          " ",
+          "+ 1",
+        ]);
+        expect(call.children[1].props.eventKey).toBe(2);
+        expect(call.children[1].props.children.props.children).toEqual([
+          name,
+          " ",
+          "+ 2",
+        ]);
+        expect(call.children[2].props.eventKey).toBe(3);
+        expect(call.children[2].props.children.props.children).toEqual([
+          name,
+          " ",
+          "+ 3",
+        ]);
+        expect(call.children[3].props.eventKey).toBe(4);
+        expect(call.children[3].props.children.props.children).toEqual([
+          name,
+          " ",
+          "+ 4",
+        ]);
+        expect(call.children[4].props.eventKey).toBe(5);
+        expect(call.children[4].props.children.props.children).toEqual([
+          name,
+          " ",
+          "+ 5",
+        ]);
+      });
 
-      // Implement push to details pages
-      expect(true).toBe(true);
+      it("Renders the consume menu as expected", () => {
+        expect(DropdownMenu).toBeCalledTimes(2);
+        const call = DropdownMenu.mock.calls[1][0];
+        const name = current.item.name;
 
-      done();
-    });
-
-    it("Renders the quantity as expected", () => {
-      const node = utils.getByTestId("quantity");
-      expect(node.textContent).toBe(current.item.quantity.toString());
-    });
-
-    it("Renders the expired as expected", () => {
-      const node = utils.getByTestId("expired");
-      expect(node.textContent).toBe(current.item.expired.toString());
-    });
-
-    it("Renders the restock control as expected", async (done) => {
-      expect(Dropdown).toBeCalledTimes(2);
-      const call = Dropdown.mock.calls[0][0];
-      const restock = call.onSelect;
-      const mockPreventDefault = jest.fn();
-      restock(1, { preventDefault: mockPreventDefault });
-
-      await waitFor(() => expect(mockSetActionMsg).toBeCalledTimes(2));
-      expect(mockSetActionMsg).toBeCalledWith("Vegan Cheese +1");
-      expect(mockSetActionMsg).toBeCalledWith(null);
-
-      expect(mockReStock).toBeCalledTimes(1);
-      expect(mockReStock).toBeCalledWith(current.item, 1);
-
-      done();
-    });
-
-    it("Renders the consume control as expected", async (done) => {
-      expect(Dropdown).toBeCalledTimes(2);
-      const call = Dropdown.mock.calls[1][0];
-      const consume = call.onSelect;
-      const mockPreventDefault = jest.fn();
-      consume(1, { preventDefault: mockPreventDefault });
-
-      await waitFor(() => expect(mockSetActionMsg).toBeCalledTimes(2));
-      expect(mockSetActionMsg).toBeCalledWith("Vegan Cheese -1");
-      expect(mockSetActionMsg).toBeCalledWith(null);
-
-      expect(mockConsume).toBeCalledTimes(1);
-      expect(mockConsume).toBeCalledWith(current.item, 1);
-      done();
-    });
-
-    it("Renders the consume control as expected when an illegal value is used", async (done) => {
-      expect(Dropdown).toBeCalledTimes(2);
-      const call = Dropdown.mock.calls[1][0];
-      const consume = call.onSelect;
-      const mockPreventDefault = jest.fn();
-      consume(100, { preventDefault: mockPreventDefault });
-
-      await waitFor(() => expect(mockSetErrorMsg).toBeCalledTimes(2));
-      expect(mockSetErrorMsg).toBeCalledWith(
-        Strings.InventoryPage.ErrorInsufficientInventory
-      );
-      expect(mockSetErrorMsg).toBeCalledWith(null);
-
-      done();
-    });
-
-    it("Renders the restock toggle as expected", () => {
-      expect(DropdownToggle).toBeCalledTimes(2);
-      const call = DropdownToggle.mock.calls[0][0];
-      expect(call.variant).toBe("success");
+        expect(call.children[0].props.eventKey).toBe(1);
+        expect(call.children[0].props.children.props.children).toEqual([
+          name,
+          " ",
+          "- 1",
+        ]);
+        expect(call.children[1].props.eventKey).toBe(2);
+        expect(call.children[1].props.children.props.children).toEqual([
+          name,
+          " ",
+          "- 2",
+        ]);
+        expect(call.children[2].props.eventKey).toBe(3);
+        expect(call.children[2].props.children.props.children).toEqual([
+          name,
+          " ",
+          "- 3",
+        ]);
+        expect(call.children[3].props.eventKey).toBe(4);
+        expect(call.children[3].props.children.props.children).toEqual([
+          name,
+          " ",
+          "- 4",
+        ]);
+        expect(call.children[4].props.eventKey).toBe(5);
+        expect(call.children[4].props.children.props.children).toEqual([
+          name,
+          " ",
+          "- 5",
+        ]);
+      });
     });
 
-    it("Renders the consume toggle as expected", () => {
-      expect(DropdownToggle).toBeCalledTimes(2);
-      const call = DropdownToggle.mock.calls[1][0];
-      expect(call.variant).toBe("danger");
-    });
+    describe("with long item names", () => {
+      beforeEach(() => {
+        current.listValues.transaction = false;
+        jest.clearAllMocks();
+        utils = render(<ItemListRow {...current} />);
+      });
+      afterEach(cleanup);
 
-    it("Renders the restock menu as expected", () => {
-      expect(DropdownMenu).toBeCalledTimes(2);
-      const call = DropdownMenu.mock.calls[0][0];
-      let name = current.item.name.slice(0, 10) + "...";
+      it("renders the expected components", () => {
+        expect(current.listValues.transaction).toBeFalsy();
+        expect(utils.queryByTestId("quantity")).toBeTruthy();
+        expect(utils.queryByTestId("expired")).toBeTruthy();
+        expect(utils.queryByTestId("restock")).toBeTruthy();
+        expect(utils.queryByTestId("consume")).toBeTruthy();
+      });
 
-      expect(call.children[0].props.eventKey).toBe(1);
-      expect(call.children[0].props.children.props.children).toEqual([
-        name,
-        " ",
-        "+ 1",
-      ]);
-      expect(call.children[1].props.eventKey).toBe(2);
-      expect(call.children[1].props.children.props.children).toEqual([
-        name,
-        " ",
-        "+ 2",
-      ]);
-      expect(call.children[2].props.eventKey).toBe(3);
-      expect(call.children[2].props.children.props.children).toEqual([
-        name,
-        " ",
-        "+ 3",
-      ]);
-      expect(call.children[3].props.eventKey).toBe(4);
-      expect(call.children[3].props.children.props.children).toEqual([
-        name,
-        " ",
-        "+ 4",
-      ]);
-      expect(call.children[4].props.eventKey).toBe(5);
-      expect(call.children[4].props.children.props.children).toEqual([
-        name,
-        " ",
-        "+ 5",
-      ]);
-    });
+      it("handles a click on item names as expected", async (done) => {
+        const itemComponent = utils.queryByTestId("listTitle");
+        expect(current.history.push).toBeCalledTimes(0);
+        fireEvent.click(itemComponent, "click");
+        await waitFor(() => expect(current.history.push).toBeCalledTimes(1));
+        expect(current.history.push).toBeCalledWith(
+          "/details/" + current.item.id
+        );
+        done();
+      });
 
-    it("Renders the consume menu as expected", () => {
-      expect(DropdownMenu).toBeCalledTimes(2);
-      const call = DropdownMenu.mock.calls[1][0];
-      let name = current.item.name.slice(0, 10) + "...";
+      it("Renders the quantity as expected", () => {
+        const node = utils.getByTestId("quantity");
+        expect(node.textContent).toBe(current.item.quantity.toString());
+      });
 
-      expect(call.children[0].props.eventKey).toBe(1);
-      expect(call.children[0].props.children.props.children).toEqual([
-        name,
-        " ",
-        "- 1",
-      ]);
-      expect(call.children[1].props.eventKey).toBe(2);
-      expect(call.children[1].props.children.props.children).toEqual([
-        name,
-        " ",
-        "- 2",
-      ]);
-      expect(call.children[2].props.eventKey).toBe(3);
-      expect(call.children[2].props.children.props.children).toEqual([
-        name,
-        " ",
-        "- 3",
-      ]);
-      expect(call.children[3].props.eventKey).toBe(4);
-      expect(call.children[3].props.children.props.children).toEqual([
-        name,
-        " ",
-        "- 4",
-      ]);
-      expect(call.children[4].props.eventKey).toBe(5);
-      expect(call.children[4].props.children.props.children).toEqual([
-        name,
-        " ",
-        "- 5",
-      ]);
+      it("Renders the expired as expected", () => {
+        const node = utils.getByTestId("expired");
+        expect(node.textContent).toBe(current.item.expired.toString());
+      });
+
+      it("Renders the restock control as expected", async (done) => {
+        expect(Dropdown).toBeCalledTimes(2);
+        const call = Dropdown.mock.calls[0][0];
+        const restock = call.onSelect;
+        const mockPreventDefault = jest.fn();
+        restock(1, { preventDefault: mockPreventDefault });
+
+        await waitFor(() => expect(mockSetActionMsg).toBeCalledTimes(2));
+        expect(mockSetActionMsg).toBeCalledWith("Vegan Cheese +1");
+        expect(mockSetActionMsg).toBeCalledWith(null);
+
+        expect(mockReStock).toBeCalledTimes(1);
+        expect(mockReStock).toBeCalledWith(current.item, 1);
+
+        done();
+      });
+
+      it("Renders the consume control as expected", async (done) => {
+        expect(Dropdown).toBeCalledTimes(2);
+        const call = Dropdown.mock.calls[1][0];
+        const consume = call.onSelect;
+        const mockPreventDefault = jest.fn();
+        consume(1, { preventDefault: mockPreventDefault });
+
+        await waitFor(() => expect(mockSetActionMsg).toBeCalledTimes(2));
+        expect(mockSetActionMsg).toBeCalledWith("Vegan Cheese -1");
+        expect(mockSetActionMsg).toBeCalledWith(null);
+
+        expect(mockConsume).toBeCalledTimes(1);
+        expect(mockConsume).toBeCalledWith(current.item, 1);
+        done();
+      });
+
+      it("Renders the consume control as expected when an illegal value is used", async (done) => {
+        expect(Dropdown).toBeCalledTimes(2);
+        const call = Dropdown.mock.calls[1][0];
+        const consume = call.onSelect;
+        const mockPreventDefault = jest.fn();
+        consume(100, { preventDefault: mockPreventDefault });
+
+        await waitFor(() => expect(mockSetErrorMsg).toBeCalledTimes(2));
+        expect(mockSetErrorMsg).toBeCalledWith(
+          Strings.InventoryPage.ErrorInsufficientInventory
+        );
+        expect(mockSetErrorMsg).toBeCalledWith(null);
+
+        done();
+      });
+
+      it("Renders the restock toggle as expected", () => {
+        expect(DropdownToggle).toBeCalledTimes(2);
+        const call = DropdownToggle.mock.calls[0][0];
+        expect(call.variant).toBe("success");
+      });
+
+      it("Renders the consume toggle as expected", () => {
+        expect(DropdownToggle).toBeCalledTimes(2);
+        const call = DropdownToggle.mock.calls[1][0];
+        expect(call.variant).toBe("danger");
+      });
+
+      it("Renders the restock menu as expected", () => {
+        expect(DropdownMenu).toBeCalledTimes(2);
+        const call = DropdownMenu.mock.calls[0][0];
+        let name = current.item.name.slice(0, 10) + "...";
+
+        expect(call.children[0].props.eventKey).toBe(1);
+        expect(call.children[0].props.children.props.children).toEqual([
+          name,
+          " ",
+          "+ 1",
+        ]);
+        expect(call.children[1].props.eventKey).toBe(2);
+        expect(call.children[1].props.children.props.children).toEqual([
+          name,
+          " ",
+          "+ 2",
+        ]);
+        expect(call.children[2].props.eventKey).toBe(3);
+        expect(call.children[2].props.children.props.children).toEqual([
+          name,
+          " ",
+          "+ 3",
+        ]);
+        expect(call.children[3].props.eventKey).toBe(4);
+        expect(call.children[3].props.children.props.children).toEqual([
+          name,
+          " ",
+          "+ 4",
+        ]);
+        expect(call.children[4].props.eventKey).toBe(5);
+        expect(call.children[4].props.children.props.children).toEqual([
+          name,
+          " ",
+          "+ 5",
+        ]);
+      });
+
+      it("Renders the consume menu as expected", () => {
+        expect(DropdownMenu).toBeCalledTimes(2);
+        const call = DropdownMenu.mock.calls[1][0];
+        let name = current.item.name.slice(0, 10) + "...";
+
+        expect(call.children[0].props.eventKey).toBe(1);
+        expect(call.children[0].props.children.props.children).toEqual([
+          name,
+          " ",
+          "- 1",
+        ]);
+        expect(call.children[1].props.eventKey).toBe(2);
+        expect(call.children[1].props.children.props.children).toEqual([
+          name,
+          " ",
+          "- 2",
+        ]);
+        expect(call.children[2].props.eventKey).toBe(3);
+        expect(call.children[2].props.children.props.children).toEqual([
+          name,
+          " ",
+          "- 3",
+        ]);
+        expect(call.children[3].props.eventKey).toBe(4);
+        expect(call.children[3].props.children.props.children).toEqual([
+          name,
+          " ",
+          "- 4",
+        ]);
+        expect(call.children[4].props.eventKey).toBe(5);
+        expect(call.children[4].props.children.props.children).toEqual([
+          name,
+          " ",
+          "- 5",
+        ]);
+      });
     });
   });
 
@@ -313,10 +398,11 @@ describe("Setup Environment", () => {
       expect(DropdownMenu).toBeCalledTimes(0);
     });
 
-    it("handles a long click on items as expected, by doing nothing", async (done) => {
-      const itemComponent = utils.queryByTestId("listElement");
-      fireEvent.mouseDown(itemComponent, "click");
-      setTimeout(() => fireEvent.mouseUp(itemComponent, "click"), 500);
+    it("handles a click on items as expected, by doing nothing", async (done) => {
+      const itemComponent = utils.queryByTestId("listTitle");
+      expect(current.history.push).toBeCalledTimes(0);
+      fireEvent.click(itemComponent, "click");
+      expect(current.history.push).toBeCalledTimes(0);
       done();
     });
   });

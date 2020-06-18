@@ -67,7 +67,7 @@ const ItemList = ({
   const handleReStock = async (item, quantity) => {
     if (apiObject.transaction) return;
     setPerformAsync({
-      type: ApiActions.StartUpdate,
+      type: ApiActions.StartUpdate, // Should be a transaction
       func: ApiFuctions.asyncUpdate,
       dispatch: setPerformAsync,
       payload: {
@@ -80,7 +80,7 @@ const ItemList = ({
   const handleConsume = (item, quantity) => {
     if (apiObject.transaction) return;
     setPerformAsync({
-      type: ApiActions.StartUpdate,
+      type: ApiActions.StartUpdate, // Should be a transaction
       func: ApiFuctions.asyncUpdate,
       dispatch: setPerformAsync,
       payload: {

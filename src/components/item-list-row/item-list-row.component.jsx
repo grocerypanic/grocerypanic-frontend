@@ -96,8 +96,10 @@ const ItemListRow = ({
           <div data-testid="expired">{item.expired}</div>
         </GeneratePopOver>
       </Digit>
-      <ListTitle data-testid="ListTitle">
-        <div onClick={handleClick}>{item.name}</div>
+      <ListTitle>
+        <div data-testid="listTitle" onClick={handleClick}>
+          {item.name}
+        </div>
       </ListTitle>
       <Control type="restock" data-testid="restock">
         <Dropdown alignRight as={ButtonGroup} onSelect={handleRestock}>
@@ -155,5 +157,5 @@ ItemListRow.propTypes = {
   }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
-  }),
+  }).isRequired,
 };

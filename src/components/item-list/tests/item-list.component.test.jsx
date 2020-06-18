@@ -273,7 +273,7 @@ describe("Setup Environment", () => {
         done();
       });
 
-      it("renders, and dispatches the API reducer when handleReStock is called", async (done) => {
+      it("renders,and dispatches the API reducer when handleReStock is called", async (done) => {
         expect(ItemListRow).toHaveBeenCalledTimes(3);
         const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
         expect(current.transaction).toBeFalsy();
@@ -297,7 +297,7 @@ describe("Setup Environment", () => {
         done();
       });
 
-      it("renders,  and dispatches the API reducer when handleDelete is called", async (done) => {
+      it("renders, and dispatches the API reducer when handleDelete is called", async (done) => {
         expect(ItemListRow).toHaveBeenCalledTimes(3);
         const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
         expect(current.transaction).toBeFalsy();
@@ -321,7 +321,7 @@ describe("Setup Environment", () => {
         done();
       });
 
-      it("renders,  and handles an auth failure condition as expected", async (done) => {
+      it("renders, and handles an auth failure condition as expected", async (done) => {
         expect(ItemListRow).toHaveBeenCalledTimes(3);
         const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
         expect(current.transaction).toBeFalsy();
