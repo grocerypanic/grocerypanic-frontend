@@ -45,7 +45,6 @@ const SignInContainer = () => {
           clearError={clearLogin}
           stringsRoot={Strings.SignIn}
           string={user.errorMessage}
-          redirect={Routes.root}
         />
       ) : (
         <SignIn

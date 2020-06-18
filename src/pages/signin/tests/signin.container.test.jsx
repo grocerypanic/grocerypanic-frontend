@@ -128,13 +128,12 @@ describe("Setup Environment for Handlers", () => {
     await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(1));
     await waitFor(() => expect(SignIn).toBeCalledTimes(0));
     const call1 = ErrorDialogue.mock.calls[0][0];
-    propCount(call1, 5);
+    propCount(call1, 4);
 
     expect(call1.eventError).toBe(AnalyticsActions.LoginError);
     expect(call1.clearError).toBeInstanceOf(Function);
     expect(call1.string).toBe(currentTest.errorMessage);
     expect(call1.stringsRoot).toBe(Strings.SignIn);
-    expect(call1.redirect).toBe(Routes.root);
     done();
   });
 

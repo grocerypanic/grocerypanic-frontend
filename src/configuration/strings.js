@@ -56,6 +56,12 @@ export const Strings = {
         Edit: "Edit",
         Stats: "Stats",
       },
+      ApiError:
+        "Unable to retrieve data from the API!\nDoes this content really exist?\nRetry, or change your query.",
+    },
+    ItemList: {
+      ApiError:
+        "Unable to retrieve data from the API!\nDoes this content really exist?\nRetry, or change your query.",
     },
     InventoryPage: {
       Title: "Inventory (All)",

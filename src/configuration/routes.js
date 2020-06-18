@@ -5,6 +5,7 @@ const Routes = {
   stores: "/stores",
   items: "/items",
   details: "/details/:id",
+  goBack: "back",
 };
 
 export default Routes;

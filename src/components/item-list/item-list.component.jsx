@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
+import ErrorHandler from "../error-handler/error-handler.component";
 import Header from "../header/header.component";
 import ItemListRow from "../item-list-row/item-list-row.component";
 import Help from "../simple-list-help/simple-list-help.component";
@@ -10,6 +11,9 @@ import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
+import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
+import Strings from "../../configuration/strings";
+import Routes from "../../configuration/routes";
 
 import preventContext from "../../util/preventDefault";
 import { calculateTitle } from "./item-list.util";
@@ -103,45 +107,60 @@ const ItemList = ({
     transaction: apiObject.transaction,
   };
 
+  const clearError = () => {
+    setPerformAsync({ type: ApiActions.ClearErrors });
+  };
+
   return (
     <>
-      <Header
-        title={headerTitle}
-        transaction={apiObject.transaction}
-        create={handleCreate}
-      />
-      <HoldingPattern condition={!ready && waitForApi}>
-        <Container>
-          <Paper>
-            {errorMsg ? (
-              <Banner className="alert alert-danger">{errorMsg}</Banner>
-            ) : (
-              <Banner className="alert alert-success">
-                {calculateTitle(title)}
-              </Banner>
-            )}
-            <ListBox>
-              {apiObject.inventory.map((item) => {
-                return (
-                  <ItemListRow
-                    item={item}
-                    allItems={apiObject.inventory}
-                    key={item.id}
-                    listFunctions={listFunctions}
-                    listValues={listValues}
-                    history={history}
-                  />
-                );
-              })}
-              {apiObject.inventory.length === 0 ? (
-                <PlaceHolderListItem>{placeHolderMessage}</PlaceHolderListItem>
-              ) : null}
-            </ListBox>
-          </Paper>
-        </Container>
-        <Alert message={actionMsg} />
-        <Help>{helpText}</Help>
-      </HoldingPattern>
+      <ErrorHandler
+        condition={apiObject.error}
+        clearError={clearError}
+        eventMessage={AnalyticsActions.ApiError}
+        stringsRoot={Strings.ItemList}
+        string={"ApiError"}
+        redirect={Routes.goBack}
+      >
+        <Header
+          title={headerTitle}
+          transaction={apiObject.transaction}
+          create={handleCreate}
+        />
+        <HoldingPattern condition={!ready && waitForApi}>
+          <Container>
+            <Paper>
+              {errorMsg ? (
+                <Banner className="alert alert-danger">{errorMsg}</Banner>
+              ) : (
+                <Banner className="alert alert-success">
+                  {calculateTitle(title)}
+                </Banner>
+              )}
+              <ListBox>
+                {apiObject.inventory.map((item) => {
+                  return (
+                    <ItemListRow
+                      item={item}
+                      allItems={apiObject.inventory}
+                      key={item.id}
+                      listFunctions={listFunctions}
+                      listValues={listValues}
+                      history={history}
+                    />
+                  );
+                })}
+                {apiObject.inventory.length === 0 ? (
+                  <PlaceHolderListItem>
+                    {placeHolderMessage}
+                  </PlaceHolderListItem>
+                ) : null}
+              </ListBox>
+            </Paper>
+          </Container>
+          <Alert message={actionMsg} />
+          <Help>{helpText}</Help>
+        </HoldingPattern>
+      </ErrorHandler>
     </>
   );
 };

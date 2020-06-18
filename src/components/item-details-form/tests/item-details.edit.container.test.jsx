@@ -4,6 +4,7 @@ import { propCount } from "../../../test.fixtures/objectComparison";
 import { MemoryRouter, Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
+import ErrorHandler from "../../error-handler/error-handler.component";
 import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 import ItemDetails from "../item-details.form";
 import ItemDetailsContainer from "../item-details.edit.container";
@@ -19,10 +20,14 @@ import ApiActions from "../../../providers/api/api.actions";
 import ApiFunctions from "../../../providers/api/api.functions";
 
 import Strings from "../../../configuration/strings";
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import Routes from "../../../configuration/routes";
 
 jest.mock("../item-details.form");
 jest.mock("../../holding-pattern/holding-pattern.component");
+jest.mock("../../error-handler/error-handler.component");
 
+ErrorHandler.mockImplementation(({ children }) => children);
 ItemDetails.mockImplementation(() => <div>MockDetails</div>);
 HoldingPattern.mockImplementation(({ children }) => children);
 
@@ -92,7 +97,7 @@ describe("Setup Environment", () => {
 
   afterEach(cleanup);
 
-  describe("when item exists", () => {
+  describe("outside of an error", () => {
     beforeEach(() => {
       jest.clearAllMocks();
       const history = createBrowserHistory();
@@ -278,7 +283,7 @@ describe("Setup Environment", () => {
       const deleteDispatch = mockItemDispatch.mock.calls[1][0].dispatch;
 
       expect(mockGoBack).toBeCalledTimes(0);
-      deleteDispatch({ type: ApiActions.SuccessDel });
+      act(() => deleteDispatch({ type: ApiActions.SuccessDel }));
 
       // The successful delete should trigger the back button
       await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(3));
@@ -288,35 +293,179 @@ describe("Setup Environment", () => {
     });
   });
 
-  describe("when item does not exists", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-      current.id = "2";
-      utils = render(
-        <MemoryRouter>
-          <StoreContext.Provider
-            value={{ ...mockStoreProvider, transaction: false }}
-          >
-            <ShelfContext.Provider
-              value={{ ...mockShelfProvider, transaction: false }}
+  describe("during an error", () => {
+    describe("during a store api error", () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+        current.id = "2";
+        const TestContext = {
+          ...mockStoreProvider,
+          apiObject: { ...StoreInitialValue },
+        };
+        TestContext.apiObject.transaction = false;
+        TestContext.apiObject.error = true;
+        utils = render(
+          <MemoryRouter>
+            <StoreContext.Provider value={TestContext}>
+              <ShelfContext.Provider
+                value={{ ...mockShelfProvider, transaction: false }}
+              >
+                <ItemContext.Provider
+                  value={{
+                    ...mockItemsProvider,
+                    transaction: false,
+                  }}
+                >
+                  <ItemDetailsContainer {...current} />
+                </ItemContext.Provider>
+              </ShelfContext.Provider>
+            </StoreContext.Provider>
+          </MemoryRouter>
+        );
+      });
+
+      it("renders, calls the ErrorHandler with the correct params", () => {
+        expect(ErrorHandler).toHaveBeenCalledTimes(3);
+
+        const errorHandlerCall = ErrorHandler.mock.calls[0][0];
+        propCount(errorHandlerCall, 7);
+        expect(errorHandlerCall.condition).toBe(true);
+        expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
+        expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
+        expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
+        expect(errorHandlerCall.redirect).toBe(Routes.goBack);
+        expect(errorHandlerCall.children).toBeTruthy();
+      });
+
+      it("renders, clear error works as expected", async (done) => {
+        expect(ErrorHandler).toHaveBeenCalledTimes(3); // Three rerenders for API data
+        const clearError = ErrorHandler.mock.calls[0][0].clearError;
+        jest.clearAllMocks();
+
+        act(() => clearError());
+        await waitFor(() => expect(mockStoreDispatch).toBeCalledTimes(1));
+        expect(mockStoreDispatch).toBeCalledWith({
+          type: ApiActions.ClearErrors,
+        });
+
+        done();
+      });
+    });
+
+    describe("during a shelf api error", () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+        current.id = "2";
+        const TestContext = {
+          ...mockShelfProvider,
+          apiObject: { ...ShelfInitialValue },
+        };
+        TestContext.apiObject.transaction = false;
+        TestContext.apiObject.error = true;
+        utils = render(
+          <MemoryRouter>
+            <StoreContext.Provider
+              value={{ ...mockStoreProvider, transaction: false }}
             >
-              <ItemContext.Provider
+              <ShelfContext.Provider value={TestContext}>
+                <ItemContext.Provider
+                  value={{
+                    ...mockItemsProvider,
+                    transaction: false,
+                  }}
+                >
+                  <ItemDetailsContainer {...current} />
+                </ItemContext.Provider>
+              </ShelfContext.Provider>
+            </StoreContext.Provider>
+          </MemoryRouter>
+        );
+      });
+
+      it("renders, calls the ErrorHandler with the correct params", () => {
+        expect(ErrorHandler).toHaveBeenCalledTimes(3);
+
+        const errorHandlerCall = ErrorHandler.mock.calls[0][0];
+        propCount(errorHandlerCall, 7);
+        expect(errorHandlerCall.condition).toBe(true);
+        expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
+        expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
+        expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
+        expect(errorHandlerCall.redirect).toBe(Routes.goBack);
+        expect(errorHandlerCall.children).toBeTruthy();
+      });
+
+      it("renders, clear error works as expected", async (done) => {
+        expect(ErrorHandler).toHaveBeenCalledTimes(3); // Three rerenders for API data
+        const clearError = ErrorHandler.mock.calls[0][0].clearError;
+        jest.clearAllMocks();
+
+        act(() => clearError());
+        await waitFor(() => expect(mockShelfDispatch).toBeCalledTimes(1));
+        expect(mockShelfDispatch).toBeCalledWith({
+          type: ApiActions.ClearErrors,
+        });
+
+        done();
+      });
+    });
+
+    describe("during a item api error", () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+        current.id = "2";
+        const TestContext = {
+          ...mockItemsProvider,
+          apiObject: { ...InitialValue },
+        };
+        TestContext.apiObject.transaction = false;
+        TestContext.apiObject.error = true;
+        utils = render(
+          <MemoryRouter>
+            <StoreContext.Provider
+              value={{ ...mockStoreProvider, transaction: false }}
+            >
+              <ShelfContext.Provider
                 value={{
-                  ...mockItemsProvider,
+                  ...mockShelfProvider,
                   transaction: false,
                 }}
               >
-                <ItemDetailsContainer {...current} />
-              </ItemContext.Provider>
-            </ShelfContext.Provider>
-          </StoreContext.Provider>
-        </MemoryRouter>
-      );
-    });
-    it("throws an error", async (done) => {
-      // Not Implemented Yet
-      expect(true).toBe(false);
-      done();
+                <ItemContext.Provider value={TestContext}>
+                  <ItemDetailsContainer {...current} />
+                </ItemContext.Provider>
+              </ShelfContext.Provider>
+            </StoreContext.Provider>
+          </MemoryRouter>
+        );
+      });
+
+      it("renders, calls the ErrorHandler with the correct params", () => {
+        expect(ErrorHandler).toHaveBeenCalledTimes(3);
+
+        const errorHandlerCall = ErrorHandler.mock.calls[0][0];
+        propCount(errorHandlerCall, 7);
+        expect(errorHandlerCall.condition).toBe(true);
+        expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
+        expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
+        expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
+        expect(errorHandlerCall.redirect).toBe(Routes.goBack);
+        expect(errorHandlerCall.children).toBeTruthy();
+      });
+
+      it("renders, clear error works as expected", async (done) => {
+        expect(ErrorHandler).toHaveBeenCalledTimes(3); // Three rerenders for API data
+        const clearError = ErrorHandler.mock.calls[0][0].clearError;
+        jest.clearAllMocks();
+
+        act(() => clearError());
+        await waitFor(() => expect(mockItemDispatch).toBeCalledTimes(1));
+        expect(mockItemDispatch).toBeCalledWith({
+          type: ApiActions.ClearErrors,
+        });
+
+        done();
+      });
     });
   });
 });

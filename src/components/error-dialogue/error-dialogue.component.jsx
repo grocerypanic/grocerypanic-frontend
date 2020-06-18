@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { withRouter } from "react-router-dom";
 import WarningOutlinedIcon from "@material-ui/icons/WarningOutlined";
 import PropTypes from "prop-types";
 
@@ -8,6 +9,7 @@ import { NotePad, Page, OK, ErrorBox, Centered } from "./error-dialogue.styles";
 
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 
+import Routes from "../../configuration/routes";
 import Strings from "../../configuration/strings";
 
 const ErrorDialogue = ({
@@ -16,12 +18,16 @@ const ErrorDialogue = ({
   stringsRoot,
   string,
   redirect,
+  history,
 }) => {
   const { t } = useTranslation();
   const { event } = React.useContext(AnalyticsContext);
 
   const handleClick = () => {
     clearError();
+    if (redirect === Routes.goBack) return history.goBack();
+    if (!redirect) return;
+    history.push(redirect);
   };
 
   React.useEffect(() => {
@@ -56,12 +62,16 @@ const ErrorDialogue = ({
   );
 };
 
-export default ErrorDialogue;
+export default withRouter(ErrorDialogue);
 
 ErrorDialogue.propTypes = {
   clearError: PropTypes.func.isRequired,
   eventMessage: PropTypes.object,
   stringsRoot: PropTypes.object.isRequired,
   string: PropTypes.string.isRequired,
-  redirect: PropTypes.string.isRequired,
+  redirect: PropTypes.string,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }),
 };

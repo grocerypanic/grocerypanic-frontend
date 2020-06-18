@@ -14,7 +14,7 @@ const ApiActions = {
   // Get An Api Object
   StartGet: "StartGet",
   SuccessGet: "SuccessGet",
-  FailureGet: "FailureGett",
+  FailureGet: "FailureGet",
   // List Api Objects
   StartList: "StartList",
   SuccessList: "SuccessList",

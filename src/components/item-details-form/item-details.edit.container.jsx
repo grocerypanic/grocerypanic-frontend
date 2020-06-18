@@ -5,9 +5,13 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
+import ErrorHandler from "../error-handler/error-handler.component";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
+import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
+import Strings from "../../configuration/strings";
+import Routes from "../../configuration/routes";
 
 import { ItemContext } from "../../providers/api/item/item.provider";
 import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
@@ -52,12 +56,10 @@ const ItemDetailsContainer = ({
   }, [item, store, shelf]);
 
   React.useEffect(() => {
-    let thisItem;
     if (item.inventory.length > 0) {
-      thisItem = item.inventory.find((i) => i.id === parseInt(itemId));
+      const thisItem = item.inventory.find((i) => i.id === parseInt(itemId));
+      setCalculatedItem(thisItem);
     }
-    if (!thisItem) thisItem = defaultItem;
-    setCalculatedItem(thisItem);
   }, [item]);
 
   React.useEffect(() => {
@@ -125,20 +127,35 @@ const ItemDetailsContainer = ({
     });
   };
 
+  const clearError = () => {
+    if (item.error) setPerformItemAsync({ type: ApiActions.ClearErrors });
+    if (store.error) setPerformStoreAsync({ type: ApiActions.ClearErrors });
+    if (shelf.error) setPerformShelfAsync({ type: ApiActions.ClearErrors });
+  };
+
   return (
-    <HoldingPattern condition={calculatedItem === defaultItem}>
-      <FormComponent
-        item={calculatedItem}
-        headerTitle={headerTitle}
-        title={title}
-        helpText={helpText}
-        transaction={transaction}
-        stores={store.inventory}
-        shelves={shelf.inventory}
-        handleSave={handleSave}
-        handleDelete={handleDelete}
-      />
-    </HoldingPattern>
+    <ErrorHandler
+      condition={item.error || store.error || shelf.error}
+      clearError={clearError}
+      eventMessage={AnalyticsActions.ApiError}
+      stringsRoot={Strings.ItemDetails}
+      string={"ApiError"}
+      redirect={Routes.goBack}
+    >
+      <HoldingPattern condition={calculatedItem === defaultItem}>
+        <FormComponent
+          item={calculatedItem}
+          headerTitle={headerTitle}
+          title={title}
+          helpText={helpText}
+          transaction={transaction}
+          stores={store.inventory}
+          shelves={shelf.inventory}
+          handleSave={handleSave}
+          handleDelete={handleDelete}
+        />
+      </HoldingPattern>
+    </ErrorHandler>
   );
 };
 
