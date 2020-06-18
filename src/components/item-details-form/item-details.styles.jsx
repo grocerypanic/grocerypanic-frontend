@@ -27,17 +27,24 @@ export const FormBox = styled.div`
 
   background: ${white};
   margin: 5px;
-  padding: 10px;
-  padding-top: 20px;
+  padding: 5px;
 
   min-width: 220px;
   max-width: 350px;
+
+  .form-group {
+    margin-bottom: 2px;
+  }
 `;
 
 export const ButtonBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  .btn {
+    margin-top: 2px;
+  }
 `;
 
 export const TabBox = styled.div`
