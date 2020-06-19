@@ -50,11 +50,11 @@ describe("Check the correct props are passed to simple list", () => {
     const props = ItemDetailsCreateContainer.mock.calls[0][0];
     propCount(props, 5);
 
-    expect(props.title).toBe(Strings.ItemDetails.Title);
-    expect(props.headerTitle).toBe(Strings.ItemDetails.HeaderTitle);
+    expect(props.title).toBe(Strings.CreateItem.Title);
+    expect(props.headerTitle).toBe(Strings.CreateItem.HeaderTitle);
     expect(props.ApiObjectContext).toBe(ItemContext);
     expect(props.handleExpiredAuth).toBeInstanceOf(Function);
-    expect(props.helpText).toBe(Strings.ItemDetails.HelpText);
+    expect(props.helpText).toBe(Strings.CreateItem.HelpText);
 
     done();
   });

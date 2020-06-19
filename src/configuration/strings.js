@@ -34,6 +34,12 @@ export const Strings = {
       HeaderTitle: "Panic: Main Menu",
       HelpText: "Make a selection to proceed.",
     },
+    CreateItem: {
+      Title: "Create New Item",
+      HeaderTitle: "Create",
+      HelpText:
+        "Fill out the values, click the save button to finalize.\nDon't modify quantity here.",
+    },
     ItemDetails: {
       Title: "Edit Item Details",
       HeaderTitle: "Details",

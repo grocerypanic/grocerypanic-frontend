@@ -27,11 +27,11 @@ const ItemCreatePage = () => {
 
   return (
     <ItemDetailsCreateContainer
-      title={t(Strings.ItemDetails.Title)}
-      headerTitle={t(Strings.ItemDetails.HeaderTitle)}
+      title={t(Strings.CreateItem.Title)}
+      headerTitle={t(Strings.CreateItem.HeaderTitle)}
       ApiObjectContext={ItemContext}
       handleExpiredAuth={handleExpiredAuth}
-      helpText={t(Strings.ItemDetails.HelpText)}
+      helpText={t(Strings.CreateItem.HelpText)}
     />
   );
 };
