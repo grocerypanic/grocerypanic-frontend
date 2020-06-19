@@ -124,7 +124,7 @@ const ItemDetailsCreateContainer = ({
   };
 
   const checkForNonReceivedContent = () => {
-    return !receivedStores && !receivedShelves;
+    return !receivedStores || !receivedShelves;
   };
 
   return (
