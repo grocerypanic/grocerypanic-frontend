@@ -14,7 +14,6 @@ export const ListItem = styled.li`
   color: ${highlight};
 
   min-width: 220px;
-  cursor: pointer;
 
   div:last-child {
     margin-left: auto;
@@ -22,6 +21,7 @@ export const ListItem = styled.li`
 
   .simple-list-item-title-div:hover {
     color: ${selected};
+    cursor: pointer;
   }
 `;
 
@@ -32,5 +32,4 @@ export const ListTitle = styled.div`
   flex-direction: column;
 
   height: 40px;
-  cursor: pointer;
 `;

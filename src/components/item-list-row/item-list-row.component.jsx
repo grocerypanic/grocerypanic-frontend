@@ -96,8 +96,10 @@ const ItemListRow = ({
         </GeneratePopOver>
       </Digit>
       <ListTitle>
-        <div data-testid="listTitle" onClick={handleClick}>
-          {item.name}
+        <div>
+          <span data-testid="listTitle" onClick={handleClick}>
+            {item.name}
+          </span>
         </div>
       </ListTitle>
       <Control type="restock" data-testid="restock">

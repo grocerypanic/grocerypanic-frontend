@@ -72,8 +72,8 @@ export const ListTitle = styled.div`
   width: ${titleWidth};
 
   height: 40px;
-  cursor: pointer;
-  *:hover {
+  span:hover {
     color: ${selected};
+    cursor: pointer;
   }
 `;

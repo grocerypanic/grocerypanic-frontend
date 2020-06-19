@@ -124,6 +124,7 @@ const ItemDetailsCreateContainer = ({
   };
 
   const checkForNonReceivedContent = () => {
+    /* istanbul ignore next */
     return !receivedStores || !receivedShelves;
   };
 

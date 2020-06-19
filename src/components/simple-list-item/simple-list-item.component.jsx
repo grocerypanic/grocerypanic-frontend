@@ -130,7 +130,7 @@ const SimpleListItem = ({
                 className="btn btn-success"
                 style={{ height: "40px" }}
               >
-                {t(Strings.SimpleList.SaveButton)}
+                <span>{t(Strings.SimpleList.SaveButton)}</span>
               </button>
             </div>
           ) : (
