@@ -1,7 +1,7 @@
 import React from "react";
 import { render, cleanup } from "@testing-library/react";
 
-import GeneratePopOver from "../item-list-popover";
+import GeneratePopOver from "../popover.component";
 
 const mockTranslate = jest.fn();
 mockTranslate.mockReturnValue("Some String");

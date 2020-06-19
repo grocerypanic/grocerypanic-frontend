@@ -1,17 +1,13 @@
 import React from "react";
 import { render, cleanup, waitFor, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { propCount } from "../../../test.fixtures/objectComparison";
 
 import ItemListRow from "../item-list-row.component.jsx";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
-import GeneratePopOver from "../item-list-popover";
+import GeneratePopOver from "../../popover/popover.component";
 
-import AddIcon from "@material-ui/icons/Add";
-import RemoveIcon from "@material-ui/icons/Remove";
 import Strings from "../../../configuration/strings";
 import { ui } from "../../../configuration/theme";
 
@@ -39,7 +35,7 @@ jest.mock("react-bootstrap/DropdownItem", () => ({
     .fn()
     .mockImplementation(({ children }) => <div>{children}</div>),
 }));
-jest.mock("../item-list-popover");
+jest.mock("../../popover/popover.component");
 jest.mock("../../../configuration/theme", () => {
   return {
     ui: {

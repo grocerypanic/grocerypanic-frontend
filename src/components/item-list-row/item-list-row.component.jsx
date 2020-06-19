@@ -17,8 +17,7 @@ import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 
 import Strings from "../../configuration/strings";
 import Routes from "../../configuration/routes";
-import UseLongPress from "../../util/longpress";
-import GeneratePopOver from "./item-list-popover";
+import GeneratePopOver from "../popover/popover.component";
 
 import { ui } from "../../configuration/theme";
 import { Control, Digit, Symbol, Row, ListTitle } from "./item-list-row.styles";
