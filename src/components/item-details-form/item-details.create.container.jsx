@@ -84,7 +84,6 @@ const ItemDetailsCreateContainer = ({
 
   // Set the first shelf by default
   React.useEffect(() => {
-    if (defaults.shelf !== "") return;
     if (shelf.inventory.length > 0)
       setDefaults({ ...defaultItem, shelf: shelf.inventory[0].id });
   }, [shelf]);
@@ -124,7 +123,7 @@ const ItemDetailsCreateContainer = ({
     if (shelf.error) setPerformShelfAsync({ type: ApiActions.ClearErrors });
   };
 
-  const checkForEmptyContent = () => {
+  const checkForNonReceivedContent = () => {
     return !receivedStores && !receivedShelves;
   };
 
@@ -138,9 +137,9 @@ const ItemDetailsCreateContainer = ({
       redirect={Routes.goBack}
     >
       <Header title={headerTitle} transaction={transaction} />
-      <HoldingPattern condition={checkForEmptyContent()}>
+      <HoldingPattern condition={checkForNonReceivedContent()}>
         <ErrorHandler
-          condition={item.shelves === [] || receivedStores === []}
+          condition={!store.inventory.length || !shelf.inventory.length}
           clearError={() => {}}
           eventMessage={null}
           stringsRoot={Strings.ItemDetails}

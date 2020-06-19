@@ -164,6 +164,13 @@ describe("Setup Environment", () => {
       done();
     });
 
+    it("renders, the ErrorHandler2 clearErrors function is a no op", async (done) => {
+      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
+      const call = ErrorHandler.mock.calls[5][0];
+      call.clearError();
+      done();
+    });
+
     it("renders, calls shelves.StartList on first render", async (done) => {
       await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
       const call = mockShelfDispatch.mock.calls[0][0];
@@ -261,6 +268,96 @@ describe("Setup Environment", () => {
       await waitFor(() => expect(mockGoBack).toBeCalledTimes(1));
 
       done();
+    });
+
+    it("renders, calls item auth failure as expected", async (done) => {
+      await waitFor(() => expect(ItemDetailsForm).toHaveBeenCalledTimes(3));
+
+      const mockObject = { id: 99 };
+
+      const handleSave = ItemDetailsForm.mock.calls[2][0].handleSave;
+      expect(handleSave).toBeInstanceOf(Function);
+      act(() => handleSave(mockObject));
+
+      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+      const itemDispatch = mockItemDispatch.mock.calls[0][0].dispatch;
+
+      expect(mockHandleExpiredAuth).toBeCalledTimes(0);
+      act(() => itemDispatch({ type: ApiActions.FailureAuth }));
+      await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
+
+      done();
+    });
+
+    describe("Test Input Conditions for Error Handler2", () => {
+      const history = createBrowserHistory();
+      let testStore;
+      let testShelf;
+      beforeEach(() => {
+        jest.clearAllMocks();
+        history.location.pathname = originalPath;
+        history.goBack = mockGoBack;
+        testStore = { ...mockStoreProvider };
+        testShelf = { ...mockShelfProvider };
+      });
+
+      const renderHelper = (storeState, shelfState) =>
+        render(
+          <Router history={history}>
+            <StoreContext.Provider
+              value={{ ...storeState, transaction: false }}
+            >
+              <ShelfContext.Provider
+                value={{ ...shelfState, transaction: false }}
+              >
+                <ItemContext.Provider
+                  value={{
+                    ...mockItemsProvider,
+                    transaction: false,
+                  }}
+                >
+                  <ItemDetailsCreateContainer {...current} />
+                </ItemContext.Provider>
+              </ShelfContext.Provider>
+            </StoreContext.Provider>
+          </Router>
+        );
+
+      it("should render false on empty shelves and empty stores", async (done) => {
+        utils = renderHelper(testStore, testShelf);
+        await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
+        const call = ErrorHandler.mock.calls[5][0];
+        expect(call.condition).toBe(false);
+        done();
+      });
+
+      it("should render false on some shelves and empty stores", async (done) => {
+        testShelf.apiObject.inventory = [mockShelf];
+        utils = renderHelper(testStore, testShelf);
+        await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
+        const call = ErrorHandler.mock.calls[5][0];
+        expect(call.condition).toBe(false);
+        done();
+      });
+
+      it("should render false on empty shelves and some stores", async (done) => {
+        testStore.apiObject.inventory = [mockStore];
+        utils = renderHelper(testStore, testShelf);
+        await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
+        const call = ErrorHandler.mock.calls[5][0];
+        expect(call.condition).toBe(false);
+        done();
+      });
+
+      it("should render true on empty shelves and empty stores", async (done) => {
+        testStore.apiObject.inventory = [mockStore];
+        testShelf.apiObject.inventory = [mockShelf];
+        utils = renderHelper(testStore, testShelf);
+        await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
+        const call = ErrorHandler.mock.calls[5][0];
+        expect(call.condition).toBe(false);
+        done();
+      });
     });
   });
 
