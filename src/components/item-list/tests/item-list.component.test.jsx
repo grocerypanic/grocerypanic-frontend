@@ -1,7 +1,8 @@
 import React from "react";
 import { render, cleanup, act, waitFor } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
-import { MemoryRouter } from "react-router-dom";
+import { Router } from "react-router-dom";
+import { createBrowserHistory } from "history";
 
 import ErrorHandler from "../../error-handler/error-handler.component";
 import ItemList from "../item-list.component";
@@ -130,6 +131,8 @@ describe("Setup Environment", () => {
           jest.clearAllMocks();
 
           current.inventory = [...mockItems];
+          let history = createBrowserHistory();
+          history.push(Routes.items);
 
           utils = render(
             <ApiContext.Provider
@@ -138,7 +141,7 @@ describe("Setup Environment", () => {
                 dispatch: mockDispatch,
               }}
             >
-              <MemoryRouter initialEntries={["/anything"]}>
+              <Router history={history}>
                 <ItemList
                   title={mockTitle}
                   headerTitle={mockHeaderTitle}
@@ -148,8 +151,7 @@ describe("Setup Environment", () => {
                   helpText={Strings.Testing.GenericTranslationTestString}
                   waitForApi={false}
                 />
-                }}
-              </MemoryRouter>
+              </Router>
             </ApiContext.Provider>
           );
         });
@@ -282,23 +284,24 @@ describe("Setup Environment", () => {
           done();
         });
 
-        it("renders, when the create button is clicked", async (done) => {
+        it("renders, handles a create event", async (done) => {
           expect(Header).toHaveBeenCalledTimes(1);
           const { create } = Header.mock.calls[0][0];
           expect(current.transaction).toBeFalsy();
 
-          ItemListRow.mockClear(); // rerender
+          ItemListRow.mockClear();
           act(() => {
             create();
           });
 
-          // Implement Create
-          expect(true).toBe(false);
+          await waitFor(() =>
+            expect(window.location.pathname).toBe(Routes.create)
+          );
 
           done();
         });
 
-        it("renders,and dispatches the API reducer when handleReStock is called", async (done) => {
+        it("renders, and dispatches the API reducer when handleReStock is called", async (done) => {
           expect(ItemListRow).toHaveBeenCalledTimes(3);
           const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
           expect(current.transaction).toBeFalsy();
@@ -378,6 +381,8 @@ describe("Setup Environment", () => {
           jest.clearAllMocks();
 
           current.inventory = [];
+          let history = createBrowserHistory();
+          history.push(Routes.items);
 
           utils = render(
             <ApiContext.Provider
@@ -386,7 +391,7 @@ describe("Setup Environment", () => {
                 dispatch: mockDispatch,
               }}
             >
-              <MemoryRouter initialEntries={["/anything"]}>
+              <Router history={history}>
                 <ItemList
                   title={mockTitle}
                   headerTitle={mockHeaderTitle}
@@ -395,8 +400,7 @@ describe("Setup Environment", () => {
                   handleExpiredAuth={mockHandleExpiredAuth}
                   helpText={Strings.Testing.GenericTranslationTestString}
                 />
-                }}
-              </MemoryRouter>
+              </Router>
             </ApiContext.Provider>
           );
         });
@@ -415,6 +419,8 @@ describe("Setup Environment", () => {
 
         current.transaction = true;
         current.waitForApi = false;
+        let history = createBrowserHistory();
+        history.push(Routes.items);
 
         utils = render(
           <ApiContext.Provider
@@ -423,7 +429,7 @@ describe("Setup Environment", () => {
               dispatch: mockDispatch,
             }}
           >
-            <MemoryRouter initialEntries={["/anything"]}>
+            <Router history={history}>
               <ItemList
                 title={mockTitle}
                 headerTitle={mockHeaderTitle}
@@ -433,8 +439,7 @@ describe("Setup Environment", () => {
                 helpText={Strings.Testing.GenericTranslationTestString}
                 waitForApi={false}
               />
-              }}
-            </MemoryRouter>
+            </Router>
           </ApiContext.Provider>
         );
       });
@@ -459,8 +464,9 @@ describe("Setup Environment", () => {
           create();
         });
 
-        // Implement Create
-        expect(true).toBe(false);
+        await waitFor(() =>
+          expect(window.location.pathname).toBe(Routes.items)
+        );
 
         done();
       });
@@ -505,6 +511,8 @@ describe("Setup Environment", () => {
     beforeEach(() => {
       jest.clearAllMocks();
       current.error = true;
+      let history = createBrowserHistory();
+      history.push(Routes.items);
       utils = render(
         <ApiContext.Provider
           value={{
@@ -512,7 +520,7 @@ describe("Setup Environment", () => {
             dispatch: mockDispatch,
           }}
         >
-          <MemoryRouter initialEntries={["/anything"]}>
+          <Router history={history}>
             <ItemList
               title={mockTitle}
               headerTitle={mockHeaderTitle}
@@ -522,8 +530,7 @@ describe("Setup Environment", () => {
               helpText={Strings.Testing.GenericTranslationTestString}
               waitForApi={false}
             />
-            }}
-          </MemoryRouter>
+          </Router>
         </ApiContext.Provider>
       );
     });
