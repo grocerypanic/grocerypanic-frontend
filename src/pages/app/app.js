@@ -1,6 +1,6 @@
 // Package Imports
 import React, { Suspense, lazy } from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import ProtectedRoute from "../../components/protected-route/protected-route.component";
 import HoldingPattern from "../../components/holding-pattern/holding-pattern.component";
@@ -59,6 +59,7 @@ function App() {
           redirect={Routes.signin}
         />
         <ProtectedRoute
+          exact
           path={Routes.create}
           component={Create}
           negative
@@ -66,19 +67,14 @@ function App() {
           redirect={Routes.signin}
         />
         <ProtectedRoute
+          exact
           path={Routes.root}
           component={Menu}
           negative
           attr={"login"}
           redirect={Routes.signin}
         />
-        <ProtectedRoute
-          path={""}
-          component={() => <div></div>}
-          negative
-          attr={"error"}
-          redirect={Routes.root}
-        />
+        <Route render={() => <Redirect to={Routes.root} />} />
       </Switch>
     </Suspense>
   );
