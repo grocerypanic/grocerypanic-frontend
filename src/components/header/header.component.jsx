@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import AddIcon from "@material-ui/icons/Add";
 import HomeIcon from "@material-ui/icons/Home";
@@ -17,9 +18,11 @@ import {
 } from "./header.styles";
 
 import Routes from "../../configuration/routes";
+import Strings from "../../configuration/strings";
 
 const Header = ({ history, title, create, transaction }) => {
   React.useEffect(() => {}, []);
+  const { t } = useTranslation();
 
   const navigate = (route) => {
     if (transaction) return;
@@ -28,10 +31,17 @@ const Header = ({ history, title, create, transaction }) => {
 
   return (
     <NavContainer collapseOnSelect variant="dark" fixed="top">
-      <Navbar.Brand href="#home">Panic: {title}</Navbar.Brand>
+      <Navbar.Brand>
+        <div className="action" onClick={() => navigate(Routes.about)}>
+          {t(Strings.MainTitle)}
+        </div>
+      </Navbar.Brand>
       <Nav className="mr-auto"></Nav>
       <Nav>
-        <Nav.Item className="nav-link" onClick={() => navigate(Routes.root)}>
+        <Nav.Item
+          className="nav-link action"
+          onClick={() => navigate(Routes.root)}
+        >
           <MenuContainer
             route={Routes.root}
             history={history}
@@ -42,7 +52,10 @@ const Header = ({ history, title, create, transaction }) => {
         </Nav.Item>
       </Nav>
       <Nav>
-        <Nav.Item className="nav-link" onClick={() => navigate(Routes.stores)}>
+        <Nav.Item
+          className="nav-link action"
+          onClick={() => navigate(Routes.stores)}
+        >
           <MenuContainer
             route={Routes.stores}
             history={history}
@@ -53,7 +66,10 @@ const Header = ({ history, title, create, transaction }) => {
         </Nav.Item>
       </Nav>
       <Nav>
-        <Nav.Item className="nav-link" onClick={() => navigate(Routes.shelves)}>
+        <Nav.Item
+          className="nav-link action"
+          onClick={() => navigate(Routes.shelves)}
+        >
           <MenuContainer
             route={Routes.shelves}
             history={history}
@@ -65,7 +81,7 @@ const Header = ({ history, title, create, transaction }) => {
       </Nav>
       <Nav>
         {create ? (
-          <Nav.Item className="nav-link" onClick={create}>
+          <Nav.Item className="nav-link action" onClick={create}>
             <IconContainer data-testid="AddIcon">
               {transaction ? (
                 <Spinner size="sm" animation="border" />
@@ -96,7 +112,6 @@ export default withRouter(Header);
 
 Header.propTypes = {
   create: PropTypes.func,
-  title: PropTypes.string.isRequired,
   transaction: PropTypes.bool.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,

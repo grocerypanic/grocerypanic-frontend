@@ -2,6 +2,7 @@ import assets from "./assets";
 
 export const Strings = {
   en: {
+    MainTitle: "Panic",
     SignIn: {
       Title: "Sign In",
       LoginMessageGoogle: "Login With Google",

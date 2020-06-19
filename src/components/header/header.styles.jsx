@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { Navbar } from "react-bootstrap";
 import { primary } from "../../configuration/theme";
 
-import { white } from "../../configuration/theme";
+import { white, secondary } from "../../configuration/theme";
 
 const container = css`
   height: 50px;
@@ -17,6 +17,10 @@ export const NavContainer = styled(Navbar)`
   height: 50px;
   padding: 2px;
   padding-left: 10px;
+
+  .action {
+    cursor: pointer;
+  }
 `;
 
 export const OffIconContainer = styled.div`
