@@ -30,5 +30,4 @@ export const PlaceHolderListItem = styled.li`
   color: ${primary};
 
   min-width: 220px;
-  cursor: pointer;
 `;
