@@ -1,6 +1,6 @@
 # panic-fe
 
-[![panic_fe-Automation](https://github.com/niall-byrne/panic-fe/workflows/panic_fe-Automation/badge.svg)](https://github.com/niall-byrne/panic_fe/actions)
+[![panic_fe-Automation](https://github.com/niall-byrne/panic-fe/workflows/panic_fe-Automation/badge.svg)](https://github.com/niall-byrne/panic-fe/actions)
 
 ## Development Dependencies
 

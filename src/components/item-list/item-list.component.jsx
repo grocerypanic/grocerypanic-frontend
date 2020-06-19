@@ -65,6 +65,7 @@ const ItemList = ({
 
   const handleCreate = () => {
     if (apiObject.transaction) return;
+    // TODO: is it possible to populate the shelf or store automatically based on current route?
     history.push(Routes.create);
   };
 
