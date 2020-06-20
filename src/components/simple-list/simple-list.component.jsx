@@ -11,9 +11,15 @@ import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
 
 import { Paper, Container } from "../../global-styles/containers";
-import { ListBox, Banner, PlaceHolderListItem } from "./simple-list.styles";
+import {
+  Scroller,
+  ListBox,
+  Banner,
+  PlaceHolderListItem,
+} from "./simple-list.styles";
 
 import preventContext from "../../util/preventDefault";
+import calculateMaxHeight from "../../util/height";
 
 const SimpleList = ({
   headerTitle,
@@ -35,9 +41,14 @@ const SimpleList = ({
   const [performAsync, setPerformAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [ready, setReady] = React.useState(false);
 
+  const [listSize, setListSize] = React.useState(calculateMaxHeight());
+  const recalculateHeight = () => setListSize(calculateMaxHeight());
+
   React.useEffect(() => {
+    window.addEventListener("resize", recalculateHeight);
     window.addEventListener("contextmenu", preventContext);
     return () => {
+      window.removeEventListener("resize", recalculateHeight);
       window.removeEventListener("contextmenu", preventContext);
     };
   }, []);
@@ -121,36 +132,40 @@ const SimpleList = ({
                 <div>{title}</div>
               </Banner>
             )}
-            <ListBox>
-              {apiObject.inventory.map((item) => {
-                return (
+            <Scroller className="overflow-auto" size={listSize}>
+              <ListBox>
+                {apiObject.inventory.map((item) => {
+                  return (
+                    <SimpleListItem
+                      item={item}
+                      allItems={apiObject.inventory}
+                      key={item.id}
+                      listFunctions={listFunctions}
+                      listValues={listValues}
+                      redirectTag={redirectTag}
+                    />
+                  );
+                })}
+                {created ? (
                   <SimpleListItem
-                    item={item}
+                    item={created}
                     allItems={apiObject.inventory}
-                    key={item.id}
                     listFunctions={listFunctions}
                     listValues={listValues}
                     redirectTag={redirectTag}
                   />
-                );
-              })}
-              {created ? (
-                <SimpleListItem
-                  item={created}
-                  allItems={apiObject.inventory}
-                  listFunctions={listFunctions}
-                  listValues={listValues}
-                  redirectTag={redirectTag}
-                />
-              ) : null}
-              {apiObject.inventory.length === 0 && !created ? (
-                <PlaceHolderListItem>{placeHolderMessage}</PlaceHolderListItem>
-              ) : null}
-            </ListBox>
+                ) : null}
+                {apiObject.inventory.length === 0 && !created ? (
+                  <PlaceHolderListItem>
+                    {placeHolderMessage}
+                  </PlaceHolderListItem>
+                ) : null}
+              </ListBox>
+            </Scroller>
           </Paper>
+          <Alert message={actionMsg} />
+          <Help>{helpText}</Help>
         </Container>
-        <Alert message={actionMsg} />
-        <Help>{helpText}</Help>
       </HoldingPattern>
     </>
   );

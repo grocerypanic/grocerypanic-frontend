@@ -219,7 +219,9 @@ const ItemDetailsForm = ({
                   >
                     {Strings.ItemDetails.DeleteButton}
                   </button>
-                ) : null}
+                ) : (
+                  <div></div>
+                )}
                 <button
                   data-testid="submit"
                   type="submit"

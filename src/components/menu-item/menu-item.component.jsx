@@ -5,8 +5,10 @@ import { ListItem, ListTitle } from "./menu-item.styles";
 
 const MenuItem = ({ name, location, choose }) => {
   return (
-    <ListItem data-testid="MenuElement" onClick={() => choose(location)}>
-      <ListTitle>{name}</ListTitle>
+    <ListItem>
+      <ListTitle data-testid={"MenuElement"} onClick={() => choose(location)}>
+        {name}
+      </ListTitle>
     </ListItem>
   );
 };

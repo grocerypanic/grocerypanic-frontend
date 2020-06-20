@@ -5,7 +5,7 @@ import { tertiary } from "../../configuration/theme";
 export const ListDialogue = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 10px;
+  padding-top: 5px;
   display: flex;
   align-items: center;
   justify-content: center;

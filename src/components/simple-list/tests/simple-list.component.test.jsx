@@ -1,5 +1,11 @@
 import React from "react";
-import { render, cleanup, act, waitFor } from "@testing-library/react";
+import {
+  render,
+  cleanup,
+  act,
+  waitFor,
+  fireEvent,
+} from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
 import Header from "../../header/header.component";
@@ -13,16 +19,20 @@ import SimpleListItem from "../../simple-list-item/simple-list-item.component";
 import SimpleList from "../simple-list.component";
 
 import Strings from "../../../configuration/strings";
+import calculateMaxHeight from "../../../util/height";
 
 jest.mock("../../holding-pattern/holding-pattern.component");
 jest.mock("../../simple-list-item/simple-list-item.component");
 jest.mock("../../header/header.component");
 jest.mock("../../simple-list-help/simple-list-help.component");
+jest.mock("../../../util/height");
 
 HoldingPattern.mockImplementation(({ children }) => children);
 SimpleListItem.mockImplementation(() => <div>MockListItem</div>);
 Header.mockImplementation(() => <div>MockHeader</div>);
 Help.mockImplementation(() => <div>MockHelp</div>);
+calculateMaxHeight.mockImplementation(() => 200);
+
 const mockDispatch = jest.fn();
 const mockHandleExpiredAuth = jest.fn();
 const mockRedirectTag = "store";
@@ -127,6 +137,17 @@ describe("Setup Environment", () => {
         const holdingPatternCall = HoldingPattern.mock.calls[0][0];
         propCount(holdingPatternCall, 2);
         expect(holdingPatternCall.condition).toBe(false);
+        done();
+      });
+
+      it("should call calculateMaxHeight on render", () => {
+        expect(calculateMaxHeight).toBeCalledTimes(1);
+      });
+
+      it("a should call calculateMaxHeight again on a window resize", async (done) => {
+        expect(calculateMaxHeight).toBeCalledTimes(1);
+        fireEvent(window, new Event("resize"));
+        await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
         done();
       });
     });
@@ -375,6 +396,17 @@ describe("Setup Environment", () => {
         expect(holdingPatternCall.condition).toBe(false);
         done();
       });
+
+      it("should call calculateMaxHeight on render", () => {
+        expect(calculateMaxHeight).toBeCalledTimes(1);
+      });
+
+      it("a should call calculateMaxHeight again on a window resize", async (done) => {
+        expect(calculateMaxHeight).toBeCalledTimes(1);
+        fireEvent(window, new Event("resize"));
+        await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
+        done();
+      });
     });
   });
 
@@ -460,6 +492,17 @@ describe("Setup Environment", () => {
       expect(holdingPatternCall.condition).toBe(false);
       done();
     });
+
+    it("should call calculateMaxHeight on render", () => {
+      expect(calculateMaxHeight).toBeCalledTimes(1);
+    });
+
+    it("a should call calculateMaxHeight again on a window resize", async (done) => {
+      expect(calculateMaxHeight).toBeCalledTimes(1);
+      fireEvent(window, new Event("resize"));
+      await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
+      done();
+    });
   });
 
   describe("pending api load", () => {
@@ -493,6 +536,17 @@ describe("Setup Environment", () => {
       const holdingPatternCall = HoldingPattern.mock.calls[0][0];
       propCount(holdingPatternCall, 2);
       expect(holdingPatternCall.condition).toBe(true);
+      done();
+    });
+
+    it("should call calculateMaxHeight on render", () => {
+      expect(calculateMaxHeight).toBeCalledTimes(1);
+    });
+
+    it("a should call calculateMaxHeight again on a window resize", async (done) => {
+      expect(calculateMaxHeight).toBeCalledTimes(1);
+      fireEvent(window, new Event("resize"));
+      await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
       done();
     });
   });

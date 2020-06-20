@@ -24,7 +24,7 @@ const ItemDetails = ({ headerTitle, transaction, ...OtherFormProps }) => {
   return (
     <>
       <Header title={headerTitle} transaction={transaction} />
-      <Container>
+      <Container tabs={true}>
         <TabBox>
           <Tabs
             id="item-details-tabs"

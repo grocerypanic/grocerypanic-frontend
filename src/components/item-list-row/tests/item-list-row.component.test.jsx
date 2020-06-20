@@ -38,6 +38,7 @@ jest.mock("react-bootstrap/DropdownItem", () => ({
 jest.mock("../../popover/popover.component");
 jest.mock("../../../configuration/theme", () => {
   return {
+    ...jest.requireActual("../../../configuration/theme"),
     ui: {
       alertTimeout: 10,
     },

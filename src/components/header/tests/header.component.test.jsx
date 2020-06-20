@@ -45,6 +45,7 @@ describe("during a transaction", () => {
   const create = jest.fn();
   const history = createBrowserHistory();
   history.location.pathname = "/some/unmatched/path";
+  const mockTitle = "A Very Real Title";
 
   describe("with a create function", () => {
     beforeEach(() => {
@@ -52,7 +53,7 @@ describe("during a transaction", () => {
       jest.clearAllMocks();
       utils = render(
         <Router history={history}>
-          <Header create={create} transaction={true} />
+          <Header title={mockTitle} create={create} transaction={true} />
         </Router>
       );
     });
@@ -65,8 +66,36 @@ describe("during a transaction", () => {
       expect(AddIcon.default).toHaveBeenCalledTimes(0);
     });
 
-    it("should render the title", () => {
-      expect(utils.getByText(Strings.MainTitle)).toBeTruthy();
+    it("should render the title correctly in mobile mode", async (done) => {
+      window.innerWidth = 380;
+      fireEvent(window, new Event("resize"));
+      await waitFor(() =>
+        expect(utils.getByText(Strings.MainTitle).className).toBe(
+          "header-visible"
+        )
+      );
+      await waitFor(() =>
+        expect(
+          utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
+        ).toBe("header-hidden")
+      );
+      done();
+    });
+
+    it("should render the title correctly in desktop mode", async (done) => {
+      window.innerWidth = 680;
+      fireEvent(window, new Event("resize"));
+      await waitFor(() =>
+        expect(utils.getByText(Strings.MainTitle).className).toBe(
+          "header-hidden"
+        )
+      );
+      await waitFor(() =>
+        expect(
+          utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
+        ).toBe("header-visible")
+      );
+      done();
     });
 
     it("should call the spinner", () => {

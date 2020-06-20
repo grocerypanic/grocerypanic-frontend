@@ -1,24 +1,32 @@
 import styled from "styled-components";
 
-import { selected, tertiary } from "../../configuration/theme";
+import { tertiary, itemAttributes } from "../../configuration/theme";
 
-export const ListBox = styled.ul`
+export const Scroller = styled.div`
+  align-items: center;
   list-style-type: none;
   list-style-position: outside;
+  overflow: scroll;
+  max-height: ${(props) => `${props.size}`}px;
+  border-style: solid;
+  border-color: ${tertiary};
+  border-width: ${itemAttributes.border}px;
+`;
+
+export const ListBox = styled.div`
   padding-left: 0px;
-  margin: 0px;
   min-width: 200px;
   background: ${tertiary};
-  padding: 10px;
+  padding: 0px;
 
-  li:hover {
-    color: ${selected};
+  li:last-child {
+    margin-bottom: 0px;
   }
 `;
 
 export const Banner = styled.div`
   width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: ${itemAttributes.border}px;
+  margin-right: ${itemAttributes.border}px;
   text-align: center;
 `;

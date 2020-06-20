@@ -2,11 +2,11 @@ import styled, { css } from "styled-components";
 import { Navbar } from "react-bootstrap";
 import { primary } from "../../configuration/theme";
 
-import { white, secondary } from "../../configuration/theme";
+import { white, navbarSize } from "../../configuration/theme";
 
 const container = css`
-  height: 50px;
-  width: 50px;
+  height: ${navbarSize};
+  width: ${navbarSize};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,12 +14,15 @@ const container = css`
 
 export const NavContainer = styled(Navbar)`
   background-color: ${primary};
-  height: 50px;
+  height: ${navbarSize};
   padding: 2px;
   padding-left: 10px;
 
   .action {
     cursor: pointer;
+  }
+  .header-hidden {
+    display: none;
   }
 `;
 

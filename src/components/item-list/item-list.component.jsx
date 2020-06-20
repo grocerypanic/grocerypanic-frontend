@@ -16,10 +16,17 @@ import Strings from "../../configuration/strings";
 import Routes from "../../configuration/routes";
 
 import preventContext from "../../util/preventDefault";
+import calculateMaxHeight from "../../util/height";
+
 import { calculateTitle } from "./item-list.util";
 
 import { Paper, Container } from "../../global-styles/containers";
-import { ListBox, Banner, PlaceHolderListItem } from "./item-list.styles";
+import {
+  Scroller,
+  ListBox,
+  Banner,
+  PlaceHolderListItem,
+} from "./item-list.styles";
 
 const ItemList = ({
   headerTitle,
@@ -36,10 +43,15 @@ const ItemList = ({
   const [actionMsg, setActionMsg] = React.useState(null);
   const [performAsync, setPerformAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [ready, setReady] = React.useState(false);
+  const [listSize, setListSize] = React.useState(calculateMaxHeight());
+
+  const recalculateHeight = () => setListSize(calculateMaxHeight());
 
   React.useEffect(() => {
+    window.addEventListener("resize", recalculateHeight);
     window.addEventListener("contextmenu", preventContext);
     return () => {
+      window.removeEventListener("resize", recalculateHeight);
       window.removeEventListener("contextmenu", preventContext);
     };
   }, []);
@@ -137,25 +149,27 @@ const ItemList = ({
                   {calculateTitle(title)}
                 </Banner>
               )}
-              <ListBox>
-                {apiObject.inventory.map((item) => {
-                  return (
-                    <ItemListRow
-                      item={item}
-                      allItems={apiObject.inventory}
-                      key={item.id}
-                      listFunctions={listFunctions}
-                      listValues={listValues}
-                      history={history}
-                    />
-                  );
-                })}
-                {apiObject.inventory.length === 0 ? (
-                  <PlaceHolderListItem>
-                    {placeHolderMessage}
-                  </PlaceHolderListItem>
-                ) : null}
-              </ListBox>
+              <Scroller className="overflow-auto" size={listSize}>
+                <ListBox>
+                  {apiObject.inventory.map((item) => {
+                    return (
+                      <ItemListRow
+                        item={item}
+                        allItems={apiObject.inventory}
+                        key={item.id}
+                        listFunctions={listFunctions}
+                        listValues={listValues}
+                        history={history}
+                      />
+                    );
+                  })}
+                  {apiObject.inventory.length === 0 ? (
+                    <PlaceHolderListItem>
+                      {placeHolderMessage}
+                    </PlaceHolderListItem>
+                  ) : null}
+                </ListBox>
+              </Scroller>
             </Paper>
           </Container>
           <Alert message={actionMsg} />

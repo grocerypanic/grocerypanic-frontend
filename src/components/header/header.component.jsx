@@ -19,10 +19,23 @@ import {
 
 import Routes from "../../configuration/routes";
 import Strings from "../../configuration/strings";
+import { headerMobileThreshold } from "../../configuration/theme";
 
 const Header = ({ history, title, create, transaction }) => {
   React.useEffect(() => {}, []);
   const { t } = useTranslation();
+
+  const [mobile, setMobile] = React.useState(
+    window.innerWidth < headerMobileThreshold
+  );
+  const isMobile = () => setMobile(window.innerWidth < headerMobileThreshold);
+  const display = (condition) =>
+    condition ? "header-visible" : "header-hidden";
+
+  React.useEffect(() => {
+    window.addEventListener("resize", isMobile);
+    return () => window.removeEventListener("resize", isMobile);
+  }, []);
 
   const navigate = (route) => {
     if (transaction) return;
@@ -33,7 +46,10 @@ const Header = ({ history, title, create, transaction }) => {
     <NavContainer collapseOnSelect variant="dark" fixed="top">
       <Navbar.Brand>
         <div className="action" onClick={() => navigate(Routes.about)}>
-          {t(Strings.MainTitle)}
+          <div className={display(mobile)}>{t(Strings.MainTitle)}</div>
+          <div className={display(!mobile)}>{`${t(
+            Strings.MainTitle
+          )}: ${title}`}</div>
         </div>
       </Navbar.Brand>
       <Nav className="mr-auto"></Nav>

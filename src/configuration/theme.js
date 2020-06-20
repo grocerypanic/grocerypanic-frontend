@@ -12,3 +12,16 @@ export const dark = "#495057";
 export const black = "#000000";
 
 export const ui = { alertTimeout: 2000 };
+
+export const navbarSize = "50px";
+export const tabSize = "26px";
+export const itemAttributes = {
+  height: 55,
+  padding: 5,
+  border: 10,
+  spacing: 5,
+  innerHeight: 40,
+  placeHolderPadding: 12,
+};
+
+export const headerMobileThreshold = 480;

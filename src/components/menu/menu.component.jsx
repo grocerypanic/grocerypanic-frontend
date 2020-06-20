@@ -7,12 +7,23 @@ import MenuItem from "../menu-item/menu-item.component";
 import Help from "../simple-list-help/simple-list-help.component";
 
 import { Paper, Container } from "../../global-styles/containers";
-import { ListBox, Banner } from "./menu.styles";
+import { Scroller, ListBox, Banner } from "./menu.styles";
+import calculateMaxHeight from "../../util/height";
 
 const Menu = ({ options, headerTitle, title, history, helpText }) => {
   const choose = (route) => {
     history.push(route);
   };
+  const [listSize, setListSize] = React.useState(calculateMaxHeight());
+
+  const recalculateHeight = () => setListSize(calculateMaxHeight());
+
+  React.useEffect(() => {
+    window.addEventListener("resize", recalculateHeight);
+    return () => {
+      window.removeEventListener("resize", recalculateHeight);
+    };
+  }, []);
 
   return (
     <>
@@ -20,18 +31,20 @@ const Menu = ({ options, headerTitle, title, history, helpText }) => {
       <Container>
         <Paper>
           <Banner className="alert alert-success">{title}</Banner>
-          <ListBox>
-            {options.map((item, index) => {
-              return (
-                <MenuItem
-                  name={item.name}
-                  location={item.location}
-                  key={index}
-                  choose={choose}
-                />
-              );
-            })}
-          </ListBox>
+          <Scroller className="overflow-auto" size={listSize}>
+            <ListBox>
+              {options.map((item, index) => {
+                return (
+                  <MenuItem
+                    name={item.name}
+                    location={item.location}
+                    key={index}
+                    choose={choose}
+                  />
+                );
+              })}
+            </ListBox>
+          </Scroller>
         </Paper>
       </Container>
       <Help>{helpText}</Help>

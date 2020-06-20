@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
-import { white, highlight, selected } from "../../configuration/theme";
+import {
+  white,
+  highlight,
+  selected,
+  itemAttributes,
+} from "../../configuration/theme";
 
 export const ListItem = styled.li`
   display: flex;
@@ -9,8 +14,8 @@ export const ListItem = styled.li`
   flex-direction: row;
 
   background: ${white};
-  margin: 5px;
-  padding: 5px;
+  margin-bottom: ${itemAttributes.spacing}px;
+  padding: ${itemAttributes.padding}px;
   color: ${highlight};
 
   min-width: 220px;
@@ -31,5 +36,5 @@ export const ListTitle = styled.div`
   align-items: left;
   flex-direction: column;
 
-  height: 40px;
+  height: ${itemAttributes.innerHeight}px;
 `;

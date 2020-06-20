@@ -7,6 +7,7 @@ import {
   selected,
   danger,
   success,
+  itemAttributes,
 } from "../../configuration/theme";
 
 const digitWidth = "20px";
@@ -21,8 +22,8 @@ export const Row = styled.li`
   grid-gap: 4px;
 
   background: ${white};
-  margin: 3px;
-  padding: 2px;
+  margin-bottom: ${itemAttributes.spacing}px;
+  padding: ${itemAttributes.padding}px;
   color: ${primary};
 `;
 
@@ -32,7 +33,7 @@ export const Digit = styled.div`
   align-items: left;
   flex-direction: column;
   width: ${digitWidth};
-  height: 40px;
+  height: ${itemAttributes.innerHeight}px;
   cursor: pointer;
   ${(props) => (props.type === "expired" ? `color: ${danger};` : null)}
 `;
@@ -42,7 +43,7 @@ export const Control = styled.div`
   justify-content: center;
   align-items: left;
   flex-direction: column;
-  height: 40px;
+  height: ${itemAttributes.innerHeight}px;
   cursor: pointer;
   width: ${buttonWidth};
 
@@ -71,7 +72,7 @@ export const ListTitle = styled.div`
   color: ${highlight};
   width: ${titleWidth};
 
-  height: 40px;
+  height: ${itemAttributes.innerHeight}px;
   span:hover {
     color: ${selected};
     cursor: pointer;

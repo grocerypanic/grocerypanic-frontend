@@ -1,5 +1,11 @@
 import React from "react";
-import { render, cleanup, act, waitFor } from "@testing-library/react";
+import {
+  render,
+  cleanup,
+  act,
+  waitFor,
+  fireEvent,
+} from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
@@ -18,6 +24,7 @@ import ApiFunctions from "../../../providers/api/api.functions";
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
+import calculateMaxHeight from "../../../util/height";
 
 jest.mock("../../holding-pattern/holding-pattern.component");
 jest.mock("../../item-list-row/item-list-row.component");
@@ -25,6 +32,7 @@ jest.mock("../../header/header.component");
 jest.mock("../../simple-list-help/simple-list-help.component");
 jest.mock("../../alert/alert.component");
 jest.mock("../../error-handler/error-handler.component");
+jest.mock("../../../util/height");
 
 ErrorHandler.mockImplementation(({ children }) => children);
 ItemListRow.mockImplementation(() => <div>MockListItem</div>);
@@ -32,6 +40,8 @@ Header.mockImplementation(() => <div>MockHeader</div>);
 Help.mockImplementation(() => <div>MockHelp</div>);
 Alert.mockImplementation(() => <div>MockAlert</div>);
 HoldingPattern.mockImplementation(({ children }) => children);
+calculateMaxHeight.mockImplementation(() => 200);
+
 const mockDispatch = jest.fn();
 const mockHandleExpiredAuth = jest.fn();
 
@@ -117,19 +127,15 @@ describe("Setup Environment", () => {
 
   describe("outside of an error", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
       current.error = false;
     });
     describe("outside of a transaction", () => {
       beforeEach(() => {
-        jest.clearAllMocks();
         current.transaction = false;
       });
 
       describe("with items in the inventory", () => {
         beforeEach(() => {
-          jest.clearAllMocks();
-
           current.inventory = [...mockItems];
           let history = createBrowserHistory();
           history.push(Routes.items);
@@ -374,12 +380,21 @@ describe("Setup Environment", () => {
 
           done();
         });
+
+        it("should call calculateMaxHeight on render", () => {
+          expect(calculateMaxHeight).toBeCalledTimes(1);
+        });
+
+        it("a should call calculateMaxHeight again on a window resize", async (done) => {
+          expect(calculateMaxHeight).toBeCalledTimes(1);
+          fireEvent(window, new Event("resize"));
+          await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
+          done();
+        });
       });
 
       describe("with no items in the inventory", () => {
         beforeEach(() => {
-          jest.clearAllMocks();
-
           current.inventory = [];
           let history = createBrowserHistory();
           history.push(Routes.items);
@@ -411,12 +426,21 @@ describe("Setup Environment", () => {
           expect(ItemListRow).toBeCalledTimes(0);
           expect(utils.getByText(mockPlaceHolderMessage)).toBeTruthy();
         });
+
+        it("should call calculateMaxHeight on render", () => {
+          expect(calculateMaxHeight).toBeCalledTimes(1);
+        });
+
+        it("a should call calculateMaxHeight again on a window resize", async (done) => {
+          expect(calculateMaxHeight).toBeCalledTimes(1);
+          fireEvent(window, new Event("resize"));
+          await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
+          done();
+        });
       });
     });
     describe("inside of a transaction", () => {
       beforeEach(() => {
-        jest.clearAllMocks();
-
         current.transaction = true;
         current.waitForApi = false;
         let history = createBrowserHistory();
@@ -504,12 +528,22 @@ describe("Setup Environment", () => {
         expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
         done();
       });
+
+      it("should call calculateMaxHeight on render", () => {
+        expect(calculateMaxHeight).toBeCalledTimes(1);
+      });
+
+      it("a should call calculateMaxHeight again on a window resize", async (done) => {
+        expect(calculateMaxHeight).toBeCalledTimes(1);
+        fireEvent(window, new Event("resize"));
+        await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
+        done();
+      });
     });
   });
 
   describe("during an error", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
       current.error = true;
       let history = createBrowserHistory();
       history.push(Routes.items);
@@ -561,6 +595,17 @@ describe("Setup Environment", () => {
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith({ type: ApiActions.ClearErrors });
 
+      done();
+    });
+
+    it("should call calculateMaxHeight on render", () => {
+      expect(calculateMaxHeight).toBeCalledTimes(1);
+    });
+
+    it("a should call calculateMaxHeight again on a window resize", async (done) => {
+      expect(calculateMaxHeight).toBeCalledTimes(1);
+      fireEvent(window, new Event("resize"));
+      await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
       done();
     });
   });

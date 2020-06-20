@@ -1,21 +1,38 @@
 import styled from "styled-components";
 
-import { primary, white, tertiary } from "../../configuration/theme";
+import {
+  primary,
+  white,
+  tertiary,
+  itemAttributes,
+} from "../../configuration/theme";
 
-export const ListBox = styled.ul`
+export const Scroller = styled.div`
+  align-items: center;
   list-style-type: none;
   list-style-position: outside;
+  overflow: scroll;
+  max-height: ${(props) => `${props.size}`}px;
+  border-style: solid;
+  border-color: ${tertiary};
+  border-width: ${itemAttributes.border}px;
+`;
+
+export const ListBox = styled.div`
   padding-left: 0px;
-  margin: 0px;
   min-width: 200px;
   background: ${tertiary};
-  padding: 10px;
+  padding-top: 0px;
+
+  li:last-child {
+    margin-bottom: 0px;
+  }
 `;
 
 export const Banner = styled.div`
   width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: ${itemAttributes.border}px;
+  margin-right: ${itemAttributes.border}px;
   text-align: center;
 `;
 
@@ -23,11 +40,14 @@ export const PlaceHolderListItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: row;
+  min-height: ${itemAttributes.innerHeight}px;
 
   background: ${white};
-  margin: 5px;
-  padding: 5px;
-  color: ${primary};
+  padding: ${itemAttributes.placeHolderPadding}px;
 
   min-width: 220px;
+
+  color: ${primary};
+  margin-bottom: 0px;
 `;
