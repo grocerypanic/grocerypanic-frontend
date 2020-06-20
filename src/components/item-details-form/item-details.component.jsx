@@ -47,6 +47,7 @@ const ItemDetails = ({ headerTitle, transaction, ...OtherFormProps }) => {
 export default ItemDetails;
 
 ItemDetails.propTypes = {
+  allItems: PropTypes.arrayOf(PropTypes.object).isRequired,
   item: PropTypes.object.isRequired,
   headerTitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,

@@ -54,7 +54,7 @@ const ItemDetailsCreateContainer = ({
 
   const [receivedShelves, setReceivedShelves] = React.useState(false);
   const [receivedStores, setReceivedStores] = React.useState(false);
-  const [saveComplete, setSaveComplete] = React.useState(false);
+  const [receivedItems, setReceivedItems] = React.useState(false);
 
   React.useEffect(() => {
     // Detect Transactions on Any API Plane
@@ -64,6 +64,7 @@ const ItemDetailsCreateContainer = ({
   React.useEffect(() => {
     if (!performItemAsync) return;
     if (performItemAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
+    if (performItemAsync.type === ApiActions.SuccessAdd) history.goBack();
     itemDispatch(performItemAsync);
     setPerformItemAsync(null);
   }, [performItemAsync]);
@@ -101,6 +102,12 @@ const ItemDetailsCreateContainer = ({
       dispatch: setPerformStoreAsync,
       callback: setReceivedStores,
     });
+    setPerformItemAsync({
+      type: ApiActions.StartList,
+      func: ApiFuctions.asyncList,
+      dispatch: setPerformItemAsync,
+      callback: setReceivedItems,
+    });
   }, []);
 
   const handleSave = (newItem) => {
@@ -109,13 +116,8 @@ const ItemDetailsCreateContainer = ({
       func: ApiFuctions.asyncAdd,
       dispatch: setPerformItemAsync,
       payload: { ...newItem },
-      callback: setSaveComplete,
     });
   };
-
-  React.useEffect(() => {
-    if (saveComplete) history.goBack();
-  }, [saveComplete]);
 
   const clearError = () => {
     if (item.error) setPerformItemAsync({ type: ApiActions.ClearErrors });
@@ -125,7 +127,7 @@ const ItemDetailsCreateContainer = ({
 
   const checkForNonReceivedContent = () => {
     /* istanbul ignore next */
-    return !receivedStores || !receivedShelves;
+    return !receivedStores || !receivedShelves || !receivedItems;
   };
 
   return (
@@ -149,6 +151,7 @@ const ItemDetailsCreateContainer = ({
         >
           <Container>
             <ItemDetailsForm
+              allItems={item.inventory}
               item={defaults}
               title={title}
               helpText={helpText}

@@ -28,6 +28,7 @@ import {
 
 const ItemDetailsForm = ({
   item,
+  allItems,
   title,
   helpText,
   transaction,
@@ -81,6 +82,13 @@ const ItemDetailsForm = ({
     const derivedShelfLife = normalizeId(shelfLifeState, ShelfLifeConstants);
     if (preferredStoresState.length === 0) {
       setErrorMsg(t(Strings.ItemDetails.ErrorUnselectedStore));
+      return setTimeout(() => setErrorMsg(null), ui.alertTimeout);
+    }
+    const search = allItems.find(
+      (o) => o.id !== item.id && o.name === nameState
+    );
+    if (search) {
+      setErrorMsg(t(Strings.ItemDetails.ErrorExistingItem));
       return setTimeout(() => setErrorMsg(null), ui.alertTimeout);
     }
     const newItem = {
@@ -245,6 +253,7 @@ const ItemDetailsForm = ({
 export default ItemDetailsForm;
 
 ItemDetailsForm.propTypes = {
+  allItems: PropTypes.arrayOf(PropTypes.object).isRequired,
   item: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   helpText: PropTypes.string.isRequired,

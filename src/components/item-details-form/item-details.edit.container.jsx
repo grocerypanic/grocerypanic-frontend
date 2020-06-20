@@ -34,6 +34,7 @@ const ItemDetailsEditContainer = ({
   handleExpiredAuth,
   helpText,
   history,
+  testHook = false,
 }) => {
   const { apiObject: item, dispatch: itemDispatch } = React.useContext(
     ItemContext
@@ -49,6 +50,7 @@ const ItemDetailsEditContainer = ({
   const [performStoreAsync, setPerformStoreAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [transaction, setTransaction] = React.useState(true);
   const [calculatedItem, setCalculatedItem] = React.useState(defaultItem);
+  const [listItemsComplete, setListItemsComplete] = React.useState(testHook);
 
   React.useEffect(() => {
     // Detect Transactions on Any API Plane
@@ -56,9 +58,15 @@ const ItemDetailsEditContainer = ({
   }, [item, store, shelf]);
 
   React.useEffect(() => {
+    if (item.error) return;
     if (item.inventory.length > 0) {
-      const thisItem = item.inventory.find((i) => i.id === parseInt(itemId));
-      setCalculatedItem(thisItem);
+      const search = item.inventory.find((i) => i.id === parseInt(itemId));
+      if (search) return setCalculatedItem(search);
+    }
+    if (listItemsComplete) {
+      itemDispatch({
+        type: ApiActions.FailureGet,
+      });
     }
   }, [item]);
 
@@ -66,18 +74,11 @@ const ItemDetailsEditContainer = ({
     if (!performItemAsync) return;
     if (performItemAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
     if (performItemAsync.type === ApiActions.SuccessDel) history.goBack();
+    if (performItemAsync.type === ApiActions.SuccessList)
+      performItemAsync.callback = setListItemsComplete;
     itemDispatch(performItemAsync);
     setPerformItemAsync(null);
   }, [performItemAsync]);
-
-  React.useEffect(() => {
-    setPerformItemAsync({
-      type: ApiActions.StartGet,
-      func: ApiFuctions.asyncGet,
-      dispatch: setPerformItemAsync,
-      payload: { id: itemId },
-    });
-  }, []);
 
   React.useEffect(() => {
     if (!performShelfAsync) return;
@@ -86,13 +87,7 @@ const ItemDetailsEditContainer = ({
     setPerformShelfAsync(null);
   }, [performShelfAsync]);
 
-  React.useEffect(() => {
-    setPerformShelfAsync({
-      type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
-      dispatch: setPerformShelfAsync,
-    });
-  }, []);
+  React.useEffect(() => {}, []);
 
   React.useEffect(() => {
     if (!performStoreAsync) return;
@@ -102,10 +97,20 @@ const ItemDetailsEditContainer = ({
   }, [performStoreAsync]);
 
   React.useEffect(() => {
+    setPerformItemAsync({
+      type: ApiActions.StartList,
+      func: ApiFuctions.asyncList,
+      dispatch: setPerformItemAsync,
+    });
     setPerformStoreAsync({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
       dispatch: setPerformStoreAsync,
+    });
+    setPerformShelfAsync({
+      type: ApiActions.StartList,
+      func: ApiFuctions.asyncList,
+      dispatch: setPerformShelfAsync,
     });
   }, []);
 
@@ -144,6 +149,7 @@ const ItemDetailsEditContainer = ({
     >
       <HoldingPattern condition={calculatedItem === defaultItem}>
         <ItemDetails
+          allItems={item.inventory}
           item={calculatedItem}
           headerTitle={headerTitle}
           title={title}

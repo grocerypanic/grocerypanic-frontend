@@ -37,6 +37,7 @@ const mockStore = {
 };
 
 const props = {
+  allItems: [mockItem],
   item: mockItem,
   headerTitle: "mockHeaderTitle",
   title: "mockTitle",
@@ -55,7 +56,7 @@ describe("Setup Environment", () => {
   describe("outside of a transaction", () => {
     beforeEach(() => {
       jest.clearAllMocks();
-      current = { ...props };
+      current = { ...props, allItems: [...props.allItems] };
       utils = render(<ItemDetails {...current} />);
     });
     afterEach(cleanup);
@@ -113,8 +114,9 @@ describe("Setup Environment", () => {
 
       expect(ItemDetailsForm).toBeCalledTimes(1);
       const call = ItemDetailsForm.mock.calls[0][0];
-      propCount(call, 8);
+      propCount(call, 9);
 
+      expect(call.allItems).toBe(current.allItems);
       expect(call.item).toBe(mockItem);
       expect(call.title).toBe(current.title);
       expect(call.helpText).toBe(current.helpText);

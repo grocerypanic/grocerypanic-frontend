@@ -56,6 +56,19 @@ const mockItem = {
   shelf_life: 25,
 };
 
+const mockItem2 = {
+  expired: 0,
+  id: 2,
+  name: "Another Item",
+  next_expiry_date: "2020-06-15",
+  next_expiry_quantity: 0,
+  preferred_stores: [1],
+  price: "4.00",
+  quantity: 1,
+  shelf: 2,
+  shelf_life: 25,
+};
+
 const mockShelf1 = {
   id: 1,
   name: "Fridge",
@@ -77,6 +90,7 @@ const mockStore2 = {
 };
 
 const props = {
+  allItems: [mockItem, mockItem2],
   item: { ...mockItem },
   title: "mockTitle",
   headerTitle: "mockHeaderTitle",
@@ -548,6 +562,28 @@ describe("Setup Environment For Action Tests", () => {
           expect(utils.getByText(current.title)).toBeTruthy()
         );
         expect(mockHandleSave).toBeCalledTimes(0);
+        done();
+      });
+
+      it("does not save a modified name if it already exists", async (done) => {
+        const modified_value = mockItem2.name;
+
+        await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
+        const nameInput = FormInput.mock.calls[3][0];
+        act(() => nameInput.handleState(modified_value));
+
+        const button = utils.getByTestId("submit");
+        fireEvent.click(button, "click");
+        await waitFor(() =>
+          expect(
+            utils.getByText(Strings.ItemDetails.ErrorExistingItem)
+          ).toBeTruthy()
+        );
+        await waitFor(() =>
+          expect(utils.getByText(current.title)).toBeTruthy()
+        );
+        await waitFor(() => expect(mockHandleSave).toBeCalledTimes(0));
+
         done();
       });
     });

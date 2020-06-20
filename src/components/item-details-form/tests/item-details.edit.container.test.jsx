@@ -1,5 +1,11 @@
 import React from "react";
-import { render, cleanup, waitFor, act } from "@testing-library/react";
+import {
+  rerender,
+  render,
+  cleanup,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 import { MemoryRouter, Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
@@ -76,6 +82,7 @@ const mockShelfProvider = {
 };
 
 const props = {
+  allItems: [mockItem],
   itemId: "1",
   title: "mockTitle",
   headerTitle: "mockHeaderTitle",
@@ -96,33 +103,112 @@ describe("Setup Environment", () => {
 
   afterEach(cleanup);
 
-  describe("outside of an error", () => {
+  const renderHelper = (
+    currentHistory,
+    currentTransaction,
+    currentProps,
+    itemContext = { ...mockItemsProvider },
+    command = render
+  ) => {
+    itemContext.transaction = currentTransaction;
+    return command(
+      <Router history={currentHistory}>
+        <StoreContext.Provider
+          value={{ ...mockStoreProvider, transaction: currentTransaction }}
+        >
+          <ShelfContext.Provider
+            value={{ ...mockShelfProvider, transaction: currentTransaction }}
+          >
+            <ItemContext.Provider value={itemContext}>
+              <ItemDetailsEditContainer {...currentProps} />
+            </ItemContext.Provider>
+          </ShelfContext.Provider>
+        </StoreContext.Provider>
+      </Router>
+    );
+  };
+
+  describe("when the item cannot be found", () => {
+    let history;
+    let itemProvider;
+    beforeEach(() => {
+      jest.clearAllMocks();
+      history = createBrowserHistory();
+      history.location.pathname = originalPath;
+      itemProvider = { ...mockItemsProvider };
+      itemProvider.apiObject = { ...mockItemsProvider.apiObject };
+      itemProvider.apiObject.inventory = {
+        ...mockItemsProvider.apiObject.inventory,
+      };
+    });
+
+    it("renders, attempts to load item that does not exist, throws error", async (done) => {
+      itemProvider.apiObject.inventory = [mockItem];
+      current.itemId = "2";
+      current.testHook = true;
+      utils = renderHelper(history, false, current, itemProvider);
+
+      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
+      expect(mockItemDispatch.mock.calls[0][0].type).toBe(
+        ApiActions.FailureGet
+      );
+      expect(mockItemDispatch.mock.calls[1][0].type).toBe(ApiActions.StartList);
+
+      done();
+    });
+
+    it("renders, attempts to load item that does not exist, with no inputs, throws error", async (done) => {
+      itemProvider.apiObject.inventory = [];
+      current.itemId = "2";
+      current.testHook = true;
+      utils = renderHelper(history, false, current, itemProvider);
+
+      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
+      expect(mockItemDispatch.mock.calls[0][0].type).toBe(
+        ApiActions.FailureGet
+      );
+      expect(mockItemDispatch.mock.calls[1][0].type).toBe(ApiActions.StartList);
+
+      done();
+    });
+
+    it("renders, attempts to load item that does not exist, fetch not performed yet", async (done) => {
+      itemProvider.apiObject.inventory = [];
+      current.itemId = "2";
+      current.testHook = false;
+      utils = renderHelper(history, false, current, itemProvider);
+
+      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+      expect(mockItemDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
+
+      done();
+    });
+
+    it("renders, adds callback to SuccessList", async (done) => {
+      itemProvider.apiObject.inventory = [];
+      current.itemId = "2";
+      current.testHook = false;
+      utils = renderHelper(history, false, current, itemProvider);
+
+      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+      const itemDispatch = mockItemDispatch.mock.calls[0][0].dispatch;
+      act(() => itemDispatch({ type: ApiActions.SuccessList }));
+      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
+      expect(mockItemDispatch.mock.calls[1][0].callback.name).toBe(
+        "bound dispatchAction"
+      );
+      done();
+    });
+  });
+
+  describe("outside of an api error, outside of a transaction", () => {
     beforeEach(() => {
       jest.clearAllMocks();
       const history = createBrowserHistory();
       history.location.pathname = originalPath;
       history.goBack = mockGoBack;
 
-      utils = render(
-        <Router history={history}>
-          <StoreContext.Provider
-            value={{ ...mockStoreProvider, transaction: false }}
-          >
-            <ShelfContext.Provider
-              value={{ ...mockShelfProvider, transaction: false }}
-            >
-              <ItemContext.Provider
-                value={{
-                  ...mockItemsProvider,
-                  transaction: false,
-                }}
-              >
-                <ItemDetailsEditContainer {...current} />
-              </ItemContext.Provider>
-            </ShelfContext.Provider>
-          </StoreContext.Provider>
-        </Router>
-      );
+      utils = renderHelper(history, false, current);
     });
 
     it("renders, bypasses HoldingPattern as expected", async (done) => {
@@ -133,14 +219,13 @@ describe("Setup Environment", () => {
       done();
     });
 
-    it("renders, calls items.StartGet on first render", async (done) => {
+    it("renders, calls items.StartList on first render", async (done) => {
       await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
       const call = mockItemDispatch.mock.calls[0][0];
-      propCount(call, 4);
-      expect(call.type).toBe(ApiActions.StartGet);
-      expect(call.func).toBe(ApiFunctions.asyncGet);
+      propCount(call, 3);
+      expect(call.type).toBe(ApiActions.StartList);
+      expect(call.func).toBe(ApiFunctions.asyncList);
       expect(call.dispatch).toBeInstanceOf(Function);
-      expect(call.payload).toStrictEqual({ id: props.itemId });
       done();
     });
 
@@ -200,7 +285,8 @@ describe("Setup Environment", () => {
     it("renders ItemDetails with correct props", async (done) => {
       await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
       const call = ItemDetails.mock.calls[2][0];
-      propCount(call, 9);
+      propCount(call, 10);
+      expect(call.allItems).toStrictEqual(props.allItems);
       expect(call.item).toBe(mockItem);
       expect(call.headerTitle).toBe(props.headerTitle);
       expect(call.title).toBe(props.title);
@@ -293,6 +379,33 @@ describe("Setup Environment", () => {
   });
 
   describe("during an error", () => {
+    const renderHelper = (
+      storeContext,
+      shelfContext,
+      itemContext,
+      currentProps
+    ) =>
+      render(
+        <MemoryRouter>
+          <StoreContext.Provider
+            value={{ ...storeContext, transaction: false }}
+          >
+            <ShelfContext.Provider
+              value={{ ...shelfContext, transaction: false }}
+            >
+              <ItemContext.Provider
+                value={{
+                  ...itemContext,
+                  transaction: false,
+                }}
+              >
+                <ItemDetailsEditContainer {...currentProps} />
+              </ItemContext.Provider>
+            </ShelfContext.Provider>
+          </StoreContext.Provider>
+        </MemoryRouter>
+      );
+
     describe("during a store api error", () => {
       beforeEach(() => {
         jest.clearAllMocks();
@@ -303,23 +416,11 @@ describe("Setup Environment", () => {
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = render(
-          <MemoryRouter>
-            <StoreContext.Provider value={TestContext}>
-              <ShelfContext.Provider
-                value={{ ...mockShelfProvider, transaction: false }}
-              >
-                <ItemContext.Provider
-                  value={{
-                    ...mockItemsProvider,
-                    transaction: false,
-                  }}
-                >
-                  <ItemDetailsEditContainer {...current} />
-                </ItemContext.Provider>
-              </ShelfContext.Provider>
-            </StoreContext.Provider>
-          </MemoryRouter>
+        utils = renderHelper(
+          TestContext,
+          mockShelfProvider,
+          mockItemsProvider,
+          current
         );
       });
 
@@ -361,23 +462,11 @@ describe("Setup Environment", () => {
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = render(
-          <MemoryRouter>
-            <StoreContext.Provider
-              value={{ ...mockStoreProvider, transaction: false }}
-            >
-              <ShelfContext.Provider value={TestContext}>
-                <ItemContext.Provider
-                  value={{
-                    ...mockItemsProvider,
-                    transaction: false,
-                  }}
-                >
-                  <ItemDetailsEditContainer {...current} />
-                </ItemContext.Provider>
-              </ShelfContext.Provider>
-            </StoreContext.Provider>
-          </MemoryRouter>
+        utils = renderHelper(
+          mockStoreProvider,
+          TestContext,
+          mockItemsProvider,
+          current
         );
       });
 
@@ -419,23 +508,11 @@ describe("Setup Environment", () => {
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = render(
-          <MemoryRouter>
-            <StoreContext.Provider
-              value={{ ...mockStoreProvider, transaction: false }}
-            >
-              <ShelfContext.Provider
-                value={{
-                  ...mockShelfProvider,
-                  transaction: false,
-                }}
-              >
-                <ItemContext.Provider value={TestContext}>
-                  <ItemDetailsEditContainer {...current} />
-                </ItemContext.Provider>
-              </ShelfContext.Provider>
-            </StoreContext.Provider>
-          </MemoryRouter>
+        utils = renderHelper(
+          mockStoreProvider,
+          mockShelfProvider,
+          TestContext,
+          current
         );
       });
 
