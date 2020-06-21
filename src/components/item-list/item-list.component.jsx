@@ -9,6 +9,9 @@ import Help from "../simple-list-help/simple-list-help.component";
 import Alert from "../alert/alert.component";
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
+import { ItemContext } from "../../providers/api/item/item.provider";
+import { TransactionContext } from "../../providers/api/transaction/transaction.provider";
+
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
@@ -31,17 +34,25 @@ import {
 const ItemList = ({
   headerTitle,
   title,
-  ApiObjectContext,
   placeHolderMessage,
   handleExpiredAuth,
   helpText,
   history,
   waitForApi = true,
 }) => {
-  const { apiObject, dispatch } = React.useContext(ApiObjectContext);
+  const { apiObject: item, dispatch: itemDispatch } = React.useContext(
+    ItemContext
+  );
+  const {
+    apiObject: transaction,
+    dispatch: transactionDispatch,
+  } = React.useContext(TransactionContext);
+
   const [errorMsg, setErrorMsg] = React.useState(null);
   const [actionMsg, setActionMsg] = React.useState(null);
-  const [performAsync, setPerformAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
+
+  const [performItemAsync, setPerformItemAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
+
   const [ready, setReady] = React.useState(false);
   const [listSize, setListSize] = React.useState(calculateMaxHeight());
 
@@ -57,52 +68,51 @@ const ItemList = ({
   }, []);
 
   React.useEffect(() => {
-    if (!performAsync) return;
-    if (performAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
-    dispatch(performAsync);
-    setPerformAsync(null);
-  }, [performAsync]);
+    if (!performItemAsync) return;
+    if (performItemAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
+    itemDispatch(performItemAsync);
+    setPerformItemAsync(null);
+  }, [performItemAsync]);
 
   React.useEffect(() => {
     const filter = new URLSearchParams(window.location.search);
-
-    dispatch({
+    itemDispatch({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
-      dispatch: setPerformAsync,
+      dispatch: setPerformItemAsync,
       filter: filter,
       callback: setReady,
     });
   }, []);
 
   const handleCreate = () => {
-    if (apiObject.transaction) return;
+    if (item.transaction) return;
     // TODO: is it possible to populate the shelf or store automatically based on current route?
     history.push(Routes.create);
   };
 
-  const handleReStock = async (item, quantity) => {
-    if (apiObject.transaction) return;
-    setPerformAsync({
+  const handleReStock = async (received, quantity) => {
+    if (item.transaction) return;
+    setPerformItemAsync({
       type: ApiActions.StartUpdate, // Should be a transaction
       func: ApiFuctions.asyncUpdate,
-      dispatch: setPerformAsync,
+      dispatch: setPerformItemAsync,
       payload: {
-        ...item,
-        quantity: parseInt(item.quantity) + parseInt(quantity),
+        ...received,
+        quantity: parseInt(received.quantity) + parseInt(quantity),
       },
     });
   };
 
-  const handleConsume = (item, quantity) => {
-    if (apiObject.transaction) return;
-    setPerformAsync({
+  const handleConsume = (received, quantity) => {
+    if (item.transaction) return;
+    setPerformItemAsync({
       type: ApiActions.StartUpdate, // Should be a transaction
       func: ApiFuctions.asyncUpdate,
-      dispatch: setPerformAsync,
+      dispatch: setPerformItemAsync,
       payload: {
-        ...item,
-        quantity: parseInt(item.quantity) - parseInt(quantity),
+        ...received,
+        quantity: parseInt(received.quantity) - parseInt(quantity),
       },
     });
   };
@@ -117,17 +127,17 @@ const ItemList = ({
   };
 
   const listValues = {
-    transaction: apiObject.transaction,
+    transaction: item.transaction,
   };
 
   const clearError = () => {
-    setPerformAsync({ type: ApiActions.ClearErrors });
+    setPerformItemAsync({ type: ApiActions.ClearErrors });
   };
 
   return (
     <>
       <ErrorHandler
-        condition={apiObject.error}
+        condition={item.error}
         clearError={clearError}
         eventMessage={AnalyticsActions.ApiError}
         stringsRoot={Strings.ItemList}
@@ -136,7 +146,7 @@ const ItemList = ({
       >
         <Header
           title={headerTitle}
-          transaction={apiObject.transaction}
+          transaction={item.transaction}
           create={handleCreate}
         />
         <HoldingPattern condition={!ready && waitForApi}>
@@ -151,19 +161,19 @@ const ItemList = ({
               )}
               <Scroller className="overflow-auto" size={listSize}>
                 <ListBox>
-                  {apiObject.inventory.map((item) => {
+                  {item.inventory.map((i) => {
                     return (
                       <ItemListRow
-                        item={item}
-                        allItems={apiObject.inventory}
-                        key={item.id}
+                        item={i}
+                        allItems={item.inventory}
+                        key={i.id}
                         listFunctions={listFunctions}
                         listValues={listValues}
                         history={history}
                       />
                     );
                   })}
-                  {apiObject.inventory.length === 0 ? (
+                  {item.inventory.length === 0 ? (
                     <PlaceHolderListItem>
                       {placeHolderMessage}
                     </PlaceHolderListItem>

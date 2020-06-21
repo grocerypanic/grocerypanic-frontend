@@ -46,6 +46,7 @@ HoldingPattern.mockImplementation(({ children }) => children);
 calculateMaxHeight.mockImplementation(() => 200);
 
 const mockItemDispatch = jest.fn();
+const mockTransactionDispatch = jest.fn();
 const mockHandleExpiredAuth = jest.fn();
 
 const mockItems = [
@@ -101,11 +102,6 @@ describe("Setup Environment", () => {
   let mockTitle = "mockTitle";
   let mockHeaderTitle = "mockHeaderTitle";
 
-  const ApiContext = React.createContext({
-    apiObject: { ...mockDataState, inventory: [...mockItems] },
-    dispatch: mockItemDispatch,
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
     current = {
@@ -120,21 +116,32 @@ describe("Setup Environment", () => {
     itemContextValue,
     transactionContextValue,
     history,
-    waitForApi = false
+    override = null
   ) => {
     return render(
       <ItemContext.Provider value={itemContextValue}>
         <TransactionContext.Provider value={transactionContextValue}>
           <Router history={history}>
-            <ItemList
-              title={mockTitle}
-              headerTitle={mockHeaderTitle}
-              ApiObjectContext={ItemContext}
-              placeHolderMessage={mockPlaceHolderMessage}
-              handleExpiredAuth={mockHandleExpiredAuth}
-              helpText={Strings.Testing.GenericTranslationTestString}
-              waitForApi={waitForApi}
-            />
+            {override === null ? (
+              <ItemList
+                title={mockTitle}
+                headerTitle={mockHeaderTitle}
+                ApiObjectContext={ItemContext}
+                placeHolderMessage={mockPlaceHolderMessage}
+                handleExpiredAuth={mockHandleExpiredAuth}
+                helpText={Strings.Testing.GenericTranslationTestString}
+              />
+            ) : (
+              <ItemList
+                title={mockTitle}
+                headerTitle={mockHeaderTitle}
+                ApiObjectContext={ItemContext}
+                placeHolderMessage={mockPlaceHolderMessage}
+                handleExpiredAuth={mockHandleExpiredAuth}
+                helpText={Strings.Testing.GenericTranslationTestString}
+                waitForApi={override}
+              />
+            )}
           </Router>
         </TransactionContext.Provider>
       </ItemContext.Provider>
@@ -174,10 +181,10 @@ describe("Setup Environment", () => {
           };
           const transactionContext = {
             apiObject: { ...current },
-            dispatch: mockItemDispatch,
+            dispatch: mockTransactionDispatch,
           };
 
-          utils = renderHelper(itemContext, transactionContext, history);
+          utils = renderHelper(itemContext, transactionContext, history, false);
         });
 
         it("renders, outside of a transaction should call ErrorHandler with the correct params", () => {
@@ -431,25 +438,16 @@ describe("Setup Environment", () => {
           let history = createBrowserHistory();
           history.push(Routes.items);
 
-          utils = render(
-            <ApiContext.Provider
-              value={{
-                apiObject: { ...current },
-                dispatch: mockItemDispatch,
-              }}
-            >
-              <Router history={history}>
-                <ItemList
-                  title={mockTitle}
-                  headerTitle={mockHeaderTitle}
-                  ApiObjectContext={ApiContext}
-                  placeHolderMessage={mockPlaceHolderMessage}
-                  handleExpiredAuth={mockHandleExpiredAuth}
-                  helpText={Strings.Testing.GenericTranslationTestString}
-                />
-              </Router>
-            </ApiContext.Provider>
-          );
+          const itemContext = {
+            apiObject: { ...current },
+            dispatch: mockItemDispatch,
+          };
+          const transactionContext = {
+            apiObject: { ...current },
+            dispatch: mockTransactionDispatch,
+          };
+
+          utils = renderHelper(itemContext, transactionContext, history);
         });
         it("renders, outside of a transaction, with no items in the list, and renders the mockPlaceHolderMessage", () => {
           expect(current.transaction).toBe(false);
@@ -484,10 +482,10 @@ describe("Setup Environment", () => {
         };
         const transactionContext = {
           apiObject: { ...current },
-          dispatch: mockItemDispatch,
+          dispatch: mockTransactionDispatch,
         };
 
-        utils = renderHelper(itemContext, transactionContext, history);
+        utils = renderHelper(itemContext, transactionContext, history, false);
       });
 
       it("renders, should call HoldingPattern with the correct params", () => {
@@ -517,7 +515,7 @@ describe("Setup Environment", () => {
         done();
       });
 
-      it("renders, and then when there is an transaction bypasses calls to handleDelete", async (done) => {
+      it("renders, and then when there is an transaction bypasses calls to handleConsume", async (done) => {
         expect(ItemListRow).toHaveBeenCalledTimes(3);
         const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
         expect(current.transaction).toBeTruthy();
@@ -536,7 +534,7 @@ describe("Setup Environment", () => {
         done();
       });
 
-      it("renders, and then when there is an transaction bypasses calls to handleSave", async (done) => {
+      it("renders, and then when there is an transaction bypasses calls to handleRestock", async (done) => {
         expect(ItemListRow).toHaveBeenCalledTimes(3);
         const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
         expect(current.transaction).toBeTruthy();
@@ -579,7 +577,7 @@ describe("Setup Environment", () => {
       };
       const transactionContext = {
         apiObject: { ...current },
-        dispatch: mockItemDispatch,
+        dispatch: mockTransactionDispatch,
       };
 
       utils = renderHelper(itemContext, transactionContext, history);
