@@ -10,6 +10,9 @@ import { propCount } from "../../../test.fixtures/objectComparison";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
+import { ItemContext } from "../../../providers/api/item/item.provider";
+import { TransactionContext } from "../../../providers/api/transaction/transaction.provider";
+
 import ErrorHandler from "../../error-handler/error-handler.component";
 import ItemList from "../item-list.component";
 import ItemListRow from "../../item-list-row/item-list-row.component";
@@ -42,7 +45,7 @@ Alert.mockImplementation(() => <div>MockAlert</div>);
 HoldingPattern.mockImplementation(({ children }) => children);
 calculateMaxHeight.mockImplementation(() => 200);
 
-const mockDispatch = jest.fn();
+const mockItemDispatch = jest.fn();
 const mockHandleExpiredAuth = jest.fn();
 
 const mockItems = [
@@ -100,7 +103,7 @@ describe("Setup Environment", () => {
 
   const ApiContext = React.createContext({
     apiObject: { ...mockDataState, inventory: [...mockItems] },
-    dispatch: mockDispatch,
+    dispatch: mockItemDispatch,
   });
 
   beforeEach(() => {
@@ -112,6 +115,31 @@ describe("Setup Environment", () => {
   });
 
   afterEach(cleanup);
+
+  const renderHelper = (
+    itemContextValue,
+    transactionContextValue,
+    history,
+    waitForApi = false
+  ) => {
+    return render(
+      <ItemContext.Provider value={itemContextValue}>
+        <TransactionContext.Provider value={transactionContextValue}>
+          <Router history={history}>
+            <ItemList
+              title={mockTitle}
+              headerTitle={mockHeaderTitle}
+              ApiObjectContext={ItemContext}
+              placeHolderMessage={mockPlaceHolderMessage}
+              handleExpiredAuth={mockHandleExpiredAuth}
+              helpText={Strings.Testing.GenericTranslationTestString}
+              waitForApi={waitForApi}
+            />
+          </Router>
+        </TransactionContext.Provider>
+      </ItemContext.Provider>
+    );
+  };
 
   const validateFunctions = (call) => {
     expect(call.listFunctions.setActionMsg).toBeInstanceOf(Function);
@@ -140,26 +168,16 @@ describe("Setup Environment", () => {
           let history = createBrowserHistory();
           history.push(Routes.items);
 
-          utils = render(
-            <ApiContext.Provider
-              value={{
-                apiObject: { ...current },
-                dispatch: mockDispatch,
-              }}
-            >
-              <Router history={history}>
-                <ItemList
-                  title={mockTitle}
-                  headerTitle={mockHeaderTitle}
-                  ApiObjectContext={ApiContext}
-                  placeHolderMessage={mockPlaceHolderMessage}
-                  handleExpiredAuth={mockHandleExpiredAuth}
-                  helpText={Strings.Testing.GenericTranslationTestString}
-                  waitForApi={false}
-                />
-              </Router>
-            </ApiContext.Provider>
-          );
+          const itemContext = {
+            apiObject: { ...current },
+            dispatch: mockItemDispatch,
+          };
+          const transactionContext = {
+            apiObject: { ...current },
+            dispatch: mockItemDispatch,
+          };
+
+          utils = renderHelper(itemContext, transactionContext, history);
         });
 
         it("renders, outside of a transaction should call ErrorHandler with the correct params", () => {
@@ -279,8 +297,10 @@ describe("Setup Environment", () => {
 
         it("renders, calls StartList on first render", async (done) => {
           expect(current.transaction).toBeFalsy();
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
-          const apiCall = mockDispatch.mock.calls[0][0];
+          await waitFor(() =>
+            expect(mockItemDispatch).toHaveBeenCalledTimes(1)
+          );
+          const apiCall = mockItemDispatch.mock.calls[0][0];
           propCount(apiCall, 5);
           expect(apiCall.type).toBe(ApiActions.StartList);
           expect(apiCall.func).toBe(ApiFunctions.asyncList);
@@ -316,10 +336,14 @@ describe("Setup Environment", () => {
             restock(mockItems[0], 22);
           });
 
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
-          expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList); // Initial List
+          await waitFor(() =>
+            expect(mockItemDispatch).toHaveBeenCalledTimes(2)
+          );
+          expect(mockItemDispatch.mock.calls[0][0].type).toBe(
+            ApiActions.StartList
+          ); // Initial List
 
-          const apiCall = mockDispatch.mock.calls[1][0];
+          const apiCall = mockItemDispatch.mock.calls[1][0];
           propCount(apiCall, 4);
           expect(apiCall.type).toBe(ApiActions.StartUpdate);
           expect(apiCall.func).toBe(ApiFunctions.asyncUpdate);
@@ -340,10 +364,14 @@ describe("Setup Environment", () => {
             consume(mockItems[0], 1);
           });
 
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
-          expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
+          await waitFor(() =>
+            expect(mockItemDispatch).toHaveBeenCalledTimes(2)
+          );
+          expect(mockItemDispatch.mock.calls[0][0].type).toBe(
+            ApiActions.StartList
+          );
 
-          const apiCall = mockDispatch.mock.calls[1][0];
+          const apiCall = mockItemDispatch.mock.calls[1][0];
           propCount(apiCall, 4);
           expect(apiCall.type).toBe(ApiActions.StartUpdate);
           expect(apiCall.func).toBe(ApiFunctions.asyncUpdate);
@@ -364,10 +392,14 @@ describe("Setup Environment", () => {
             consume(mockItems[0], 1);
           });
 
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
-          expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
+          await waitFor(() =>
+            expect(mockItemDispatch).toHaveBeenCalledTimes(2)
+          );
+          expect(mockItemDispatch.mock.calls[0][0].type).toBe(
+            ApiActions.StartList
+          );
 
-          const apiCall = mockDispatch.mock.calls[1][0];
+          const apiCall = mockItemDispatch.mock.calls[1][0];
           const setPerformAsync = apiCall.dispatch;
 
           act(() => {
@@ -403,7 +435,7 @@ describe("Setup Environment", () => {
             <ApiContext.Provider
               value={{
                 apiObject: { ...current },
-                dispatch: mockDispatch,
+                dispatch: mockItemDispatch,
               }}
             >
               <Router history={history}>
@@ -446,26 +478,16 @@ describe("Setup Environment", () => {
         let history = createBrowserHistory();
         history.push(Routes.items);
 
-        utils = render(
-          <ApiContext.Provider
-            value={{
-              apiObject: { ...current },
-              dispatch: mockDispatch,
-            }}
-          >
-            <Router history={history}>
-              <ItemList
-                title={mockTitle}
-                headerTitle={mockHeaderTitle}
-                ApiObjectContext={ApiContext}
-                placeHolderMessage={mockPlaceHolderMessage}
-                handleExpiredAuth={mockHandleExpiredAuth}
-                helpText={Strings.Testing.GenericTranslationTestString}
-                waitForApi={false}
-              />
-            </Router>
-          </ApiContext.Provider>
-        );
+        const itemContext = {
+          apiObject: { ...current },
+          dispatch: mockItemDispatch,
+        };
+        const transactionContext = {
+          apiObject: { ...current },
+          dispatch: mockItemDispatch,
+        };
+
+        utils = renderHelper(itemContext, transactionContext, history);
       });
 
       it("renders, should call HoldingPattern with the correct params", () => {
@@ -506,8 +528,10 @@ describe("Setup Environment", () => {
         });
 
         expect(ItemListRow).toHaveBeenCalledTimes(0);
-        expect(mockDispatch).toHaveBeenCalledTimes(1);
-        expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
+        expect(mockItemDispatch).toHaveBeenCalledTimes(1);
+        expect(mockItemDispatch.mock.calls[0][0].type).toBe(
+          ApiActions.StartList
+        );
 
         done();
       });
@@ -524,8 +548,10 @@ describe("Setup Environment", () => {
 
         expect(ItemListRow).toHaveBeenCalledTimes(0);
         // MockDispatch only has a call for the initial item listing, not for the add
-        expect(mockDispatch).toHaveBeenCalledTimes(1);
-        expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
+        expect(mockItemDispatch).toHaveBeenCalledTimes(1);
+        expect(mockItemDispatch.mock.calls[0][0].type).toBe(
+          ApiActions.StartList
+        );
         done();
       });
 
@@ -547,26 +573,16 @@ describe("Setup Environment", () => {
       current.error = true;
       let history = createBrowserHistory();
       history.push(Routes.items);
-      utils = render(
-        <ApiContext.Provider
-          value={{
-            apiObject: { ...current },
-            dispatch: mockDispatch,
-          }}
-        >
-          <Router history={history}>
-            <ItemList
-              title={mockTitle}
-              headerTitle={mockHeaderTitle}
-              ApiObjectContext={ApiContext}
-              placeHolderMessage={mockPlaceHolderMessage}
-              handleExpiredAuth={mockHandleExpiredAuth}
-              helpText={Strings.Testing.GenericTranslationTestString}
-              waitForApi={false}
-            />
-          </Router>
-        </ApiContext.Provider>
-      );
+      const itemContext = {
+        apiObject: { ...current },
+        dispatch: mockItemDispatch,
+      };
+      const transactionContext = {
+        apiObject: { ...current },
+        dispatch: mockItemDispatch,
+      };
+
+      utils = renderHelper(itemContext, transactionContext, history);
     });
 
     it("renders, outside of a transaction should call ErrorHandler with the correct params", () => {
@@ -592,8 +608,8 @@ describe("Setup Environment", () => {
       jest.clearAllMocks();
 
       act(() => clearError());
-      await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
-      expect(mockDispatch).toBeCalledWith({ type: ApiActions.ClearErrors });
+      await waitFor(() => expect(mockItemDispatch).toBeCalledTimes(1));
+      expect(mockItemDispatch).toBeCalledWith({ type: ApiActions.ClearErrors });
 
       done();
     });
@@ -602,7 +618,7 @@ describe("Setup Environment", () => {
       expect(calculateMaxHeight).toBeCalledTimes(1);
     });
 
-    it("a should call calculateMaxHeight again on a window resize", async (done) => {
+    it("should call calculateMaxHeight again on a window resize", async (done) => {
       expect(calculateMaxHeight).toBeCalledTimes(1);
       fireEvent(window, new Event("resize"));
       await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
