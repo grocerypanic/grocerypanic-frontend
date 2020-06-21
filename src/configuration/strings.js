@@ -47,8 +47,8 @@ export const Strings = {
       HelpText:
         "Fill out the values, click the save button to finalize.\nDon't modify quantity here.",
       NameLabel: "Name",
-      QuantityLabel: "Qty",
-      PriceLabel: "Price",
+      QuantityLabel: "#",
+      PriceLabel: "$",
       StoresLabel: "Stores",
       SaveButton: `${assets.nonBreakingSpace}Save${assets.nonBreakingSpace}`,
       DeleteButton: "Delete",

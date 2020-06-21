@@ -50,6 +50,16 @@ const ItemDetailsForm = ({
   const [shelfOptions, setShelfOptions] = React.useState([]);
   const [actionMsg, setActionMsg] = React.useState(null);
 
+  const bootstrapStrapWidthHack = () => {
+    if (window.innerWidth < 350) return "col-5";
+    return "col-6";
+  };
+  const [priceBootstrapWidth, setPriceBootstrapWidth] = React.useState(
+    bootstrapStrapWidthHack()
+  );
+  const updatePriceWidth = () =>
+    setPriceBootstrapWidth(bootstrapStrapWidthHack());
+
   // Normalize the api data as it comes in
   React.useEffect(() => {
     setNameState(item.name);
@@ -74,6 +84,13 @@ const ItemDetailsForm = ({
       ]);
     }
   }, [shelves]);
+
+  React.useEffect(() => {
+    window.addEventListener("resize", updatePriceWidth);
+    return () => {
+      window.removeEventListener("resize", updatePriceWidth);
+    };
+  }, []);
 
   // Reassemble the form data into an object and pass back to handleSave
   // Perform validation as needed
@@ -152,9 +169,10 @@ const ItemDetailsForm = ({
                   item={item}
                   transaction={transaction}
                   type="number"
-                  label={`${t(Strings.ItemDetails.QuantityLabel)}:`}
+                  label={`${t(Strings.ItemDetails.QuantityLabel)}`}
                   details={""}
-                  itemColumn={"col-10"}
+                  labelColumn={"col-1"}
+                  itemColumn={"col-4"}
                   min={Constants.minimumQuanity}
                   max={Constants.maximumQuantity}
                   step="1"
@@ -168,9 +186,10 @@ const ItemDetailsForm = ({
                   item={item}
                   transaction={transaction}
                   type="number"
-                  label={`${t(Strings.ItemDetails.PriceLabel)}:`}
+                  label={`${t(Strings.ItemDetails.PriceLabel)}`}
                   details={""}
-                  itemColumn={"col-10"}
+                  labelColumn={"col-1"}
+                  itemColumn={priceBootstrapWidth}
                   min={Constants.minimumPrice}
                   max={Constants.maximumPrice}
                   step="0.01"

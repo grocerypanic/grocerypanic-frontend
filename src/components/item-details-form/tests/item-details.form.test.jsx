@@ -131,7 +131,7 @@ describe("Setup Environment, Render Tests", () => {
         );
       });
 
-      it("renders, form inputs as expected", async (done) => {
+      it("renders, form inputs as expected, after resolution change", async (done) => {
         await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
         const nameInput = FormInput.mock.calls[3][0];
         const qtyInput = FormInput.mock.calls[4][0];
@@ -151,7 +151,7 @@ describe("Setup Environment, Render Tests", () => {
         expect(nameInput.minLength).toBe(2);
         expect(nameInput.maxLength).toBe(24);
 
-        propCount(qtyInput, 14);
+        propCount(qtyInput, 15);
         expect(qtyInput.setErrorMsg).toBeInstanceOf(Function);
         expect(qtyInput.storeState).toBe(props.item.quantity);
         expect(qtyInput.handleState).toBeInstanceOf(Function);
@@ -159,15 +159,16 @@ describe("Setup Environment, Render Tests", () => {
         expect(qtyInput.item).toBe(props.item);
         expect(qtyInput.transaction).toBe(false);
         expect(qtyInput.type).toBe("number");
-        expect(qtyInput.label).toBe(Strings.ItemDetails.QuantityLabel + ":");
+        expect(qtyInput.label).toBe(Strings.ItemDetails.QuantityLabel);
         expect(qtyInput.details).toBe("");
-        expect(qtyInput.itemColumn).toBe("col-10");
+        expect(qtyInput.labelColumn).toBe("col-1");
+        expect(qtyInput.itemColumn).toBe("col-4");
         expect(qtyInput.min).toBe(Constants.minimumQuanity);
         expect(qtyInput.max).toBe(Constants.maximumQuantity);
         expect(qtyInput.step).toBe("1");
         expect(qtyInput.readOnly).toBe(true);
 
-        propCount(priceInput, 13);
+        propCount(priceInput, 14);
         expect(priceInput.setErrorMsg).toBeInstanceOf(Function);
         expect(priceInput.storeState).toBe(props.item.price);
         expect(priceInput.handleState).toBeInstanceOf(Function);
@@ -175,9 +176,72 @@ describe("Setup Environment, Render Tests", () => {
         expect(priceInput.item).toBe(props.item);
         expect(priceInput.transaction).toBe(false);
         expect(priceInput.type).toBe("number");
-        expect(priceInput.label).toBe(Strings.ItemDetails.PriceLabel + ":");
+        expect(priceInput.label).toBe(Strings.ItemDetails.PriceLabel);
         expect(priceInput.details).toBe("");
-        expect(priceInput.itemColumn).toBe("col-10");
+        expect(qtyInput.labelColumn).toBe("col-1");
+        expect(priceInput.itemColumn).toBe("col-6");
+        expect(priceInput.min).toBe(Constants.minimumPrice);
+        expect(priceInput.max).toBe(Constants.maximumPrice);
+        expect(priceInput.step).toBe("0.01");
+
+        done();
+      });
+
+      it("renders, form inputs as expected", async (done) => {
+        await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
+
+        window.innerWidth = 300;
+        fireEvent(window, new Event("resize"));
+
+        await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(9));
+
+        const nameInput = FormInput.mock.calls[6][0];
+        const qtyInput = FormInput.mock.calls[7][0];
+        const priceInput = FormInput.mock.calls[8][0];
+
+        propCount(nameInput, 12);
+        expect(nameInput.setErrorMsg).toBeInstanceOf(Function);
+        expect(nameInput.storeState).toBe(props.item.name);
+        expect(nameInput.handleState).toBeInstanceOf(Function);
+        expect(nameInput.fieldName).toBe("name");
+        expect(nameInput.item).toBe(props.item);
+        expect(nameInput.transaction).toBe(false);
+        expect(nameInput.type).toBe("text");
+        expect(nameInput.label).toBe(Strings.ItemDetails.NameLabel + ":");
+        expect(nameInput.details).toBe("");
+        expect(nameInput.itemColumn).toBe("col-10");
+        expect(nameInput.minLength).toBe(2);
+        expect(nameInput.maxLength).toBe(24);
+
+        propCount(qtyInput, 15);
+        expect(qtyInput.setErrorMsg).toBeInstanceOf(Function);
+        expect(qtyInput.storeState).toBe(props.item.quantity);
+        expect(qtyInput.handleState).toBeInstanceOf(Function);
+        expect(qtyInput.fieldName).toBe("quantity");
+        expect(qtyInput.item).toBe(props.item);
+        expect(qtyInput.transaction).toBe(false);
+        expect(qtyInput.type).toBe("number");
+        expect(qtyInput.label).toBe(Strings.ItemDetails.QuantityLabel);
+        expect(qtyInput.details).toBe("");
+        expect(qtyInput.labelColumn).toBe("col-1");
+        expect(qtyInput.itemColumn).toBe("col-4");
+        expect(qtyInput.min).toBe(Constants.minimumQuanity);
+        expect(qtyInput.max).toBe(Constants.maximumQuantity);
+        expect(qtyInput.step).toBe("1");
+        expect(qtyInput.readOnly).toBe(true);
+
+        propCount(priceInput, 14);
+        expect(priceInput.setErrorMsg).toBeInstanceOf(Function);
+        expect(priceInput.storeState).toBe(props.item.price);
+        expect(priceInput.handleState).toBeInstanceOf(Function);
+        expect(priceInput.fieldName).toBe("price");
+        expect(priceInput.item).toBe(props.item);
+        expect(priceInput.transaction).toBe(false);
+        expect(priceInput.type).toBe("number");
+        expect(priceInput.label).toBe(Strings.ItemDetails.PriceLabel);
+        expect(priceInput.details).toBe("");
+        expect(qtyInput.labelColumn).toBe("col-1");
+        expect(priceInput.itemColumn).toBe("col-5");
         expect(priceInput.min).toBe(Constants.minimumPrice);
         expect(priceInput.max).toBe(Constants.maximumPrice);
         expect(priceInput.step).toBe("0.01");

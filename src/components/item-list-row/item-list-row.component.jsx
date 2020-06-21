@@ -114,7 +114,7 @@ const ItemListRow = ({
             </Symbol>
           </DropdownToggle>
           {transaction ? null : (
-            <DropdownMenu>
+            <DropdownMenu popperConfig={{ position: "fixed" }}>
               {generateDropDownOptions(item.name, 5, "+")}
             </DropdownMenu>
           )}

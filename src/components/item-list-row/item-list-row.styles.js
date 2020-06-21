@@ -52,9 +52,14 @@ export const Control = styled.div`
     margin: 2px;
   }
 
+  .dropdown {
+    position: inherit;
+  }
+
   .dropdown-menu {
     ${(props) => (props.type === "consume" ? `background: ${danger};` : null)};
     ${(props) => (props.type === "restock" ? `background: ${success};` : null)};
+    position: static;
   }
 `;
 
