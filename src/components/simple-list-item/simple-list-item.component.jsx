@@ -41,7 +41,6 @@ const SimpleListItem = ({
   const handleNavigateToItem = (e) => {
     if (transaction) return;
     if (item.id !== selected) return;
-    if (longPress) return;
     history.push(
       `${Routes.items}?${FilterTag}=${encodeURIComponent(
         item.name
