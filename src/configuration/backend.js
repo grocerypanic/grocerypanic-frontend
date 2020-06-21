@@ -29,6 +29,7 @@ export const Paths = {
   manageStores: "/api/v1/store/",
   manageItems: "/api/v1/item/",
   refreshCSRF: "/api/v1/auth/csrf/",
+  manageTransactions: "/api/v1/transaction/",
 };
 
 const month = 30;
