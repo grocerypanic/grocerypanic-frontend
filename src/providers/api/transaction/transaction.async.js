@@ -12,9 +12,11 @@ const authFailure = (dispatch, callback) => {
 
 export const asyncAdd = async ({ state, action }) => {
   const { dispatch, callback } = action;
-  const [response, status] = await Request("POST", Paths.manageTransactions, {
-    name: action.payload.name,
-  });
+  const [response, status] = await Request(
+    "POST",
+    Paths.manageTransactions,
+    action.payload
+  );
   // Status Code is 2xx
   if (match2xx(status)) {
     return new Promise(function (resolve) {

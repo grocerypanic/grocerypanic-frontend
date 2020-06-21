@@ -339,83 +339,84 @@ describe("Setup Environment", () => {
           const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
           expect(current.transaction).toBeFalsy();
 
+          const originalQuantity = mockItems[0].quantity;
+
           act(() => {
-            restock(mockItems[0], 22);
+            restock(mockItems[0], 2);
           });
 
           await waitFor(() =>
-            expect(mockItemDispatch).toHaveBeenCalledTimes(2)
+            expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
           );
-          expect(mockItemDispatch.mock.calls[0][0].type).toBe(
-            ApiActions.StartList
-          ); // Initial List
 
-          const apiCall = mockItemDispatch.mock.calls[1][0];
+          const apiCall = mockTransactionDispatch.mock.calls[0][0];
           propCount(apiCall, 4);
-          expect(apiCall.type).toBe(ApiActions.StartUpdate);
-          expect(apiCall.func).toBe(ApiFunctions.asyncUpdate);
+          expect(apiCall.type).toBe(ApiActions.StartAdd);
+          expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
           expect(apiCall.payload).toStrictEqual({
-            ...mockItems[0],
-            quantity: parseInt(mockItems[0].quantity + 22),
+            item: mockItems[0].id,
+            quantity: 2,
           });
           expect(apiCall.dispatch).toBeInstanceOf(Function);
+
+          await waitFor(() =>
+            expect(current.inventory[0].quantity).toBe(originalQuantity + 2)
+          );
+
           done();
         });
 
-        it("renders, and dispatches the API reducer when handleDelete is called", async (done) => {
+        it("renders, and dispatches the API reducer when handleConsume is called", async (done) => {
           expect(ItemListRow).toHaveBeenCalledTimes(3);
           const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
           expect(current.transaction).toBeFalsy();
+
+          const originalQuantity = mockItems[0].quantity;
 
           act(() => {
             consume(mockItems[0], 1);
           });
 
           await waitFor(() =>
-            expect(mockItemDispatch).toHaveBeenCalledTimes(2)
-          );
-          expect(mockItemDispatch.mock.calls[0][0].type).toBe(
-            ApiActions.StartList
+            expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
           );
 
-          const apiCall = mockItemDispatch.mock.calls[1][0];
+          const apiCall = mockTransactionDispatch.mock.calls[0][0];
           propCount(apiCall, 4);
-          expect(apiCall.type).toBe(ApiActions.StartUpdate);
-          expect(apiCall.func).toBe(ApiFunctions.asyncUpdate);
+          expect(apiCall.type).toBe(ApiActions.StartAdd);
+          expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
           expect(apiCall.payload).toStrictEqual({
-            ...mockItems[0],
-            quantity: parseInt(mockItems[0].quantity) - 1,
+            item: mockItems[0].id,
+            quantity: -1,
           });
           expect(apiCall.dispatch).toBeInstanceOf(Function);
+
+          await waitFor(() =>
+            expect(current.inventory[0].quantity).toBe(originalQuantity - 1)
+          );
+
           done();
         });
 
-        it("renders, and handles an auth failure condition as expected", async (done) => {
+        it("renders, and handles an transaction auth failure condition as expected", async (done) => {
           expect(ItemListRow).toHaveBeenCalledTimes(3);
           const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
           expect(current.transaction).toBeFalsy();
 
           act(() => {
-            consume(mockItems[0], 1);
+            consume(mockItems[0], -2);
           });
 
           await waitFor(() =>
-            expect(mockItemDispatch).toHaveBeenCalledTimes(2)
-          );
-          expect(mockItemDispatch.mock.calls[0][0].type).toBe(
-            ApiActions.StartList
+            expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
           );
 
-          const apiCall = mockItemDispatch.mock.calls[1][0];
+          const apiCall = mockTransactionDispatch.mock.calls[0][0];
           const setPerformAsync = apiCall.dispatch;
 
           act(() => {
             setPerformAsync({ type: ApiActions.FailureAuth });
           });
-
-          await waitFor(() =>
-            expect(mockHandleExpiredAuth).toHaveBeenCalledTimes(1)
-          );
 
           done();
         });

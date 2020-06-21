@@ -52,6 +52,9 @@ const ItemList = ({
   const [actionMsg, setActionMsg] = React.useState(null);
 
   const [performItemAsync, setPerformItemAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
+  const [performTransactionAsync, setPerformTransactionAsync] = React.useState(
+    null
+  ); // Handles dispatches without duplicating reducer actions
 
   const [ready, setReady] = React.useState(false);
   const [listSize, setListSize] = React.useState(calculateMaxHeight());
@@ -60,10 +63,10 @@ const ItemList = ({
 
   React.useEffect(() => {
     window.addEventListener("resize", recalculateHeight);
-    window.addEventListener("contextmenu", preventContext);
+    //window.addEventListener("contextmenu", preventContext);
     return () => {
       window.removeEventListener("resize", recalculateHeight);
-      window.removeEventListener("contextmenu", preventContext);
+      //window.removeEventListener("contextmenu", preventContext);
     };
   }, []);
 
@@ -73,6 +76,14 @@ const ItemList = ({
     itemDispatch(performItemAsync);
     setPerformItemAsync(null);
   }, [performItemAsync]);
+
+  React.useEffect(() => {
+    if (!performTransactionAsync) return;
+    if (performTransactionAsync.type === ApiActions.FailureAuth)
+      handleExpiredAuth();
+    transactionDispatch(performTransactionAsync);
+    setPerformTransactionAsync(null);
+  }, [performTransactionAsync]);
 
   React.useEffect(() => {
     const filter = new URLSearchParams(window.location.search);
@@ -91,28 +102,28 @@ const ItemList = ({
     history.push(Routes.create);
   };
 
-  const handleReStock = async (received, quantity) => {
+  const handleReStock = async (receivedItem, quantity) => {
     if (item.transaction) return;
-    setPerformItemAsync({
-      type: ApiActions.StartUpdate, // Should be a transaction
-      func: ApiFuctions.asyncUpdate,
-      dispatch: setPerformItemAsync,
+    setPerformTransactionAsync({
+      type: ApiActions.StartAdd,
+      func: ApiFuctions.asyncAdd,
+      dispatch: setPerformTransactionAsync,
       payload: {
-        ...received,
-        quantity: parseInt(received.quantity) + parseInt(quantity),
+        item: receivedItem.id,
+        quantity: parseInt(quantity),
       },
     });
   };
 
-  const handleConsume = (received, quantity) => {
+  const handleConsume = (receivedItem, quantity) => {
     if (item.transaction) return;
-    setPerformItemAsync({
-      type: ApiActions.StartUpdate, // Should be a transaction
-      func: ApiFuctions.asyncUpdate,
-      dispatch: setPerformItemAsync,
+    setPerformTransactionAsync({
+      type: ApiActions.StartAdd,
+      func: ApiFuctions.asyncAdd,
+      dispatch: setPerformTransactionAsync,
       payload: {
-        ...received,
-        quantity: parseInt(received.quantity) - parseInt(quantity),
+        item: receivedItem.id,
+        quantity: parseInt(quantity) * -1,
       },
     });
   };
