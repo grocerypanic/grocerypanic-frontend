@@ -73,9 +73,12 @@ const ItemDetailsEditContainer = ({
   React.useEffect(() => {
     if (!performItemAsync) return;
     if (performItemAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
-    if (performItemAsync.type === ApiActions.SuccessDel) history.goBack();
     if (performItemAsync.type === ApiActions.SuccessList)
       performItemAsync.callback = setListItemsComplete;
+    if (performItemAsync.type === ApiActions.SuccessDel) {
+      setListItemsComplete(false);
+      history.goBack();
+    }
     itemDispatch(performItemAsync);
     setPerformItemAsync(null);
   }, [performItemAsync]);

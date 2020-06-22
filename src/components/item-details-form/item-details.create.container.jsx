@@ -52,9 +52,10 @@ const ItemDetailsCreateContainer = ({
   const [transaction, setTransaction] = React.useState(true);
   const [defaults, setDefaults] = React.useState(defaultItem);
 
-  const [receivedShelves, setReceivedShelves] = React.useState(false);
-  const [receivedStores, setReceivedStores] = React.useState(false);
-  const [receivedItems, setReceivedItems] = React.useState(false);
+  const callBackState = { success: false, complete: false };
+  const [receivedShelves, setReceivedShelves] = React.useState(callBackState);
+  const [receivedStores, setReceivedStores] = React.useState(callBackState);
+  const [receivedItems, setReceivedItems] = React.useState(callBackState);
 
   React.useEffect(() => {
     // Detect Transactions on Any API Plane
@@ -127,7 +128,11 @@ const ItemDetailsCreateContainer = ({
 
   const checkForNonReceivedContent = () => {
     /* istanbul ignore next */
-    return !receivedStores || !receivedShelves || !receivedItems;
+    return (
+      !receivedStores.complete ||
+      !receivedShelves.complete ||
+      !receivedItems.complete
+    );
   };
 
   return (
