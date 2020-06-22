@@ -16,12 +16,15 @@ import ItemDetails from "../item-details.component";
 import ItemDetailsEditContainer from "../item-details.edit.container";
 
 import { ItemContext } from "../../../providers/api/item/item.provider";
+import { TransactionContext } from "../../../providers/api/transaction/transaction.provider";
 import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
 import { StoreContext } from "../../../providers/api/store/store.provider";
 
-import InitialValue from "../../../providers/api/item/item.initial";
+import ItemInitialValue from "../../../providers/api/item/item.initial";
 import ShelfInitialValue from "../../../providers/api/shelf/shelf.initial";
 import StoreInitialValue from "../../../providers/api/store/store.initial";
+import TransactionInitialValue from "../../../providers/api/transaction/transaction.initial";
+
 import ApiActions from "../../../providers/api/api.actions";
 import ApiFunctions from "../../../providers/api/api.functions";
 
@@ -40,6 +43,7 @@ HoldingPattern.mockImplementation(({ children }) => children);
 const mockItemDispatch = jest.fn();
 const mockStoreDispatch = jest.fn();
 const mockShelfDispatch = jest.fn();
+const mockTransactionDispatch = jest.fn();
 const mockHandleExpiredAuth = jest.fn();
 const mockGoBack = jest.fn();
 
@@ -68,7 +72,7 @@ const mockStore = {
 
 const mockItemsProvider = {
   dispatch: mockItemDispatch,
-  apiObject: { ...InitialValue, inventory: [mockItem] },
+  apiObject: { ...ItemInitialValue, inventory: [mockItem] },
 };
 
 const mockStoreProvider = {
@@ -79,6 +83,11 @@ const mockStoreProvider = {
 const mockShelfProvider = {
   dispatch: mockShelfDispatch,
   apiObject: { ...ShelfInitialValue, inventory: [mockShelf] },
+};
+
+const mockTransactionProvider = {
+  dispatch: mockTransactionDispatch,
+  apiObject: { ...TransactionInitialValue },
 };
 
 const props = {
@@ -119,8 +128,12 @@ describe("Setup Environment", () => {
           <ShelfContext.Provider
             value={{ ...mockShelfProvider, transaction: currentTransaction }}
           >
-            <ItemContext.Provider value={itemContext}>
-              <ItemDetailsEditContainer {...currentProps} />
+            <ItemContext.Provider value={{ ...itemContext }}>
+              <TransactionContext.Provider
+                value={{ ...mockTransactionProvider }}
+              >
+                <ItemDetailsEditContainer {...currentProps} />
+              </TransactionContext.Provider>
             </ItemContext.Provider>
           </ShelfContext.Provider>
         </StoreContext.Provider>
@@ -278,6 +291,31 @@ describe("Setup Environment", () => {
       expect(mockHandleExpiredAuth).toBeCalledTimes(0);
       act(() => storeDispatch({ type: ApiActions.FailureAuth }));
       await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
+
+      done();
+    });
+
+    it("renders, calls transactions.StartList on first render", async (done) => {
+      await waitFor(() =>
+        expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+      );
+      const call = mockTransactionDispatch.mock.calls[0][0];
+      propCount(call, 3);
+      expect(call.type).toBe(ApiActions.StartList);
+      expect(call.func).toBe(ApiFunctions.asyncList);
+      expect(call.dispatch).toBeInstanceOf(Function);
+      done();
+    });
+
+    it("renders, calls transactions auth failure as expected", async (done) => {
+      await waitFor(() =>
+        expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+      );
+      const storeDispatch = mockTransactionDispatch.mock.calls[0][0].dispatch;
+
+      expect(mockTransactionDispatch).toBeCalledTimes(0);
+      act(() => storeDispatch({ type: ApiActions.FailureAuth }));
+      await expect(mockTransactionDispatch).toBeCalledTimes(1);
 
       done();
     });
@@ -504,7 +542,7 @@ describe("Setup Environment", () => {
         current.id = "2";
         const TestContext = {
           ...mockItemsProvider,
-          apiObject: { ...InitialValue },
+          apiObject: { ...ItemInitialValue },
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
