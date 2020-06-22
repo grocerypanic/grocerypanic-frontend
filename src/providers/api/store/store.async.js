@@ -81,3 +81,9 @@ export const asyncList = async ({ state, action }) => {
     callback,
   });
 };
+
+/* istanbul ignore next */
+export const asyncGet = ({ state, action }) => "Not Implemented";
+
+/* istanbul ignore next */
+export const asyncUpdate = ({ state, action }) => "Not Implemented";

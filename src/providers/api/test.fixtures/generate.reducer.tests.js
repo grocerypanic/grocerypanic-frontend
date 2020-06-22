@@ -8,7 +8,9 @@ export const ReducerTest = (
   InitialState,
   asyncAdd,
   asyncDel,
-  asyncList
+  asyncGet,
+  asyncList,
+  asyncUpdate
 ) => {
   const mockObject = { id: 0, name: "MockObject" };
   const mockErrorMessage = "Could not process this object.";
@@ -73,7 +75,33 @@ export const ReducerTest = (
           action,
         },
       ]);
-      expect(mockCallBack).toBeCalledWith(false);
+      expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
+      done();
+    });
+
+    it("handles StartGet correctly", async (done) => {
+      const ExpectedState = {
+        ...InitialState,
+        transaction: true,
+      };
+      const mockPayload = { ...mockObject };
+      const action = {
+        type: ApiActions.StartGet,
+        func: ApiFunctions.asyncGet,
+        payload: mockPayload,
+        callback: mockCallBack,
+      };
+      const received = testReducer(InitialState, action);
+      expect(received).toEqual(ExpectedState);
+
+      await waitFor(() => expect(asyncGet).toHaveBeenCalledTimes(1));
+      expect(asyncGet.mock.calls[0]).toEqual([
+        {
+          state: ExpectedState,
+          action,
+        },
+      ]);
+      expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
       done();
     });
 
@@ -99,7 +127,33 @@ export const ReducerTest = (
           action,
         },
       ]);
-      expect(mockCallBack).toBeCalledWith(false);
+      expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
+      done();
+    });
+
+    it("handles StartUpdate correctly", async (done) => {
+      const ExpectedState = {
+        ...InitialState,
+        transaction: true,
+      };
+      const mockPayload = { ...mockObject };
+      const action = {
+        type: ApiActions.StartUpdate,
+        func: ApiFunctions.asyncUpdate,
+        payload: mockPayload,
+        callback: mockCallBack,
+      };
+      const received = testReducer(InitialState, action);
+      expect(received).toEqual(ExpectedState);
+
+      await waitFor(() => expect(asyncUpdate).toHaveBeenCalledTimes(1));
+      expect(asyncUpdate.mock.calls[0]).toEqual([
+        {
+          state: ExpectedState,
+          action,
+        },
+      ]);
+      expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
       done();
     });
 
@@ -131,7 +185,23 @@ export const ReducerTest = (
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(false);
       expect(received.transaction).toBe(false);
-      expect(mockCallBack).toBeCalledWith(true);
+      expect(mockCallBack).toBeCalledWith({ success: true, complete: true });
+    });
+
+    it("handles SuccessGet correctly", () => {
+      const payload = {
+        inventory: [{ ...mockObject }],
+      };
+      const received = testReducer(InitialState, {
+        type: ApiActions.SuccessGet,
+        payload,
+        callback: mockCallBack,
+      });
+      expect(received.errorMessage).toBeNull();
+      expect(received.inventory).toEqual(payload.inventory);
+      expect(received.error).toBe(false);
+      expect(received.transaction).toBe(false);
+      expect(mockCallBack).toBeCalledWith({ success: true, complete: true });
     });
 
     it("handles SuccessList correctly", () => {
@@ -147,7 +217,23 @@ export const ReducerTest = (
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(false);
       expect(received.transaction).toBe(false);
-      expect(mockCallBack).toBeCalledWith(true);
+      expect(mockCallBack).toBeCalledWith({ success: true, complete: true });
+    });
+
+    it("handles SuccessUpdate correctly", () => {
+      const payload = {
+        inventory: [{ ...mockObject }],
+      };
+      const received = testReducer(InitialState, {
+        type: ApiActions.SuccessUpdate,
+        payload,
+        callback: mockCallBack,
+      });
+      expect(received.errorMessage).toBeNull();
+      expect(received.inventory).toEqual(payload.inventory);
+      expect(received.error).toBe(false);
+      expect(received.transaction).toBe(false);
+      expect(mockCallBack).toBeCalledWith({ success: true, complete: true });
     });
 
     it("handles FailureAdd correctly", () => {
@@ -177,7 +263,23 @@ export const ReducerTest = (
       expect(received.errorMessage).toBe(mockErrorMessage);
       expect(received.inventory).toEqual([]);
       expect(received.error).toBe(true);
-      expect(mockCallBack).toBeCalledWith(true);
+      expect(mockCallBack).toBeCalledWith({ success: false, complete: true });
+    });
+
+    it("handles FailureGet correctly", () => {
+      const payload = {
+        inventory: [{ ...mockObject }],
+      };
+      const received = testReducer(InitialState, {
+        type: ApiActions.FailureGet,
+        payload,
+        callback: mockCallBack,
+      });
+      expect(received.errorMessage).toBeNull();
+      expect(received.inventory).toEqual(payload.inventory);
+      expect(received.error).toBe(true);
+      expect(received.transaction).toBe(false);
+      expect(mockCallBack).toBeCalledWith({ success: false, complete: true });
     });
 
     it("handles FailureList correctly", () => {
@@ -193,7 +295,23 @@ export const ReducerTest = (
       expect(received.inventory).toEqual([]);
       expect(received.error).toBe(true);
       expect(received.transaction).toBe(false);
-      expect(mockCallBack).toBeCalledWith(true);
+      expect(mockCallBack).toBeCalledWith({ success: false, complete: true });
+    });
+
+    it("handles FailureUpdate correctly", () => {
+      const payload = {
+        inventory: [{ ...mockObject }],
+      };
+      const received = testReducer(InitialState, {
+        type: ApiActions.FailureUpdate,
+        payload,
+        callback: mockCallBack,
+      });
+      expect(received.errorMessage).toBeNull();
+      expect(received.inventory).toEqual(payload.inventory);
+      expect(received.error).toBe(true);
+      expect(received.transaction).toBe(false);
+      expect(mockCallBack).toBeCalledWith({ success: false, complete: true });
     });
 
     it("handles ClearErrors correctly", () => {
@@ -208,7 +326,7 @@ export const ReducerTest = (
       });
       expect(received.error).toBe(false);
       expect(received.errorMessage).toBe(null);
-      expect(mockCallBack).toBeCalledWith(false);
+      expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
     });
 
     it("handles ClearErrors correctly, no callback", () => {
@@ -255,7 +373,7 @@ export const ReducerTest = (
       expect(received.error).toBe(false);
       expect(received.errorMessage).toBe(null);
       expect(received.transaction).toBe(false);
-      expect(mockCallBack).toBeCalledWith(true);
+      expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
     });
   });
 };
