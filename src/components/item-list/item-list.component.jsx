@@ -59,14 +59,15 @@ const ItemList = ({
   const [ready, setReady] = React.useState(false);
   const [listSize, setListSize] = React.useState(calculateMaxHeight());
 
+  const transactionStatus = () => item.transaction || transaction.transaction;
   const recalculateHeight = () => setListSize(calculateMaxHeight());
 
   React.useEffect(() => {
     window.addEventListener("resize", recalculateHeight);
-    //window.addEventListener("contextmenu", preventContext);
+    window.addEventListener("contextmenu", preventContext);
     return () => {
       window.removeEventListener("resize", recalculateHeight);
-      //window.removeEventListener("contextmenu", preventContext);
+      window.removeEventListener("contextmenu", preventContext);
     };
   }, []);
 
@@ -97,13 +98,22 @@ const ItemList = ({
   }, []);
 
   const handleCreate = () => {
-    if (item.transaction) return;
+    if (transactionStatus()) return;
     // TODO: is it possible to populate the shelf or store automatically based on current route?
     history.push(Routes.create);
   };
 
+  const generateCallback = (modifier, receivedItem, quantity) => {
+    const callback = (state) => {
+      if (!state.success) return;
+      const search = item.inventory.find((o) => o.id === receivedItem.id);
+      if (search) search.quantity += parseInt(quantity) * modifier;
+    };
+    return callback;
+  };
+
   const handleReStock = async (receivedItem, quantity) => {
-    if (item.transaction) return;
+    if (transactionStatus()) return;
     setPerformTransactionAsync({
       type: ApiActions.StartAdd,
       func: ApiFuctions.asyncAdd,
@@ -112,11 +122,12 @@ const ItemList = ({
         item: receivedItem.id,
         quantity: parseInt(quantity),
       },
+      callback: generateCallback(1, receivedItem, quantity),
     });
   };
 
   const handleConsume = (receivedItem, quantity) => {
-    if (item.transaction) return;
+    if (transactionStatus()) return;
     setPerformTransactionAsync({
       type: ApiActions.StartAdd,
       func: ApiFuctions.asyncAdd,
@@ -125,6 +136,7 @@ const ItemList = ({
         item: receivedItem.id,
         quantity: parseInt(quantity) * -1,
       },
+      callback: generateCallback(-1, receivedItem, quantity),
     });
   };
 
@@ -135,10 +147,6 @@ const ItemList = ({
     consume: handleConsume,
     setErrorMsg,
     setActionMsg,
-  };
-
-  const listValues = {
-    transaction: item.transaction,
   };
 
   const clearError = () => {
@@ -157,7 +165,7 @@ const ItemList = ({
       >
         <Header
           title={headerTitle}
-          transaction={item.transaction}
+          transaction={transactionStatus()}
           create={handleCreate}
         />
         <HoldingPattern condition={!ready && waitForApi}>
@@ -179,7 +187,7 @@ const ItemList = ({
                         allItems={item.inventory}
                         key={i.id}
                         listFunctions={listFunctions}
-                        listValues={listValues}
+                        listValues={{ transaction: transactionStatus() }}
                         history={history}
                       />
                     );

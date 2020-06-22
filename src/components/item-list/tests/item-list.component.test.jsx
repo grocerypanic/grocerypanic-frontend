@@ -317,6 +317,23 @@ describe("Setup Environment", () => {
           done();
         });
 
+        it("renders, and handles an transaction auth failure condition as expected", async (done) => {
+          expect(current.transaction).toBeFalsy();
+          await waitFor(() =>
+            expect(mockItemDispatch).toHaveBeenCalledTimes(1)
+          );
+          const apiCall = mockItemDispatch.mock.calls[0][0];
+          const setPerformAsync = apiCall.dispatch;
+
+          act(() => {
+            setPerformAsync({ type: ApiActions.FailureAuth });
+          });
+
+          await waitFor(() => expect(mockHandleExpiredAuth).toBeCalledTimes(1));
+
+          done();
+        });
+
         it("renders, handles a create event", async (done) => {
           expect(Header).toHaveBeenCalledTimes(1);
           const { create } = Header.mock.calls[0][0];
@@ -350,18 +367,27 @@ describe("Setup Environment", () => {
           );
 
           const apiCall = mockTransactionDispatch.mock.calls[0][0];
-          propCount(apiCall, 4);
+          propCount(apiCall, 5);
           expect(apiCall.type).toBe(ApiActions.StartAdd);
           expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
+          expect(apiCall.callback.name).toBe("callback");
           expect(apiCall.payload).toStrictEqual({
             item: mockItems[0].id,
             quantity: 2,
           });
           expect(apiCall.dispatch).toBeInstanceOf(Function);
 
-          await waitFor(() =>
-            expect(current.inventory[0].quantity).toBe(originalQuantity + 2)
-          );
+          // Ensure successful callback updates inventory
+          act(() => apiCall.callback({ success: true, complete: true }));
+          await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
+          const call1 = ItemListRow.mock.calls[6][0];
+          expect(call1.item.quantity).toBe(originalQuantity + 2);
+
+          // Ensure unsucessful callback does not update inventory
+          act(() => apiCall.callback({ success: false, complete: true }));
+          await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
+          const call2 = ItemListRow.mock.calls[6][0];
+          expect(call2.item.quantity).toBe(originalQuantity + 2);
 
           done();
         });
@@ -382,29 +408,79 @@ describe("Setup Environment", () => {
           );
 
           const apiCall = mockTransactionDispatch.mock.calls[0][0];
-          propCount(apiCall, 4);
+          propCount(apiCall, 5);
           expect(apiCall.type).toBe(ApiActions.StartAdd);
           expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
+          expect(apiCall.callback.name).toBe("callback");
           expect(apiCall.payload).toStrictEqual({
             item: mockItems[0].id,
             quantity: -1,
           });
           expect(apiCall.dispatch).toBeInstanceOf(Function);
 
+          // Ensure successful callback updates inventory
+          act(() => apiCall.callback({ success: true, complete: true }));
+          await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
+          const call = ItemListRow.mock.calls[6][0];
+          expect(call.item.quantity).toBe(originalQuantity - 1);
+
+          // Ensure unsucessful callback does not update inventory
+          act(() => apiCall.callback({ success: false, complete: true }));
+          await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
+          const call2 = ItemListRow.mock.calls[6][0];
+          expect(call2.item.quantity).toBe(originalQuantity - 1);
+
+          done();
+        });
+
+        it("renders, handles edge case where handleConsume is called on non-existent item", async (done) => {
+          expect(ItemListRow).toHaveBeenCalledTimes(3);
+          const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
+          expect(current.transaction).toBeFalsy();
+
+          const nonExistentItem = { id: 99, name: "non-existent", quantity: 1 };
+
+          act(() => {
+            consume(nonExistentItem, 1);
+          });
+
           await waitFor(() =>
-            expect(current.inventory[0].quantity).toBe(originalQuantity - 1)
+            expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
           );
+
+          const apiCall = mockTransactionDispatch.mock.calls[0][0];
+          propCount(apiCall, 5);
+          expect(apiCall.type).toBe(ApiActions.StartAdd);
+          expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
+          expect(apiCall.callback.name).toBe("callback");
+          expect(apiCall.payload).toStrictEqual({
+            item: nonExistentItem.id,
+            quantity: -1,
+          });
+          expect(apiCall.dispatch).toBeInstanceOf(Function);
+
+          // Ensure successful callback updates inventory
+          act(() => apiCall.callback({ success: true, complete: true }));
+          await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
+          const call = ItemListRow.mock.calls[6][0];
+          expect(call.item.quantity).toBe(mockItems[0].quantity);
+
+          // Ensure unsucessful callback does not update inventory
+          act(() => apiCall.callback({ success: false, complete: true }));
+          await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
+          const call2 = ItemListRow.mock.calls[6][0];
+          expect(call2.item.quantity).toBe(mockItems[0].quantity);
 
           done();
         });
 
         it("renders, and handles an transaction auth failure condition as expected", async (done) => {
           expect(ItemListRow).toHaveBeenCalledTimes(3);
-          const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
+          const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
           expect(current.transaction).toBeFalsy();
 
           act(() => {
-            consume(mockItems[0], -2);
+            restock(mockItems[0], 1);
           });
 
           await waitFor(() =>
@@ -417,6 +493,12 @@ describe("Setup Environment", () => {
           act(() => {
             setPerformAsync({ type: ApiActions.FailureAuth });
           });
+
+          await waitFor(() =>
+            expect(mockTransactionDispatch).toHaveBeenCalledTimes(2)
+          );
+
+          await waitFor(() => expect(mockHandleExpiredAuth).toBeCalledTimes(1));
 
           done();
         });
