@@ -1,6 +1,13 @@
 export const apiResultCompare = (a, b) => {
-  const name1 = a.name.toUpperCase();
-  const name2 = b.name.toUpperCase();
+  let name1, name2;
+
+  if (a.hasOwnProperty("name") && b.hasOwnProperty("name")) {
+    name1 = a.name.toUpperCase();
+    name2 = b.name.toUpperCase();
+  } else {
+    name1 = a.id;
+    name2 = b.id;
+  }
 
   let comparison = 0;
   if (name1 > name2) {
