@@ -6,6 +6,7 @@ import Tab from "react-bootstrap/Tab";
 
 import Header from "../header/header.component";
 import ItemDetailsForm from "./item-details.form";
+import TransactionsReview from "../transactions/transactions.component";
 
 import { Container } from "../../global-styles/containers";
 import { TabBox } from "./item-details.styles";
@@ -15,29 +16,63 @@ import Strings from "../../configuration/strings";
 const ItemDetails = ({ headerTitle, transaction, ...OtherFormProps }) => {
   const [tab, setTab] = useState("edit");
   const { t } = useTranslation();
+  const [tabWidth, setTabWidth] = useState(200);
 
   const changeTab = (key) => {
-    if (transaction) return;
     setTab(key);
   };
+
+  const editTab = () => {
+    setTab("edit");
+  };
+
+  const recalculateWidth = () =>
+    setTimeout(() => {
+      setTabWidth(document.querySelector(".TabBox").clientWidth);
+    }, 1);
+
+  React.useLayoutEffect(() => {
+    recalculateWidth();
+  }, []);
+
+  React.useEffect(() => {
+    window.addEventListener("resize", recalculateWidth);
+    window.addEventListener("orientationchange", editTab);
+    return () => {
+      window.removeEventListener("resize", recalculateWidth);
+      window.removeEventListener("orientationchange", editTab);
+    };
+  }, []);
 
   return (
     <>
       <Header title={headerTitle} transaction={transaction} />
       <Container tabs={true}>
         <TabBox>
-          <Tabs
-            id="item-details-tabs"
-            activeKey={tab}
-            onSelect={(k) => changeTab(k)}
-          >
-            <Tab eventKey="stats" title={t(Strings.ItemDetails.Tabs.Stats)}>
-              <div>Unimplemented</div>
-            </Tab>
-            <Tab eventKey="edit" title={t(Strings.ItemDetails.Tabs.Edit)}>
-              <ItemDetailsForm transaction={transaction} {...OtherFormProps} />
-            </Tab>
-          </Tabs>
+          <div className="TabBox">
+            <Tabs
+              id="item-details-tabs"
+              activeKey={tab}
+              onSelect={(k) => changeTab(k)}
+            >
+              <Tab eventKey="edit" title={t(Strings.ItemDetails.Tabs.Edit)}>
+                <div className="selection">
+                  <ItemDetailsForm
+                    transaction={transaction}
+                    {...OtherFormProps}
+                  />
+                </div>
+              </Tab>
+              <Tab eventKey="stats" title={t(Strings.ItemDetails.Tabs.Stats)}>
+                <div style={{ width: tabWidth }}>
+                  <TransactionsReview
+                    transaction={transaction}
+                    item={OtherFormProps.item}
+                  />
+                </div>
+              </Tab>
+            </Tabs>
+          </div>
         </TabBox>
       </Container>
     </>
@@ -57,4 +92,5 @@ ItemDetails.propTypes = {
   shelves: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleSave: PropTypes.func.isRequired,
   handleDelete: PropTypes.func,
+  requestTransactions: PropTypes.func,
 };

@@ -24,7 +24,6 @@ import ApiFunctions from "../../../providers/api/api.functions";
 import Strings from "../../../configuration/strings";
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import Routes from "../../../configuration/routes";
-import initialState from "../../../providers/user/user.initial";
 
 jest.mock("../item-details.form");
 jest.mock("../../holding-pattern/holding-pattern.component");

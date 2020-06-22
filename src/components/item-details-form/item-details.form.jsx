@@ -36,6 +36,7 @@ const ItemDetailsForm = ({
   shelves,
   handleSave,
   handleDelete,
+  requestTransactions,
 }) => {
   const { t } = useTranslation();
 
@@ -281,4 +282,5 @@ ItemDetailsForm.propTypes = {
   shelves: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleSave: PropTypes.func.isRequired,
   handleDelete: PropTypes.func,
+  requestTransactions: PropTypes.func,
 };

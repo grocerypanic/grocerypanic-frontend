@@ -71,6 +71,11 @@ export const Strings = {
       ApiError:
         "Unable to retrieve data from the API!\nDoes this content really exist?\nRetry, or change your query.",
     },
+    ItemStats: {
+      Title: "Consumption Statistics",
+      HeaderTitle: "Details",
+      HelpText: "Here is some help.",
+    },
     ItemList: {
       ApiError:
         "Unable to retrieve data from the API!\nDoes this content really exist?\nRetry, or change your query.",

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  rerender,
-  render,
-  cleanup,
-  waitFor,
-  act,
-} from "@testing-library/react";
+import { render, cleanup, waitFor, act } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 import { MemoryRouter, Router } from "react-router-dom";
 import { createBrowserHistory } from "history";

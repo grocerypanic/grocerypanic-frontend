@@ -5,13 +5,18 @@ import { propCount } from "../../../test.fixtures/objectComparison";
 import Header from "../../header/header.component";
 import ItemDetails from "../item-details.component";
 import ItemDetailsForm from "../item-details.form";
+import TransactionsOverview from "../../transactions/transactions.component";
 
 import Strings from "../../../configuration/strings";
 
 jest.mock("../../header/header.component");
+jest.mock("../../transactions/transactions.component");
 jest.mock("../item-details.form");
 Header.mockImplementation(() => <div>MockHeader</div>);
 ItemDetailsForm.mockImplementation(() => <div>MockItemDetailsForm</div>);
+TransactionsOverview.mockImplementation(() => (
+  <div>MockTransactionOverview</div>
+));
 
 const mockItem = {
   expired: 0,
@@ -53,6 +58,17 @@ describe("Setup Environment", () => {
   let utils;
   let current;
 
+  // Mock out the querySelector to allow detecting the item size
+  beforeAll(() =>
+    jest.spyOn(document, "querySelector").mockImplementation(() => {
+      return {
+        clientWidth: 200,
+      };
+    })
+  );
+
+  afterAll(() => document.querySelector.mockRestore());
+
   describe("outside of a transaction", () => {
     beforeEach(() => {
       jest.clearAllMocks();
@@ -85,10 +101,10 @@ describe("Setup Environment", () => {
       const tab2 = utils.getByText(Strings.ItemDetails.Tabs.Edit);
       fireEvent.click(tab1, "click");
 
-      expect(utils.getByText("Unimplemented")).toBeTruthy();
+      expect(ItemDetailsForm).toBeCalledTimes(2);
       expect(tab1.className.search("active")).toBeGreaterThan(0);
 
-      expect(utils.getByText("Unimplemented")).toBeTruthy();
+      expect(TransactionsOverview).toBeCalledTimes(2);
       expect(tab2.className.search("active")).toBeLessThan(0);
 
       done();
@@ -100,10 +116,10 @@ describe("Setup Environment", () => {
       const tab2 = utils.getByText(Strings.ItemDetails.Tabs.Edit);
       fireEvent.click(tab2, "click");
 
-      expect(utils.getByText("Unimplemented")).toBeTruthy();
+      expect(ItemDetailsForm).toBeCalledTimes(1);
       expect(tab2.className.search("active")).toBeGreaterThan(0);
 
-      expect(utils.getByText("Unimplemented")).toBeTruthy();
+      expect(TransactionsOverview).toBeCalledTimes(1);
       expect(tab1.className.search("active")).toBeLessThan(0);
 
       done();
@@ -138,16 +154,32 @@ describe("Setup Environment", () => {
     });
     afterEach(cleanup);
 
-    it("renders, should not navigate to the stats page", async (done) => {
+    it("renders, should still navigate to the stats page", async (done) => {
       expect(current.transaction).toBe(true);
       const tab1 = utils.getByText(Strings.ItemDetails.Tabs.Stats);
       const tab2 = utils.getByText(Strings.ItemDetails.Tabs.Edit);
       fireEvent.click(tab1, "click");
 
-      expect(utils.getByText("Unimplemented")).toBeTruthy();
+      expect(ItemDetailsForm).toBeCalledTimes(2);
+      expect(tab1.className.search("active")).toBeGreaterThan(0); // Selected By Default
+
+      expect(TransactionsOverview).toBeCalledTimes(2);
+      expect(tab2.className.search("active")).toBeLessThan(0);
+
+      done();
+    });
+
+    it("should respond to a screen orientation change by flipping back to the edit tab", async (done) => {
+      expect(current.transaction).toBe(true);
+      const tab1 = utils.getByText(Strings.ItemDetails.Tabs.Stats);
+      const tab2 = utils.getByText(Strings.ItemDetails.Tabs.Edit);
+      fireEvent.click(tab2, "click");
+      fireEvent(window, new Event("orientationchange"));
+
+      expect(TransactionsOverview).toBeCalledTimes(1);
       expect(tab2.className.search("active")).toBeGreaterThan(0); // Selected By Default
 
-      expect(utils.getByText("Unimplemented")).toBeTruthy();
+      expect(ItemDetailsForm).toBeCalledTimes(1);
       expect(tab1.className.search("active")).toBeLessThan(0);
 
       done();
