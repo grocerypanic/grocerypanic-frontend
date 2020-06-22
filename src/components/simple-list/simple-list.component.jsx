@@ -39,7 +39,10 @@ const SimpleList = ({
   const [longPress, setLongPress] = React.useState(false);
 
   const [performAsync, setPerformAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
-  const [ready, setReady] = React.useState(false);
+  const [itemsFetched, setItemsFetched] = React.useState({
+    success: false,
+    complete: false,
+  });
 
   const [listSize, setListSize] = React.useState(calculateMaxHeight());
   const recalculateHeight = () => setListSize(calculateMaxHeight());
@@ -65,7 +68,7 @@ const SimpleList = ({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
       dispatch: setPerformAsync,
-      callback: setReady,
+      callback: setItemsFetched,
     });
   }, []);
 
@@ -122,7 +125,7 @@ const SimpleList = ({
         transaction={apiObject.transaction}
         create={handleCreate}
       />
-      <HoldingPattern condition={!ready && waitForApi}>
+      <HoldingPattern condition={!itemsFetched.complete && waitForApi}>
         <Container>
           <Paper>
             {errorMsg && created ? (
