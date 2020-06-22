@@ -3,8 +3,8 @@ import ApiActions from "../api.actions";
 import withMiddleware from "../../../util/user.middleware";
 import reducerLoggingMiddleware from "../../../util/reducer.logger";
 
-const generateReducer = (async) => {
-  const itemReducer = (state, action) => {
+const generateReducer = (async, name) => {
+  const reducer = (state, action) => {
     switch (action.type) {
       case ApiActions.StartAdd:
       case ApiActions.StartDel:
@@ -88,8 +88,10 @@ const generateReducer = (async) => {
     }
   };
 
+  Object.defineProperty(reducer, "name", { value: name });
+
   const middlewares = [reducerLoggingMiddleware];
-  return withMiddleware(itemReducer, middlewares);
+  return withMiddleware(reducer, middlewares);
 };
 
 export default generateReducer;
