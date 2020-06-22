@@ -11,6 +11,7 @@ import ItemDetails from "./item-details.component";
 import { ItemContext } from "../../providers/api/item/item.provider";
 import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
 import { StoreContext } from "../../providers/api/store/store.provider";
+import { TransactionContext } from "../../providers/api/transaction/transaction.provider";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
@@ -45,15 +46,20 @@ const ItemDetailsEditContainer = ({
   const { apiObject: store, dispatch: storeDispatch } = React.useContext(
     StoreContext
   );
+  const { apiObject: tr, dispatch: trDispatch } = React.useContext(
+    TransactionContext
+  );
+
   const [performItemAsync, setPerformItemAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performShelfAsync, setPerformShelfAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performStoreAsync, setPerformStoreAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
+  const [performTrAsync, setPerformTrAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [transaction, setTransaction] = React.useState(true);
   const [calculatedItem, setCalculatedItem] = React.useState(defaultItem);
   const [listItemsComplete, setListItemsComplete] = React.useState(testHook);
 
   React.useEffect(() => {
-    // Detect Transactions on Any API Plane
+    // Detect Transactions on Any API Plane (except transactions, which is handled at a lower layer)
     setTransaction(item.transaction || shelf.transaction || store.transaction);
   }, [item, store, shelf]);
 
@@ -100,6 +106,13 @@ const ItemDetailsEditContainer = ({
   }, [performStoreAsync]);
 
   React.useEffect(() => {
+    if (!performTrAsync) return;
+    if (performTrAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
+    trDispatch(performTrAsync);
+    setPerformTrAsync(null);
+  }, [performTrAsync]);
+
+  React.useEffect(() => {
     setPerformItemAsync({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
@@ -116,6 +129,15 @@ const ItemDetailsEditContainer = ({
       dispatch: setPerformShelfAsync,
     });
   }, []);
+
+  const handleTransactionRequest = () => {
+    setPerformTrAsync({
+      type: ApiActions.StartList,
+      func: ApiFuctions.asyncList,
+      dispatch: setPerformTrAsync,
+      payload: { id: parseInt(itemId) },
+    });
+  };
 
   const handleSave = (newItem) => {
     setPerformItemAsync({
@@ -160,8 +182,10 @@ const ItemDetailsEditContainer = ({
           transaction={transaction}
           stores={store.inventory}
           shelves={shelf.inventory}
+          tr={tr.inventory}
           handleSave={handleSave}
           handleDelete={handleDelete}
+          requestTransactions={handleTransactionRequest}
         />
       </HoldingPattern>
     </ErrorHandler>

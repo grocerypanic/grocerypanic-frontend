@@ -70,7 +70,7 @@ const mockStore = {
   name: "No Frills",
 };
 
-const mockItemsProvider = {
+const mockItemProvider = {
   dispatch: mockItemDispatch,
   apiObject: { ...ItemInitialValue, inventory: [mockItem] },
 };
@@ -87,7 +87,7 @@ const mockShelfProvider = {
 
 const mockTransactionProvider = {
   dispatch: mockTransactionDispatch,
-  apiObject: { ...TransactionInitialValue },
+  apiObject: { ...TransactionInitialValue, inventory: [] },
 };
 
 const props = {
@@ -116,7 +116,7 @@ describe("Setup Environment", () => {
     currentHistory,
     currentTransaction,
     currentProps,
-    itemContext = { ...mockItemsProvider },
+    itemContext = { ...mockItemProvider },
     command = render
   ) => {
     itemContext.transaction = currentTransaction;
@@ -148,10 +148,10 @@ describe("Setup Environment", () => {
       jest.clearAllMocks();
       history = createBrowserHistory();
       history.location.pathname = originalPath;
-      itemProvider = { ...mockItemsProvider };
-      itemProvider.apiObject = { ...mockItemsProvider.apiObject };
+      itemProvider = { ...mockItemProvider };
+      itemProvider.apiObject = { ...mockItemProvider.apiObject };
       itemProvider.apiObject.inventory = {
-        ...mockItemsProvider.apiObject.inventory,
+        ...mockItemProvider.apiObject.inventory,
       };
     });
 
@@ -295,45 +295,22 @@ describe("Setup Environment", () => {
       done();
     });
 
-    it("renders, calls transactions.StartList on first render", async (done) => {
-      await waitFor(() =>
-        expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
-      );
-      const call = mockTransactionDispatch.mock.calls[0][0];
-      propCount(call, 3);
-      expect(call.type).toBe(ApiActions.StartList);
-      expect(call.func).toBe(ApiFunctions.asyncList);
-      expect(call.dispatch).toBeInstanceOf(Function);
-      done();
-    });
-
-    it("renders, calls transactions auth failure as expected", async (done) => {
-      await waitFor(() =>
-        expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
-      );
-      const storeDispatch = mockTransactionDispatch.mock.calls[0][0].dispatch;
-
-      expect(mockTransactionDispatch).toBeCalledTimes(0);
-      act(() => storeDispatch({ type: ApiActions.FailureAuth }));
-      await expect(mockTransactionDispatch).toBeCalledTimes(1);
-
-      done();
-    });
-
     it("renders ItemDetails with correct props", async (done) => {
       await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
       const call = ItemDetails.mock.calls[2][0];
-      propCount(call, 10);
+      propCount(call, 12);
       expect(call.allItems).toStrictEqual(props.allItems);
       expect(call.item).toBe(mockItem);
       expect(call.headerTitle).toBe(props.headerTitle);
       expect(call.title).toBe(props.title);
       expect(call.helpText).toBe(props.helpText);
       expect(call.transaction).toBe(false);
+      expect(call.tr).toStrictEqual([]);
       expect(call.stores).toStrictEqual([mockStore]);
       expect(call.shelves).toStrictEqual([mockShelf]);
       expect(call.handleSave).toBeInstanceOf(Function);
       expect(call.handleDelete).toBeInstanceOf(Function);
+      expect(call.requestTransactions).toBeInstanceOf(Function);
       done();
     });
 
@@ -414,6 +391,46 @@ describe("Setup Environment", () => {
 
       done();
     });
+
+    it("handles a call to handleTransactionRequest as expected", async (done) => {
+      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+
+      const handleTr = ItemDetails.mock.calls[1][0].requestTransactions;
+      expect(handleTr).toBeInstanceOf(Function);
+      act(() => handleTr());
+
+      await waitFor(() =>
+        expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+      );
+      const trCall = mockTransactionDispatch.mock.calls[0][0];
+      propCount(trCall, 4);
+
+      expect(trCall.type).toBe(ApiActions.StartList);
+      expect(trCall.func).toBe(ApiFunctions.asyncList);
+      expect(trCall.dispatch.name).toBe("bound dispatchAction");
+      expect(trCall.payload).toStrictEqual({ id: mockItem.id });
+
+      done();
+    });
+
+    it("renders, calls transaction auth failure as expected", async (done) => {
+      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+
+      const handleTr = ItemDetails.mock.calls[1][0].requestTransactions;
+      expect(handleTr).toBeInstanceOf(Function);
+      act(() => handleTr());
+
+      await waitFor(() =>
+        expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+      );
+      const trDispatch = mockTransactionDispatch.mock.calls[0][0].dispatch;
+
+      await expect(mockHandleExpiredAuth).toBeCalledTimes(0);
+      act(() => trDispatch({ type: ApiActions.FailureAuth }));
+      await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
+
+      done();
+    });
   });
 
   describe("during an error", () => {
@@ -421,6 +438,7 @@ describe("Setup Environment", () => {
       storeContext,
       shelfContext,
       itemContext,
+      transactionContext,
       currentProps
     ) =>
       render(
@@ -437,7 +455,11 @@ describe("Setup Environment", () => {
                   transaction: false,
                 }}
               >
-                <ItemDetailsEditContainer {...currentProps} />
+                <TransactionContext.Provider
+                  value={{ ...transactionContext, transaction: false }}
+                >
+                  <ItemDetailsEditContainer {...currentProps} />
+                </TransactionContext.Provider>
               </ItemContext.Provider>
             </ShelfContext.Provider>
           </StoreContext.Provider>
@@ -457,7 +479,8 @@ describe("Setup Environment", () => {
         utils = renderHelper(
           TestContext,
           mockShelfProvider,
-          mockItemsProvider,
+          mockItemProvider,
+          mockTransactionProvider,
           current
         );
       });
@@ -503,7 +526,8 @@ describe("Setup Environment", () => {
         utils = renderHelper(
           mockStoreProvider,
           TestContext,
-          mockItemsProvider,
+          mockItemProvider,
+          mockTransactionProvider,
           current
         );
       });
@@ -541,7 +565,7 @@ describe("Setup Environment", () => {
         jest.clearAllMocks();
         current.id = "2";
         const TestContext = {
-          ...mockItemsProvider,
+          ...mockItemProvider,
           apiObject: { ...ItemInitialValue },
         };
         TestContext.apiObject.transaction = false;
@@ -550,6 +574,7 @@ describe("Setup Environment", () => {
           mockStoreProvider,
           mockShelfProvider,
           TestContext,
+          mockTransactionProvider,
           current
         );
       });
@@ -575,6 +600,53 @@ describe("Setup Environment", () => {
         act(() => clearError());
         await waitFor(() => expect(mockItemDispatch).toBeCalledTimes(1));
         expect(mockItemDispatch).toBeCalledWith({
+          type: ApiActions.ClearErrors,
+        });
+
+        done();
+      });
+    });
+
+    describe("during a transaction api error", () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+        current.id = "2";
+        const TestContext = {
+          ...mockTransactionProvider,
+          apiObject: { ...TransactionInitialValue },
+        };
+        TestContext.apiObject.transaction = false;
+        TestContext.apiObject.error = true;
+        utils = renderHelper(
+          mockStoreProvider,
+          mockShelfProvider,
+          mockItemProvider,
+          TestContext,
+          current
+        );
+      });
+
+      it("renders, calls the ErrorHandler with the correct params", () => {
+        expect(ErrorHandler).toHaveBeenCalledTimes(3);
+
+        const errorHandlerCall = ErrorHandler.mock.calls[0][0];
+        propCount(errorHandlerCall, 7);
+        expect(errorHandlerCall.condition).toBe(true);
+        expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
+        expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
+        expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
+        expect(errorHandlerCall.redirect).toBe(Routes.goBack);
+        expect(errorHandlerCall.children).toBeTruthy();
+      });
+
+      it("renders, clear error works as expected", async (done) => {
+        expect(ErrorHandler).toHaveBeenCalledTimes(3); // Three rerenders for API data
+        const clearError = ErrorHandler.mock.calls[0][0].clearError;
+        jest.clearAllMocks();
+
+        act(() => clearError());
+        await waitFor(() => expect(mockTransactionDispatch).toBeCalledTimes(1));
+        expect(mockTransactionDispatch).toBeCalledWith({
           type: ApiActions.ClearErrors,
         });
 
