@@ -74,6 +74,7 @@ const ItemList = ({
   React.useEffect(() => {
     if (!performItemAsync) return;
     if (performItemAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
+    if (performItemAsync.type === ApiActions.SuccessList) setReady(true);
     itemDispatch(performItemAsync);
     setPerformItemAsync(null);
   }, [performItemAsync]);
@@ -93,7 +94,6 @@ const ItemList = ({
       func: ApiFuctions.asyncList,
       dispatch: setPerformItemAsync,
       filter: filter,
-      callback: setReady,
     });
   }, []);
 
@@ -156,7 +156,7 @@ const ItemList = ({
   return (
     <>
       <ErrorHandler
-        condition={item.error}
+        condition={item.error || transaction.error}
         clearError={clearError}
         eventMessage={AnalyticsActions.ApiError}
         stringsRoot={Strings.ItemList}

@@ -169,7 +169,7 @@ describe("Setup Environment", () => {
         current.transaction = false;
       });
 
-      describe("with items in the inventory", () => {
+      describe("with wait for api engaged", () => {
         beforeEach(() => {
           current.inventory = [...mockItems];
           let history = createBrowserHistory();
@@ -184,371 +184,437 @@ describe("Setup Environment", () => {
             dispatch: mockTransactionDispatch,
           };
 
-          utils = renderHelper(itemContext, transactionContext, history, false);
+          utils = renderHelper(itemContext, transactionContext, history);
         });
 
-        it("renders, outside of a transaction should call ErrorHandler with the correct params", () => {
-          expect(current.transaction).toBe(false);
-
-          expect(ErrorHandler).toHaveBeenCalledTimes(1);
-
-          const errorHandlerCall = ErrorHandler.mock.calls[0][0];
-          propCount(errorHandlerCall, 7);
-          expect(errorHandlerCall.condition).toBe(false);
-          expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
-          expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
-          expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemList);
-          expect(errorHandlerCall.redirect).toBe(Routes.goBack);
-          expect(errorHandlerCall.children).toBeTruthy();
-        });
-
-        it("renders, outside of a transaction should call header with the correct params", () => {
-          expect(current.transaction).toBe(false);
-
-          expect(Header).toHaveBeenCalledTimes(1);
-
-          const headerCall = Header.mock.calls[0][0];
-          propCount(headerCall, 3);
-          expect(headerCall.title).toBe(mockHeaderTitle);
-          expect(headerCall.transaction).toBe(current.transaction);
-
-          expect(headerCall.create).toBeInstanceOf(Function);
-          expect(headerCall.create.name).toBe("handleCreate");
-        });
-
-        it("renders, outside of a transaction should call HoldingPattern with the correct params", () => {
+        it("renders, should call HoldingPattern with the correct params", () => {
           expect(current.transaction).toBe(false);
 
           expect(HoldingPattern).toHaveBeenCalledTimes(1);
 
           const holdingPatternCall = HoldingPattern.mock.calls[0][0];
           propCount(holdingPatternCall, 2);
+          expect(holdingPatternCall.condition).toBe(true);
+        });
+
+        it("renders, after a successful list fetch, it should call HoldingPattern with the correct params", async (done) => {
+          expect(current.transaction).toBe(false);
+
+          await waitFor(() =>
+            expect(mockItemDispatch).toHaveBeenCalledTimes(1)
+          );
+          const itemDispatch = mockItemDispatch.mock.calls[0][0].dispatch;
+          act(() => itemDispatch({ type: ApiActions.SuccessList }));
+
+          await waitFor(() =>
+            expect(mockItemDispatch).toHaveBeenCalledTimes(2)
+          );
+          await waitFor(() => expect(HoldingPattern).toHaveBeenCalledTimes(3));
+
+          const holdingPatternCall = HoldingPattern.mock.calls[2][0];
+          propCount(holdingPatternCall, 2);
           expect(holdingPatternCall.condition).toBe(false);
-        });
 
-        it("renders, outside of a transaction should call help with the correct params", () => {
-          expect(current.transaction).toBe(false);
-
-          expect(Help).toHaveBeenCalledTimes(1);
-
-          const helpCall = Help.mock.calls[0][0];
-          propCount(helpCall, 1);
-          expect(helpCall.children).toBe(
-            Strings.Testing.GenericTranslationTestString
-          );
-        });
-
-        it("renders, outside of a transaction should call the ItemListRow component(s) with the correct params", () => {
-          expect(current.transaction).toBe(false);
-
-          expect(ItemListRow).toHaveBeenCalledTimes(3);
-
-          const call1 = ItemListRow.mock.calls[0][0];
-          propCount(call1, 5);
-          propCount(call1.listFunctions, 4);
-          propCount(call1.listValues, 1);
-
-          expect(call1.item).toBe(mockItems[0]);
-          expect(call1.allItems).toStrictEqual(mockItems);
-          expect(call1.listValues.transaction).toBe(false);
-          expect(call1.history.push).toBeInstanceOf(Function);
-
-          validateFunctions(call1);
-
-          const call2 = ItemListRow.mock.calls[1][0];
-          propCount(call1, 5);
-          propCount(call1.listFunctions, 4);
-          propCount(call1.listValues, 1);
-
-          expect(call2.item).toBe(mockItems[1]);
-          expect(call2.allItems).toStrictEqual(mockItems);
-          expect(call2.listValues.transaction).toBe(false);
-          expect(call1.history.push).toBeInstanceOf(Function);
-
-          validateFunctions(call2);
-
-          const call3 = ItemListRow.mock.calls[2][0];
-          propCount(call1, 5);
-          propCount(call1.listFunctions, 4);
-          propCount(call1.listValues, 1);
-
-          expect(call3.item).toBe(mockItems[2]);
-          expect(call3.allItems).toStrictEqual(mockItems);
-          expect(call3.listValues.transaction).toBe(false);
-          expect(call1.history.push).toBeInstanceOf(Function);
-
-          validateFunctions(call3);
-        });
-
-        it("renders, there should be no error messages set", () => {
-          expect(ItemListRow).toHaveBeenCalledTimes(3);
-          expect(utils.getByText(mockTitle)).toBeTruthy();
-        });
-
-        it("renders, when an error occurs it's rendered", async (done) => {
-          expect(ItemListRow).toHaveBeenCalledTimes(3);
-
-          const { setErrorMsg } = ItemListRow.mock.calls[0][0].listFunctions;
-          ItemListRow.mockClear(); // Prepare for rerender, so we can count again
-
-          act(() => {
-            setErrorMsg("Error");
-          });
-          await waitFor(() =>
-            expect(utils.queryByText(mockTitle)).not.toBeInTheDocument()
-          );
-          expect(utils.getByText("Error")).toBeTruthy();
-
-          done();
-        });
-
-        it("renders, calls StartList on first render", async (done) => {
-          expect(current.transaction).toBeFalsy();
-          await waitFor(() =>
-            expect(mockItemDispatch).toHaveBeenCalledTimes(1)
-          );
-          const apiCall = mockItemDispatch.mock.calls[0][0];
-          propCount(apiCall, 5);
-          expect(apiCall.type).toBe(ApiActions.StartList);
-          expect(apiCall.func).toBe(ApiFunctions.asyncList);
-          expect(apiCall.dispatch).toBeInstanceOf(Function);
-          expect(apiCall.callback).toBeInstanceOf(Function);
-          expect(apiCall.filter).toBeInstanceOf(URLSearchParams);
-          done();
-        });
-
-        it("renders, and handles an transaction auth failure condition as expected", async (done) => {
-          expect(current.transaction).toBeFalsy();
-          await waitFor(() =>
-            expect(mockItemDispatch).toHaveBeenCalledTimes(1)
-          );
-          const apiCall = mockItemDispatch.mock.calls[0][0];
-          const setPerformAsync = apiCall.dispatch;
-
-          act(() => {
-            setPerformAsync({ type: ApiActions.FailureAuth });
-          });
-
-          await waitFor(() => expect(mockHandleExpiredAuth).toBeCalledTimes(1));
-
-          done();
-        });
-
-        it("renders, handles a create event", async (done) => {
-          expect(Header).toHaveBeenCalledTimes(1);
-          const { create } = Header.mock.calls[0][0];
-          expect(current.transaction).toBeFalsy();
-
-          ItemListRow.mockClear();
-          act(() => {
-            create();
-          });
-
-          await waitFor(() =>
-            expect(window.location.pathname).toBe(Routes.create)
-          );
-
-          done();
-        });
-
-        it("renders, and dispatches the API reducer when handleReStock is called", async (done) => {
-          expect(ItemListRow).toHaveBeenCalledTimes(3);
-          const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
-          expect(current.transaction).toBeFalsy();
-
-          const originalQuantity = mockItems[0].quantity;
-
-          act(() => {
-            restock(mockItems[0], 2);
-          });
-
-          await waitFor(() =>
-            expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
-          );
-
-          const apiCall = mockTransactionDispatch.mock.calls[0][0];
-          propCount(apiCall, 5);
-          expect(apiCall.type).toBe(ApiActions.StartAdd);
-          expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
-          expect(apiCall.callback.name).toBe("callback");
-          expect(apiCall.payload).toStrictEqual({
-            item: mockItems[0].id,
-            quantity: 2,
-          });
-          expect(apiCall.dispatch).toBeInstanceOf(Function);
-
-          // Ensure successful callback updates inventory
-          act(() => apiCall.callback({ success: true, complete: true }));
-          await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
-          const call1 = ItemListRow.mock.calls[6][0];
-          expect(call1.item.quantity).toBe(originalQuantity + 2);
-
-          // Ensure unsucessful callback does not update inventory
-          act(() => apiCall.callback({ success: false, complete: true }));
-          await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
-          const call2 = ItemListRow.mock.calls[6][0];
-          expect(call2.item.quantity).toBe(originalQuantity + 2);
-
-          done();
-        });
-
-        it("renders, and dispatches the API reducer when handleConsume is called", async (done) => {
-          expect(ItemListRow).toHaveBeenCalledTimes(3);
-          const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
-          expect(current.transaction).toBeFalsy();
-
-          const originalQuantity = mockItems[0].quantity;
-
-          act(() => {
-            consume(mockItems[0], 1);
-          });
-
-          await waitFor(() =>
-            expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
-          );
-
-          const apiCall = mockTransactionDispatch.mock.calls[0][0];
-          propCount(apiCall, 5);
-          expect(apiCall.type).toBe(ApiActions.StartAdd);
-          expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
-          expect(apiCall.callback.name).toBe("callback");
-          expect(apiCall.payload).toStrictEqual({
-            item: mockItems[0].id,
-            quantity: -1,
-          });
-          expect(apiCall.dispatch).toBeInstanceOf(Function);
-
-          // Ensure successful callback updates inventory
-          act(() => apiCall.callback({ success: true, complete: true }));
-          await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
-          const call = ItemListRow.mock.calls[6][0];
-          expect(call.item.quantity).toBe(originalQuantity - 1);
-
-          // Ensure unsucessful callback does not update inventory
-          act(() => apiCall.callback({ success: false, complete: true }));
-          await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
-          const call2 = ItemListRow.mock.calls[6][0];
-          expect(call2.item.quantity).toBe(originalQuantity - 1);
-
-          done();
-        });
-
-        it("renders, handles edge case where handleConsume is called on non-existent item", async (done) => {
-          expect(ItemListRow).toHaveBeenCalledTimes(3);
-          const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
-          expect(current.transaction).toBeFalsy();
-
-          const nonExistentItem = { id: 99, name: "non-existent", quantity: 1 };
-
-          act(() => {
-            consume(nonExistentItem, 1);
-          });
-
-          await waitFor(() =>
-            expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
-          );
-
-          const apiCall = mockTransactionDispatch.mock.calls[0][0];
-          propCount(apiCall, 5);
-          expect(apiCall.type).toBe(ApiActions.StartAdd);
-          expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
-          expect(apiCall.callback.name).toBe("callback");
-          expect(apiCall.payload).toStrictEqual({
-            item: nonExistentItem.id,
-            quantity: -1,
-          });
-          expect(apiCall.dispatch).toBeInstanceOf(Function);
-
-          // Ensure successful callback updates inventory
-          act(() => apiCall.callback({ success: true, complete: true }));
-          await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
-          const call = ItemListRow.mock.calls[6][0];
-          expect(call.item.quantity).toBe(mockItems[0].quantity);
-
-          // Ensure unsucessful callback does not update inventory
-          act(() => apiCall.callback({ success: false, complete: true }));
-          await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
-          const call2 = ItemListRow.mock.calls[6][0];
-          expect(call2.item.quantity).toBe(mockItems[0].quantity);
-
-          done();
-        });
-
-        it("renders, and handles an transaction auth failure condition as expected", async (done) => {
-          expect(ItemListRow).toHaveBeenCalledTimes(3);
-          const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
-          expect(current.transaction).toBeFalsy();
-
-          act(() => {
-            restock(mockItems[0], 1);
-          });
-
-          await waitFor(() =>
-            expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
-          );
-
-          const apiCall = mockTransactionDispatch.mock.calls[0][0];
-          const setPerformAsync = apiCall.dispatch;
-
-          act(() => {
-            setPerformAsync({ type: ApiActions.FailureAuth });
-          });
-
-          await waitFor(() =>
-            expect(mockTransactionDispatch).toHaveBeenCalledTimes(2)
-          );
-
-          await waitFor(() => expect(mockHandleExpiredAuth).toBeCalledTimes(1));
-
-          done();
-        });
-
-        it("should call calculateMaxHeight on render", () => {
-          expect(calculateMaxHeight).toBeCalledTimes(1);
-        });
-
-        it("a should call calculateMaxHeight again on a window resize", async (done) => {
-          expect(calculateMaxHeight).toBeCalledTimes(1);
-          fireEvent(window, new Event("resize"));
-          await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
           done();
         });
       });
 
-      describe("with no items in the inventory", () => {
-        beforeEach(() => {
-          current.inventory = [];
-          let history = createBrowserHistory();
-          history.push(Routes.items);
+      describe("with wait for api not engaged", () => {
+        describe("with items in the inventory", () => {
+          beforeEach(() => {
+            current.inventory = [...mockItems];
+            let history = createBrowserHistory();
+            history.push(Routes.items);
 
-          const itemContext = {
-            apiObject: { ...current },
-            dispatch: mockItemDispatch,
-          };
-          const transactionContext = {
-            apiObject: { ...current },
-            dispatch: mockTransactionDispatch,
-          };
+            const itemContext = {
+              apiObject: { ...current },
+              dispatch: mockItemDispatch,
+            };
+            const transactionContext = {
+              apiObject: { ...current },
+              dispatch: mockTransactionDispatch,
+            };
 
-          utils = renderHelper(itemContext, transactionContext, history);
+            utils = renderHelper(
+              itemContext,
+              transactionContext,
+              history,
+              false
+            );
+          });
+
+          it("renders, outside of a transaction should call ErrorHandler with the correct params", () => {
+            expect(current.transaction).toBe(false);
+
+            expect(ErrorHandler).toHaveBeenCalledTimes(1);
+
+            const errorHandlerCall = ErrorHandler.mock.calls[0][0];
+            propCount(errorHandlerCall, 7);
+            expect(errorHandlerCall.condition).toBe(false);
+            expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
+            expect(errorHandlerCall.eventMessage).toBe(
+              AnalyticsActions.ApiError
+            );
+            expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemList);
+            expect(errorHandlerCall.redirect).toBe(Routes.goBack);
+            expect(errorHandlerCall.children).toBeTruthy();
+          });
+
+          it("renders, outside of a transaction should call header with the correct params", () => {
+            expect(current.transaction).toBe(false);
+
+            expect(Header).toHaveBeenCalledTimes(1);
+
+            const headerCall = Header.mock.calls[0][0];
+            propCount(headerCall, 3);
+            expect(headerCall.title).toBe(mockHeaderTitle);
+            expect(headerCall.transaction).toBe(current.transaction);
+
+            expect(headerCall.create).toBeInstanceOf(Function);
+            expect(headerCall.create.name).toBe("handleCreate");
+          });
+
+          it("renders, outside of a transaction should call HoldingPattern with the correct params", () => {
+            expect(current.transaction).toBe(false);
+
+            expect(HoldingPattern).toHaveBeenCalledTimes(1);
+
+            const holdingPatternCall = HoldingPattern.mock.calls[0][0];
+            propCount(holdingPatternCall, 2);
+            expect(holdingPatternCall.condition).toBe(false);
+          });
+
+          it("renders, outside of a transaction should call help with the correct params", () => {
+            expect(current.transaction).toBe(false);
+
+            expect(Help).toHaveBeenCalledTimes(1);
+
+            const helpCall = Help.mock.calls[0][0];
+            propCount(helpCall, 1);
+            expect(helpCall.children).toBe(
+              Strings.Testing.GenericTranslationTestString
+            );
+          });
+
+          it("renders, outside of a transaction should call the ItemListRow component(s) with the correct params", () => {
+            expect(current.transaction).toBe(false);
+
+            expect(ItemListRow).toHaveBeenCalledTimes(3);
+
+            const call1 = ItemListRow.mock.calls[0][0];
+            propCount(call1, 5);
+            propCount(call1.listFunctions, 4);
+            propCount(call1.listValues, 1);
+
+            expect(call1.item).toBe(mockItems[0]);
+            expect(call1.allItems).toStrictEqual(mockItems);
+            expect(call1.listValues.transaction).toBe(false);
+            expect(call1.history.push).toBeInstanceOf(Function);
+
+            validateFunctions(call1);
+
+            const call2 = ItemListRow.mock.calls[1][0];
+            propCount(call1, 5);
+            propCount(call1.listFunctions, 4);
+            propCount(call1.listValues, 1);
+
+            expect(call2.item).toBe(mockItems[1]);
+            expect(call2.allItems).toStrictEqual(mockItems);
+            expect(call2.listValues.transaction).toBe(false);
+            expect(call1.history.push).toBeInstanceOf(Function);
+
+            validateFunctions(call2);
+
+            const call3 = ItemListRow.mock.calls[2][0];
+            propCount(call1, 5);
+            propCount(call1.listFunctions, 4);
+            propCount(call1.listValues, 1);
+
+            expect(call3.item).toBe(mockItems[2]);
+            expect(call3.allItems).toStrictEqual(mockItems);
+            expect(call3.listValues.transaction).toBe(false);
+            expect(call1.history.push).toBeInstanceOf(Function);
+
+            validateFunctions(call3);
+          });
+
+          it("renders, there should be no error messages set", () => {
+            expect(ItemListRow).toHaveBeenCalledTimes(3);
+            expect(utils.getByText(mockTitle)).toBeTruthy();
+          });
+
+          it("renders, when an error occurs it's rendered", async (done) => {
+            expect(ItemListRow).toHaveBeenCalledTimes(3);
+
+            const { setErrorMsg } = ItemListRow.mock.calls[0][0].listFunctions;
+            ItemListRow.mockClear(); // Prepare for rerender, so we can count again
+
+            act(() => {
+              setErrorMsg("Error");
+            });
+            await waitFor(() =>
+              expect(utils.queryByText(mockTitle)).not.toBeInTheDocument()
+            );
+            expect(utils.getByText("Error")).toBeTruthy();
+
+            done();
+          });
+
+          it("renders, calls StartList on first render", async (done) => {
+            expect(current.transaction).toBeFalsy();
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(1)
+            );
+            const apiCall = mockItemDispatch.mock.calls[0][0];
+            propCount(apiCall, 4);
+            expect(apiCall.type).toBe(ApiActions.StartList);
+            expect(apiCall.func).toBe(ApiFunctions.asyncList);
+            expect(apiCall.dispatch).toBeInstanceOf(Function);
+            expect(apiCall.filter).toBeInstanceOf(URLSearchParams);
+            done();
+          });
+
+          it("renders, and handles an transaction auth failure condition as expected", async (done) => {
+            expect(current.transaction).toBeFalsy();
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(1)
+            );
+            const apiCall = mockItemDispatch.mock.calls[0][0];
+            const setPerformAsync = apiCall.dispatch;
+
+            act(() => {
+              setPerformAsync({ type: ApiActions.FailureAuth });
+            });
+
+            await waitFor(() =>
+              expect(mockHandleExpiredAuth).toBeCalledTimes(1)
+            );
+
+            done();
+          });
+
+          it("renders, handles a create event", async (done) => {
+            expect(Header).toHaveBeenCalledTimes(1);
+            const { create } = Header.mock.calls[0][0];
+            expect(current.transaction).toBeFalsy();
+
+            ItemListRow.mockClear();
+            act(() => {
+              create();
+            });
+
+            await waitFor(() =>
+              expect(window.location.pathname).toBe(Routes.create)
+            );
+
+            done();
+          });
+
+          it("renders, and dispatches the API reducer when handleReStock is called", async (done) => {
+            expect(ItemListRow).toHaveBeenCalledTimes(3);
+            const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
+            expect(current.transaction).toBeFalsy();
+
+            const originalQuantity = mockItems[0].quantity;
+
+            act(() => {
+              restock(mockItems[0], 2);
+            });
+
+            await waitFor(() =>
+              expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+            );
+
+            const apiCall = mockTransactionDispatch.mock.calls[0][0];
+            propCount(apiCall, 5);
+            expect(apiCall.type).toBe(ApiActions.StartAdd);
+            expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
+            expect(apiCall.callback.name).toBe("callback");
+            expect(apiCall.payload).toStrictEqual({
+              item: mockItems[0].id,
+              quantity: 2,
+            });
+            expect(apiCall.dispatch).toBeInstanceOf(Function);
+
+            // Ensure successful callback updates inventory
+            act(() => apiCall.callback({ success: true, complete: true }));
+            await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
+            const call1 = ItemListRow.mock.calls[6][0];
+            expect(call1.item.quantity).toBe(originalQuantity + 2);
+
+            // Ensure unsucessful callback does not update inventory
+            act(() => apiCall.callback({ success: false, complete: true }));
+            await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
+            const call2 = ItemListRow.mock.calls[6][0];
+            expect(call2.item.quantity).toBe(originalQuantity + 2);
+
+            done();
+          });
+
+          it("renders, and dispatches the API reducer when handleConsume is called", async (done) => {
+            expect(ItemListRow).toHaveBeenCalledTimes(3);
+            const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
+            expect(current.transaction).toBeFalsy();
+
+            const originalQuantity = mockItems[0].quantity;
+
+            act(() => {
+              consume(mockItems[0], 1);
+            });
+
+            await waitFor(() =>
+              expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+            );
+
+            const apiCall = mockTransactionDispatch.mock.calls[0][0];
+            propCount(apiCall, 5);
+            expect(apiCall.type).toBe(ApiActions.StartAdd);
+            expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
+            expect(apiCall.callback.name).toBe("callback");
+            expect(apiCall.payload).toStrictEqual({
+              item: mockItems[0].id,
+              quantity: -1,
+            });
+            expect(apiCall.dispatch).toBeInstanceOf(Function);
+
+            // Ensure successful callback updates inventory
+            act(() => apiCall.callback({ success: true, complete: true }));
+            await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
+            const call = ItemListRow.mock.calls[6][0];
+            expect(call.item.quantity).toBe(originalQuantity - 1);
+
+            // Ensure unsucessful callback does not update inventory
+            act(() => apiCall.callback({ success: false, complete: true }));
+            await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
+            const call2 = ItemListRow.mock.calls[6][0];
+            expect(call2.item.quantity).toBe(originalQuantity - 1);
+
+            done();
+          });
+
+          it("renders, handles edge case where handleConsume is called on non-existent item", async (done) => {
+            expect(ItemListRow).toHaveBeenCalledTimes(3);
+            const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
+            expect(current.transaction).toBeFalsy();
+
+            const nonExistentItem = {
+              id: 99,
+              name: "non-existent",
+              quantity: 1,
+            };
+
+            act(() => {
+              consume(nonExistentItem, 1);
+            });
+
+            await waitFor(() =>
+              expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+            );
+
+            const apiCall = mockTransactionDispatch.mock.calls[0][0];
+            propCount(apiCall, 5);
+            expect(apiCall.type).toBe(ApiActions.StartAdd);
+            expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
+            expect(apiCall.callback.name).toBe("callback");
+            expect(apiCall.payload).toStrictEqual({
+              item: nonExistentItem.id,
+              quantity: -1,
+            });
+            expect(apiCall.dispatch).toBeInstanceOf(Function);
+
+            // Ensure successful callback updates inventory
+            act(() => apiCall.callback({ success: true, complete: true }));
+            await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
+            const call = ItemListRow.mock.calls[6][0];
+            expect(call.item.quantity).toBe(mockItems[0].quantity);
+
+            // Ensure unsucessful callback does not update inventory
+            act(() => apiCall.callback({ success: false, complete: true }));
+            await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
+            const call2 = ItemListRow.mock.calls[6][0];
+            expect(call2.item.quantity).toBe(mockItems[0].quantity);
+
+            done();
+          });
+
+          it("renders, and handles an transaction auth failure condition as expected", async (done) => {
+            expect(ItemListRow).toHaveBeenCalledTimes(3);
+            const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
+            expect(current.transaction).toBeFalsy();
+
+            act(() => {
+              restock(mockItems[0], 1);
+            });
+
+            await waitFor(() =>
+              expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+            );
+
+            const apiCall = mockTransactionDispatch.mock.calls[0][0];
+            const setPerformAsync = apiCall.dispatch;
+
+            act(() => {
+              setPerformAsync({ type: ApiActions.FailureAuth });
+            });
+
+            await waitFor(() =>
+              expect(mockTransactionDispatch).toHaveBeenCalledTimes(2)
+            );
+
+            await waitFor(() =>
+              expect(mockHandleExpiredAuth).toBeCalledTimes(1)
+            );
+
+            done();
+          });
+
+          it("should call calculateMaxHeight on render", () => {
+            expect(calculateMaxHeight).toBeCalledTimes(1);
+          });
+
+          it("a should call calculateMaxHeight again on a window resize", async (done) => {
+            expect(calculateMaxHeight).toBeCalledTimes(1);
+            fireEvent(window, new Event("resize"));
+            await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
+            done();
+          });
         });
-        it("renders, outside of a transaction, with no items in the list, and renders the mockPlaceHolderMessage", () => {
-          expect(current.transaction).toBe(false);
 
-          expect(Header).toHaveBeenCalledTimes(1);
-          expect(ItemListRow).toBeCalledTimes(0);
-          expect(utils.getByText(mockPlaceHolderMessage)).toBeTruthy();
-        });
+        describe("with no items in the inventory", () => {
+          beforeEach(() => {
+            current.inventory = [];
+            let history = createBrowserHistory();
+            history.push(Routes.items);
 
-        it("should call calculateMaxHeight on render", () => {
-          expect(calculateMaxHeight).toBeCalledTimes(1);
-        });
+            const itemContext = {
+              apiObject: { ...current },
+              dispatch: mockItemDispatch,
+            };
+            const transactionContext = {
+              apiObject: { ...current },
+              dispatch: mockTransactionDispatch,
+            };
 
-        it("a should call calculateMaxHeight again on a window resize", async (done) => {
-          expect(calculateMaxHeight).toBeCalledTimes(1);
-          fireEvent(window, new Event("resize"));
-          await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-          done();
+            utils = renderHelper(itemContext, transactionContext, history);
+          });
+          it("renders, outside of a transaction, with no items in the list, and renders the mockPlaceHolderMessage", () => {
+            expect(current.transaction).toBe(false);
+
+            expect(Header).toHaveBeenCalledTimes(1);
+            expect(ItemListRow).toBeCalledTimes(0);
+            expect(utils.getByText(mockPlaceHolderMessage)).toBeTruthy();
+          });
+
+          it("should call calculateMaxHeight on render", () => {
+            expect(calculateMaxHeight).toBeCalledTimes(1);
+          });
+
+          it("a should call calculateMaxHeight again on a window resize", async (done) => {
+            expect(calculateMaxHeight).toBeCalledTimes(1);
+            fireEvent(window, new Event("resize"));
+            await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
+            done();
+          });
         });
       });
     });
