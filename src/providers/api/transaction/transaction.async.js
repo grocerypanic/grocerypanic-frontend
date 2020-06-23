@@ -21,7 +21,7 @@ export const asyncAdd = async ({ state, action }) => {
   if (match2xx(status)) {
     return new Promise(function (resolve) {
       const newInventory = [...state.inventory];
-      newInventory.push(response);
+      newInventory.push(convertDatesToLocal(response));
       dispatch({
         type: ApiActions.SuccessAdd,
         payload: {

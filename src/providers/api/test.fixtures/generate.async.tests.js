@@ -53,7 +53,7 @@ export const AsyncTest = (
             ...State1,
             inventory: [...State1.inventory],
           };
-          State2.inventory.push({ ...mockObject });
+          State2.inventory.push({ ...comparisonObject });
 
           asyncAdd({ state: State1, action });
 
