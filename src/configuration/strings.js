@@ -75,6 +75,10 @@ export const Strings = {
       Title: "Consumption Statistics",
       HeaderTitle: "Details",
       HelpText: "Here is some help.",
+      Recommend: {
+        ExpiredItems: "Your inventory is getting old, check for expired items!",
+        ExpiringSoon: "You have items that will expire soon!",
+      },
     },
     ItemList: {
       ApiError:

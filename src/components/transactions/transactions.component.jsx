@@ -9,7 +9,7 @@ import Strings from "../../configuration/strings";
 import { Paper } from "../../global-styles/containers";
 import { Outline, Banner, InnerBox, Title } from "./transactions.styles";
 
-const TransactionsReview = ({ title, item, transaction }) => {
+const TransactionsReview = ({ title, item, transaction, tr }) => {
   const { t } = useTranslation();
   const { event } = React.useContext(AnalyticsContext);
   const [errorMsg, setErrorMsg] = React.useState(null);

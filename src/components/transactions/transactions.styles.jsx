@@ -36,5 +36,5 @@ export const InnerBox = styled.div`
 `;
 
 export const Title = styled.div`
-  text-align: center:
+  text-align: center;
 `;

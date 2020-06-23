@@ -24,10 +24,24 @@ const mockItem = {
   shelf_life: 25,
 };
 
+const mockTransactions = [
+  { id: 1, item: 1, date: "2019-09-15", quantity: 5 },
+  { id: 2, item: 1, date: "2019-10-15", quantity: 5 },
+  { id: 3, item: 1, date: "2019-11-15", quantity: 5 },
+  { id: 4, item: 1, date: "2019-12-15", quantity: 5 },
+  { id: 5, item: 1, date: "2020-01-15", quantity: 5 },
+  { id: 6, item: 1, date: "2020-02-15", quantity: 5 },
+  { id: 7, item: 1, date: "2020-03-15", quantity: 5 },
+  { id: 8, item: 1, date: "2020-04-15", quantity: 5 },
+  { id: 9, item: 1, date: "2020-05-15", quantity: 5 },
+  { id: 10, item: 1, date: "2020-06-15", quantity: 5 },
+];
+
 const props = {
   title: "Some Title",
   item: { ...mockItem },
   transaction: false,
+  tr: [...mockTransactions],
 };
 
 describe("Setup Environment", () => {
@@ -37,49 +51,47 @@ describe("Setup Environment", () => {
     current = { ...props };
   });
 
+  const renderHelper = (config) => {
+    return render(
+      <AnalyticsContext.Provider value={mockAnalyticsSettings}>
+        <TransactionsReview {...config} />
+      </AnalyticsContext.Provider>
+    );
+  };
+
   describe("outside of a transaction", () => {
     beforeEach(() => {
       current.transaction = false;
       jest.clearAllMocks();
-      utils = render(
-        <AnalyticsContext.Provider value={mockAnalyticsSettings}>
-          <TransactionsReview {...current} />
-        </AnalyticsContext.Provider>
-      );
     });
 
     afterEach(cleanup);
 
-    it("should render with the correct message", () => {
-      expect(
-        utils.getByText(Strings.PlaceHolder.PlaceHolderMessage)
-      ).toBeTruthy();
-      expect(mockEvent).toHaveBeenCalledTimes(1);
-      expect(mockEvent).toHaveBeenCalledWith(AnalyticsActions.TestAction);
+    describe("with expired items in inventory", () => {
+      beforeEach(() => {
+        current.expired = 9;
+        jest.clearAllMocks();
+        utils = renderHelper(current);
+      });
+
+      it("should render a warning about the expired items", () => {
+        expect(utils.getByText(Strings.ItemStats.Recommend.ExpiredItems));
+      });
+    });
+
+    describe("with items expirying soon in inventory", () => {
+      beforeEach(() => {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        current.next_expiry_date = yesterday.toISOString().split("T")[0];
+        jest.clearAllMocks();
+      });
+    });
+
+    describe("with few transactions", () => {
+      beforeEach(() => {
+        current.tr = mockTransactions.slice(-3, 2);
+      });
     });
   });
-
-  describe("inside of a transaction", () => {
-    current.transaction = false;
-    beforeEach(() => {
-      jest.clearAllMocks();
-      utils = render(
-        <AnalyticsContext.Provider value={mockAnalyticsSettings}>
-          <TransactionsReview {...current} />
-        </AnalyticsContext.Provider>
-      );
-    });
-
-    afterEach(cleanup);
-
-    it("should render with the correct message", () => {
-      expect(
-        utils.getByText(Strings.PlaceHolder.PlaceHolderMessage)
-      ).toBeTruthy();
-      expect(mockEvent).toHaveBeenCalledTimes(1);
-      expect(mockEvent).toHaveBeenCalledWith(AnalyticsActions.TestAction);
-    });
-  });
-
-  describe("inside of a transaction", () => {});
 });
