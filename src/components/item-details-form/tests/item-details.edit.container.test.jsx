@@ -64,6 +64,11 @@ const mockStore = {
   name: "No Frills",
 };
 
+const mockTransactions = [
+  { id: 1, item: 1, date: "2019-09-15", quantity: 5 },
+  { id: 2, item: 1, date: "2019-10-15", quantity: 5 },
+];
+
 const mockItemProvider = {
   dispatch: mockItemDispatch,
   apiObject: { ...ItemInitialValue, inventory: [mockItem] },
@@ -111,6 +116,7 @@ describe("Setup Environment", () => {
     currentTransaction,
     currentProps,
     itemContext = { ...mockItemProvider },
+    trContext = { ...mockTransactionProvider },
     command = render
   ) => {
     itemContext.transaction = currentTransaction;
@@ -123,9 +129,7 @@ describe("Setup Environment", () => {
             value={{ ...mockShelfProvider, transaction: currentTransaction }}
           >
             <ItemContext.Provider value={{ ...itemContext }}>
-              <TransactionContext.Provider
-                value={{ ...mockTransactionProvider }}
-              >
+              <TransactionContext.Provider value={{ ...trContext }}>
                 <ItemDetailsEditContainer {...currentProps} />
               </TransactionContext.Provider>
             </ItemContext.Provider>
@@ -209,221 +213,261 @@ describe("Setup Environment", () => {
   });
 
   describe("outside of an api error, outside of a transaction", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-      const history = createBrowserHistory();
-      history.location.pathname = originalPath;
-      history.goBack = mockGoBack;
+    describe("with no transaction fetched", () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+        const history = createBrowserHistory();
+        history.location.pathname = originalPath;
+        history.goBack = mockGoBack;
 
-      utils = renderHelper(history, false, current);
+        utils = renderHelper(history, false, current);
+      });
+
+      it("renders, bypasses HoldingPattern as expected", async (done) => {
+        await waitFor(() => expect(HoldingPattern).toHaveBeenCalledTimes(3));
+        const call = HoldingPattern.mock.calls[0][0];
+        propCount(call, 2);
+        expect(call.condition).toBe(true);
+        done();
+      });
+
+      it("renders, calls items.StartList on first render", async (done) => {
+        await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+        const call = mockItemDispatch.mock.calls[0][0];
+        propCount(call, 3);
+        expect(call.type).toBe(ApiActions.StartList);
+        expect(call.func).toBe(ApiFunctions.asyncList);
+        expect(call.dispatch).toBeInstanceOf(Function);
+        done();
+      });
+
+      it("renders, calls items auth failure as expected", async (done) => {
+        await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+        const itemDispatch = mockItemDispatch.mock.calls[0][0].dispatch;
+
+        expect(mockHandleExpiredAuth).toBeCalledTimes(0);
+        act(() => itemDispatch({ type: ApiActions.FailureAuth }));
+        await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
+
+        done();
+      });
+
+      it("renders, calls shelves.StartList on first render", async (done) => {
+        await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
+        const call = mockShelfDispatch.mock.calls[0][0];
+        propCount(call, 3);
+        expect(call.type).toBe(ApiActions.StartList);
+        expect(call.func).toBe(ApiFunctions.asyncList);
+        expect(call.dispatch).toBeInstanceOf(Function);
+        done();
+      });
+
+      it("renders, calls shelves auth failure as expected", async (done) => {
+        await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
+        const shelfDispatch = mockShelfDispatch.mock.calls[0][0].dispatch;
+
+        expect(mockHandleExpiredAuth).toBeCalledTimes(0);
+        act(() => shelfDispatch({ type: ApiActions.FailureAuth }));
+        await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
+
+        done();
+      });
+
+      it("renders, calls stores.StartList on first render", async (done) => {
+        await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
+        const call = mockStoreDispatch.mock.calls[0][0];
+        propCount(call, 3);
+        expect(call.type).toBe(ApiActions.StartList);
+        expect(call.func).toBe(ApiFunctions.asyncList);
+        expect(call.dispatch).toBeInstanceOf(Function);
+        done();
+      });
+
+      it("renders, calls stores auth failure as expected", async (done) => {
+        await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
+        const storeDispatch = mockStoreDispatch.mock.calls[0][0].dispatch;
+
+        expect(mockHandleExpiredAuth).toBeCalledTimes(0);
+        act(() => storeDispatch({ type: ApiActions.FailureAuth }));
+        await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
+
+        done();
+      });
+
+      it("renders ItemDetails with correct props", async (done) => {
+        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+        const call = ItemDetails.mock.calls[2][0];
+        propCount(call, 12);
+        expect(call.allItems).toStrictEqual(props.allItems);
+        expect(call.item).toBe(mockItem);
+        expect(call.headerTitle).toBe(props.headerTitle);
+        expect(call.title).toBe(props.title);
+        expect(call.helpText).toBe(props.helpText);
+        expect(call.transaction).toBe(false);
+        expect(call.tr).toStrictEqual([]);
+        expect(call.stores).toStrictEqual([mockStore]);
+        expect(call.shelves).toStrictEqual([mockShelf]);
+        expect(call.handleSave).toBeInstanceOf(Function);
+        expect(call.handleDelete).toBeInstanceOf(Function);
+        expect(call.requestTransactions).toBeInstanceOf(Function);
+        done();
+      });
+
+      it("handles a call to handleSave as expected", async (done) => {
+        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+
+        const mockObject = { id: 99 };
+
+        const handleSave = ItemDetails.mock.calls[1][0].handleSave;
+        expect(handleSave).toBeInstanceOf(Function);
+        act(() => handleSave(mockObject));
+
+        await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
+        const updateDispatch = mockItemDispatch.mock.calls[1][0];
+        propCount(updateDispatch, 4);
+
+        expect(updateDispatch.type).toBe(ApiActions.StartUpdate);
+        expect(updateDispatch.func).toBe(ApiFunctions.asyncUpdate);
+        expect(updateDispatch.dispatch.name).toBe("bound dispatchAction");
+        expect(updateDispatch.payload).toStrictEqual({ id: mockObject.id });
+
+        done();
+      });
+
+      it("handles a call to handleDelete as expected", async (done) => {
+        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+
+        // Perform Initial Get and Lists on API Data
+        await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
+
+        const mockObject = { id: 7 };
+
+        const handleDelete = ItemDetails.mock.calls[1][0].handleDelete;
+        expect(handleDelete).toBeInstanceOf(Function);
+
+        act(() => handleDelete(mockObject));
+
+        await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
+        const deleteDispatch = mockItemDispatch.mock.calls[1][0];
+        propCount(deleteDispatch, 4);
+
+        expect(deleteDispatch.type).toBe(ApiActions.StartDel);
+        expect(deleteDispatch.func).toBe(ApiFunctions.asyncDel);
+        expect(deleteDispatch.dispatch.name).toBe("bound dispatchAction");
+        expect(deleteDispatch.payload).toStrictEqual({ id: mockObject.id });
+
+        done();
+      });
+
+      it("handles successful delete as expected", async (done) => {
+        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+
+        // Perform Initial Get and Lists on API Data
+        await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
+
+        const mockObject = { id: 7 };
+
+        // Get Perform Async By Using The Delete Handler
+
+        const handleDelete = ItemDetails.mock.calls[1][0].handleDelete;
+        expect(handleDelete).toBeInstanceOf(Function);
+
+        act(() => handleDelete(mockObject));
+
+        await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
+        const deleteDispatch = mockItemDispatch.mock.calls[1][0].dispatch;
+
+        expect(mockGoBack).toBeCalledTimes(0);
+        act(() => deleteDispatch({ type: ApiActions.SuccessDel }));
+
+        // The successful delete should trigger the back button
+        await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(3));
+        expect(mockGoBack).toBeCalledTimes(1);
+
+        done();
+      });
+
+      it("handles a call to handleTransactionRequest as expected", async (done) => {
+        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+
+        const handleTr = ItemDetails.mock.calls[1][0].requestTransactions;
+        expect(handleTr).toBeInstanceOf(Function);
+        act(() => handleTr());
+
+        await waitFor(() =>
+          expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+        );
+        const trCall = mockTransactionDispatch.mock.calls[0][0];
+        propCount(trCall, 4);
+
+        expect(trCall.type).toBe(ApiActions.StartList);
+        expect(trCall.func).toBe(ApiFunctions.asyncList);
+        expect(trCall.dispatch.name).toBe("bound dispatchAction");
+        expect(trCall.payload).toStrictEqual({ id: mockItem.id });
+
+        done();
+      });
+
+      it("renders, calls transaction auth failure as expected", async (done) => {
+        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+
+        const handleTr = ItemDetails.mock.calls[1][0].requestTransactions;
+        expect(handleTr).toBeInstanceOf(Function);
+        act(() => handleTr());
+
+        await waitFor(() =>
+          expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+        );
+        const trDispatch = mockTransactionDispatch.mock.calls[0][0].dispatch;
+
+        await expect(mockHandleExpiredAuth).toBeCalledTimes(0);
+        act(() => trDispatch({ type: ApiActions.FailureAuth }));
+        await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
+
+        done();
+      });
     });
 
-    it("renders, bypasses HoldingPattern as expected", async (done) => {
-      await waitFor(() => expect(HoldingPattern).toHaveBeenCalledTimes(3));
-      const call = HoldingPattern.mock.calls[0][0];
-      propCount(call, 2);
-      expect(call.condition).toBe(true);
-      done();
-    });
+    describe("with transaction fetched", () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+        const history = createBrowserHistory();
+        history.location.pathname = originalPath;
+        history.goBack = mockGoBack;
+        const mockPopulatedTransactionProvider = {
+          dispatch: mockTransactionDispatch,
+          apiObject: {
+            ...TransactionInitialValue,
+            inventory: [...mockTransactions],
+          },
+        };
 
-    it("renders, calls items.StartList on first render", async (done) => {
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
-      const call = mockItemDispatch.mock.calls[0][0];
-      propCount(call, 3);
-      expect(call.type).toBe(ApiActions.StartList);
-      expect(call.func).toBe(ApiFunctions.asyncList);
-      expect(call.dispatch).toBeInstanceOf(Function);
-      done();
-    });
+        utils = renderHelper(
+          history,
+          false,
+          current,
+          { ...mockItemProvider },
+          mockPopulatedTransactionProvider
+        );
+      });
 
-    it("renders, calls items auth failure as expected", async (done) => {
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
-      const itemDispatch = mockItemDispatch.mock.calls[0][0].dispatch;
+      it("handles a call to handleTransactionRequest as expected, without refetching data", async (done) => {
+        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
 
-      expect(mockHandleExpiredAuth).toBeCalledTimes(0);
-      act(() => itemDispatch({ type: ApiActions.FailureAuth }));
-      await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
+        const handleTr = ItemDetails.mock.calls[1][0].requestTransactions;
+        expect(handleTr).toBeInstanceOf(Function);
+        act(() => handleTr());
 
-      done();
-    });
+        await waitFor(() =>
+          expect(mockTransactionDispatch).toHaveBeenCalledTimes(0)
+        );
 
-    it("renders, calls shelves.StartList on first render", async (done) => {
-      await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
-      const call = mockShelfDispatch.mock.calls[0][0];
-      propCount(call, 3);
-      expect(call.type).toBe(ApiActions.StartList);
-      expect(call.func).toBe(ApiFunctions.asyncList);
-      expect(call.dispatch).toBeInstanceOf(Function);
-      done();
-    });
-
-    it("renders, calls shelves auth failure as expected", async (done) => {
-      await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
-      const shelfDispatch = mockShelfDispatch.mock.calls[0][0].dispatch;
-
-      expect(mockHandleExpiredAuth).toBeCalledTimes(0);
-      act(() => shelfDispatch({ type: ApiActions.FailureAuth }));
-      await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
-
-      done();
-    });
-
-    it("renders, calls stores.StartList on first render", async (done) => {
-      await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
-      const call = mockStoreDispatch.mock.calls[0][0];
-      propCount(call, 3);
-      expect(call.type).toBe(ApiActions.StartList);
-      expect(call.func).toBe(ApiFunctions.asyncList);
-      expect(call.dispatch).toBeInstanceOf(Function);
-      done();
-    });
-
-    it("renders, calls stores auth failure as expected", async (done) => {
-      await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
-      const storeDispatch = mockStoreDispatch.mock.calls[0][0].dispatch;
-
-      expect(mockHandleExpiredAuth).toBeCalledTimes(0);
-      act(() => storeDispatch({ type: ApiActions.FailureAuth }));
-      await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
-
-      done();
-    });
-
-    it("renders ItemDetails with correct props", async (done) => {
-      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
-      const call = ItemDetails.mock.calls[2][0];
-      propCount(call, 12);
-      expect(call.allItems).toStrictEqual(props.allItems);
-      expect(call.item).toBe(mockItem);
-      expect(call.headerTitle).toBe(props.headerTitle);
-      expect(call.title).toBe(props.title);
-      expect(call.helpText).toBe(props.helpText);
-      expect(call.transaction).toBe(false);
-      expect(call.tr).toStrictEqual([]);
-      expect(call.stores).toStrictEqual([mockStore]);
-      expect(call.shelves).toStrictEqual([mockShelf]);
-      expect(call.handleSave).toBeInstanceOf(Function);
-      expect(call.handleDelete).toBeInstanceOf(Function);
-      expect(call.requestTransactions).toBeInstanceOf(Function);
-      done();
-    });
-
-    it("handles a call to handleSave as expected", async (done) => {
-      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
-
-      const mockObject = { id: 99 };
-
-      const handleSave = ItemDetails.mock.calls[1][0].handleSave;
-      expect(handleSave).toBeInstanceOf(Function);
-      act(() => handleSave(mockObject));
-
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
-      const updateDispatch = mockItemDispatch.mock.calls[1][0];
-      propCount(updateDispatch, 4);
-
-      expect(updateDispatch.type).toBe(ApiActions.StartUpdate);
-      expect(updateDispatch.func).toBe(ApiFunctions.asyncUpdate);
-      expect(updateDispatch.dispatch.name).toBe("bound dispatchAction");
-      expect(updateDispatch.payload).toStrictEqual({ id: mockObject.id });
-
-      done();
-    });
-
-    it("handles a call to handleDelete as expected", async (done) => {
-      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
-
-      // Perform Initial Get and Lists on API Data
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
-      await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
-      await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
-
-      const mockObject = { id: 7 };
-
-      const handleDelete = ItemDetails.mock.calls[1][0].handleDelete;
-      expect(handleDelete).toBeInstanceOf(Function);
-
-      act(() => handleDelete(mockObject));
-
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
-      const deleteDispatch = mockItemDispatch.mock.calls[1][0];
-      propCount(deleteDispatch, 4);
-
-      expect(deleteDispatch.type).toBe(ApiActions.StartDel);
-      expect(deleteDispatch.func).toBe(ApiFunctions.asyncDel);
-      expect(deleteDispatch.dispatch.name).toBe("bound dispatchAction");
-      expect(deleteDispatch.payload).toStrictEqual({ id: mockObject.id });
-
-      done();
-    });
-
-    it("handles successful delete as expected", async (done) => {
-      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
-
-      // Perform Initial Get and Lists on API Data
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
-      await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
-      await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
-
-      const mockObject = { id: 7 };
-
-      // Get Perform Async By Using The Delete Handler
-
-      const handleDelete = ItemDetails.mock.calls[1][0].handleDelete;
-      expect(handleDelete).toBeInstanceOf(Function);
-
-      act(() => handleDelete(mockObject));
-
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
-      const deleteDispatch = mockItemDispatch.mock.calls[1][0].dispatch;
-
-      expect(mockGoBack).toBeCalledTimes(0);
-      act(() => deleteDispatch({ type: ApiActions.SuccessDel }));
-
-      // The successful delete should trigger the back button
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(3));
-      expect(mockGoBack).toBeCalledTimes(1);
-
-      done();
-    });
-
-    it("handles a call to handleTransactionRequest as expected", async (done) => {
-      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
-
-      const handleTr = ItemDetails.mock.calls[1][0].requestTransactions;
-      expect(handleTr).toBeInstanceOf(Function);
-      act(() => handleTr());
-
-      await waitFor(() =>
-        expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
-      );
-      const trCall = mockTransactionDispatch.mock.calls[0][0];
-      propCount(trCall, 4);
-
-      expect(trCall.type).toBe(ApiActions.StartList);
-      expect(trCall.func).toBe(ApiFunctions.asyncList);
-      expect(trCall.dispatch.name).toBe("bound dispatchAction");
-      expect(trCall.payload).toStrictEqual({ id: mockItem.id });
-
-      done();
-    });
-
-    it("renders, calls transaction auth failure as expected", async (done) => {
-      await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
-
-      const handleTr = ItemDetails.mock.calls[1][0].requestTransactions;
-      expect(handleTr).toBeInstanceOf(Function);
-      act(() => handleTr());
-
-      await waitFor(() =>
-        expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
-      );
-      const trDispatch = mockTransactionDispatch.mock.calls[0][0].dispatch;
-
-      await expect(mockHandleExpiredAuth).toBeCalledTimes(0);
-      act(() => trDispatch({ type: ApiActions.FailureAuth }));
-      await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
-
-      done();
+        done();
+      });
     });
   });
 

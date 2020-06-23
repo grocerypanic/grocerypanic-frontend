@@ -13,13 +13,20 @@ import { TabBox } from "./item-details.styles";
 
 import Strings from "../../configuration/strings";
 
-const ItemDetails = ({ headerTitle, transaction, ...OtherFormProps }) => {
+const ItemDetails = ({
+  headerTitle,
+  transaction,
+  tr,
+  requestTransactions,
+  ...OtherFormProps
+}) => {
   const [tab, setTab] = useState("edit");
   const { t } = useTranslation();
   const [tabWidth, setTabWidth] = useState(200);
 
   const changeTab = (key) => {
     setTab(key);
+    if (key === "stats") requestTransactions();
   };
 
   const editTab = () => {
@@ -68,6 +75,7 @@ const ItemDetails = ({ headerTitle, transaction, ...OtherFormProps }) => {
                   <TransactionsReview
                     transaction={transaction}
                     item={OtherFormProps.item}
+                    tr={tr}
                   />
                 </div>
               </Tab>
@@ -88,9 +96,10 @@ ItemDetails.propTypes = {
   title: PropTypes.string.isRequired,
   helpText: PropTypes.string.isRequired,
   transaction: PropTypes.bool.isRequired,
+  tr: PropTypes.arrayOf(PropTypes.object).isRequired,
   stores: PropTypes.arrayOf(PropTypes.object).isRequired,
   shelves: PropTypes.arrayOf(PropTypes.object).isRequired,
+  requestTransactions: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func,
-  requestTransactions: PropTypes.func,
+  handleDelete: PropTypes.func.isRequired,
 };

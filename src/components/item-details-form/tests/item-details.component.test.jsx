@@ -18,6 +18,8 @@ TransactionsOverview.mockImplementation(() => (
   <div>MockTransactionOverview</div>
 ));
 
+const mockTransactions = [{ id: 1, item: 1, date: "2019-09-15", quantity: 5 }];
+
 const mockItem = {
   expired: 0,
   id: 1,
@@ -48,10 +50,12 @@ const props = {
   title: "mockTitle",
   helpText: Strings.Testing.GenericTranslationTestString,
   transaction: false,
+  tr: [...mockTransactions],
   stores: [mockStore],
   shelves: [mockShelf],
   handleSave: jest.fn(),
   handleDelete: jest.fn(),
+  requestTransactions: jest.fn(),
 };
 
 describe("Setup Environment", () => {
@@ -95,11 +99,14 @@ describe("Setup Environment", () => {
       expect(utils.getByText(Strings.ItemDetails.Tabs.Edit)).toBeTruthy();
     });
 
-    it("renders, should should show the stats content as expected", async (done) => {
+    it("renders, should should show the stats content as expected, and fetch transactions", async (done) => {
       expect(current.transaction).toBe(false);
       const tab1 = utils.getByText(Strings.ItemDetails.Tabs.Stats);
       const tab2 = utils.getByText(Strings.ItemDetails.Tabs.Edit);
+
+      expect(props.requestTransactions).toBeCalledTimes(0);
       fireEvent.click(tab1, "click");
+      await waitFor(() => expect(props.requestTransactions).toBeCalledTimes(1));
 
       expect(ItemDetailsForm).toBeCalledTimes(2);
       expect(tab1.className.search("active")).toBeGreaterThan(0);
@@ -144,6 +151,20 @@ describe("Setup Environment", () => {
 
       done();
     });
+
+    it("renders, should call TransactionsOverview as expected", async (done) => {
+      expect(current.transaction).toBe(false);
+
+      expect(TransactionsOverview).toBeCalledTimes(1);
+      const call = TransactionsOverview.mock.calls[0][0];
+      propCount(call, 3);
+
+      expect(call.transaction).toBe(false);
+      expect(call.item).toBe(mockItem);
+      expect(call.tr).toStrictEqual(mockTransactions);
+
+      done();
+    });
   });
 
   describe("during a transaction", () => {
@@ -181,6 +202,40 @@ describe("Setup Environment", () => {
 
       expect(ItemDetailsForm).toBeCalledTimes(1);
       expect(tab1.className.search("active")).toBeLessThan(0);
+
+      done();
+    });
+
+    it("renders, should call ItemDetailsForm as expected", async (done) => {
+      expect(current.transaction).toBe(true);
+
+      expect(ItemDetailsForm).toBeCalledTimes(1);
+      const call = ItemDetailsForm.mock.calls[0][0];
+      propCount(call, 9);
+
+      expect(call.allItems).toBe(current.allItems);
+      expect(call.item).toBe(mockItem);
+      expect(call.title).toBe(current.title);
+      expect(call.helpText).toBe(current.helpText);
+      expect(call.transaction).toBe(true);
+      expect(call.stores).toStrictEqual([mockStore]);
+      expect(call.shelves).toStrictEqual([mockShelf]);
+      expect(call.handleSave).toBe(current.handleSave);
+      expect(call.handleDelete).toBe(current.handleDelete);
+
+      done();
+    });
+
+    it("renders, should call TransactionsOverview as expected", async (done) => {
+      expect(current.transaction).toBe(true);
+
+      expect(TransactionsOverview).toBeCalledTimes(1);
+      const call = TransactionsOverview.mock.calls[0][0];
+      propCount(call, 3);
+
+      expect(call.transaction).toBe(true);
+      expect(call.item).toBe(mockItem);
+      expect(call.tr).toStrictEqual(mockTransactions);
 
       done();
     });

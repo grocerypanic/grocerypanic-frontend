@@ -54,14 +54,21 @@ const ItemDetailsEditContainer = ({
   const [performShelfAsync, setPerformShelfAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performStoreAsync, setPerformStoreAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performTrAsync, setPerformTrAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
+
   const [transaction, setTransaction] = React.useState(true);
+
   const [calculatedItem, setCalculatedItem] = React.useState(defaultItem);
   const [listItemsComplete, setListItemsComplete] = React.useState(testHook);
 
   React.useEffect(() => {
     // Detect Transactions on Any API Plane (except transactions, which is handled at a lower layer)
-    setTransaction(item.transaction || shelf.transaction || store.transaction);
-  }, [item, store, shelf]);
+    setTransaction(
+      item.transaction ||
+        shelf.transaction ||
+        store.transaction ||
+        tr.transaction
+    );
+  }, [item, store, shelf, tr]);
 
   React.useEffect(() => {
     if (item.error) return;
@@ -131,6 +138,7 @@ const ItemDetailsEditContainer = ({
   }, []);
 
   const handleTransactionRequest = () => {
+    if (tr.inventory.length > 0) return;
     setPerformTrAsync({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
@@ -161,11 +169,12 @@ const ItemDetailsEditContainer = ({
     if (item.error) setPerformItemAsync({ type: ApiActions.ClearErrors });
     if (store.error) setPerformStoreAsync({ type: ApiActions.ClearErrors });
     if (shelf.error) setPerformShelfAsync({ type: ApiActions.ClearErrors });
+    if (tr.error) setPerformTrAsync({ type: ApiActions.ClearErrors });
   };
 
   return (
     <ErrorHandler
-      condition={item.error || store.error || shelf.error}
+      condition={item.error || store.error || shelf.error || tr.error}
       clearError={clearError}
       eventMessage={AnalyticsActions.ApiError}
       stringsRoot={Strings.ItemDetails}
