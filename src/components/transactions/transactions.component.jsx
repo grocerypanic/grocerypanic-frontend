@@ -2,47 +2,72 @@ import React from "react";
 import Table from "react-bootstrap/Table";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
+import PropTypes from "prop-types";
 
+import HoldingPattern from "../holding-pattern/holding-pattern.component";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 
+import { isWithinAWeek, isWithinAMonth, nextWeek } from "../../util/datetime";
+
 import Strings from "../../configuration/strings";
+import { graph } from "../../configuration/theme";
 
 import { Paper } from "../../global-styles/containers";
 import { Outline, Banner, InnerBox, PlaceHolder } from "./transactions.styles";
 
-const GraphLimit = -50;
-
-const TransactionsReview = ({ item, transaction, tr }) => {
+const TransactionsReview = ({ item, ready, tr }) => {
   const { t } = useTranslation();
   const { event } = React.useContext(AnalyticsContext);
+  let ActivityChart;
 
   const renderGraph = () => {
-    const labels = tr.map((o, index) => "");
+    const labels = tr.map((o, index) => "").slice(graph.limit);
+    let accumulate = item.quantity;
+
+    const calculateQuantity = () => {
+      const quantity = tr
+        .reverse()
+        .map((o) => {
+          accumulate -= o.quantity;
+          return accumulate;
+        })
+        .reverse();
+      quantity.shift();
+      quantity.push(item.quantity);
+      return quantity;
+    };
 
     /* istanbul ignore next */
     const nullFunction = () => null;
 
-    const ctx = document.getElementById("myChart").getContext("2d");
-    const chart = new global.Chart(ctx, {
+    const ctx = document.getElementById("consumptionChart").getContext("2d");
+    ctx.clearRect(0, 0, ctx.width, ctx.height);
+    ActivityChart = new global.Chart(ctx, {
       type: "line",
       data: {
         labels,
         datasets: [
           {
-            label: "Change Event",
-            borderColor: "rgb(92, 184, 92)",
+            label: t(Strings.ItemStats.GraphChangEvent),
+            borderColor: graph.changeLine,
             data: tr
               .map((o, index) => {
                 return { y: o.quantity, x: index };
               })
-              .slice(GraphLimit),
+              .slice(graph.limit),
+          },
+          {
+            label: t(Strings.ItemStats.GraphQuantity),
+            borderColor: graph.quantityLine,
+            data: calculateQuantity().slice(graph.limit),
           },
         ],
       },
       options: {
         title: {
-          display: false,
+          text: item.name,
+          display: true,
         },
         legend: {
           display: false,
@@ -51,8 +76,8 @@ const TransactionsReview = ({ item, transaction, tr }) => {
         layout: {
           padding: {
             left: 0,
-            right: 0,
-            top: 25,
+            right: 5,
+            top: graph.topPadding,
             bottom: 0,
           },
           margin: 0,
@@ -61,25 +86,20 @@ const TransactionsReview = ({ item, transaction, tr }) => {
         maintainAspectRatio: false,
       },
     });
-    chart.render();
+    ActivityChart.render();
   };
 
   React.useEffect(() => {
-    if (tr.length === 0) return;
+    if (tr.length < 2 || !ready) return;
     renderGraph();
-  }, [tr]);
+    return () => {
+      ActivityChart.destroy();
+    };
+  }, [tr, ready]);
 
   React.useEffect(() => {
     event(AnalyticsActions.TestAction);
   }, []);
-
-  const isWithinAWeek = (dateObject) => {
-    return dateObject.isAfter(moment().subtract(7, "days").startOf("day"));
-  };
-
-  const isWithinAMonth = (dateObject) => {
-    return dateObject.isAfter(moment().subtract(1, "months").startOf("day"));
-  };
 
   const consumedWithinLastWeek = () => {
     const results = tr.filter((o) => o.quantity < 0 && isWithinAWeek(o.date));
@@ -104,7 +124,7 @@ const TransactionsReview = ({ item, transaction, tr }) => {
     });
     if (Object.values(results).length === 0) return 0;
     const sum = Object.values(results).reduce((a, b) => a + b, 0);
-    const avg = Math.abs(sum / Object.values(results).length);
+    const avg = Math.abs(sum / Object.values(results).length).toFixed(1);
     return avg;
   };
 
@@ -121,24 +141,33 @@ const TransactionsReview = ({ item, transaction, tr }) => {
     });
     if (Object.values(results).length === 0) return 0;
     const sum = Object.values(results).reduce((a, b) => a + b, 0);
-    const avg = Math.abs(sum / Object.values(results).length);
+    const avg = Math.abs(sum / Object.values(results).length).toFixed(1);
     return avg;
+  };
+
+  const calculateExpired = () => {
+    if (item.expired > 0) return true;
+    if (
+      item.next_expiry_date.isBefore(moment()) &&
+      item.next_expiry_quantity > 0
+    )
+      return true;
+    return false;
   };
 
   return (
     <>
       <Paper>
-        <Banner className="alert alert-success">
+        <Banner className="alert alert-success mb-2">
           {t(Strings.ItemStats.Title)}
         </Banner>
-        {item.expired === 0 ? null : (
-          <Banner className="alert alert-danger">
+        {calculateExpired() ? (
+          <Banner className="alert alert-danger mb-2">
             {t(Strings.ItemStats.RecommendExpiredItems)}
           </Banner>
-        )}
-        {isWithinAWeek(item.next_expiry_date) &&
-        item.next_expiry_quantity > 0 ? (
-          <Banner className="alert alert-warning">
+        ) : null}
+        {nextWeek(item.next_expiry_date) && item.next_expiry_quantity > 0 ? (
+          <Banner className="alert alert-warning mb-2">
             {`${item.next_expiry_quantity} ${t(
               Strings.ItemStats.RecommendExpiringSoon
             )}`}
@@ -146,15 +175,24 @@ const TransactionsReview = ({ item, transaction, tr }) => {
         ) : null}
         <Outline>
           <InnerBox>
-            {tr.length > 0 ? (
-              <div className="chartBox">
-                <canvas id="myChart"></canvas>
-              </div>
-            ) : (
-              <PlaceHolder className="text-muted">
-                <div>{t(Strings.ItemStats.NotEnoughData)}</div>
-              </PlaceHolder>
-            )}
+            <HoldingPattern
+              condition={!ready}
+              color={graph.holdingPatternColor}
+              animation={graph.holdingPatternAnimation}
+              height={graph.holdingPatternHeight}
+              scale={graph.holdingPatternScale}
+              divHeight={graph.holdingPatternDivHeight}
+            >
+              {tr.length > 1 ? (
+                <div className="chartBox">
+                  <canvas id="consumptionChart"></canvas>
+                </div>
+              ) : (
+                <PlaceHolder className="text-muted">
+                  <div>{t(Strings.ItemStats.NotEnoughData)}</div>
+                </PlaceHolder>
+              )}
+            </HoldingPattern>
           </InnerBox>
           <InnerBox>
             <Table striped bordered hover size="sm">
@@ -189,3 +227,9 @@ const TransactionsReview = ({ item, transaction, tr }) => {
 };
 
 export default TransactionsReview;
+
+TransactionsReview.propTypes = {
+  item: PropTypes.object.isRequired,
+  ready: PropTypes.bool.isRequired,
+  tr: PropTypes.arrayOf(PropTypes.object).isRequired,
+};

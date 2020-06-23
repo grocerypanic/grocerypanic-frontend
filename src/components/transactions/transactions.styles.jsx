@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { primary, white, tertiary } from "../../configuration/theme";
+import { graph, white, tertiary } from "../../configuration/theme";
 
 export const Outline = styled.div`
   list-style-type: none;
@@ -22,7 +22,7 @@ export const PlaceHolder = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
+  height: ${graph.chartContainerHeight};
 `;
 
 export const ButtonBox = styled.div`
@@ -45,8 +45,8 @@ export const InnerBox = styled.div`
     margin-bottom: 0px;
   }
   .chartBox {
-    height: 125px;
+    height: ${graph.chartContainerHeight};
     flex: 0 0 auto;
-    width: 80%;
+    width: 100%;
   }
 `;

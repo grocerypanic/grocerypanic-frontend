@@ -25,3 +25,16 @@ export const itemAttributes = {
 };
 
 export const headerMobileThreshold = 480;
+
+export const graph = {
+  quantityLine: "rgb(2, 117, 216)",
+  changeLine: "rgb(92, 184, 92)",
+  limit: -50,
+  topPadding: 10,
+  holdingPatternHeight: "134px",
+  chartContainerHeight: "150px",
+  holdingPatternColor: "secondary",
+  holdingPatternScale: 1,
+  holdingPatternDivHeight: 20,
+  holdingPatternAnimation: "grow",
+};

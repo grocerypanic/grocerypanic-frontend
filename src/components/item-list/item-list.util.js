@@ -1,4 +1,4 @@
-import { FilterTag, ItemFilters } from "../../configuration/backend";
+import { FilterTag } from "../../configuration/backend";
 
 export const calculateTitle = (title) => {
   const regex = /\(.*\)/gi;

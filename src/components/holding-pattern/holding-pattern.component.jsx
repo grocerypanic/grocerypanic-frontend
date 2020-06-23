@@ -3,14 +3,23 @@ import Spinner from "react-bootstrap/Spinner";
 
 import { CenterBox } from "./holding-pattern.styles";
 
-const HoldingPattern = ({ condition, children }) => {
+const HoldingPattern = ({
+  condition,
+  children,
+  color = "success",
+  animation = "grow",
+  height = "100vh",
+  scale = 3,
+  divWidth = 75,
+  divHeight = 75,
+}) => {
   if (!condition) return children;
   return (
-    <CenterBox data-testid="HoldingPattern">
-      <div style={{ width: 75 }}>
+    <CenterBox scale={scale} height={height} data-testid="HoldingPattern">
+      <div style={{ width: divWidth, height: divHeight }}>
         <Spinner
-          animation="grow"
-          variant="success"
+          animation={animation}
+          variant={color}
           className="kindly-hang-in-there"
         />
       </div>

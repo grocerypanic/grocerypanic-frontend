@@ -17,6 +17,7 @@ const ItemDetails = ({
   headerTitle,
   transaction,
   tr,
+  trStatus,
   requestTransactions,
   ...OtherFormProps
 }) => {
@@ -34,7 +35,7 @@ const ItemDetails = ({
   };
 
   const recalculateWidth = () =>
-    setTimeout(() => {
+    !setTimeout(() => {
       setTabWidth(document.querySelector(".TabBox").clientWidth);
     }, 1);
 
@@ -73,9 +74,9 @@ const ItemDetails = ({
               <Tab eventKey="stats" title={t(Strings.ItemDetails.Tabs.Stats)}>
                 <div style={{ width: tabWidth }}>
                   <TransactionsReview
-                    transaction={transaction}
                     item={OtherFormProps.item}
                     tr={tr}
+                    ready={trStatus}
                   />
                 </div>
               </Tab>
@@ -97,6 +98,7 @@ ItemDetails.propTypes = {
   helpText: PropTypes.string.isRequired,
   transaction: PropTypes.bool.isRequired,
   tr: PropTypes.arrayOf(PropTypes.object).isRequired,
+  trStatus: PropTypes.bool.isRequired,
   stores: PropTypes.arrayOf(PropTypes.object).isRequired,
   shelves: PropTypes.arrayOf(PropTypes.object).isRequired,
   requestTransactions: PropTypes.func.isRequired,

@@ -51,6 +51,7 @@ const props = {
   helpText: Strings.Testing.GenericTranslationTestString,
   transaction: false,
   tr: [...mockTransactions],
+  trStatus: false,
   stores: [mockStore],
   shelves: [mockShelf],
   handleSave: jest.fn(),
@@ -159,7 +160,7 @@ describe("Setup Environment", () => {
       const call = TransactionsOverview.mock.calls[0][0];
       propCount(call, 3);
 
-      expect(call.transaction).toBe(false);
+      expect(call.ready).toBe(false);
       expect(call.item).toBe(mockItem);
       expect(call.tr).toStrictEqual(mockTransactions);
 
@@ -233,7 +234,7 @@ describe("Setup Environment", () => {
       const call = TransactionsOverview.mock.calls[0][0];
       propCount(call, 3);
 
-      expect(call.transaction).toBe(true);
+      expect(call.ready).toBe(false);
       expect(call.item).toBe(mockItem);
       expect(call.tr).toStrictEqual(mockTransactions);
 

@@ -58,7 +58,9 @@ const ItemDetailsEditContainer = ({
   const [transaction, setTransaction] = React.useState(true);
 
   const [calculatedItem, setCalculatedItem] = React.useState(defaultItem);
+
   const [listItemsComplete, setListItemsComplete] = React.useState(testHook);
+  const [listTrComplete, setTrComplete] = React.useState(testHook);
 
   React.useEffect(() => {
     // Detect Transactions on Any API Plane (except transactions, which is handled at a lower layer)
@@ -115,6 +117,7 @@ const ItemDetailsEditContainer = ({
   React.useEffect(() => {
     if (!performTrAsync) return;
     if (performTrAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
+    if (performTrAsync.type === ApiActions.SuccessList) setTrComplete(true);
     trDispatch(performTrAsync);
     setPerformTrAsync(null);
   }, [performTrAsync]);
@@ -138,6 +141,7 @@ const ItemDetailsEditContainer = ({
   }, []);
 
   const handleTransactionRequest = () => {
+    if (listTrComplete) return;
     setPerformTrAsync({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
@@ -191,6 +195,7 @@ const ItemDetailsEditContainer = ({
           stores={store.inventory}
           shelves={shelf.inventory}
           tr={tr.inventory}
+          trStatus={listTrComplete}
           handleSave={handleSave}
           handleDelete={handleDelete}
           requestTransactions={handleTransactionRequest}

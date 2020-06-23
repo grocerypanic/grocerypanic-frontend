@@ -51,7 +51,7 @@ const ItemDetailsForm = ({
   const [actionMsg, setActionMsg] = React.useState(null);
 
   const bootstrapStrapWidthHack = () => {
-    if (window.innerWidth < 350) return "col-5";
+    if (window.innerWidth < 380) return "col-5";
     return "col-6";
   };
   const [priceBootstrapWidth, setPriceBootstrapWidth] = React.useState(

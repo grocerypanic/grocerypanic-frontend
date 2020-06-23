@@ -1,7 +1,9 @@
 import React from "react";
 import "jest-canvas-mock";
 import { render, cleanup, waitFor } from "@testing-library/react";
+import moment from "moment";
 
+import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 import TransactionsReview from "../transactions.component";
 
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
@@ -9,25 +11,32 @@ import { AnalyticsActions } from "../../../providers/analytics/analytics.actions
 
 import Strings from "../../../configuration/strings";
 import { convertDatesToLocal } from "../../../providers/api/api.util";
+import { graph } from "../../../configuration/theme";
+import { propCount } from "../../../test.fixtures/objectComparison";
 
 global.Chart = jest.fn();
 global.Chart.mockImplementation(() => {
   return {
     render: jest.fn(),
+    destroy: jest.fn(),
   };
 });
+jest.mock("../../holding-pattern/holding-pattern.component");
+HoldingPattern.mockImplementation(({ children }) => children);
 
 const mockEvent = jest.fn();
 const mockAnalyticsSettings = { event: mockEvent, initialized: true };
 
 // Freeze Time
-Date.now = jest.fn(() => new Date("2020-06-16T11:01:58.135Z"));
+const OriginalDate = Date.now;
+const mockDate = () =>
+  (Date.now = jest.fn(() => new Date("2020-06-16T11:01:58.135Z")));
 
 const mockItem = convertDatesToLocal({
   expired: 0,
   id: 1,
   name: "Vegan Cheese",
-  next_expiry_date: "2020-06-15",
+  next_expiry_date: "2020-06-18",
   next_expiry_quantity: 1,
   preferred_stores: [1],
   price: "4.00",
@@ -54,10 +63,10 @@ describe("Setup Environment", () => {
   let current;
 
   beforeEach(() => {
+    mockDate();
     current = {
-      title: "Some Title",
       item: { ...mockItem },
-      transaction: false,
+      ready: false,
       tr: [...mockTransactions],
     };
   });
@@ -70,49 +79,13 @@ describe("Setup Environment", () => {
     );
   };
 
-  describe("outside of a transaction", () => {
+  describe("after transactions are fetched", () => {
     beforeEach(() => {
-      current.transaction = false;
+      current.ready = true;
       jest.clearAllMocks();
     });
 
     afterEach(cleanup);
-
-    describe("with expired items in inventory", () => {
-      beforeEach(() => {
-        current.item.expired = 9;
-        jest.clearAllMocks();
-        utils = renderHelper(current);
-      });
-
-      it("should render a warning about the expired items", () => {
-        expect(utils.getByText(Strings.ItemStats.RecommendExpiredItems));
-      });
-
-      it("should render the graph", async (done) => {
-        await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
-        done();
-      });
-    });
-
-    describe("with items expirying soon in inventory", () => {
-      beforeEach(() => {
-        utils = renderHelper(current);
-      });
-
-      it("should render a warning items expiring soon", () => {
-        expect(
-          utils.getByText(
-            `${current.item.next_expiry_quantity} ${Strings.ItemStats.RecommendExpiringSoon}`
-          )
-        ).toBeTruthy();
-      });
-
-      it("should render the graph", async (done) => {
-        await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
-        done();
-      });
-    });
 
     describe("with items in the inventory", () => {
       beforeEach(() => {
@@ -148,6 +121,20 @@ describe("Setup Environment", () => {
         expect(utils.getByTestId("avgMonth").textContent).toBe("5.5");
       });
 
+      it("should call the holding pattern with expected arguments", async (done) => {
+        await waitFor(() => expect(HoldingPattern).toBeCalledTimes(1));
+        const call = HoldingPattern.mock.calls[0][0];
+        propCount(call, 7);
+        expect(call.condition).toBe(false);
+        expect(call.color).toBe("secondary");
+        expect(call.animation).toBe("grow");
+        expect(call.height).toBe(graph.holdingPatternHeight);
+        expect(call.scale).toBe(1);
+        expect(call.divHeight).toBe(20);
+        expect(call.children).toBeTruthy();
+        done();
+      });
+
       it("should render the graph", async (done) => {
         await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
         done();
@@ -161,11 +148,159 @@ describe("Setup Environment", () => {
         utils = renderHelper(current);
       });
 
+      it("should call the holding pattern with expected arguments", async (done) => {
+        await waitFor(() => expect(HoldingPattern).toBeCalledTimes(1));
+        const call = HoldingPattern.mock.calls[0][0];
+        propCount(call, 7);
+        expect(call.condition).toBe(false);
+        expect(call.color).toBe("secondary");
+        expect(call.animation).toBe("grow");
+        expect(call.height).toBe(graph.holdingPatternHeight);
+        expect(call.scale).toBe(1);
+        expect(call.divHeight).toBe(20);
+        expect(call.children).toBeTruthy();
+        done();
+      });
+
       it("should display the insufficient data warning", () => {
         expect(
           utils.queryByText(`${Strings.ItemStats.NotEnoughData}`)
         ).toBeTruthy();
         expect(global.Chart).toBeCalledTimes(0);
+      });
+    });
+
+    describe("with expired items in inventory", () => {
+      beforeEach(() => {
+        current.item.expired = 9;
+        jest.clearAllMocks();
+        utils = renderHelper(current);
+      });
+
+      it("should render a warning about the expired items", () => {
+        expect(utils.getByText(Strings.ItemStats.RecommendExpiredItems));
+      });
+
+      it("should call the holding pattern with expected arguments", async (done) => {
+        await waitFor(() => expect(HoldingPattern).toBeCalledTimes(1));
+        const call = HoldingPattern.mock.calls[0][0];
+        propCount(call, 7);
+        expect(call.condition).toBe(false);
+        expect(call.color).toBe("secondary");
+        expect(call.animation).toBe("grow");
+        expect(call.height).toBe(graph.holdingPatternHeight);
+        expect(call.scale).toBe(1);
+        expect(call.divHeight).toBe(20);
+        expect(call.children).toBeTruthy();
+        done();
+      });
+
+      it("should render the graph", async (done) => {
+        await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
+        done();
+      });
+    });
+
+    describe("with items expirying soon in inventory", () => {
+      beforeEach(() => {
+        utils = renderHelper(current);
+      });
+
+      it("should render a warning items expiring soon", () => {
+        expect(
+          utils.getByText(
+            `${current.item.next_expiry_quantity} ${Strings.ItemStats.RecommendExpiringSoon}`
+          )
+        ).toBeTruthy();
+      });
+
+      it("should call the holding pattern with expected arguments", async (done) => {
+        await waitFor(() => expect(HoldingPattern).toBeCalledTimes(1));
+        const call = HoldingPattern.mock.calls[0][0];
+        propCount(call, 7);
+        expect(call.condition).toBe(false);
+        expect(call.color).toBe("secondary");
+        expect(call.animation).toBe("grow");
+        expect(call.height).toBe(graph.holdingPatternHeight);
+        expect(call.scale).toBe(1);
+        expect(call.divHeight).toBe(20);
+        expect(call.children).toBeTruthy();
+        done();
+      });
+
+      it("should render the graph", async (done) => {
+        await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
+        done();
+      });
+    });
+
+    describe("with no items expirying soon in inventory, but an old next_expiry_date set", () => {
+      beforeEach(() => {
+        Date.now = OriginalDate;
+        current.item.next_expiry_date = moment("2019-06-16");
+        current.next_expiry_quantity = 0;
+        mockDate();
+        utils = renderHelper(current);
+      });
+
+      it("should not render a warning items expiring soon", () => {
+        expect(
+          utils.queryByText(
+            `${current.item.next_expiry_quantity} ${Strings.ItemStats.RecommendExpiringSoon}`
+          )
+        ).toBeFalsy();
+      });
+
+      it("should call the holding pattern with expected arguments", async (done) => {
+        await waitFor(() => expect(HoldingPattern).toBeCalledTimes(1));
+        const call = HoldingPattern.mock.calls[0][0];
+        propCount(call, 7);
+        expect(call.condition).toBe(false);
+        expect(call.color).toBe("secondary");
+        expect(call.animation).toBe("grow");
+        expect(call.height).toBe(graph.holdingPatternHeight);
+        expect(call.scale).toBe(1);
+        expect(call.divHeight).toBe(20);
+        expect(call.children).toBeTruthy();
+        done();
+      });
+
+      it("should render the graph", async (done) => {
+        await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
+        done();
+      });
+    });
+  });
+
+  describe("before transactions are fetched", () => {
+    beforeEach(() => {
+      current.ready = false;
+      jest.clearAllMocks();
+    });
+
+    describe("with items in the inventory", () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+        utils = renderHelper(current);
+      });
+
+      it("should call the holding pattern with expected arguments", async (done) => {
+        await waitFor(() => expect(HoldingPattern).toBeCalledTimes(1));
+        const call = HoldingPattern.mock.calls[0][0];
+        propCount(call, 7);
+        expect(call.condition).toBe(true);
+        expect(call.color).toBe(graph.holdingPatternColor);
+        expect(call.animation).toBe(graph.holdingPatternAnimation);
+        expect(call.height).toBe(graph.holdingPatternHeight);
+        expect(call.scale).toBe(graph.holdingPatternScale);
+        expect(call.divHeight).toBe(graph.holdingPatternDivHeight);
+        expect(call.children).toBeTruthy();
+        done();
+      });
+
+      it("should not render the graph", async (done) => {
+        expect(global.Chart).toBeCalledTimes(0);
+        done();
       });
     });
   });

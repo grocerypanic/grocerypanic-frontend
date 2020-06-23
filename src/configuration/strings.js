@@ -64,6 +64,8 @@ export const Strings = {
         Edit: "Edit",
         Stats: "Stats",
       },
+      GraphChangeEvent: "Change Event",
+      GraphQuantity: "Quantity",
       NeedShelvesAndStores:
         "Create some shelves and stores first!\nYour items need to have stores you prefer\n to shop at, and a place to be kept at home.",
       ApiCommunicationError:
@@ -83,6 +85,8 @@ export const Strings = {
       ConsumptionAvgWeek: "avg. per week",
       ConsumptionAvgMonth: "avg. per month",
       NotEnoughData: "Not Enough Data",
+      GraphChangEvent: "Change Event",
+      GraphQuantity: "Quantity",
     },
     ItemList: {
       ApiError:
