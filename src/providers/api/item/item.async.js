@@ -1,10 +1,8 @@
-import moment from "moment";
-
 import { Paths } from "../../../configuration/backend";
 import match2xx from "../../../util/requests/status";
 import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
-import { apiResultCompare } from "../api.util.js";
+import { apiResultCompare, convertDatesToLocal } from "../api.util.js";
 
 import { ItemFilters, FilterTag } from "../../../configuration/backend";
 
@@ -12,19 +10,6 @@ const authFailure = (dispatch, callback) => {
   return new Promise(function (resolve) {
     dispatch({ type: ApiActions.FailureAuth, callback });
   });
-};
-
-export const convertDatesToLocal = (item) => {
-  if (typeof item.next_expiry_date === "object") return item;
-  let newItem = { ...item };
-  newItem.next_expiry_date = moment
-    .utc(item.next_expiry_date)
-    .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-    .unix();
-  newItem.next_expiry_date = moment
-    .unix(newItem.next_expiry_date)
-    .add(moment().utcOffset(), "minutes");
-  return newItem;
 };
 
 export const asyncAdd = async ({ state, action }) => {

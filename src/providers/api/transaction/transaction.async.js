@@ -2,7 +2,7 @@ import { Paths } from "../../../configuration/backend";
 import match2xx from "../../../util/requests/status";
 import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
-import { apiResultCompare } from "../api.util.js";
+import { apiResultCompare, convertDatesToLocal } from "../api.util.js";
 
 const authFailure = (dispatch, callback) => {
   return new Promise(function (resolve) {
@@ -45,10 +45,11 @@ export const asyncList = async ({ state, action }) => {
     Paths.manageTransactions + action.payload.id + "/"
   );
   if (match2xx(status)) {
+    const processedResponse = response.map((i) => convertDatesToLocal(i));
     return new Promise(function (resolve) {
       dispatch({
         type: ApiActions.SuccessList,
-        payload: { inventory: response.sort(apiResultCompare) },
+        payload: { inventory: processedResponse.sort(apiResultCompare) },
         callback,
       });
     });

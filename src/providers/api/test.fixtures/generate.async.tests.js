@@ -2,6 +2,7 @@ import { waitFor } from "@testing-library/react";
 
 import ApiActions from "../api.actions";
 import ApiFunctions from "../api.functions";
+import { convertDatesToLocal } from "../api.util";
 
 import Request from "../../../util/requests";
 jest.mock("../../../util/requests");
@@ -17,7 +18,15 @@ export const AsyncTest = (
 ) => {
   const mockDispatch = jest.fn();
   const mockCallBack = jest.fn();
-  const mockObject = { id: 1, name: "MockObject" };
+
+  const mockObject = {
+    id: 1,
+    name: "MockObject",
+    next_expiry_date: "2020-01-01",
+    date: "2020-01-01",
+  };
+
+  const comparisonObject = convertDatesToLocal(mockObject);
 
   let responseCode;
   let State1;
@@ -117,7 +126,7 @@ export const AsyncTest = (
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.SuccessList,
             payload: {
-              inventory: [{ ...mockObject }],
+              inventory: [{ ...comparisonObject }],
             },
             callback: mockCallBack,
           });
