@@ -75,10 +75,14 @@ export const Strings = {
       Title: "Consumption Statistics",
       HeaderTitle: "Details",
       HelpText: "Here is some help.",
-      Recommend: {
-        ExpiredItems: "Your inventory is getting old, check for expired items!",
-        ExpiringSoon: "You have items that will expire soon!",
-      },
+      RecommendExpiredItems: "Expired Items Warning",
+      RecommendExpiringSoon: "Item(s) Expiring Soon",
+      ConsumptionCurrentInventory: "current inventory",
+      ConsumptionConsumedLastWeek: "last week",
+      ConsumptionConsumedLastMonth: "last month",
+      ConsumptionAvgWeek: "avg. per week",
+      ConsumptionAvgMonth: "avg. per month",
+      NotEnoughData: "Not Enough Data",
     },
     ItemList: {
       ApiError:

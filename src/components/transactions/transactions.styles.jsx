@@ -18,6 +18,13 @@ export const Banner = styled.div`
   text-align: center;
 `;
 
+export const PlaceHolder = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+`;
+
 export const ButtonBox = styled.div`
   display: flex;
   justify-content: space-between;
@@ -33,8 +40,13 @@ export const InnerBox = styled.div`
   background: ${white};
   margin: 5px;
   padding: 5px;
-`;
 
-export const Title = styled.div`
-  text-align: center;
+  .table {
+    margin-bottom: 0px;
+  }
+  .chartBox {
+    height: 125px;
+    flex: 0 0 auto;
+    width: 80%;
+  }
 `;

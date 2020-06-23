@@ -138,7 +138,6 @@ const ItemDetailsEditContainer = ({
   }, []);
 
   const handleTransactionRequest = () => {
-    if (tr.inventory.length > 0) return;
     setPerformTrAsync({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
