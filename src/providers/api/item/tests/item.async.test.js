@@ -665,26 +665,3 @@ describe("Check Each Async Function Handles Successful, and Unsuccessful API Act
     });
   });
 });
-
-describe("Check convertDatesToLocal works as expect", () => {
-  it("should convert next_expiry when given a string as input", () => {
-    const testDate = "2020-01-01";
-    const testDateAsDate = moment.utc(testDate).unix();
-    const expected = testDateAsDate + moment().utcOffset() * 60;
-
-    const testObject = { ...mockItem1, next_expiry_date: testDate };
-    const converted = convertDatesToLocal(testObject);
-
-    expect(expected).toBe(converted.next_expiry_date.unix());
-  });
-
-  it("should return an untouched next_expiry when given a moment object as input", () => {
-    const testDate = "2020-01-01";
-    const testDateAsDate = moment.utc(testDate);
-
-    const testObject = { ...mockItem1, next_expiry_date: testDateAsDate };
-    const converted = convertDatesToLocal(testObject);
-
-    expect(converted).toBe(testObject);
-  });
-});

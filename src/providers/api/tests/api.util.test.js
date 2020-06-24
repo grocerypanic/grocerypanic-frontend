@@ -61,7 +61,11 @@ describe("Check convertDatesToLocal works as expect", () => {
   it("should convert item expiry when given a string as input", () => {
     const testDate = "2020-01-01";
     const testDateAsDate = moment.utc(testDate).unix();
-    const expected = testDateAsDate + moment().utcOffset() * 60;
+    let expected = testDateAsDate + moment().utcOffset() * 60;
+    expected = moment
+      .unix(expected)
+      .set({ hour: 23, minute: 59, second: 59, millisecond: 999 })
+      .unix();
 
     const testObject = { ...mockItem, next_expiry_date: testDate };
     const converted = convertDatesToLocal(testObject);
@@ -72,7 +76,11 @@ describe("Check convertDatesToLocal works as expect", () => {
   it("should convert transaction date when given a string as input", () => {
     const testDate = "2020-01-01";
     const testDateAsDate = moment.utc(testDate).unix();
-    const expected = testDateAsDate + moment().utcOffset() * 60;
+    let expected = testDateAsDate + moment().utcOffset() * 60;
+    expected = moment
+      .unix(expected)
+      .set({ hour: 23, minute: 59, second: 59, millisecond: 999 })
+      .unix();
 
     const testObject = { ...mockTransaction, date: testDate };
     const converted = convertDatesToLocal(testObject);

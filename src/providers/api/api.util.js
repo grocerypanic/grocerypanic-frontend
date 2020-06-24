@@ -37,10 +37,13 @@ export const convertDatesToLocal = (object) => {
 
   DATEFIELDS.forEach((field) => {
     if (newItem[field]) {
+      // Convert To Unix Time
+      newItem[field] = moment.utc(object[field]).unix();
+      // Add timezone offset, and set to end of day
       newItem[field] = moment
-        .utc(object[field])
-        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-        .add(moment().utcOffset(), "minutes");
+        .unix(newItem[field])
+        .add(moment().utcOffset(), "minutes")
+        .set({ hour: 23, minute: 59, second: 59, millisecond: 999 });
     }
   });
 
