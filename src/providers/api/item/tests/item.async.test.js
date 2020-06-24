@@ -1,5 +1,4 @@
 import { waitFor } from "@testing-library/react";
-import moment from "moment";
 
 import ApiActions from "../../api.actions";
 import { convertDatesToLocal } from "../../api.util.js";
