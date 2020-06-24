@@ -14,6 +14,7 @@ jest.mock("../shelf.async");
 InitialState.inventory = [];
 
 ReducerTest(
+  "shelf",
   ShelfReducer,
   InitialState,
   asyncAdd,

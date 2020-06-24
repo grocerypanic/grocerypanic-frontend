@@ -3,6 +3,7 @@ const initialState = {
   transaction: false,
   error: false,
   errorMessage: null,
+  class: "item",
 };
 
 export default initialState;

@@ -4,6 +4,7 @@ import ApiActions from "../api.actions";
 import ApiFunctions from "../api.functions";
 
 export const ReducerTest = (
+  classType,
   testReducer,
   InitialState,
   asyncAdd,
@@ -38,6 +39,7 @@ export const ReducerTest = (
       };
       const received = testReducer(InitialState, action);
       expect(received).toEqual(ExpectedState);
+      expect(received.class).toBe(classType);
 
       await waitFor(() => expect(asyncAdd).toHaveBeenCalledTimes(1));
       expect(asyncAdd.mock.calls[0]).toEqual([
@@ -68,6 +70,7 @@ export const ReducerTest = (
       };
       const received = testReducer(stateWithPayload, action);
       expect(received).toEqual(ExpectedState);
+      expect(received.class).toBe(classType);
       await waitFor(() => expect(asyncDel).toHaveBeenCalledTimes(1));
       expect(asyncDel.mock.calls[0]).toEqual([
         {
@@ -93,7 +96,7 @@ export const ReducerTest = (
       };
       const received = testReducer(InitialState, action);
       expect(received).toEqual(ExpectedState);
-
+      expect(received.class).toBe(classType);
       await waitFor(() => expect(asyncGet).toHaveBeenCalledTimes(1));
       expect(asyncGet.mock.calls[0]).toEqual([
         {
@@ -119,7 +122,7 @@ export const ReducerTest = (
       };
       const received = testReducer(InitialState, action);
       expect(received).toEqual(ExpectedState);
-
+      expect(received.class).toBe(classType);
       await waitFor(() => expect(asyncList).toHaveBeenCalledTimes(1));
       expect(asyncList.mock.calls[0]).toEqual([
         {
@@ -145,7 +148,7 @@ export const ReducerTest = (
       };
       const received = testReducer(InitialState, action);
       expect(received).toEqual(ExpectedState);
-
+      expect(received.class).toBe(classType);
       await waitFor(() => expect(asyncUpdate).toHaveBeenCalledTimes(1));
       expect(asyncUpdate.mock.calls[0]).toEqual([
         {
@@ -169,6 +172,7 @@ export const ReducerTest = (
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(false);
       expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledTimes(0);
     });
 
@@ -185,6 +189,7 @@ export const ReducerTest = (
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(false);
       expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: true, complete: true });
     });
 
@@ -201,6 +206,7 @@ export const ReducerTest = (
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(false);
       expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: true, complete: true });
     });
 
@@ -217,6 +223,7 @@ export const ReducerTest = (
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(false);
       expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: true, complete: true });
     });
 
@@ -233,6 +240,7 @@ export const ReducerTest = (
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(false);
       expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: true, complete: true });
     });
 
@@ -248,6 +256,7 @@ export const ReducerTest = (
       expect(received.inventory).toEqual([]);
       expect(received.error).toBe(true);
       expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledTimes(0);
     });
 
@@ -263,6 +272,7 @@ export const ReducerTest = (
       expect(received.errorMessage).toBe(mockErrorMessage);
       expect(received.inventory).toEqual([]);
       expect(received.error).toBe(true);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: true });
     });
 
@@ -279,6 +289,7 @@ export const ReducerTest = (
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(true);
       expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: true });
     });
 
@@ -295,6 +306,7 @@ export const ReducerTest = (
       expect(received.inventory).toEqual([]);
       expect(received.error).toBe(true);
       expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: true });
     });
 
@@ -311,6 +323,7 @@ export const ReducerTest = (
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(true);
       expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: true });
     });
 
@@ -326,6 +339,7 @@ export const ReducerTest = (
       });
       expect(received.error).toBe(false);
       expect(received.errorMessage).toBe(null);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
     });
 
@@ -340,6 +354,7 @@ export const ReducerTest = (
       });
       expect(received.error).toBe(false);
       expect(received.errorMessage).toBe(null);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledTimes(0);
     });
 
@@ -356,6 +371,7 @@ export const ReducerTest = (
       expect(received.error).toBe(false);
       expect(received.errorMessage).toBe(null);
       expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledTimes(0);
     });
 
@@ -373,6 +389,7 @@ export const ReducerTest = (
       expect(received.error).toBe(false);
       expect(received.errorMessage).toBe(null);
       expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
     });
   });

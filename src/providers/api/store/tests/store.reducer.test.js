@@ -14,6 +14,7 @@ jest.mock("../store.async");
 InitialState.inventory = [];
 
 ReducerTest(
+  "store",
   StoreReducer,
   InitialState,
   asyncAdd,
