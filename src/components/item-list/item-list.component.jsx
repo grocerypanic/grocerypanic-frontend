@@ -103,11 +103,18 @@ const ItemList = ({
     history.push(Routes.create);
   };
 
-  const generateCallback = (modifier, receivedItem, quantity) => {
+  const generateCallback = (itemToRefresh) => {
     const callback = (state) => {
-      if (!state.success) return;
-      const search = item.inventory.find((o) => o.id === receivedItem.id);
-      if (search) search.quantity += parseInt(quantity) * modifier;
+      if (state.success && state.complete) {
+        setPerformItemAsync({
+          type: ApiActions.StartGet,
+          func: ApiFuctions.asyncGet,
+          dispatch: setPerformItemAsync,
+          payload: {
+            id: itemToRefresh.id,
+          },
+        });
+      }
     };
     return callback;
   };
@@ -122,7 +129,7 @@ const ItemList = ({
         item: receivedItem.id,
         quantity: parseInt(quantity),
       },
-      callback: generateCallback(1, receivedItem, quantity),
+      callback: generateCallback(receivedItem),
     });
   };
 
@@ -136,7 +143,7 @@ const ItemList = ({
         item: receivedItem.id,
         quantity: parseInt(quantity) * -1,
       },
-      callback: generateCallback(-1, receivedItem, quantity),
+      callback: generateCallback(receivedItem),
     });
   };
 

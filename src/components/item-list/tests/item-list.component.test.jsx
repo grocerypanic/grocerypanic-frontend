@@ -415,7 +415,15 @@ describe("Setup Environment", () => {
             const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
             expect(current.transaction).toBeFalsy();
 
-            const originalQuantity = mockItems[0].quantity;
+            // Initial Item List
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(1)
+            );
+            expect(mockItemDispatch.mock.calls[0][0].type).toBe(
+              ApiActions.StartList
+            );
+
+            // Perform Inventory Change
 
             act(() => {
               restock(mockItems[0], 2);
@@ -436,17 +444,27 @@ describe("Setup Environment", () => {
             });
             expect(apiCall.dispatch).toBeInstanceOf(Function);
 
-            // Ensure successful callback updates inventory
-            act(() => apiCall.callback({ success: true, complete: true }));
-            await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
-            const call1 = ItemListRow.mock.calls[6][0];
-            expect(call1.item.quantity).toBe(originalQuantity + 2);
+            // Simulate Callback
 
-            // Ensure unsucessful callback does not update inventory
-            act(() => apiCall.callback({ success: false, complete: true }));
-            await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
-            const call2 = ItemListRow.mock.calls[6][0];
-            expect(call2.item.quantity).toBe(originalQuantity + 2);
+            act(() =>
+              apiCall.callback({
+                success: true,
+                complete: true,
+              })
+            );
+
+            // ItemDispatch is Called Again to Refresh the Item
+
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(2)
+            );
+
+            const itemCall = mockItemDispatch.mock.calls[1][0];
+            propCount(itemCall, 4);
+            expect(itemCall.type).toBe(ApiActions.StartGet);
+            expect(itemCall.func).toBe(ApiFunctions.asyncGet);
+            expect(itemCall.dispatch).toBeInstanceOf(Function);
+            expect(itemCall.payload).toStrictEqual({ id: mockItems[0].id });
 
             done();
           });
@@ -456,7 +474,15 @@ describe("Setup Environment", () => {
             const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
             expect(current.transaction).toBeFalsy();
 
-            const originalQuantity = mockItems[0].quantity;
+            // Initial Item List
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(1)
+            );
+            expect(mockItemDispatch.mock.calls[0][0].type).toBe(
+              ApiActions.StartList
+            );
+
+            // Perform Inventory Change
 
             act(() => {
               consume(mockItems[0], 1);
@@ -477,17 +503,79 @@ describe("Setup Environment", () => {
             });
             expect(apiCall.dispatch).toBeInstanceOf(Function);
 
-            // Ensure successful callback updates inventory
-            act(() => apiCall.callback({ success: true, complete: true }));
-            await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
-            const call = ItemListRow.mock.calls[6][0];
-            expect(call.item.quantity).toBe(originalQuantity - 1);
+            // Simulate Callback
 
-            // Ensure unsucessful callback does not update inventory
-            act(() => apiCall.callback({ success: false, complete: true }));
-            await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
-            const call2 = ItemListRow.mock.calls[6][0];
-            expect(call2.item.quantity).toBe(originalQuantity - 1);
+            act(() =>
+              apiCall.callback({
+                success: true,
+                complete: true,
+              })
+            );
+
+            // ItemDispatch is Called Again to Refresh the Item
+
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(2)
+            );
+
+            const itemCall = mockItemDispatch.mock.calls[1][0];
+            propCount(itemCall, 4);
+            expect(itemCall.type).toBe(ApiActions.StartGet);
+            expect(itemCall.func).toBe(ApiFunctions.asyncGet);
+            expect(itemCall.dispatch).toBeInstanceOf(Function);
+            expect(itemCall.payload).toStrictEqual({ id: mockItems[0].id });
+
+            done();
+          });
+
+          it("renders, and dispatches the API reducer when handleConsume is called, handles a failed transaction request as expected", async (done) => {
+            expect(ItemListRow).toHaveBeenCalledTimes(3);
+            const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
+            expect(current.transaction).toBeFalsy();
+
+            // Initial Item List
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(1)
+            );
+            expect(mockItemDispatch.mock.calls[0][0].type).toBe(
+              ApiActions.StartList
+            );
+
+            // Perform Inventory Change
+
+            act(() => {
+              consume(mockItems[0], 1);
+            });
+
+            await waitFor(() =>
+              expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+            );
+
+            const apiCall = mockTransactionDispatch.mock.calls[0][0];
+            propCount(apiCall, 5);
+            expect(apiCall.type).toBe(ApiActions.StartAdd);
+            expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
+            expect(apiCall.callback.name).toBe("callback");
+            expect(apiCall.payload).toStrictEqual({
+              item: mockItems[0].id,
+              quantity: -1,
+            });
+            expect(apiCall.dispatch).toBeInstanceOf(Function);
+
+            // Simulate Callback
+
+            act(() =>
+              apiCall.callback({
+                success: false, // Transaction is reported as failed to post
+                complete: false, // Transaction is reported as failed to post
+              })
+            );
+
+            // ItemDispatch is NOT Called Again to Refresh the Item
+
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(1)
+            );
 
             done();
           });
