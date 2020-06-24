@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import AddIcon from "@material-ui/icons/Add";
 import HomeIcon from "@material-ui/icons/Home";
+import InfoIcon from "@material-ui/icons/Info";
 import StoreIcon from "@material-ui/icons/Store";
 import KitchenIcon from "@material-ui/icons/Kitchen";
 
@@ -53,6 +54,20 @@ const Header = ({ history, title, create, transaction }) => {
         </div>
       </Navbar.Brand>
       <Nav className="mr-auto"></Nav>
+      <Nav>
+        <Nav.Item
+          className="nav-link action"
+          onClick={() => navigate(Routes.about)}
+        >
+          <MenuContainer
+            route={Routes.about}
+            history={history}
+            data-testid="info-icon"
+          >
+            <InfoIcon />
+          </MenuContainer>
+        </Nav.Item>
+      </Nav>
       <Nav>
         <Nav.Item
           className="nav-link action"

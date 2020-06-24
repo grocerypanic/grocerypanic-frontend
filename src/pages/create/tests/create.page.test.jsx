@@ -3,7 +3,7 @@ import { render, cleanup, waitFor, act } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 import { MemoryRouter, Route } from "react-router-dom";
 
-import ItemDetailsPage from "../create.page";
+import ItemCreatePage from "../create.page";
 import ItemDetailsCreateContainer from "../../../components/item-details-form/item-details.create.container";
 
 import { ItemContext } from "../../../providers/api/item/item.provider";
@@ -36,7 +36,7 @@ describe("Check the correct props are passed to simple list", () => {
       >
         <MemoryRouter initialEntries={[Routes.details.replace(":id", ItemId)]}>
           <ItemContext.Provider>
-            <Route path={Routes.details} component={ItemDetailsPage} />
+            <Route path={Routes.details} component={ItemCreatePage} />
           </ItemContext.Provider>
         </MemoryRouter>
       </UserContext.Provider>

@@ -8,13 +8,14 @@ import HoldingPattern from "../../components/holding-pattern/holding-pattern.com
 // Configuration
 import Routes from "../../configuration/routes";
 
+const About = lazy(() => import("../about/about.page"));
+const Create = lazy(() => import("../create/create.page"));
+const Details = lazy(() => import("../details/details.page"));
+const Items = lazy(() => import("../items/items.page"));
+const Menu = lazy(() => import("../menu/menu.page"));
 const SignIn = lazy(() => import("../signin/signin.container"));
 const Shelves = lazy(() => import("../shelves/shelves.page"));
 const Stores = lazy(() => import("../stores/stores.page"));
-const Items = lazy(() => import("../items/items.page"));
-const Details = lazy(() => import("../details/details.page"));
-const Create = lazy(() => import("../create/create.page"));
-const Menu = lazy(() => import("../menu/menu.page"));
 
 function App() {
   return (
@@ -62,6 +63,14 @@ function App() {
           exact
           path={Routes.create}
           component={Create}
+          negative
+          attr={"login"}
+          redirect={Routes.signin}
+        />
+        <ProtectedRoute
+          exact
+          path={Routes.about}
+          component={About}
           negative
           attr={"login"}
           redirect={Routes.signin}

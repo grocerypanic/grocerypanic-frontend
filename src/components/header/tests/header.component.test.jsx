@@ -11,6 +11,7 @@ import * as AddIcon from "@material-ui/icons/Add";
 import * as HomeIcon from "@material-ui/icons/Home";
 import * as StoreIcon from "@material-ui/icons/Store";
 import * as KitchenIcon from "@material-ui/icons/Kitchen";
+import * as InfoIcon from "@material-ui/icons/Info";
 
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
@@ -23,22 +24,27 @@ jest.mock("@material-ui/icons/Add", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
-AddIcon.default.mockImplementation(() => <div>MockCreate</div>);
+AddIcon.default.mockImplementation(() => <div>MockAdd</div>);
 jest.mock("@material-ui/icons/Home", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
-HomeIcon.default.mockImplementation(() => <div>MockCreate</div>);
+HomeIcon.default.mockImplementation(() => <div>MockHome</div>);
+jest.mock("@material-ui/icons/Info", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+InfoIcon.default.mockImplementation(() => <div>MockInfo</div>);
 jest.mock("@material-ui/icons/Store", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
-StoreIcon.default.mockImplementation(() => <div>MockCreate</div>);
+StoreIcon.default.mockImplementation(() => <div>MockStore</div>);
 jest.mock("@material-ui/icons/Kitchen", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
-KitchenIcon.default.mockImplementation(() => <div>MockCreate</div>);
+KitchenIcon.default.mockImplementation(() => <div>MockKitchen</div>);
 
 describe("during a transaction", () => {
   let utils;
@@ -103,9 +109,28 @@ describe("during a transaction", () => {
     });
 
     it("should call the nav buttons", () => {
+      expect(InfoIcon.default).toHaveBeenCalledTimes(1);
       expect(HomeIcon.default).toHaveBeenCalledTimes(1);
       expect(StoreIcon.default).toHaveBeenCalledTimes(1);
       expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
+    });
+
+    it("should not navigate to about, when title is clicked", async (done) => {
+      const title = utils.getByText(Strings.MainTitle);
+      fireEvent.click(title, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual("/some/unmatched/path")
+      );
+      done();
+    });
+
+    it("should not navigate to about, when info is clicked", async (done) => {
+      const home = utils.getByTestId("info-icon");
+      fireEvent.click(home, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual("/some/unmatched/path")
+      );
+      done();
     });
 
     it("should not navigate to home, when home is clicked", async (done) => {
@@ -128,15 +153,6 @@ describe("during a transaction", () => {
 
     it("should not navigate to shelves, when shelves is clicked", async (done) => {
       const home = utils.getByTestId("shelves-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
-
-    it("should not navigate to about, when about is clicked", async (done) => {
-      const home = utils.getByText(Strings.MainTitle);
       fireEvent.click(home, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual("/some/unmatched/path")
@@ -172,9 +188,28 @@ describe("during a transaction", () => {
     });
 
     it("should call the nav buttons", () => {
+      expect(InfoIcon.default).toHaveBeenCalledTimes(1);
       expect(HomeIcon.default).toHaveBeenCalledTimes(1);
       expect(StoreIcon.default).toHaveBeenCalledTimes(1);
       expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
+    });
+
+    it("should not navigate to about, when title is clicked", async (done) => {
+      const title = utils.getByText(Strings.MainTitle);
+      fireEvent.click(title, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual("/some/unmatched/path")
+      );
+      done();
+    });
+
+    it("should not navigate to about, when info is clicked", async (done) => {
+      const home = utils.getByTestId("info-icon");
+      fireEvent.click(home, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual("/some/unmatched/path")
+      );
+      done();
     });
 
     it("should not navigate to home, when home is clicked", async (done) => {
@@ -197,15 +232,6 @@ describe("during a transaction", () => {
 
     it("should not navigate to shelves, when shelves is clicked", async (done) => {
       const home = utils.getByTestId("shelves-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
-
-    it("should not navigate to about, when about is clicked", async (done) => {
-      const home = utils.getByText(Strings.MainTitle);
       fireEvent.click(home, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual("/some/unmatched/path")
@@ -253,9 +279,18 @@ describe("outside of a transaction", () => {
       expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
     });
 
-    it("should navigate to about, when about is clicked", async (done) => {
-      const home = utils.getByText(Strings.MainTitle);
-      fireEvent.click(home, "click");
+    it("should navigate to about, when title is clicked", async (done) => {
+      const title = utils.getByText(Strings.MainTitle);
+      fireEvent.click(title, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual(Routes.about)
+      );
+      done();
+    });
+
+    it("should navigate to about, when info is clicked", async (done) => {
+      const info = utils.getByTestId("info-icon");
+      fireEvent.click(info, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual(Routes.about)
       );
@@ -285,15 +320,6 @@ describe("outside of a transaction", () => {
       fireEvent.click(shelves, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual(Routes.shelves)
-      );
-      done();
-    });
-
-    it("should navigate to about, when about is clicked", async (done) => {
-      const home = utils.getByText(Strings.MainTitle);
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.about)
       );
       done();
     });
@@ -332,7 +358,25 @@ describe("outside of a transaction", () => {
       expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
     });
 
-    it("should not navigate to home, when home is clicked", async (done) => {
+    it("should navigate to about, when title is clicked", async (done) => {
+      const title = utils.getByText(Strings.MainTitle);
+      fireEvent.click(title, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual(Routes.about)
+      );
+      done();
+    });
+
+    it("should navigate to about, when info is clicked", async (done) => {
+      const info = utils.getByTestId("info-icon");
+      fireEvent.click(info, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual(Routes.about)
+      );
+      done();
+    });
+
+    it("should navigate to home, when home is clicked", async (done) => {
       const home = utils.getByTestId("home-icon");
       fireEvent.click(home, "click");
       await waitFor(() =>
@@ -355,15 +399,6 @@ describe("outside of a transaction", () => {
       fireEvent.click(home, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual(Routes.shelves)
-      );
-      done();
-    });
-
-    it("should navigate to about, when about is clicked", async (done) => {
-      const home = utils.getByText(Strings.MainTitle);
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.about)
       );
       done();
     });

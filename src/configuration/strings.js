@@ -3,6 +3,18 @@ import assets from "./assets";
 export const Strings = {
   en: {
     MainTitle: "Panic",
+    FeedBack: {
+      Request1: "I would appreciate any feedback or suggestions!",
+      Request2: `Please leave them${assets.nonBreakingSpace}`,
+      Request3: ".",
+      Link: "here",
+    },
+    AboutPage: {
+      Title: "Panic Grocery Management",
+      HeaderTitle: "Panic: About",
+      Body:
+        "Panic was written during the 2020 pandemic with the goal of helping folks organize their grocery shopping.\nI had very little front-end experience before starting this app, so this was an opportunity for me to try something new.  I would not have been able to complete this project without the help I received, despite alot of pressure for me to abandon it half way.  So thanks!",
+    },
     SignIn: {
       Title: "Sign In",
       LoginMessageGoogle: "Login With Google",
@@ -19,7 +31,7 @@ export const Strings = {
     },
     Copyight: {
       CopyrightDeclaration: "Copyright © ",
-      CopyrightMessage: "Your Website",
+      CopyrightMessage: "Shared Vision Solutions",
     },
     App: {
       Suspense: "Suspense filled message...",

@@ -10,4 +10,8 @@ const Routes = {
   goBack: "back",
 };
 
+export const External = {
+  feedback: "https://www.sharedvisionsolutions.com/#contact",
+};
+
 export default Routes;

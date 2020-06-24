@@ -5,6 +5,7 @@ import { createBrowserHistory } from "history";
 
 import App from "../app.js";
 import SignIn from "../../signin/signin.container";
+import About from "../../about/about.page";
 import ShelvesPage from "../../shelves/shelves.page";
 import StoresPage from "../../stores/stores.page";
 import ItemsPage from "../../items/items.page";
@@ -25,7 +26,9 @@ jest.mock("../../items/items.page");
 jest.mock("../../menu/menu.page");
 jest.mock("../../details/details.page");
 jest.mock("../../create/create.page");
+jest.mock("../../about/about.page");
 
+About.mockImplementation(() => <div>MockPlaceholderAboutPage</div>);
 SignIn.mockImplementation(() => <div>MockPlaceholderSignin</div>);
 ShelvesPage.mockImplementation(() => <div>MockPlaceholderShelvesPage</div>);
 StoresPage.mockImplementation(() => <div>MockPlaceholderStoresPage</div>);
@@ -70,6 +73,7 @@ describe("Check Routing", () => {
       });
       it("should render menu on root url", async (done) => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -88,6 +92,7 @@ describe("Check Routing", () => {
       });
       it("should redirect to signin on root url (from menu page)", async (done) => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(1));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -110,6 +115,7 @@ describe("Check Routing", () => {
       });
       it("should render the menu root page", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -128,6 +134,7 @@ describe("Check Routing", () => {
       });
       it("should redirect to signin on invalid url (from menu page)", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(1));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -151,6 +158,7 @@ describe("Check Routing", () => {
 
       it("should render stores on stores url, with login set to true", async (done) => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(0));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(1));
@@ -170,6 +178,7 @@ describe("Check Routing", () => {
       });
       it("should redirect to signin on stores url (from stores page)", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(1));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(1));
@@ -193,6 +202,7 @@ describe("Check Routing", () => {
 
       it("should render shelves on shelves url, with login set to true", async (done) => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(1));
         await waitFor(() => expect(SignIn).toBeCalledTimes(0));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -212,6 +222,7 @@ describe("Check Routing", () => {
       });
       it("should redirect to signin on shelves url (from shelves page)", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(1));
         await waitFor(() => expect(SignIn).toBeCalledTimes(1));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -235,6 +246,7 @@ describe("Check Routing", () => {
 
       it("should render items on items url, with login set to true", async (done) => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(0));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -254,6 +266,7 @@ describe("Check Routing", () => {
       });
       it("should redirect to signin on items url (from items page)", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(1));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -277,6 +290,7 @@ describe("Check Routing", () => {
 
       it("should render details on details url, with login set to true", async (done) => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(0));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -296,6 +310,7 @@ describe("Check Routing", () => {
       });
       it("should redirect to signin on details url (from details page)", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(1));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -319,6 +334,7 @@ describe("Check Routing", () => {
 
       it("should render create on create url, with login set to true", async (done) => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(0));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
@@ -338,12 +354,57 @@ describe("Check Routing", () => {
       });
       it("should redirect to signin on create url (from create page)", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(1));
         await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
         await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(1));
+        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        expect(window.location.pathname).toBe(Routes.signin);
+        done();
+      });
+    });
+  });
+
+  describe("about url", () => {
+    beforeEach(() => (setup.path = Routes.about));
+    describe("active login", () => {
+      beforeEach(() => {
+        setup.state.login = true;
+        utils = renderHelper({ ...setup });
+      });
+
+      it("should render about on about url, with login set to true", async (done) => {
+        expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
+        await waitFor(() => expect(About).toBeCalledTimes(1));
+        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
+        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
+        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
+        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
+        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
+        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        expect(window.location.pathname).toBe(Routes.about);
+        done();
+      });
+    });
+
+    describe("inactive login", () => {
+      beforeEach(() => {
+        setup.state.login = false;
+        utils = renderHelper({ ...setup });
+      });
+      it("should redirect to signin on about url (from about page)", async (done) => {
+        expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
+        await waitFor(() => expect(About).toBeCalledTimes(1));
+        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SignIn).toBeCalledTimes(1));
+        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
+        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
+        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
+        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();

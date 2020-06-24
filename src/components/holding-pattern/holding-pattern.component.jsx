@@ -8,7 +8,7 @@ const HoldingPattern = ({
   children,
   color = "success",
   animation = "grow",
-  height = "100vh",
+  height = "80vh",
   scale = 3,
   divWidth = 75,
   divHeight = 75,
