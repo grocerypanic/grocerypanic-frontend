@@ -38,9 +38,9 @@ export const Strings = {
     },
     CookiePolicy: {
       CookieMessage:
-        "This website would like to use cookies to measure how you as an individual interact with it.  We'll use this information to improve the service.",
+        "This website would like to use cookies to identify users, we'll use this information to improve the service.",
       CookieAcceptText: "I'm ok with that",
-      CookieDeclineText: "I Decline",
+      CookieDeclineText: "No, please not cookies!",
     },
     MainMenu: {
       Title: "Main Menu",

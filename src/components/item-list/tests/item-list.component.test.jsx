@@ -10,6 +10,8 @@ import { propCount } from "../../../test.fixtures/objectComparison";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import { ItemContext } from "../../../providers/api/item/item.provider";
 import { TransactionContext } from "../../../providers/api/transaction/transaction.provider";
 
@@ -24,7 +26,6 @@ import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 import ApiActions from "../../../providers/api/api.actions";
 import ApiFunctions from "../../../providers/api/api.functions";
 
-import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
 import calculateMaxHeight from "../../../util/height";
@@ -96,6 +97,12 @@ const mockDataState = {
 
 const mockPlaceHolderMessage = "I'm Right Here";
 
+const mockAnalyticsContext = {
+  initialized: true,
+  event: jest.fn(),
+  setup: true,
+};
+
 describe("Setup Environment", () => {
   let current;
   let utils;
@@ -119,32 +126,34 @@ describe("Setup Environment", () => {
     override = null
   ) => {
     return render(
-      <ItemContext.Provider value={itemContextValue}>
-        <TransactionContext.Provider value={transactionContextValue}>
-          <Router history={history}>
-            {override === null ? (
-              <ItemList
-                title={mockTitle}
-                headerTitle={mockHeaderTitle}
-                ApiObjectContext={ItemContext}
-                placeHolderMessage={mockPlaceHolderMessage}
-                handleExpiredAuth={mockHandleExpiredAuth}
-                helpText={Strings.Testing.GenericTranslationTestString}
-              />
-            ) : (
-              <ItemList
-                title={mockTitle}
-                headerTitle={mockHeaderTitle}
-                ApiObjectContext={ItemContext}
-                placeHolderMessage={mockPlaceHolderMessage}
-                handleExpiredAuth={mockHandleExpiredAuth}
-                helpText={Strings.Testing.GenericTranslationTestString}
-                waitForApi={override}
-              />
-            )}
-          </Router>
-        </TransactionContext.Provider>
-      </ItemContext.Provider>
+      <AnalyticsContext.Provider value={mockAnalyticsContext}>
+        <ItemContext.Provider value={itemContextValue}>
+          <TransactionContext.Provider value={transactionContextValue}>
+            <Router history={history}>
+              {override === null ? (
+                <ItemList
+                  title={mockTitle}
+                  headerTitle={mockHeaderTitle}
+                  ApiObjectContext={ItemContext}
+                  placeHolderMessage={mockPlaceHolderMessage}
+                  handleExpiredAuth={mockHandleExpiredAuth}
+                  helpText={Strings.Testing.GenericTranslationTestString}
+                />
+              ) : (
+                <ItemList
+                  title={mockTitle}
+                  headerTitle={mockHeaderTitle}
+                  ApiObjectContext={ItemContext}
+                  placeHolderMessage={mockPlaceHolderMessage}
+                  handleExpiredAuth={mockHandleExpiredAuth}
+                  helpText={Strings.Testing.GenericTranslationTestString}
+                  waitForApi={override}
+                />
+              )}
+            </Router>
+          </TransactionContext.Provider>
+        </ItemContext.Provider>
+      </AnalyticsContext.Provider>
     );
   };
 
@@ -466,6 +475,13 @@ describe("Setup Environment", () => {
             expect(itemCall.dispatch).toBeInstanceOf(Function);
             expect(itemCall.payload).toStrictEqual({ id: mockItems[0].id });
 
+            // ensure event fires
+            await waitFor(() =>
+              expect(mockAnalyticsContext.event).toHaveBeenCalledWith(
+                AnalyticsActions.TransactionRestock
+              )
+            );
+
             done();
           });
 
@@ -524,6 +540,13 @@ describe("Setup Environment", () => {
             expect(itemCall.func).toBe(ApiFunctions.asyncGet);
             expect(itemCall.dispatch).toBeInstanceOf(Function);
             expect(itemCall.payload).toStrictEqual({ id: mockItems[0].id });
+
+            // ensure event fires
+            await waitFor(() =>
+              expect(mockAnalyticsContext.event).toHaveBeenCalledWith(
+                AnalyticsActions.TransactionConsume
+              )
+            );
 
             done();
           });

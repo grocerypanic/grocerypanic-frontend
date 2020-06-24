@@ -1,6 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import {
+  AnalyticsActions,
+  IndexedAnalyticsActions,
+} from "../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
+
 import Header from "../header/header.component";
 import SimpleListItem from "../simple-list-item/simple-list-item.component";
 import Help from "../simple-list-help/simple-list-help.component";
@@ -32,6 +38,8 @@ const SimpleList = ({
   waitForApi = true,
 }) => {
   const { apiObject, dispatch } = React.useContext(ApiObjectContext);
+  const { event } = React.useContext(AnalyticsContext);
+
   const [actionMsg, setActionMsg] = React.useState(null);
   const [selected, setSelected] = React.useState(null);
   const [created, setCreated] = React.useState(null);
@@ -80,6 +88,7 @@ const SimpleList = ({
 
   const handleSave = async (name) => {
     if (apiObject.transaction) return;
+    event(IndexedAnalyticsActions[apiObject.class].create);
     setPerformAsync({
       type: ApiActions.StartAdd,
       func: ApiFuctions.asyncAdd,
@@ -91,6 +100,7 @@ const SimpleList = ({
 
   const handleDelete = (id) => {
     if (apiObject.transaction) return;
+    event(IndexedAnalyticsActions[apiObject.class].delete);
     setPerformAsync({
       type: ApiActions.StartDel,
       func: ApiFuctions.asyncDel,

@@ -11,10 +11,11 @@ import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
 import { ItemContext } from "../../providers/api/item/item.provider";
 import { TransactionContext } from "../../providers/api/transaction/transaction.provider";
+import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
+import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
-import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import Strings from "../../configuration/strings";
 import Routes from "../../configuration/routes";
 
@@ -47,6 +48,7 @@ const ItemList = ({
     apiObject: transaction,
     dispatch: transactionDispatch,
   } = React.useContext(TransactionContext);
+  const { event } = React.useContext(AnalyticsContext);
 
   const [errorMsg, setErrorMsg] = React.useState(null);
   const [actionMsg, setActionMsg] = React.useState(null);
@@ -103,7 +105,7 @@ const ItemList = ({
     history.push(Routes.create);
   };
 
-  const generateCallback = (itemToRefresh) => {
+  const generateCallback = (itemToRefresh, quantity) => {
     const callback = (state) => {
       if (state.success && state.complete) {
         setPerformItemAsync({
@@ -114,6 +116,10 @@ const ItemList = ({
             id: itemToRefresh.id,
           },
         });
+        if (quantity > 0)
+          new Promise((resolve) => event(AnalyticsActions.TransactionRestock));
+        if (quantity < 0)
+          new Promise((resolve) => event(AnalyticsActions.TransactionConsume));
       }
     };
     return callback;
@@ -129,7 +135,7 @@ const ItemList = ({
         item: receivedItem.id,
         quantity: parseInt(quantity),
       },
-      callback: generateCallback(receivedItem),
+      callback: generateCallback(receivedItem, parseInt(quantity)),
     });
   };
 
@@ -143,7 +149,7 @@ const ItemList = ({
         item: receivedItem.id,
         quantity: parseInt(quantity) * -1,
       },
-      callback: generateCallback(receivedItem),
+      callback: generateCallback(receivedItem, parseInt(quantity) * -1),
     });
   };
 

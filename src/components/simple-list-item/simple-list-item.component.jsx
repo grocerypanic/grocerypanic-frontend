@@ -3,9 +3,6 @@ import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
-import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
-
 import Strings from "../../configuration/strings";
 import Routes from "../../configuration/routes";
 import { FilterTag } from "../../configuration/backend";
@@ -24,7 +21,6 @@ const SimpleListItem = ({
 }) => {
   const { t } = useTranslation();
   const fieldItem = React.createRef();
-  const { event } = React.useContext(AnalyticsContext);
 
   const {
     add,

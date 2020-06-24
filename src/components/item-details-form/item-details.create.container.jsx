@@ -11,7 +11,10 @@ import ItemDetailsForm from "./item-details.form";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
+
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
+
 import Strings from "../../configuration/strings";
 import Routes from "../../configuration/routes";
 
@@ -46,6 +49,8 @@ const ItemDetailsCreateContainer = ({
   const { apiObject: store, dispatch: storeDispatch } = React.useContext(
     StoreContext
   );
+  const { event } = React.useContext(AnalyticsContext);
+
   const [performItemAsync, setPerformItemAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performShelfAsync, setPerformShelfAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performStoreAsync, setPerformStoreAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
@@ -113,6 +118,7 @@ const ItemDetailsCreateContainer = ({
   }, []);
 
   const handleSave = (newItem) => {
+    event(AnalyticsActions.ItemCreated);
     setPerformItemAsync({
       type: ApiActions.StartAdd,
       func: ApiFuctions.asyncAdd,

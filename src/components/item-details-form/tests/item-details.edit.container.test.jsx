@@ -9,6 +9,8 @@ import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 import ItemDetails from "../item-details.component";
 import ItemDetailsEditContainer from "../item-details.edit.container";
 
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import { ItemContext } from "../../../providers/api/item/item.provider";
 import { TransactionContext } from "../../../providers/api/transaction/transaction.provider";
 import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
@@ -23,7 +25,6 @@ import ApiActions from "../../../providers/api/api.actions";
 import ApiFunctions from "../../../providers/api/api.functions";
 
 import Strings from "../../../configuration/strings";
-import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import Routes from "../../../configuration/routes";
 
 jest.mock("../item-details.component");
@@ -98,6 +99,12 @@ const props = {
   helpText: Strings.Testing.GenericTranslationTestString,
 };
 
+const mockAnalyticsContext = {
+  initialized: true,
+  event: jest.fn(),
+  setup: true,
+};
+
 describe("Setup Environment", () => {
   let utils;
   let current;
@@ -122,19 +129,21 @@ describe("Setup Environment", () => {
     itemContext.transaction = currentTransaction;
     return command(
       <Router history={currentHistory}>
-        <StoreContext.Provider
-          value={{ ...mockStoreProvider, transaction: currentTransaction }}
-        >
-          <ShelfContext.Provider
-            value={{ ...mockShelfProvider, transaction: currentTransaction }}
+        <AnalyticsContext.Provider value={mockAnalyticsContext}>
+          <StoreContext.Provider
+            value={{ ...mockStoreProvider, transaction: currentTransaction }}
           >
-            <ItemContext.Provider value={{ ...itemContext }}>
-              <TransactionContext.Provider value={{ ...trContext }}>
-                <ItemDetailsEditContainer {...currentProps} />
-              </TransactionContext.Provider>
-            </ItemContext.Provider>
-          </ShelfContext.Provider>
-        </StoreContext.Provider>
+            <ShelfContext.Provider
+              value={{ ...mockShelfProvider, transaction: currentTransaction }}
+            >
+              <ItemContext.Provider value={{ ...itemContext }}>
+                <TransactionContext.Provider value={{ ...trContext }}>
+                  <ItemDetailsEditContainer {...currentProps} />
+                </TransactionContext.Provider>
+              </ItemContext.Provider>
+            </ShelfContext.Provider>
+          </StoreContext.Provider>
+        </AnalyticsContext.Provider>
       </Router>
     );
   };
@@ -330,7 +339,26 @@ describe("Setup Environment", () => {
         expect(updateDispatch.type).toBe(ApiActions.StartUpdate);
         expect(updateDispatch.func).toBe(ApiFunctions.asyncUpdate);
         expect(updateDispatch.dispatch.name).toBe("bound dispatchAction");
-        expect(updateDispatch.payload).toStrictEqual({ id: mockObject.id });
+        expect(updateDispatch.payload).toStrictEqual(mockObject);
+
+        expect(mockAnalyticsContext.event).toBeCalledWith(
+          AnalyticsActions.ItemModified
+        );
+
+        done();
+      });
+
+      it("handles a call to handleSave as expected, no changes to item", async (done) => {
+        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+
+        const mockObject = { ...mockItem };
+
+        const handleSave = ItemDetails.mock.calls[1][0].handleSave;
+        expect(handleSave).toBeInstanceOf(Function);
+        act(() => handleSave(mockObject));
+
+        await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+        expect(mockAnalyticsContext.event).toBeCalledTimes(0);
 
         done();
       });
@@ -358,6 +386,10 @@ describe("Setup Environment", () => {
         expect(deleteDispatch.func).toBe(ApiFunctions.asyncDel);
         expect(deleteDispatch.dispatch.name).toBe("bound dispatchAction");
         expect(deleteDispatch.payload).toStrictEqual({ id: mockObject.id });
+
+        expect(mockAnalyticsContext.event).toBeCalledWith(
+          AnalyticsActions.ItemDeleted
+        );
 
         done();
       });
@@ -518,26 +550,28 @@ describe("Setup Environment", () => {
     ) =>
       render(
         <MemoryRouter>
-          <StoreContext.Provider
-            value={{ ...storeContext, transaction: false }}
-          >
-            <ShelfContext.Provider
-              value={{ ...shelfContext, transaction: false }}
+          <AnalyticsContext.Provider value={mockAnalyticsContext}>
+            <StoreContext.Provider
+              value={{ ...storeContext, transaction: false }}
             >
-              <ItemContext.Provider
-                value={{
-                  ...itemContext,
-                  transaction: false,
-                }}
+              <ShelfContext.Provider
+                value={{ ...shelfContext, transaction: false }}
               >
-                <TransactionContext.Provider
-                  value={{ ...transactionContext, transaction: false }}
+                <ItemContext.Provider
+                  value={{
+                    ...itemContext,
+                    transaction: false,
+                  }}
                 >
-                  <ItemDetailsEditContainer {...currentProps} />
-                </TransactionContext.Provider>
-              </ItemContext.Provider>
-            </ShelfContext.Provider>
-          </StoreContext.Provider>
+                  <TransactionContext.Provider
+                    value={{ ...transactionContext, transaction: false }}
+                  >
+                    <ItemDetailsEditContainer {...currentProps} />
+                  </TransactionContext.Provider>
+                </ItemContext.Provider>
+              </ShelfContext.Provider>
+            </StoreContext.Provider>
+          </AnalyticsContext.Provider>
         </MemoryRouter>
       );
 

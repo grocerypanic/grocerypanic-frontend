@@ -3,19 +3,20 @@ import { render, cleanup, waitFor, act } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
 import { UserContext } from "../../../providers/user/user.provider";
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
+
 import initialState from "../../../providers/user/user.initial";
 import {
   triggerLogin,
   resetLogin,
   loginError,
 } from "../../../providers/user/user.async";
-import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 
 import SignInContainer from "../signin.container";
 import SignIn from "../signin.page";
 import ErrorDialogue from "../../../components/error-dialogue/error-dialogue.component";
 
-import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
 
 jest.mock("../signin.page");
@@ -30,6 +31,12 @@ ErrorDialogue.mockImplementation(() => <div>MockError</div>);
 SignIn.mockImplementation(() => <div>MockSignin</div>);
 const mockDispatch = jest.fn();
 
+const mockAnalyticsContext = {
+  initialized: true,
+  event: jest.fn(),
+  setup: true,
+};
+
 describe("Setup Environment", () => {
   let tests = [1];
   let utils;
@@ -39,11 +46,13 @@ describe("Setup Environment", () => {
     jest.clearAllMocks();
     currentTest = tests.shift();
     utils = render(
-      <UserContext.Provider
-        value={{ user: initialState, dispatch: mockDispatch }}
-      >
-        <SignInContainer />
-      </UserContext.Provider>
+      <AnalyticsContext.Provider value={mockAnalyticsContext}>
+        <UserContext.Provider
+          value={{ user: initialState, dispatch: mockDispatch }}
+        >
+          <SignInContainer />
+        </UserContext.Provider>
+      </AnalyticsContext.Provider>
     );
   });
 
@@ -80,11 +89,13 @@ describe("Setup Environment for Handlers", () => {
     jest.clearAllMocks();
     currentTest = tests.shift();
     utils = render(
-      <UserContext.Provider
-        value={{ user: currentTest, dispatch: mockDispatch }}
-      >
-        <SignInContainer />
-      </UserContext.Provider>
+      <AnalyticsContext.Provider value={mockAnalyticsContext}>
+        <UserContext.Provider
+          value={{ user: currentTest, dispatch: mockDispatch }}
+        >
+          <SignInContainer />
+        </UserContext.Provider>
+      </AnalyticsContext.Provider>
     );
   });
 
@@ -105,6 +116,11 @@ describe("Setup Environment for Handlers", () => {
 
     expect(triggerCall[0]).toBeInstanceOf(Function);
     expect(triggerCall[1]).toBe("mockResponse");
+
+    expect(mockAnalyticsContext.event).toBeCalledWith(
+      AnalyticsActions.LoginSuccess
+    );
+
     done();
   });
 
@@ -158,11 +174,13 @@ describe("Setup Environment for Async Dispatch Test", () => {
     jest.clearAllMocks();
     currentTest = tests.shift();
     utils = render(
-      <UserContext.Provider
-        value={{ user: currentTest, dispatch: mockDispatch }}
-      >
-        <SignInContainer />
-      </UserContext.Provider>
+      <AnalyticsContext.Provider value={mockAnalyticsContext}>
+        <UserContext.Provider
+          value={{ user: currentTest, dispatch: mockDispatch }}
+        >
+          <SignInContainer />
+        </UserContext.Provider>
+      </AnalyticsContext.Provider>
     );
   });
 

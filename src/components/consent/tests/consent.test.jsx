@@ -8,15 +8,6 @@ import Consent from "../consent.component";
 
 import Strings from "../../../configuration/strings";
 
-// Translate as English
-jest.mock("react-i18next", () => ({
-  useTranslation: () => ({
-    t: (key) => {
-      return key;
-    },
-  }),
-}));
-
 jest.mock("react-cookie-consent");
 
 const mockSetup = jest.fn();

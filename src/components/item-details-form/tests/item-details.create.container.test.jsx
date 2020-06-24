@@ -11,18 +11,19 @@ import ItemDetailsCreateContainer, {
   defaultItem,
 } from "../item-details.create.container";
 
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import { ItemContext } from "../../../providers/api/item/item.provider";
 import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
 import { StoreContext } from "../../../providers/api/store/store.provider";
 
-import InitialValue from "../../../providers/api/item/item.initial";
+import ItemInitialValue from "../../../providers/api/item/item.initial";
 import ShelfInitialValue from "../../../providers/api/shelf/shelf.initial";
 import StoreInitialValue from "../../../providers/api/store/store.initial";
 import ApiActions from "../../../providers/api/api.actions";
 import ApiFunctions from "../../../providers/api/api.functions";
 
 import Strings from "../../../configuration/strings";
-import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import Routes from "../../../configuration/routes";
 
 jest.mock("../item-details.form");
@@ -62,9 +63,9 @@ const mockStore = {
   name: "No Frills",
 };
 
-const mockItemsProvider = {
+const mockItemProvider = {
   dispatch: mockItemDispatch,
-  apiObject: { ...InitialValue, inventory: [mockItem] },
+  apiObject: { ...ItemInitialValue, inventory: [mockItem] },
 };
 
 const mockStoreProvider = {
@@ -75,6 +76,12 @@ const mockStoreProvider = {
 const mockShelfProvider = {
   dispatch: mockShelfDispatch,
   apiObject: { ...ShelfInitialValue, inventory: [mockShelf] },
+};
+
+const mockAnalyticsContext = {
+  initialized: true,
+  event: jest.fn(),
+  setup: true,
 };
 
 const props = {
@@ -108,22 +115,24 @@ describe("Setup Environment", () => {
 
       utils = render(
         <Router history={history}>
-          <StoreContext.Provider
-            value={{ ...mockStoreProvider, transaction: false }}
-          >
-            <ShelfContext.Provider
-              value={{ ...mockShelfProvider, transaction: false }}
+          <AnalyticsContext.Provider value={mockAnalyticsContext}>
+            <StoreContext.Provider
+              value={{ ...mockStoreProvider, transaction: false }}
             >
-              <ItemContext.Provider
-                value={{
-                  ...mockItemsProvider,
-                  transaction: false,
-                }}
+              <ShelfContext.Provider
+                value={{ ...mockShelfProvider, transaction: false }}
               >
-                <ItemDetailsCreateContainer {...current} />
-              </ItemContext.Provider>
-            </ShelfContext.Provider>
-          </StoreContext.Provider>
+                <ItemContext.Provider
+                  value={{
+                    ...mockItemProvider,
+                    transaction: false,
+                  }}
+                >
+                  <ItemDetailsCreateContainer {...current} />
+                </ItemContext.Provider>
+              </ShelfContext.Provider>
+            </StoreContext.Provider>
+          </AnalyticsContext.Provider>
         </Router>
       );
     });
@@ -270,6 +279,10 @@ describe("Setup Environment", () => {
       expect(updateDispatch.dispatch.name).toBe("bound dispatchAction");
       expect(updateDispatch.payload).toStrictEqual(mockObject);
 
+      expect(mockAnalyticsContext.event).toBeCalledWith(
+        AnalyticsActions.ItemCreated
+      );
+
       done();
     });
 
@@ -308,20 +321,24 @@ describe("Setup Environment", () => {
     const renderHelper = (storeState, shelfState) =>
       render(
         <Router history={history}>
-          <StoreContext.Provider value={{ ...storeState, transaction: false }}>
-            <ShelfContext.Provider
-              value={{ ...shelfState, transaction: false }}
+          <AnalyticsContext.Provider value={mockAnalyticsContext}>
+            <StoreContext.Provider
+              value={{ ...storeState, transaction: false }}
             >
-              <ItemContext.Provider
-                value={{
-                  ...mockItemsProvider,
-                  transaction: false,
-                }}
+              <ShelfContext.Provider
+                value={{ ...shelfState, transaction: false }}
               >
-                <ItemDetailsCreateContainer {...current} />
-              </ItemContext.Provider>
-            </ShelfContext.Provider>
-          </StoreContext.Provider>
+                <ItemContext.Provider
+                  value={{
+                    ...mockItemProvider,
+                    transaction: false,
+                  }}
+                >
+                  <ItemDetailsCreateContainer {...current} />
+                </ItemContext.Provider>
+              </ShelfContext.Provider>
+            </StoreContext.Provider>
+          </AnalyticsContext.Provider>
         </Router>
       );
 
@@ -362,7 +379,36 @@ describe("Setup Environment", () => {
     });
   });
 
-  describe("during an api error", () => {
+  describe("during an error", () => {
+    const renderHelper = (
+      storeContext,
+      shelfContext,
+      itemContext,
+      currentProps
+    ) =>
+      render(
+        <MemoryRouter>
+          <AnalyticsContext.Provider value={mockAnalyticsContext}>
+            <StoreContext.Provider
+              value={{ ...storeContext, transaction: false }}
+            >
+              <ShelfContext.Provider
+                value={{ ...shelfContext, transaction: false }}
+              >
+                <ItemContext.Provider
+                  value={{
+                    ...itemContext,
+                    transaction: false,
+                  }}
+                >
+                  <ItemDetailsCreateContainer {...currentProps} />
+                </ItemContext.Provider>
+              </ShelfContext.Provider>
+            </StoreContext.Provider>
+          </AnalyticsContext.Provider>
+        </MemoryRouter>
+      );
+
     describe("during a store api error", () => {
       beforeEach(() => {
         jest.clearAllMocks();
@@ -373,37 +419,24 @@ describe("Setup Environment", () => {
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = render(
-          <MemoryRouter>
-            <StoreContext.Provider value={TestContext}>
-              <ShelfContext.Provider
-                value={{ ...mockShelfProvider, transaction: false }}
-              >
-                <ItemContext.Provider
-                  value={{
-                    ...mockItemsProvider,
-                    transaction: false,
-                  }}
-                >
-                  <ItemDetailsCreateContainer {...current} />
-                </ItemContext.Provider>
-              </ShelfContext.Provider>
-            </StoreContext.Provider>
-          </MemoryRouter>
+        utils = renderHelper(
+          TestContext,
+          mockShelfProvider,
+          mockItemProvider,
+          current
         );
       });
 
       it("renders, calls the ErrorHandler with the correct params", () => {
         expect(ErrorHandler).toHaveBeenCalledTimes(6);
 
-        const errorHandlerCall = ErrorHandler.mock.calls[2][0];
+        const errorHandlerCall = ErrorHandler.mock.calls[0][0];
         propCount(errorHandlerCall, 7);
         expect(errorHandlerCall.condition).toBe(true);
         expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
         expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
         expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
         expect(errorHandlerCall.redirect).toBe(Routes.goBack);
-        expect(errorHandlerCall.string).toBe("ApiCommunicationError");
         expect(errorHandlerCall.children).toBeTruthy();
       });
 
@@ -432,23 +465,11 @@ describe("Setup Environment", () => {
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = render(
-          <MemoryRouter>
-            <StoreContext.Provider
-              value={{ ...mockStoreProvider, transaction: false }}
-            >
-              <ShelfContext.Provider value={TestContext}>
-                <ItemContext.Provider
-                  value={{
-                    ...mockItemsProvider,
-                    transaction: false,
-                  }}
-                >
-                  <ItemDetailsCreateContainer {...current} />
-                </ItemContext.Provider>
-              </ShelfContext.Provider>
-            </StoreContext.Provider>
-          </MemoryRouter>
+        utils = renderHelper(
+          mockStoreProvider,
+          TestContext,
+          mockItemProvider,
+          current
         );
       });
 
@@ -485,28 +506,16 @@ describe("Setup Environment", () => {
         jest.clearAllMocks();
         current.id = "2";
         const TestContext = {
-          ...mockItemsProvider,
-          apiObject: { ...InitialValue },
+          ...mockItemProvider,
+          apiObject: { ...ItemInitialValue },
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = render(
-          <MemoryRouter>
-            <StoreContext.Provider
-              value={{ ...mockStoreProvider, transaction: false }}
-            >
-              <ShelfContext.Provider
-                value={{
-                  ...mockShelfProvider,
-                  transaction: false,
-                }}
-              >
-                <ItemContext.Provider value={TestContext}>
-                  <ItemDetailsCreateContainer {...current} />
-                </ItemContext.Provider>
-              </ShelfContext.Provider>
-            </StoreContext.Provider>
-          </MemoryRouter>
+        utils = renderHelper(
+          mockStoreProvider,
+          mockShelfProvider,
+          TestContext,
+          current
         );
       });
 

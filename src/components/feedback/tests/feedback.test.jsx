@@ -1,16 +1,29 @@
 import React from "react";
-import { render, cleanup } from "@testing-library/react";
+import { render, cleanup, fireEvent } from "@testing-library/react";
 
 import FeedBack from "../feedback.component";
 
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
+
 import Strings from "../../../configuration/strings";
 import { External } from "../../../configuration/routes";
+
+const mockAnalyticsContext = {
+  initialized: true,
+  event: jest.fn(),
+  setup: true,
+};
 
 describe("Setup Environment", () => {
   let utils;
 
   beforeEach(() => {
-    utils = render(<FeedBack />);
+    utils = render(
+      <AnalyticsContext.Provider value={mockAnalyticsContext}>
+        <FeedBack />
+      </AnalyticsContext.Provider>
+    );
   });
 
   afterEach(cleanup);
@@ -26,5 +39,15 @@ describe("Setup Environment", () => {
     expect(link.getAttribute("href")).toEqual(External.feedback);
     expect(link.textContent).toBe(`${Strings.FeedBack.Link}`);
     expect(text3.textContent).toBe(Strings.FeedBack.Request3);
+  });
+
+  it("should handle a click on the link correctly", async (done) => {
+    const node = utils.getByTestId("FeedBackLink");
+    const [, link] = Array.from(node.childNodes);
+    fireEvent.click(link, "click");
+    expect(mockAnalyticsContext.event).toBeCalledWith(
+      AnalyticsActions.FeedBackLink
+    );
+    done();
   });
 });

@@ -8,6 +8,8 @@ import HoldingPattern from "../holding-pattern/holding-pattern.component";
 import ErrorHandler from "../error-handler/error-handler.component";
 import ItemDetails from "./item-details.component";
 
+import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 import { ItemContext } from "../../providers/api/item/item.provider";
 import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
 import { StoreContext } from "../../providers/api/store/store.provider";
@@ -15,7 +17,6 @@ import { TransactionContext } from "../../providers/api/transaction/transaction.
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
-import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import Strings from "../../configuration/strings";
 import Routes from "../../configuration/routes";
 
@@ -49,6 +50,7 @@ const ItemDetailsEditContainer = ({
   const { apiObject: tr, dispatch: trDispatch } = React.useContext(
     TransactionContext
   );
+  const { event } = React.useContext(AnalyticsContext);
 
   const [performItemAsync, setPerformItemAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performShelfAsync, setPerformShelfAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
@@ -151,15 +153,22 @@ const ItemDetailsEditContainer = ({
   };
 
   const handleSave = (newItem) => {
-    setPerformItemAsync({
-      type: ApiActions.StartUpdate,
-      func: ApiFuctions.asyncUpdate,
-      dispatch: setPerformItemAsync,
-      payload: { ...newItem },
-    });
+    if (
+      JSON.stringify(newItem) !==
+      JSON.stringify(item.inventory.find((o) => o.id === parseInt(itemId)))
+    ) {
+      event(AnalyticsActions.ItemModified);
+      setPerformItemAsync({
+        type: ApiActions.StartUpdate,
+        func: ApiFuctions.asyncUpdate,
+        dispatch: setPerformItemAsync,
+        payload: { ...newItem },
+      });
+    }
   };
 
   const handleDelete = (newItem) => {
+    event(AnalyticsActions.ItemDeleted);
     setPerformItemAsync({
       type: ApiActions.StartDel,
       func: ApiFuctions.asyncDel,

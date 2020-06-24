@@ -12,6 +12,9 @@ import Header from "../../header/header.component";
 import Help from "../../simple-list-help/simple-list-help.component";
 import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 
+import { IndexedAnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
+
 import ApiActions from "../../../providers/api/api.actions";
 import ApiFunctions from "../../../providers/api/api.functions";
 
@@ -49,6 +52,12 @@ const mockDataState = {
   errorMsg: null,
 };
 
+const mockAnalyticsContext = {
+  initialized: true,
+  event: jest.fn(),
+  setup: true,
+};
+
 const mockPlaceHolderMessage = "I'm Right Here";
 
 describe("Setup Environment", () => {
@@ -65,6 +74,7 @@ describe("Setup Environment", () => {
 
     apiObjectState = {
       inventory: mockData,
+      class: "shelf",
       ...mockDataState,
     };
 
@@ -156,26 +166,28 @@ describe("Setup Environment", () => {
       beforeEach(() => {
         current = { ...apiObjectState, transaction: false };
         utils = render(
-          <ApiContext.Provider
-            value={{
-              apiObject: current,
-              dispatch: mockDispatch,
-            }}
-          >
-            <SimpleList
-              title={mockTitle}
-              headerTitle={mockHeaderTitle}
-              create={create}
-              transaction={current.transaction}
-              ApiObjectContext={ApiContext}
-              placeHolderMessage={mockPlaceHolderMessage}
-              handleExpiredAuth={mockHandleExpiredAuth}
-              helpText={Strings.Testing.GenericTranslationTestString}
-              redirectTag={mockRedirectTag}
-              waitForApi={false}
-            />
-            }}
-          </ApiContext.Provider>
+          <AnalyticsContext.Provider value={mockAnalyticsContext}>
+            <ApiContext.Provider
+              value={{
+                apiObject: current,
+                dispatch: mockDispatch,
+              }}
+            >
+              <SimpleList
+                title={mockTitle}
+                headerTitle={mockHeaderTitle}
+                create={create}
+                transaction={current.transaction}
+                ApiObjectContext={ApiContext}
+                placeHolderMessage={mockPlaceHolderMessage}
+                handleExpiredAuth={mockHandleExpiredAuth}
+                helpText={Strings.Testing.GenericTranslationTestString}
+                redirectTag={mockRedirectTag}
+                waitForApi={false}
+              />
+              }}
+            </ApiContext.Provider>
+          </AnalyticsContext.Provider>
         );
       });
 
@@ -338,10 +350,41 @@ describe("Setup Environment", () => {
         expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
         expect(apiCall.payload).toStrictEqual({ name: "shelfname" });
         expect(apiCall.dispatch).toBeInstanceOf(Function);
+
+        expect(mockAnalyticsContext.event).toBeCalledWith(
+          IndexedAnalyticsActions.shelf.create
+        );
+
         done();
       });
 
-      it("renders,  and dispatches the API reducer when handleDelete is called", async (done) => {
+      it("renders, and dispatches the API reducer when handleSave is called", async (done) => {
+        expect(SimpleListItem).toHaveBeenCalledTimes(3);
+        const { add } = SimpleListItem.mock.calls[0][0].listFunctions;
+        expect(current.transaction).toBeFalsy();
+
+        act(() => {
+          add("shelfname");
+        });
+
+        await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
+        expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
+
+        const apiCall = mockDispatch.mock.calls[1][0];
+        propCount(apiCall, 4);
+        expect(apiCall.type).toBe(ApiActions.StartAdd);
+        expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
+        expect(apiCall.payload).toStrictEqual({ name: "shelfname" });
+        expect(apiCall.dispatch).toBeInstanceOf(Function);
+
+        expect(mockAnalyticsContext.event).toBeCalledWith(
+          IndexedAnalyticsActions.shelf.create
+        );
+
+        done();
+      });
+
+      it("renders, and dispatches the API reducer when handleDelete is called", async (done) => {
         expect(SimpleListItem).toHaveBeenCalledTimes(3);
         const { del } = SimpleListItem.mock.calls[0][0].listFunctions;
         expect(current.transaction).toBeFalsy();
@@ -359,10 +402,15 @@ describe("Setup Environment", () => {
         expect(apiCall.func).toBe(ApiFunctions.asyncDel);
         expect(apiCall.payload.id).toBe(2);
         expect(apiCall.dispatch).toBeInstanceOf(Function);
+
+        expect(mockAnalyticsContext.event).toBeCalledWith(
+          IndexedAnalyticsActions.shelf.delete
+        );
+
         done();
       });
 
-      it("renders,  and handles an auth failure condition as expected", async (done) => {
+      it("renders, and handles an auth failure condition as expected", async (done) => {
         expect(SimpleListItem).toHaveBeenCalledTimes(3);
         const { del } = SimpleListItem.mock.calls[0][0].listFunctions;
         expect(current.transaction).toBeFalsy();
@@ -414,26 +462,28 @@ describe("Setup Environment", () => {
     beforeEach(() => {
       current = { ...apiObjectState, transaction: true };
       utils = render(
-        <ApiContext.Provider
-          value={{
-            apiObject: current,
-            dispatch: mockDispatch,
-          }}
-        >
-          <SimpleList
-            title={mockTitle}
-            headerTitle={mockHeaderTitle}
-            create={create}
-            transaction={current.transaction}
-            ApiObjectContext={ApiContext}
-            placeHolderMessage={mockPlaceHolderMessage}
-            handleExpiredAuth={mockHandleExpiredAuth}
-            helpText={Strings.Testing.GenericTranslationTestString}
-            redirectTag={mockRedirectTag}
-            waitForApi={false}
-          />
-          }}
-        </ApiContext.Provider>
+        <AnalyticsContext.Provider value={mockAnalyticsContext}>
+          <ApiContext.Provider
+            value={{
+              apiObject: current,
+              dispatch: mockDispatch,
+            }}
+          >
+            <SimpleList
+              title={mockTitle}
+              headerTitle={mockHeaderTitle}
+              create={create}
+              transaction={current.transaction}
+              ApiObjectContext={ApiContext}
+              placeHolderMessage={mockPlaceHolderMessage}
+              handleExpiredAuth={mockHandleExpiredAuth}
+              helpText={Strings.Testing.GenericTranslationTestString}
+              redirectTag={mockRedirectTag}
+              waitForApi={false}
+            />
+            }}
+          </ApiContext.Provider>
+        </AnalyticsContext.Provider>
       );
     });
     it("renders, and then when there is an transaction bypasses calls to handleCreate", async (done) => {
@@ -509,25 +559,27 @@ describe("Setup Environment", () => {
     beforeEach(() => {
       current = { ...apiObjectState, transaction: true };
       utils = render(
-        <ApiContext.Provider
-          value={{
-            apiObject: current,
-            dispatch: mockDispatch,
-          }}
-        >
-          <SimpleList
-            title={mockTitle}
-            headerTitle={mockHeaderTitle}
-            create={create}
-            transaction={current.transaction}
-            ApiObjectContext={ApiContext}
-            placeHolderMessage={mockPlaceHolderMessage}
-            handleExpiredAuth={mockHandleExpiredAuth}
-            helpText={Strings.Testing.GenericTranslationTestString}
-            redirectTag={mockRedirectTag}
-          />
-          }}
-        </ApiContext.Provider>
+        <AnalyticsContext.Provider value={mockAnalyticsContext}>
+          <ApiContext.Provider
+            value={{
+              apiObject: current,
+              dispatch: mockDispatch,
+            }}
+          >
+            <SimpleList
+              title={mockTitle}
+              headerTitle={mockHeaderTitle}
+              create={create}
+              transaction={current.transaction}
+              ApiObjectContext={ApiContext}
+              placeHolderMessage={mockPlaceHolderMessage}
+              handleExpiredAuth={mockHandleExpiredAuth}
+              helpText={Strings.Testing.GenericTranslationTestString}
+              redirectTag={mockRedirectTag}
+            />
+            }}
+          </ApiContext.Provider>
+        </AnalyticsContext.Provider>
       );
     });
     it("renders, and loads the holding pattern to trigger the spinner", async (done) => {
