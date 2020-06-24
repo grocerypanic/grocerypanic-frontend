@@ -35,7 +35,6 @@ export const Digit = styled.div`
   width: ${digitWidth};
   height: ${itemAttributes.innerHeight}px;
   cursor: pointer;
-  ${(props) => (props.type === "expired" ? `color: ${danger};` : null)}
 `;
 
 export const Control = styled.div`

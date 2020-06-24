@@ -1,6 +1,6 @@
 import moment from "moment";
 
-import { isWithinAWeek, isWithinAMonth, nextWeek } from "../datetime";
+import { expired, isWithinAWeek, isWithinAMonth, nextWeek } from "../datetime";
 
 // Freeze Time
 Date.now = jest.fn(() => new Date("2020-06-16T11:01:58.135Z"));
@@ -53,5 +53,17 @@ describe("Setup nextWeek", () => {
   it("should return true for items less than a week old", () => {
     const fourdaysfromnow = moment().add(4, "days").startOf("day");
     expect(nextWeek(fourdaysfromnow)).toBe(true);
+  });
+});
+
+describe("Setup expired (in the future)", () => {
+  it("should return false for items in the future", () => {
+    const ninedaysfromdnow = moment().add(9, "days").startOf("day");
+    expect(expired(ninedaysfromdnow)).toBe(false);
+  });
+
+  it("should return true for items in the past", () => {
+    const twodaysago = moment().subtract(2, "days").startOf("day");
+    expect(expired(twodaysago)).toBe(true);
   });
 });

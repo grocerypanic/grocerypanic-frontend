@@ -1,9 +1,9 @@
 import React from "react";
 import { render, cleanup, waitFor, fireEvent } from "@testing-library/react";
+import moment from "moment";
 
 import ItemListRow from "../item-list-row.component.jsx";
 import Dropdown from "react-bootstrap/Dropdown";
-import DropdownItem from "react-bootstrap/DropdownItem";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import GeneratePopOver from "../../popover/popover.component";
@@ -57,7 +57,7 @@ const mockItem = {
   expired: 0,
   id: 1,
   name: "Vegan Cheese",
-  next_expiry_date: "2020-06-15",
+  next_expiry_date: moment().add(20, "days"),
   next_expiry_quantity: 0,
   preferred_stores: [1],
   price: "4.00",
@@ -401,6 +401,84 @@ describe("Setup Environment", () => {
       fireEvent.click(itemComponent, "click");
       expect(current.history.push).toBeCalledTimes(0);
       done();
+    });
+  });
+
+  describe("when given items of varying expiration", () => {
+    describe("when the item is healthy and ready to be eaten", () => {
+      beforeEach(() => {
+        current.listValues.transaction = true;
+        current.listValues.selected = null;
+        current.item.quantity = 2;
+        current.item.next_expiry_date = moment().add(23, "days");
+        current.shelf_life = 25;
+        jest.clearAllMocks();
+        utils = render(<ItemListRow {...current} />);
+      });
+
+      afterEach(cleanup);
+
+      it("should render the quantity green", () => {
+        const node = utils.getByTestId("item-quantity");
+        expect(node.className.split(" ").includes("text-success")).toBe(true);
+      });
+    });
+
+    describe("when the item is expiring soon", () => {
+      beforeEach(() => {
+        current.listValues.transaction = true;
+        current.listValues.selected = null;
+        current.item.quantity = 2;
+        current.item.next_expiry_date = moment().add(3, "days");
+        current.shelf_life = 25;
+        jest.clearAllMocks();
+        utils = render(<ItemListRow {...current} />);
+      });
+
+      afterEach(cleanup);
+
+      it("should render the quantity yellow", () => {
+        const node = utils.getByTestId("item-quantity");
+        expect(node.className.split(" ").includes("text-warning")).toBe(true);
+      });
+    });
+
+    describe("when the item is already expired", () => {
+      beforeEach(() => {
+        current.listValues.transaction = true;
+        current.listValues.selected = null;
+        current.item.quantity = 2;
+        current.item.next_expiry_date = moment().subtract(3, "days");
+        current.shelf_life = 25;
+        jest.clearAllMocks();
+        utils = render(<ItemListRow {...current} />);
+      });
+
+      afterEach(cleanup);
+
+      it("should render the quantity red", () => {
+        const node = utils.getByTestId("item-quantity");
+        expect(node.className.split(" ").includes("text-danger")).toBe(true);
+      });
+    });
+
+    describe("when the item is out of stock", () => {
+      beforeEach(() => {
+        current.listValues.transaction = true;
+        current.listValues.selected = null;
+        current.item.quantity = 0;
+        current.item.next_expiry_date = moment().add(20, "days");
+        current.shelf_life = 25;
+        jest.clearAllMocks();
+        utils = render(<ItemListRow {...current} />);
+      });
+
+      afterEach(cleanup);
+
+      it("should render the quantity red", () => {
+        const node = utils.getByTestId("item-quantity");
+        expect(node.className.split(" ").includes("text-danger")).toBe(true);
+      });
     });
   });
 });

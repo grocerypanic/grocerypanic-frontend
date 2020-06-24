@@ -10,6 +10,7 @@ export const selected = "red";
 export const danger = "#d9534f";
 export const dark = "#495057";
 export const black = "#000000";
+export const warning = "#ffc107";
 
 export const ui = { alertTimeout: 2000 };
 

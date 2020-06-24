@@ -20,3 +20,7 @@ export const nextWeek = (dateObject) => {
     dateObject.isAfter(moment())
   );
 };
+
+export const expired = (dateObject) => {
+  return dateObject.isBefore(moment());
+};

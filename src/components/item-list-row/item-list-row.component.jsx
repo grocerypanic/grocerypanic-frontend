@@ -22,6 +22,8 @@ import GeneratePopOver from "../popover/popover.component";
 import { ui } from "../../configuration/theme";
 import { Control, Digit, Symbol, Row, ListTitle } from "./item-list-row.styles";
 
+import { nextWeek, expired } from "../../util/datetime";
+
 const ItemListRow = ({
   item,
   allItems,
@@ -75,9 +77,16 @@ const ItemListRow = ({
     });
   };
 
+  const getExpiryClass = () => {
+    if (item.quantity === 0) return "text-danger";
+    if (nextWeek(item.next_expiry_date)) return "text-warning";
+    if (expired(item.next_expiry_date)) return "text-danger";
+    return "text-success";
+  };
+
   return (
     <Row warning={false} danger={false} data-testid="listElement" item={item}>
-      <Digit>
+      <Digit data-testid="item-quantity" className={getExpiryClass()}>
         <GeneratePopOver
           translate={t}
           title={Strings.InventoryPage.Quantity.Title}
@@ -86,7 +95,7 @@ const ItemListRow = ({
           <div data-testid="quantity">{item.quantity}</div>
         </GeneratePopOver>
       </Digit>
-      <Digit type="expired">
+      <Digit className="text-danger">
         <GeneratePopOver
           translate={t}
           title={Strings.InventoryPage.Expired.Title}
