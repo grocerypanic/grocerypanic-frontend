@@ -7,12 +7,15 @@ import {
 } from "../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 
+import ErrorHandler from "../error-handler/error-handler.component";
 import Header from "../header/header.component";
 import SimpleListItem from "../simple-list-item/simple-list-item.component";
 import Help from "../simple-list-help/simple-list-help.component";
 import Alert from "../alert/alert.component";
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
+import Routes from "../../configuration/routes";
+import Strings from "../../configuration/strings";
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
 
@@ -109,6 +112,10 @@ const SimpleList = ({
     });
   };
 
+  const clearError = () => {
+    setPerformAsync({ type: ApiActions.ClearErrors });
+  };
+
   // Bundle Up Props For List Items
 
   const listFunctions = {
@@ -130,56 +137,65 @@ const SimpleList = ({
 
   return (
     <>
-      <Header
-        title={headerTitle}
-        transaction={apiObject.transaction}
-        create={handleCreate}
-      />
-      <HoldingPattern condition={!itemsFetched.complete && waitForApi}>
-        <Container>
-          <Paper>
-            {errorMsg && created ? (
-              <Banner className="alert alert-danger">{errorMsg}</Banner>
-            ) : (
-              <Banner className="alert alert-success">
-                <div>{title}</div>
-              </Banner>
-            )}
-            <Scroller className="overflow-auto" size={listSize}>
-              <ListBox>
-                {apiObject.inventory.map((item) => {
-                  return (
+      <ErrorHandler
+        condition={apiObject.error}
+        clearError={clearError}
+        eventMessage={AnalyticsActions.ApiError}
+        stringsRoot={Strings.SimpleList}
+        string={"ApiCommunicationError"}
+        redirect={Routes.goBack}
+      >
+        <Header
+          title={headerTitle}
+          transaction={apiObject.transaction}
+          create={handleCreate}
+        />
+        <HoldingPattern condition={!itemsFetched.complete && waitForApi}>
+          <Container>
+            <Paper>
+              {errorMsg && created ? (
+                <Banner className="alert alert-danger">{errorMsg}</Banner>
+              ) : (
+                <Banner className="alert alert-success">
+                  <div>{title}</div>
+                </Banner>
+              )}
+              <Scroller className="overflow-auto" size={listSize}>
+                <ListBox>
+                  {apiObject.inventory.map((item) => {
+                    return (
+                      <SimpleListItem
+                        item={item}
+                        allItems={apiObject.inventory}
+                        key={item.id}
+                        listFunctions={listFunctions}
+                        listValues={listValues}
+                        redirectTag={redirectTag}
+                      />
+                    );
+                  })}
+                  {created ? (
                     <SimpleListItem
-                      item={item}
+                      item={created}
                       allItems={apiObject.inventory}
-                      key={item.id}
                       listFunctions={listFunctions}
                       listValues={listValues}
                       redirectTag={redirectTag}
                     />
-                  );
-                })}
-                {created ? (
-                  <SimpleListItem
-                    item={created}
-                    allItems={apiObject.inventory}
-                    listFunctions={listFunctions}
-                    listValues={listValues}
-                    redirectTag={redirectTag}
-                  />
-                ) : null}
-                {apiObject.inventory.length === 0 && !created ? (
-                  <PlaceHolderListItem>
-                    {placeHolderMessage}
-                  </PlaceHolderListItem>
-                ) : null}
-              </ListBox>
-            </Scroller>
-          </Paper>
-          <Alert message={actionMsg} />
-          <Help>{helpText}</Help>
-        </Container>
-      </HoldingPattern>
+                  ) : null}
+                  {apiObject.inventory.length === 0 && !created ? (
+                    <PlaceHolderListItem>
+                      {placeHolderMessage}
+                    </PlaceHolderListItem>
+                  ) : null}
+                </ListBox>
+              </Scroller>
+            </Paper>
+            <Alert message={actionMsg} />
+            <Help>{helpText}</Help>
+          </Container>
+        </HoldingPattern>
+      </ErrorHandler>
     </>
   );
 };

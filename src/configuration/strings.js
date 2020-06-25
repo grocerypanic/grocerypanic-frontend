@@ -81,7 +81,7 @@ export const Strings = {
       NeedShelvesAndStores:
         "Create some shelves and stores first!\nYour items need to have stores you prefer\n to shop at, and a place to be kept at home.",
       ApiCommunicationError:
-        "Something went wrong!\nMaybe this doesn't exist? Or it already exists, and you're creating it again?\nGive it another try before giving up.",
+        "Something went wrong!\nMaybe this doesn't exist?\nOr maybe it already exists?\nGive it another try before giving up.",
       ApiError:
         "Unable to retrieve data from the API!\nDoes this content really exist?\nRetry, or change your query.",
     },
@@ -130,6 +130,8 @@ export const Strings = {
       DeleteButton: "delete",
       CreatedAction: "Created",
       DeletedAction: "Deleted",
+      ApiCommunicationError:
+        "Something went wrong!\nMaybe this doesn't exist?\nOr maybe it already exists?\nGive it another try before giving up.",
     },
     ShelfPage: {
       Title: "Your Shelves",
