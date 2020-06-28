@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import { primary, tertiary } from "../../configuration/theme";
+import { primary, black } from "../../configuration/theme";
 
 export const CopyrightBox = styled.div`
   padding-top: 10px;
@@ -9,7 +9,7 @@ export const CopyrightBox = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 0.7em;
-  color: ${tertiary};
+  color: ${black};
 `;
 
 export const StyledLink = styled(Link)`

@@ -30,7 +30,7 @@ export const Strings = {
       ErrorDialogueTitle: "Error!",
     },
     Copyight: {
-      CopyrightDeclaration: "Copyright © ",
+      CopyrightDeclaration: "Created by",
       CopyrightMessage: "Shared Vision Solutions",
     },
     App: {
