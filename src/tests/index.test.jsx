@@ -10,6 +10,7 @@ RootProvider.mockImplementation(({ children }) => <div>{children}</div>);
 jest.mock("../serviceWorker", () => ({
   __esModule: true,
   unregister: jest.fn(),
+  register: jest.fn(),
 }));
 jest.mock("react-dom", () => ({ render: jest.fn() }));
 jest.mock("../pages/app/app");
@@ -30,7 +31,8 @@ describe("Check Main Rendering", () => {
     const { Index } = require("../index.js");
     expect(ReactDOM.render).toHaveBeenCalledTimes(1);
     expect(ReactDOM.render).toHaveBeenCalledWith(<Index />, div);
-    expect(serviceWorker.unregister).toHaveBeenCalledTimes(1);
+    expect(serviceWorker.unregister).toHaveBeenCalledTimes(0);
+    expect(serviceWorker.register).toHaveBeenCalledTimes(1);
   });
 
   it("should render the main application components without crashing", () => {
