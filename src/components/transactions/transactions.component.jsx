@@ -97,10 +97,6 @@ const TransactionsReview = ({ item, ready, tr }) => {
     };
   }, [tr, ready]);
 
-  React.useEffect(() => {
-    event(AnalyticsActions.TestAction);
-  }, []);
-
   const consumedWithinLastWeek = () => {
     const results = tr.filter((o) => o.quantity < 0 && isWithinAWeek(o.date));
     return Math.abs(results.reduce((c, o) => (c += o.quantity), 0));
