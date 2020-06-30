@@ -111,33 +111,38 @@ describe("Setup Environment", () => {
     expect(call.listFunctions.del.name).toBe("handleDelete");
   };
 
+  const renderHelper = (currentProps) => {
+    return render(
+      <AnalyticsContext.Provider value={mockAnalyticsContext}>
+        <ApiContext.Provider
+          value={{
+            apiObject: currentProps,
+            dispatch: mockDispatch,
+          }}
+        >
+          <SimpleList
+            title={mockTitle}
+            headerTitle={mockHeaderTitle}
+            create={create}
+            transaction={currentProps.transaction}
+            ApiObjectContext={ApiContext}
+            placeHolderMessage={mockPlaceHolderMessage}
+            handleExpiredAuth={mockHandleExpiredAuth}
+            helpText={Strings.Testing.GenericTranslationTestString}
+            redirectTag={mockRedirectTag}
+            waitForApi={false}
+          />
+        </ApiContext.Provider>
+      </AnalyticsContext.Provider>
+    );
+  };
+
   describe("outside of a transaction", () => {
     describe("outside of an api error", () => {
       describe("no items in the list", () => {
         beforeEach(() => {
           current = { ...apiObjectState, transaction: false, inventory: [] };
-          utils = render(
-            <ApiContext.Provider
-              value={{
-                apiObject: current,
-                dispatch: mockDispatch,
-              }}
-            >
-              <SimpleList
-                title={mockTitle}
-                headerTitle={mockHeaderTitle}
-                create={create}
-                transaction={current.transaction}
-                ApiObjectContext={ApiContext}
-                placeHolderMessage={mockPlaceHolderMessage}
-                handleExpiredAuth={mockHandleExpiredAuth}
-                helpText={Strings.Testing.GenericTranslationTestString}
-                redirectTag={mockRedirectTag}
-                waitForApi={false}
-              />
-              }}
-            </ApiContext.Provider>
-          );
+          utils = renderHelper(current);
         });
 
         it("renders, outside of a transaction, with no items in the list, and renders the mockPlaceHolderMessage", () => {
@@ -182,35 +187,16 @@ describe("Setup Environment", () => {
           expect(call.children).toBeTruthy();
           done();
         });
+
+        it("should match the snapshot on file (styles)", () => {
+          expect(utils.container).toMatchSnapshot();
+        });
       });
 
       describe("3 items in the list", () => {
         beforeEach(() => {
           current = { ...apiObjectState, transaction: false };
-          utils = render(
-            <AnalyticsContext.Provider value={mockAnalyticsContext}>
-              <ApiContext.Provider
-                value={{
-                  apiObject: current,
-                  dispatch: mockDispatch,
-                }}
-              >
-                <SimpleList
-                  title={mockTitle}
-                  headerTitle={mockHeaderTitle}
-                  create={create}
-                  transaction={current.transaction}
-                  ApiObjectContext={ApiContext}
-                  placeHolderMessage={mockPlaceHolderMessage}
-                  handleExpiredAuth={mockHandleExpiredAuth}
-                  helpText={Strings.Testing.GenericTranslationTestString}
-                  redirectTag={mockRedirectTag}
-                  waitForApi={false}
-                />
-                }}
-              </ApiContext.Provider>
-            </AnalyticsContext.Provider>
-          );
+          utils = renderHelper(current);
         });
 
         it("renders, calls StartList on first render", async (done) => {
@@ -491,35 +477,17 @@ describe("Setup Environment", () => {
           expect(call.children).toBeTruthy();
           done();
         });
+
+        it("should match the snapshot on file (styles)", () => {
+          expect(utils.container).toMatchSnapshot();
+        });
       });
     });
 
     describe("during an api error", () => {
       beforeEach(() => {
         current = { ...apiObjectState, transaction: false, error: true };
-        utils = render(
-          <AnalyticsContext.Provider value={mockAnalyticsContext}>
-            <ApiContext.Provider
-              value={{
-                apiObject: current,
-                dispatch: mockDispatch,
-              }}
-            >
-              <SimpleList
-                title={mockTitle}
-                headerTitle={mockHeaderTitle}
-                create={create}
-                transaction={current.transaction}
-                ApiObjectContext={ApiContext}
-                placeHolderMessage={mockPlaceHolderMessage}
-                handleExpiredAuth={mockHandleExpiredAuth}
-                helpText={Strings.Testing.GenericTranslationTestString}
-                redirectTag={mockRedirectTag}
-              />
-              }}
-            </ApiContext.Provider>
-          </AnalyticsContext.Provider>
-        );
+        utils = renderHelper(current);
       });
       it("renders, should call the error handler with the correct params", async (done) => {
         await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
@@ -543,36 +511,17 @@ describe("Setup Environment", () => {
         expect(mockDispatch.mock.calls[1][0].type).toBe(ApiActions.ClearErrors);
         done();
       });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container).toMatchSnapshot();
+      });
     });
   });
 
   describe("during a transaction", () => {
     beforeEach(() => {
       current = { ...apiObjectState, transaction: true };
-      utils = render(
-        <AnalyticsContext.Provider value={mockAnalyticsContext}>
-          <ApiContext.Provider
-            value={{
-              apiObject: current,
-              dispatch: mockDispatch,
-            }}
-          >
-            <SimpleList
-              title={mockTitle}
-              headerTitle={mockHeaderTitle}
-              create={create}
-              transaction={current.transaction}
-              ApiObjectContext={ApiContext}
-              placeHolderMessage={mockPlaceHolderMessage}
-              handleExpiredAuth={mockHandleExpiredAuth}
-              helpText={Strings.Testing.GenericTranslationTestString}
-              redirectTag={mockRedirectTag}
-              waitForApi={false}
-            />
-            }}
-          </ApiContext.Provider>
-        </AnalyticsContext.Provider>
-      );
+      utils = renderHelper(current);
     });
     it("renders, and then when there is an transaction bypasses calls to handleCreate", async (done) => {
       expect(Header).toHaveBeenCalledTimes(1);
@@ -641,6 +590,10 @@ describe("Setup Environment", () => {
       await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
       done();
     });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container).toMatchSnapshot();
+    });
   });
 
   describe("pending api load", () => {
@@ -665,7 +618,6 @@ describe("Setup Environment", () => {
               helpText={Strings.Testing.GenericTranslationTestString}
               redirectTag={mockRedirectTag}
             />
-            }}
           </ApiContext.Provider>
         </AnalyticsContext.Provider>
       );
@@ -688,6 +640,10 @@ describe("Setup Environment", () => {
       fireEvent(window, new Event("resize"));
       await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
       done();
+    });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container).toMatchSnapshot();
     });
   });
 });
