@@ -1,0 +1,1717 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Setup Environment when given items of varying expiration when the item is already expired should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template: 20px,20px,120px,45px, 45px;
+  grid-gap: 4px;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: #006600;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 20px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c3 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c3 .dropdown {
+  position: inherit;
+}
+
+.c3 .dropdown-menu {
+  background: #5cb85c;
+  position: static;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c5 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c5 .dropdown {
+  position: inherit;
+}
+
+.c5 .dropdown-menu {
+  background: #d9534f;
+  position: static;
+}
+
+.c4 .svg_icons {
+  -webkit-transform: scale(0.9);
+  -ms-transform: scale(0.9);
+  transform: scale(0.9);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: blue;
+  width: 120px;
+  height: 40px;
+}
+
+.c2 span:hover {
+  color: red;
+  cursor: pointer;
+}
+
+<li
+  class="c0"
+  data-testid="listElement"
+>
+  <div
+    class="c1 text-danger"
+    data-testid="item-quantity"
+  >
+    <div>
+      <div
+        data-testid="quantity"
+      >
+        2
+      </div>
+    </div>
+  </div>
+  <div
+    class="c1 text-danger"
+  >
+    <div>
+      <div
+        data-testid="expired"
+      >
+        0
+      </div>
+    </div>
+  </div>
+  <div
+    class="c2"
+  >
+    <div>
+      <span
+        data-testid="listTitle"
+      >
+        Vegan Cheese
+      </span>
+    </div>
+  </div>
+  <div
+    class="c3"
+    data-testid="restock"
+    type="restock"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="c5"
+    data-testid="consume"
+    type="consume"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13H5v-2h14v2z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</li>
+`;
+
+exports[`Setup Environment when given items of varying expiration when the item is expiring soon should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template: 20px,20px,120px,45px, 45px;
+  grid-gap: 4px;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: #006600;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 20px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c3 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c3 .dropdown {
+  position: inherit;
+}
+
+.c3 .dropdown-menu {
+  background: #5cb85c;
+  position: static;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c5 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c5 .dropdown {
+  position: inherit;
+}
+
+.c5 .dropdown-menu {
+  background: #d9534f;
+  position: static;
+}
+
+.c4 .svg_icons {
+  -webkit-transform: scale(0.9);
+  -ms-transform: scale(0.9);
+  transform: scale(0.9);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: blue;
+  width: 120px;
+  height: 40px;
+}
+
+.c2 span:hover {
+  color: red;
+  cursor: pointer;
+}
+
+<li
+  class="c0"
+  data-testid="listElement"
+>
+  <div
+    class="c1 text-warning"
+    data-testid="item-quantity"
+  >
+    <div>
+      <div
+        data-testid="quantity"
+      >
+        2
+      </div>
+    </div>
+  </div>
+  <div
+    class="c1 text-danger"
+  >
+    <div>
+      <div
+        data-testid="expired"
+      >
+        0
+      </div>
+    </div>
+  </div>
+  <div
+    class="c2"
+  >
+    <div>
+      <span
+        data-testid="listTitle"
+      >
+        Vegan Cheese
+      </span>
+    </div>
+  </div>
+  <div
+    class="c3"
+    data-testid="restock"
+    type="restock"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="c5"
+    data-testid="consume"
+    type="consume"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13H5v-2h14v2z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</li>
+`;
+
+exports[`Setup Environment when given items of varying expiration when the item is healthy and ready to be eaten should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template: 20px,20px,120px,45px, 45px;
+  grid-gap: 4px;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: #006600;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 20px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c3 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c3 .dropdown {
+  position: inherit;
+}
+
+.c3 .dropdown-menu {
+  background: #5cb85c;
+  position: static;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c5 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c5 .dropdown {
+  position: inherit;
+}
+
+.c5 .dropdown-menu {
+  background: #d9534f;
+  position: static;
+}
+
+.c4 .svg_icons {
+  -webkit-transform: scale(0.9);
+  -ms-transform: scale(0.9);
+  transform: scale(0.9);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: blue;
+  width: 120px;
+  height: 40px;
+}
+
+.c2 span:hover {
+  color: red;
+  cursor: pointer;
+}
+
+<li
+  class="c0"
+  data-testid="listElement"
+>
+  <div
+    class="c1 text-success"
+    data-testid="item-quantity"
+  >
+    <div>
+      <div
+        data-testid="quantity"
+      >
+        2
+      </div>
+    </div>
+  </div>
+  <div
+    class="c1 text-danger"
+  >
+    <div>
+      <div
+        data-testid="expired"
+      >
+        0
+      </div>
+    </div>
+  </div>
+  <div
+    class="c2"
+  >
+    <div>
+      <span
+        data-testid="listTitle"
+      >
+        Vegan Cheese
+      </span>
+    </div>
+  </div>
+  <div
+    class="c3"
+    data-testid="restock"
+    type="restock"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="c5"
+    data-testid="consume"
+    type="consume"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13H5v-2h14v2z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</li>
+`;
+
+exports[`Setup Environment when given items of varying expiration when the item is out of stock should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template: 20px,20px,120px,45px, 45px;
+  grid-gap: 4px;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: #006600;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 20px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c3 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c3 .dropdown {
+  position: inherit;
+}
+
+.c3 .dropdown-menu {
+  background: #5cb85c;
+  position: static;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c5 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c5 .dropdown {
+  position: inherit;
+}
+
+.c5 .dropdown-menu {
+  background: #d9534f;
+  position: static;
+}
+
+.c4 .svg_icons {
+  -webkit-transform: scale(0.9);
+  -ms-transform: scale(0.9);
+  transform: scale(0.9);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: blue;
+  width: 120px;
+  height: 40px;
+}
+
+.c2 span:hover {
+  color: red;
+  cursor: pointer;
+}
+
+<li
+  class="c0"
+  data-testid="listElement"
+>
+  <div
+    class="c1 text-danger"
+    data-testid="item-quantity"
+  >
+    <div>
+      <div
+        data-testid="quantity"
+      >
+        0
+      </div>
+    </div>
+  </div>
+  <div
+    class="c1 text-danger"
+  >
+    <div>
+      <div
+        data-testid="expired"
+      >
+        0
+      </div>
+    </div>
+  </div>
+  <div
+    class="c2"
+  >
+    <div>
+      <span
+        data-testid="listTitle"
+      >
+        Vegan Cheese
+      </span>
+    </div>
+  </div>
+  <div
+    class="c3"
+    data-testid="restock"
+    type="restock"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="c5"
+    data-testid="consume"
+    type="consume"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13H5v-2h14v2z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</li>
+`;
+
+exports[`Setup Environment when inside of a transaction should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template: 20px,20px,120px,45px, 45px;
+  grid-gap: 4px;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: #006600;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 20px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c3 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c3 .dropdown {
+  position: inherit;
+}
+
+.c3 .dropdown-menu {
+  background: #5cb85c;
+  position: static;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c5 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c5 .dropdown {
+  position: inherit;
+}
+
+.c5 .dropdown-menu {
+  background: #d9534f;
+  position: static;
+}
+
+.c4 .svg_icons {
+  -webkit-transform: scale(0.9);
+  -ms-transform: scale(0.9);
+  transform: scale(0.9);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: blue;
+  width: 120px;
+  height: 40px;
+}
+
+.c2 span:hover {
+  color: red;
+  cursor: pointer;
+}
+
+<li
+  class="c0"
+  data-testid="listElement"
+>
+  <div
+    class="c1 text-success"
+    data-testid="item-quantity"
+  >
+    <div>
+      <div
+        data-testid="quantity"
+      >
+        2
+      </div>
+    </div>
+  </div>
+  <div
+    class="c1 text-danger"
+  >
+    <div>
+      <div
+        data-testid="expired"
+      >
+        0
+      </div>
+    </div>
+  </div>
+  <div
+    class="c2"
+  >
+    <div>
+      <span
+        data-testid="listTitle"
+      >
+        Vegan Cheese
+      </span>
+    </div>
+  </div>
+  <div
+    class="c3"
+    data-testid="restock"
+    type="restock"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="c5"
+    data-testid="consume"
+    type="consume"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13H5v-2h14v2z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</li>
+`;
+
+exports[`Setup Environment when outside of a transaction with long item names should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template: 20px,20px,120px,45px, 45px;
+  grid-gap: 4px;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: #006600;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 20px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c3 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c3 .dropdown {
+  position: inherit;
+}
+
+.c3 .dropdown-menu {
+  background: #5cb85c;
+  position: static;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c5 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c5 .dropdown {
+  position: inherit;
+}
+
+.c5 .dropdown-menu {
+  background: #d9534f;
+  position: static;
+}
+
+.c4 .svg_icons {
+  -webkit-transform: scale(0.9);
+  -ms-transform: scale(0.9);
+  transform: scale(0.9);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: blue;
+  width: 120px;
+  height: 40px;
+}
+
+.c2 span:hover {
+  color: red;
+  cursor: pointer;
+}
+
+<li
+  class="c0"
+  data-testid="listElement"
+>
+  <div
+    class="c1 text-success"
+    data-testid="item-quantity"
+  >
+    <div>
+      <div
+        data-testid="quantity"
+      >
+        2
+      </div>
+    </div>
+  </div>
+  <div
+    class="c1 text-danger"
+  >
+    <div>
+      <div
+        data-testid="expired"
+      >
+        0
+      </div>
+    </div>
+  </div>
+  <div
+    class="c2"
+  >
+    <div>
+      <span
+        data-testid="listTitle"
+      >
+        Vegan Cheese
+      </span>
+    </div>
+  </div>
+  <div
+    class="c3"
+    data-testid="restock"
+    type="restock"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+            />
+          </svg>
+        </span>
+      </div>
+      <div>
+        <div>
+          <strong>
+            Vegan Chee...
+             
+            + 1
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Vegan Chee...
+             
+            + 2
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Vegan Chee...
+             
+            + 3
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Vegan Chee...
+             
+            + 4
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Vegan Chee...
+             
+            + 5
+          </strong>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="c5"
+    data-testid="consume"
+    type="consume"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13H5v-2h14v2z"
+            />
+          </svg>
+        </span>
+      </div>
+      <div>
+        <div>
+          <strong>
+            Vegan Chee...
+             
+            - 1
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Vegan Chee...
+             
+            - 2
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Vegan Chee...
+             
+            - 3
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Vegan Chee...
+             
+            - 4
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Vegan Chee...
+             
+            - 5
+          </strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>
+`;
+
+exports[`Setup Environment when outside of a transaction with short item names should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template: 20px,20px,120px,45px, 45px;
+  grid-gap: 4px;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: #006600;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 20px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c3 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c3 .dropdown {
+  position: inherit;
+}
+
+.c3 .dropdown-menu {
+  background: #5cb85c;
+  position: static;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+  cursor: pointer;
+  width: 45px;
+}
+
+.c5 .btn-sm {
+  padding: 0px;
+  margin: 2px;
+}
+
+.c5 .dropdown {
+  position: inherit;
+}
+
+.c5 .dropdown-menu {
+  background: #d9534f;
+  position: static;
+}
+
+.c4 .svg_icons {
+  -webkit-transform: scale(0.9);
+  -ms-transform: scale(0.9);
+  transform: scale(0.9);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: blue;
+  width: 120px;
+  height: 40px;
+}
+
+.c2 span:hover {
+  color: red;
+  cursor: pointer;
+}
+
+<li
+  class="c0"
+  data-testid="listElement"
+>
+  <div
+    class="c1 text-success"
+    data-testid="item-quantity"
+  >
+    <div>
+      <div
+        data-testid="quantity"
+      >
+        2
+      </div>
+    </div>
+  </div>
+  <div
+    class="c1 text-danger"
+  >
+    <div>
+      <div
+        data-testid="expired"
+      >
+        0
+      </div>
+    </div>
+  </div>
+  <div
+    class="c2"
+  >
+    <div>
+      <span
+        data-testid="listTitle"
+      >
+        Corn
+      </span>
+    </div>
+  </div>
+  <div
+    class="c3"
+    data-testid="restock"
+    type="restock"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+            />
+          </svg>
+        </span>
+      </div>
+      <div>
+        <div>
+          <strong>
+            Corn
+             
+            + 1
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Corn
+             
+            + 2
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Corn
+             
+            + 3
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Corn
+             
+            + 4
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Corn
+             
+            + 5
+          </strong>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="c5"
+    data-testid="consume"
+    type="consume"
+  >
+    <div>
+      <div>
+        <span
+          class="c4"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root svg_icons"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13H5v-2h14v2z"
+            />
+          </svg>
+        </span>
+      </div>
+      <div>
+        <div>
+          <strong>
+            Corn
+             
+            - 1
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Corn
+             
+            - 2
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Corn
+             
+            - 3
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Corn
+             
+            - 4
+          </strong>
+        </div>
+        <div>
+          <strong>
+            Corn
+             
+            - 5
+          </strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>
+`;

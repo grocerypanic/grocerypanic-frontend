@@ -171,6 +171,10 @@ describe("Setup Environment", () => {
           "- 5",
         ]);
       });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
+      });
     });
 
     describe("with long item names", () => {
@@ -344,6 +348,10 @@ describe("Setup Environment", () => {
           "- 5",
         ]);
       });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
+      });
     });
   });
 
@@ -402,6 +410,10 @@ describe("Setup Environment", () => {
       expect(current.history.push).toBeCalledTimes(0);
       done();
     });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container.firstChild).toMatchSnapshot();
+    });
   });
 
   describe("when given items of varying expiration", () => {
@@ -422,6 +434,10 @@ describe("Setup Environment", () => {
         const node = utils.getByTestId("item-quantity");
         expect(node.className.split(" ").includes("text-success")).toBe(true);
       });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
+      });
     });
 
     describe("when the item is expiring soon", () => {
@@ -440,6 +456,10 @@ describe("Setup Environment", () => {
       it("should render the quantity yellow", () => {
         const node = utils.getByTestId("item-quantity");
         expect(node.className.split(" ").includes("text-warning")).toBe(true);
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
       });
     });
 
@@ -460,6 +480,10 @@ describe("Setup Environment", () => {
         const node = utils.getByTestId("item-quantity");
         expect(node.className.split(" ").includes("text-danger")).toBe(true);
       });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
+      });
     });
 
     describe("when the item is out of stock", () => {
@@ -478,6 +502,10 @@ describe("Setup Environment", () => {
       it("should render the quantity red", () => {
         const node = utils.getByTestId("item-quantity");
         expect(node.className.split(" ").includes("text-danger")).toBe(true);
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
       });
     });
   });
