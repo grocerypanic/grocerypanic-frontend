@@ -33,6 +33,7 @@ const Header = ({ history, title, create, transaction }) => {
   const isMobile = () => setMobile(window.innerWidth < headerMobileThreshold);
   const display = (condition) =>
     condition ? "header-visible" : "header-hidden";
+  const mobileSpacing = (condition) => (condition ? " fit" : "");
 
   React.useEffect(() => {
     window.addEventListener("resize", isMobile);
@@ -41,6 +42,8 @@ const Header = ({ history, title, create, transaction }) => {
 
   const navigate = (route) => {
     if (transaction) return;
+    if (route === history.location.pathname && history.location.search === "")
+      return;
     history.push(route);
   };
 
@@ -57,7 +60,7 @@ const Header = ({ history, title, create, transaction }) => {
       <Nav className="mr-auto"></Nav>
       <Nav>
         <Nav.Item
-          className="nav-link action fit"
+          className={"nav-link action" + mobileSpacing(mobile)}
           onClick={() => navigate(Routes.about)}
         >
           <MenuContainer
@@ -71,7 +74,7 @@ const Header = ({ history, title, create, transaction }) => {
       </Nav>
       <Nav>
         <Nav.Item
-          className="nav-link action fit"
+          className={"nav-link action" + mobileSpacing(mobile)}
           onClick={() => navigate(Routes.root)}
         >
           <MenuContainer
@@ -85,7 +88,7 @@ const Header = ({ history, title, create, transaction }) => {
       </Nav>
       <Nav>
         <Nav.Item
-          className="nav-link action fit"
+          className={"nav-link action" + mobileSpacing(mobile)}
           onClick={() => navigate(Routes.stores)}
         >
           <MenuContainer
@@ -99,7 +102,7 @@ const Header = ({ history, title, create, transaction }) => {
       </Nav>
       <Nav>
         <Nav.Item
-          className="nav-link action fit"
+          className={"nav-link action" + mobileSpacing(mobile)}
           onClick={() => navigate(Routes.shelves)}
         >
           <MenuContainer
@@ -113,7 +116,7 @@ const Header = ({ history, title, create, transaction }) => {
       </Nav>
       <Nav>
         <Nav.Item
-          className="nav-link action fit"
+          className={"nav-link action" + mobileSpacing(mobile)}
           onClick={() => navigate(Routes.items)}
         >
           <MenuContainer
@@ -127,7 +130,10 @@ const Header = ({ history, title, create, transaction }) => {
       </Nav>
       <Nav>
         {create ? (
-          <Nav.Item className="nav-link action fit" onClick={create}>
+          <Nav.Item
+            className={"nav-link action" + mobileSpacing(mobile)}
+            onClick={create}
+          >
             <IconContainer data-testid="AddIcon">
               {transaction ? (
                 <Spinner size="sm" animation="border" />
@@ -137,7 +143,7 @@ const Header = ({ history, title, create, transaction }) => {
             </IconContainer>
           </Nav.Item>
         ) : (
-          <Nav.Item className="nav-link fit">
+          <Nav.Item className={"nav-link action" + mobileSpacing(mobile)}>
             {transaction ? (
               <IconContainer>
                 <Spinner size="sm" animation="border" />

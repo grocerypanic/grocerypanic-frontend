@@ -17,7 +17,6 @@ export const NavContainer = styled(Navbar)`
   height: ${navbarSize};
   padding: 2px;
   padding-left: 10px;
-  padding-right: 10px;
 
   .action {
     cursor: pointer;
