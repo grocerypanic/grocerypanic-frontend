@@ -101,4 +101,8 @@ describe("Setup environment", () => {
     await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
     done();
   });
+
+  it("should match the snapshot on file (styles)", () => {
+    expect(utils.container).toMatchSnapshot();
+  });
 });
