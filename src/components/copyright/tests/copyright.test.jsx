@@ -8,14 +8,14 @@ import Strings from "../../../configuration/strings";
 import Routes from "../../../configuration/routes";
 import Assets from "../../../configuration/assets";
 
+// Freeze Time
+Date.now = jest.fn(() => new Date("2019-06-16T11:01:58.135Z"));
+
 describe("Setup Environment", () => {
-  let tests = [1];
   let utils;
-  let currentTest;
-  const year = new Date().getFullYear();
+  const year = "2019";
 
   beforeEach(() => {
-    currentTest = tests.shift();
     utils = render(
       <MemoryRouter initialEntries={["/anything"]}>
         <Copyright />
@@ -26,7 +26,6 @@ describe("Setup Environment", () => {
   afterEach(cleanup);
 
   it("should render with the correct message content", () => {
-    expect(currentTest).toBe(1);
     const node = utils.getByTestId("CopyRight");
     expect(node).toBeTruthy();
     const [declaration, link, space, yearEnding] = Array.from(node.childNodes);
@@ -35,5 +34,9 @@ describe("Setup Environment", () => {
     expect(link.getAttribute("href")).toEqual(Routes.root);
     expect(space.textContent).toBe(`${Assets.nonBreakingSpace}`);
     expect(yearEnding.textContent).toBe(`${year}.`);
+  });
+
+  it("should match the snapshot on file (styles)", () => {
+    expect(utils.container.firstChild).toMatchSnapshot();
   });
 });

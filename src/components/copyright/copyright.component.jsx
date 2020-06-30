@@ -8,7 +8,7 @@ import { CopyrightBox, StyledLink } from "./copyright.styles.jsx";
 
 const Copyright = () => {
   const { t } = useTranslation();
-  const year = new Date().getFullYear();
+  const year = new Date(Date.now()).getFullYear();
 
   return (
     <CopyrightBox data-testid="CopyRight">
