@@ -5,7 +5,8 @@ import Header from "../header/header.component";
 import calculateMaxHeight from "../../util/height";
 
 import { Paper, Container } from "../../global-styles/containers";
-import { Banner, Scroller, ContentBorder, Content } from "./dialogue.styles";
+import { ItemizedBanner } from "../../global-styles/banner";
+import { Scroller, ContentBorder, Content } from "./dialogue.styles";
 
 const Dialogue = ({ headerTitle, title, body, Footer }) => {
   const [listSize, setListSize] = React.useState(calculateMaxHeight());
@@ -23,9 +24,9 @@ const Dialogue = ({ headerTitle, title, body, Footer }) => {
       <Header title={headerTitle} transaction={false} />
       <Container>
         <Paper>
-          <Banner className="alert alert-success">
+          <ItemizedBanner className="alert alert-success">
             <div>{title}</div>
-          </Banner>
+          </ItemizedBanner>
           <Scroller className="overflow-auto" size={listSize}>
             <ContentBorder>
               <Content>

@@ -46,6 +46,13 @@ exports[`Setup Environment when passed parameters should match the snapshot on f
   border-color: #000000;
 }
 
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -65,13 +72,6 @@ exports[`Setup Environment when passed parameters should match the snapshot on f
   max-width: 250px;
   background: #808080;
   padding-top: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .c5 {

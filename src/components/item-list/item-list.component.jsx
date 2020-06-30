@@ -25,12 +25,8 @@ import calculateMaxHeight from "../../util/height";
 import { calculateTitle } from "./item-list.util";
 
 import { Paper, Container } from "../../global-styles/containers";
-import {
-  Scroller,
-  ListBox,
-  Banner,
-  PlaceHolderListItem,
-} from "./item-list.styles";
+import { ItemizedBanner } from "../../global-styles/banner";
+import { Scroller, ListBox, PlaceHolderListItem } from "./item-list.styles";
 
 const ItemList = ({
   headerTitle,
@@ -185,11 +181,13 @@ const ItemList = ({
           <Container>
             <Paper>
               {errorMsg ? (
-                <Banner className="alert alert-danger">{errorMsg}</Banner>
+                <ItemizedBanner className="alert alert-danger">
+                  {errorMsg}
+                </ItemizedBanner>
               ) : (
-                <Banner className="alert alert-success">
+                <ItemizedBanner className="alert alert-success">
                   {calculateTitle(title)}
-                </Banner>
+                </ItemizedBanner>
               )}
               <Scroller className="overflow-auto" size={listSize}>
                 <ListBox>

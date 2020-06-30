@@ -29,13 +29,6 @@ export const ListBox = styled.div`
   }
 `;
 
-export const Banner = styled.div`
-  width: 100%;
-  margin-left: ${itemAttributes.border}px;
-  margin-right: ${itemAttributes.border}px;
-  text-align: center;
-`;
-
 export const PlaceHolderListItem = styled.li`
   display: flex;
   justify-content: center;

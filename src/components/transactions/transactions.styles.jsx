@@ -11,13 +11,6 @@ export const Outline = styled.div`
   padding: 10px;
 `;
 
-export const Banner = styled.div`
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-`;
-
 export const PlaceHolder = styled.div`
   display: flex;
   justify-content: center;

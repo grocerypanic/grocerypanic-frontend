@@ -7,7 +7,8 @@ import MenuItem from "../menu-item/menu-item.component";
 import Hint from "../hint/hint.component";
 
 import { Paper, Container } from "../../global-styles/containers";
-import { Scroller, ListBox, Banner } from "./menu.styles";
+import { ItemizedBanner } from "../../global-styles/banner";
+import { Scroller, ListBox } from "./menu.styles";
 import calculateMaxHeight from "../../util/height";
 
 const Menu = ({ options, headerTitle, title, history, helpText }) => {
@@ -30,7 +31,9 @@ const Menu = ({ options, headerTitle, title, history, helpText }) => {
       <Header title={headerTitle} transaction={false} create={null} />
       <Container>
         <Paper>
-          <Banner className="alert alert-success">{title}</Banner>
+          <ItemizedBanner className="alert alert-success">
+            {title}
+          </ItemizedBanner>
           <Scroller className="overflow-auto" size={listSize}>
             <ListBox>
               {options.map((item, index) => {

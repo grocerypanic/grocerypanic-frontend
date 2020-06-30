@@ -67,6 +67,13 @@ exports[`Setup Environment during a transaction should match the snapshot on fil
   border-color: #000000;
 }
 
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -90,13 +97,6 @@ exports[`Setup Environment during a transaction should match the snapshot on fil
 
 .c4 li:last-child {
   margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 <div>
@@ -220,6 +220,13 @@ exports[`Setup Environment outside of a transaction during an api error should m
   border-color: #000000;
 }
 
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -243,13 +250,6 @@ exports[`Setup Environment outside of a transaction during an api error should m
 
 .c4 li:last-child {
   margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 <div>
@@ -373,6 +373,13 @@ exports[`Setup Environment outside of a transaction outside of an api error 3 it
   border-color: #000000;
 }
 
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -396,13 +403,6 @@ exports[`Setup Environment outside of a transaction outside of an api error 3 it
 
 .c4 li:last-child {
   margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 <div>
@@ -526,6 +526,13 @@ exports[`Setup Environment outside of a transaction outside of an api error no i
   border-color: #000000;
 }
 
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -549,13 +556,6 @@ exports[`Setup Environment outside of a transaction outside of an api error no i
 
 .c4 li:last-child {
   margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .c5 {
@@ -699,6 +699,13 @@ exports[`Setup Environment pending api load should match the snapshot on file (s
   border-color: #000000;
 }
 
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -722,13 +729,6 @@ exports[`Setup Environment pending api load should match the snapshot on file (s
 
 .c4 li:last-child {
   margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 <div>

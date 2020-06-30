@@ -19,6 +19,13 @@ exports[`Setup Environment after transactions are fetched with expired items in 
   border-color: #000000;
 }
 
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c2 {
   list-style-type: none;
   list-style-position: outside;
@@ -26,13 +33,6 @@ exports[`Setup Environment after transactions are fetched with expired items in 
   width: 100%;
   background: #808080;
   padding: 10px;
-}
-
-.c1 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .c3 {
@@ -183,6 +183,13 @@ exports[`Setup Environment after transactions are fetched with items expirying s
   border-color: #000000;
 }
 
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c2 {
   list-style-type: none;
   list-style-position: outside;
@@ -190,13 +197,6 @@ exports[`Setup Environment after transactions are fetched with items expirying s
   width: 100%;
   background: #808080;
   padding: 10px;
-}
-
-.c1 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .c3 {
@@ -342,6 +342,13 @@ exports[`Setup Environment after transactions are fetched with items in the inve
   border-color: #000000;
 }
 
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c2 {
   list-style-type: none;
   list-style-position: outside;
@@ -349,13 +356,6 @@ exports[`Setup Environment after transactions are fetched with items in the inve
   width: 100%;
   background: #808080;
   padding: 10px;
-}
-
-.c1 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .c3 {
@@ -501,6 +501,13 @@ exports[`Setup Environment after transactions are fetched with no items expiryin
   border-color: #000000;
 }
 
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c2 {
   list-style-type: none;
   list-style-position: outside;
@@ -508,13 +515,6 @@ exports[`Setup Environment after transactions are fetched with no items expiryin
   width: 100%;
   background: #808080;
   padding: 10px;
-}
-
-.c1 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .c3 {
@@ -660,6 +660,13 @@ exports[`Setup Environment after transactions are fetched with no transactions s
   border-color: #000000;
 }
 
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c2 {
   list-style-type: none;
   list-style-position: outside;
@@ -667,13 +674,6 @@ exports[`Setup Environment after transactions are fetched with no transactions s
   width: 100%;
   background: #808080;
   padding: 10px;
-}
-
-.c1 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .c4 {
@@ -835,6 +835,13 @@ exports[`Setup Environment before transactions are fetched with items in the inv
   border-color: #000000;
 }
 
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c2 {
   list-style-type: none;
   list-style-position: outside;
@@ -842,13 +849,6 @@ exports[`Setup Environment before transactions are fetched with items in the inv
   width: 100%;
   background: #808080;
   padding: 10px;
-}
-
-.c1 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .c3 {

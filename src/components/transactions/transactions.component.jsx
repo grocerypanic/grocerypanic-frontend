@@ -5,8 +5,6 @@ import moment from "moment";
 import PropTypes from "prop-types";
 
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
-import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 
 import { isWithinAWeek, isWithinAMonth, nextWeek } from "../../util/datetime";
 
@@ -14,11 +12,11 @@ import Strings from "../../configuration/strings";
 import { graph } from "../../configuration/theme";
 
 import { Paper } from "../../global-styles/containers";
-import { Outline, Banner, InnerBox, PlaceHolder } from "./transactions.styles";
+import { Banner } from "../../global-styles/banner";
+import { Outline, InnerBox, PlaceHolder } from "./transactions.styles";
 
 const TransactionsReview = ({ item, ready, tr }) => {
   const { t } = useTranslation();
-  const { event } = React.useContext(AnalyticsContext);
   let ActivityChart;
 
   const renderGraph = () => {

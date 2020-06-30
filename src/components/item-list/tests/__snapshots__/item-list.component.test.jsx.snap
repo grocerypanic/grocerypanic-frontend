@@ -46,6 +46,13 @@ exports[`Setup Environment during an error should match the snapshot on file (st
   border-color: #000000;
 }
 
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -69,13 +76,6 @@ exports[`Setup Environment during an error should match the snapshot on file (st
 
 .c4 li:last-child {
   margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 <div>
@@ -168,6 +168,13 @@ exports[`Setup Environment outside of an error inside of a transaction should ma
   border-color: #000000;
 }
 
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -191,13 +198,6 @@ exports[`Setup Environment outside of an error inside of a transaction should ma
 
 .c4 li:last-child {
   margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 <div>
@@ -290,6 +290,13 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
   border-color: #000000;
 }
 
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -313,13 +320,6 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
 
 .c4 li:last-child {
   margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 <div>
@@ -412,6 +412,13 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
   border-color: #000000;
 }
 
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -435,13 +442,6 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
 
 .c4 li:last-child {
   margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 <div>
@@ -534,6 +534,13 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
   border-color: #000000;
 }
 
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -557,13 +564,6 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
 
 .c4 li:last-child {
   margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .c5 {

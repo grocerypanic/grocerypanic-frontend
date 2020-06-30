@@ -25,13 +25,6 @@ export const ContentBorder = styled.div`
   padding-top: 0px;
 `;
 
-export const Banner = styled.div`
-  width: 100%;
-  margin-left: ${itemAttributes.border}px;
-  margin-right: ${itemAttributes.border}px;
-  text-align: center;
-`;
-
 export const Content = styled.li`
   display: flex;
   justify-content: center;

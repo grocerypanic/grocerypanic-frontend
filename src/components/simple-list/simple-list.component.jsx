@@ -20,12 +20,8 @@ import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
 
 import { Paper, Container } from "../../global-styles/containers";
-import {
-  Scroller,
-  ListBox,
-  Banner,
-  PlaceHolderListItem,
-} from "./simple-list.styles";
+import { ItemizedBanner } from "../../global-styles/banner";
+import { Scroller, ListBox, PlaceHolderListItem } from "./simple-list.styles";
 
 import preventContext from "../../util/preventDefault";
 import calculateMaxHeight from "../../util/height";
@@ -154,11 +150,13 @@ const SimpleList = ({
           <Container>
             <Paper>
               {errorMsg && created ? (
-                <Banner className="alert alert-danger">{errorMsg}</Banner>
+                <ItemizedBanner className="alert alert-danger">
+                  {errorMsg}
+                </ItemizedBanner>
               ) : (
-                <Banner className="alert alert-success">
+                <ItemizedBanner className="alert alert-success">
                   <div>{title}</div>
-                </Banner>
+                </ItemizedBanner>
               )}
               <Scroller className="overflow-auto" size={listSize}>
                 <ListBox>
