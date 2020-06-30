@@ -226,6 +226,10 @@ describe("Setup Environment", () => {
 
           done();
         });
+
+        it("should match the snapshot on file (styles)", () => {
+          expect(utils.container).toMatchSnapshot();
+        });
       });
 
       describe("with wait for api not engaged", () => {
@@ -689,6 +693,10 @@ describe("Setup Environment", () => {
             await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
             done();
           });
+
+          it("should match the snapshot on file (styles)", () => {
+            expect(utils.container).toMatchSnapshot();
+          });
         });
 
         describe("with no items in the inventory", () => {
@@ -725,6 +733,10 @@ describe("Setup Environment", () => {
             fireEvent(window, new Event("resize"));
             await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
             done();
+          });
+
+          it("should match the snapshot on file (styles)", () => {
+            expect(utils.container).toMatchSnapshot();
           });
         });
       });
@@ -823,6 +835,10 @@ describe("Setup Environment", () => {
         await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
         done();
       });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container).toMatchSnapshot();
+      });
     });
   });
 
@@ -881,6 +897,10 @@ describe("Setup Environment", () => {
       fireEvent(window, new Event("resize"));
       await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
       done();
+    });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container).toMatchSnapshot();
     });
   });
 });

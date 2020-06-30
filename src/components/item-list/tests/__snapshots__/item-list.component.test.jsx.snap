@@ -1,0 +1,631 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Setup Environment during an error should match the snapshot on file (styles) 1`] = `
+.c0 {
+  margin-top: calc(50px + 26px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.c3 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  list-style-type: none;
+  list-style-position: outside;
+  overflow: scroll;
+  max-height: 200px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 10px;
+}
+
+.c4 {
+  padding-left: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 0px;
+}
+
+.c4 li:last-child {
+  margin-bottom: 0px;
+}
+
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+<div>
+  <div>
+    MockHeader
+  </div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <div
+        class="c2 alert alert-success"
+      >
+        mockTitle
+      </div>
+      <div
+        class="c3 overflow-auto"
+        size="200"
+      >
+        <div
+          class="c4"
+        >
+          <div>
+            MockListItem
+          </div>
+          <div>
+            MockListItem
+          </div>
+          <div>
+            MockListItem
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    MockAlert
+  </div>
+  <div>
+    MockHelp
+  </div>
+</div>
+`;
+
+exports[`Setup Environment outside of an error inside of a transaction should match the snapshot on file (styles) 1`] = `
+.c0 {
+  margin-top: calc(50px + 26px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.c3 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  list-style-type: none;
+  list-style-position: outside;
+  overflow: scroll;
+  max-height: 200px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 10px;
+}
+
+.c4 {
+  padding-left: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 0px;
+}
+
+.c4 li:last-child {
+  margin-bottom: 0px;
+}
+
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+<div>
+  <div>
+    MockHeader
+  </div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <div
+        class="c2 alert alert-success"
+      >
+        mockTitle
+      </div>
+      <div
+        class="c3 overflow-auto"
+        size="200"
+      >
+        <div
+          class="c4"
+        >
+          <div>
+            MockListItem
+          </div>
+          <div>
+            MockListItem
+          </div>
+          <div>
+            MockListItem
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    MockAlert
+  </div>
+  <div>
+    MockHelp
+  </div>
+</div>
+`;
+
+exports[`Setup Environment outside of an error outside of a transaction with wait for api engaged should match the snapshot on file (styles) 1`] = `
+.c0 {
+  margin-top: calc(50px + 26px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.c3 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  list-style-type: none;
+  list-style-position: outside;
+  overflow: scroll;
+  max-height: 200px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 10px;
+}
+
+.c4 {
+  padding-left: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 0px;
+}
+
+.c4 li:last-child {
+  margin-bottom: 0px;
+}
+
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+<div>
+  <div>
+    MockHeader
+  </div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <div
+        class="c2 alert alert-success"
+      >
+        mockTitle
+      </div>
+      <div
+        class="c3 overflow-auto"
+        size="200"
+      >
+        <div
+          class="c4"
+        >
+          <div>
+            MockListItem
+          </div>
+          <div>
+            MockListItem
+          </div>
+          <div>
+            MockListItem
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    MockAlert
+  </div>
+  <div>
+    MockHelp
+  </div>
+</div>
+`;
+
+exports[`Setup Environment outside of an error outside of a transaction with wait for api not engaged with items in the inventory should match the snapshot on file (styles) 1`] = `
+.c0 {
+  margin-top: calc(50px + 26px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.c3 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  list-style-type: none;
+  list-style-position: outside;
+  overflow: scroll;
+  max-height: 200px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 10px;
+}
+
+.c4 {
+  padding-left: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 0px;
+}
+
+.c4 li:last-child {
+  margin-bottom: 0px;
+}
+
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+<div>
+  <div>
+    MockHeader
+  </div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <div
+        class="c2 alert alert-success"
+      >
+        mockTitle
+      </div>
+      <div
+        class="c3 overflow-auto"
+        size="200"
+      >
+        <div
+          class="c4"
+        >
+          <div>
+            MockListItem
+          </div>
+          <div>
+            MockListItem
+          </div>
+          <div>
+            MockListItem
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    MockAlert
+  </div>
+  <div>
+    MockHelp
+  </div>
+</div>
+`;
+
+exports[`Setup Environment outside of an error outside of a transaction with wait for api not engaged with no items in the inventory should match the snapshot on file (styles) 1`] = `
+.c0 {
+  margin-top: calc(50px + 26px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.c3 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  list-style-type: none;
+  list-style-position: outside;
+  overflow: scroll;
+  max-height: 200px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 10px;
+}
+
+.c4 {
+  padding-left: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 0px;
+}
+
+.c4 li:last-child {
+  margin-bottom: 0px;
+}
+
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  min-height: 40px;
+  background: #FFFFFF;
+  padding: 12px;
+  min-width: 220px;
+  color: #006600;
+  margin-bottom: 0px;
+}
+
+<div>
+  <div>
+    MockHeader
+  </div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <div
+        class="c2 alert alert-success"
+      >
+        mockTitle
+      </div>
+      <div
+        class="c3 overflow-auto"
+        size="200"
+      >
+        <div
+          class="c4"
+        >
+          <li
+            class="c5"
+          >
+            I'm Right Here
+          </li>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    MockAlert
+  </div>
+  <div>
+    MockHelp
+  </div>
+</div>
+`;
