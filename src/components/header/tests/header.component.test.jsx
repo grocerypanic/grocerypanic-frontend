@@ -12,6 +12,7 @@ import * as HomeIcon from "@material-ui/icons/Home";
 import * as StoreIcon from "@material-ui/icons/Store";
 import * as KitchenIcon from "@material-ui/icons/Kitchen";
 import * as InfoIcon from "@material-ui/icons/Info";
+import * as FormatListNumbered from "@material-ui/icons/FormatListNumbered";
 
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
@@ -45,6 +46,13 @@ jest.mock("@material-ui/icons/Kitchen", () => ({
   default: jest.fn(),
 }));
 KitchenIcon.default.mockImplementation(() => <div>MockKitchen</div>);
+jest.mock("@material-ui/icons/FormatListNumbered", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+FormatListNumbered.default.mockImplementation(() => (
+  <div>MockFormatListNumbered</div>
+));
 
 describe("during a transaction", () => {
   let utils;
@@ -109,6 +117,7 @@ describe("during a transaction", () => {
     });
 
     it("should call the nav buttons", () => {
+      expect(FormatListNumbered.default).toHaveBeenCalledTimes(1);
       expect(InfoIcon.default).toHaveBeenCalledTimes(1);
       expect(HomeIcon.default).toHaveBeenCalledTimes(1);
       expect(StoreIcon.default).toHaveBeenCalledTimes(1);
@@ -154,6 +163,15 @@ describe("during a transaction", () => {
     it("should not navigate to shelves, when shelves is clicked", async (done) => {
       const home = utils.getByTestId("shelves-icon");
       fireEvent.click(home, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual("/some/unmatched/path")
+      );
+      done();
+    });
+
+    it("should not navigate to items, when the list icon is clicked", async (done) => {
+      const inventory = utils.getByTestId("list-icon");
+      fireEvent.click(inventory, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual("/some/unmatched/path")
       );
@@ -192,6 +210,7 @@ describe("during a transaction", () => {
     });
 
     it("should call the nav buttons", () => {
+      expect(FormatListNumbered.default).toHaveBeenCalledTimes(1);
       expect(InfoIcon.default).toHaveBeenCalledTimes(1);
       expect(HomeIcon.default).toHaveBeenCalledTimes(1);
       expect(StoreIcon.default).toHaveBeenCalledTimes(1);
@@ -237,6 +256,15 @@ describe("during a transaction", () => {
     it("should not navigate to shelves, when shelves is clicked", async (done) => {
       const home = utils.getByTestId("shelves-icon");
       fireEvent.click(home, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual("/some/unmatched/path")
+      );
+      done();
+    });
+
+    it("should not navigate to items, when the list icon is clicked", async (done) => {
+      const inventory = utils.getByTestId("list-icon");
+      fireEvent.click(inventory, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual("/some/unmatched/path")
       );
@@ -282,6 +310,8 @@ describe("outside of a transaction", () => {
     });
 
     it("should call the nav buttons", () => {
+      expect(FormatListNumbered.default).toHaveBeenCalledTimes(1);
+      expect(InfoIcon.default).toHaveBeenCalledTimes(1);
       expect(HomeIcon.default).toHaveBeenCalledTimes(1);
       expect(StoreIcon.default).toHaveBeenCalledTimes(1);
       expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
@@ -332,6 +362,15 @@ describe("outside of a transaction", () => {
       done();
     });
 
+    it("should navigate to items, when the list is clicked", async (done) => {
+      const inventory = utils.getByTestId("list-icon");
+      fireEvent.click(inventory, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual(Routes.items)
+      );
+      done();
+    });
+
     it("should match the snapshot on file (styles)", () => {
       expect(utils.container.firstChild).toMatchSnapshot();
     });
@@ -365,6 +404,8 @@ describe("outside of a transaction", () => {
     });
 
     it("should call the nav buttons", () => {
+      expect(FormatListNumbered.default).toHaveBeenCalledTimes(1);
+      expect(InfoIcon.default).toHaveBeenCalledTimes(1);
       expect(HomeIcon.default).toHaveBeenCalledTimes(1);
       expect(StoreIcon.default).toHaveBeenCalledTimes(1);
       expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
@@ -411,6 +452,15 @@ describe("outside of a transaction", () => {
       fireEvent.click(home, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual(Routes.shelves)
+      );
+      done();
+    });
+
+    it("should navigate to items, when the list is clicked", async (done) => {
+      const inventory = utils.getByTestId("list-icon");
+      fireEvent.click(inventory, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual(Routes.items)
       );
       done();
     });

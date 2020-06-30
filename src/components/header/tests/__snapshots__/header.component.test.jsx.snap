@@ -6,10 +6,16 @@ exports[`during a transaction with a create function should match the snapshot o
   height: 50px;
   padding: 2px;
   padding-left: 10px;
+  padding-right: 10px;
 }
 
 .c0 .action {
   cursor: pointer;
+}
+
+.c0 .fit {
+  padding-left: 3px !important;
+  padding-right: 3px !important;
 }
 
 .c0 .header-hidden {
@@ -62,7 +68,7 @@ exports[`during a transaction with a create function should match the snapshot o
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -78,7 +84,7 @@ exports[`during a transaction with a create function should match the snapshot o
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -94,7 +100,7 @@ exports[`during a transaction with a create function should match the snapshot o
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -110,7 +116,7 @@ exports[`during a transaction with a create function should match the snapshot o
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -126,7 +132,23 @@ exports[`during a transaction with a create function should match the snapshot o
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
+    >
+      <div
+        class=""
+        data-testid="list-icon"
+      >
+        <div>
+          MockFormatListNumbered
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action fit nav-item"
     >
       <div
         class="c1"
@@ -147,10 +169,16 @@ exports[`during a transaction without a create function should match the snapsho
   height: 50px;
   padding: 2px;
   padding-left: 10px;
+  padding-right: 10px;
 }
 
 .c0 .action {
   cursor: pointer;
+}
+
+.c0 .fit {
+  padding-left: 3px !important;
+  padding-right: 3px !important;
 }
 
 .c0 .header-hidden {
@@ -203,7 +231,7 @@ exports[`during a transaction without a create function should match the snapsho
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -219,7 +247,7 @@ exports[`during a transaction without a create function should match the snapsho
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -235,7 +263,7 @@ exports[`during a transaction without a create function should match the snapsho
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -251,7 +279,7 @@ exports[`during a transaction without a create function should match the snapsho
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -267,7 +295,23 @@ exports[`during a transaction without a create function should match the snapsho
     class="navbar-nav"
   >
     <div
-      class="nav-link nav-item"
+      class="nav-link action fit nav-item"
+    >
+      <div
+        class=""
+        data-testid="list-icon"
+      >
+        <div>
+          MockFormatListNumbered
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link fit nav-item"
     >
       <div
         class="c1"
@@ -287,10 +331,16 @@ exports[`outside of a transaction with a create function should match the snapsh
   height: 50px;
   padding: 2px;
   padding-left: 10px;
+  padding-right: 10px;
 }
 
 .c0 .action {
   cursor: pointer;
+}
+
+.c0 .fit {
+  padding-left: 3px !important;
+  padding-right: 3px !important;
 }
 
 .c0 .header-hidden {
@@ -343,7 +393,7 @@ exports[`outside of a transaction with a create function should match the snapsh
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -359,7 +409,7 @@ exports[`outside of a transaction with a create function should match the snapsh
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -375,7 +425,7 @@ exports[`outside of a transaction with a create function should match the snapsh
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -391,7 +441,7 @@ exports[`outside of a transaction with a create function should match the snapsh
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -407,7 +457,23 @@ exports[`outside of a transaction with a create function should match the snapsh
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
+    >
+      <div
+        class=""
+        data-testid="list-icon"
+      >
+        <div>
+          MockFormatListNumbered
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action fit nav-item"
     >
       <div
         class="c1"
@@ -428,10 +494,16 @@ exports[`outside of a transaction without a create function should match the sna
   height: 50px;
   padding: 2px;
   padding-left: 10px;
+  padding-right: 10px;
 }
 
 .c0 .action {
   cursor: pointer;
+}
+
+.c0 .fit {
+  padding-left: 3px !important;
+  padding-right: 3px !important;
 }
 
 .c0 .header-hidden {
@@ -485,7 +557,7 @@ exports[`outside of a transaction without a create function should match the sna
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -501,7 +573,7 @@ exports[`outside of a transaction without a create function should match the sna
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -517,7 +589,7 @@ exports[`outside of a transaction without a create function should match the sna
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -533,7 +605,7 @@ exports[`outside of a transaction without a create function should match the sna
     class="navbar-nav"
   >
     <div
-      class="nav-link action nav-item"
+      class="nav-link action fit nav-item"
     >
       <div
         class=""
@@ -549,7 +621,23 @@ exports[`outside of a transaction without a create function should match the sna
     class="navbar-nav"
   >
     <div
-      class="nav-link nav-item"
+      class="nav-link action fit nav-item"
+    >
+      <div
+        class=""
+        data-testid="list-icon"
+      >
+        <div>
+          MockFormatListNumbered
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link fit nav-item"
     >
       <div
         class="c1"

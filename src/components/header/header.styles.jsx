@@ -17,9 +17,14 @@ export const NavContainer = styled(Navbar)`
   height: ${navbarSize};
   padding: 2px;
   padding-left: 10px;
+  padding-right: 10px;
 
   .action {
     cursor: pointer;
+  }
+  .fit {
+    padding-left: 3px !important;
+    padding-right: 3px !important;
   }
   .header-hidden {
     display: none;

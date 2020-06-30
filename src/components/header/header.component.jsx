@@ -6,6 +6,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import InfoIcon from "@material-ui/icons/Info";
 import StoreIcon from "@material-ui/icons/Store";
 import KitchenIcon from "@material-ui/icons/Kitchen";
+import FormatListNumbered from "@material-ui/icons/FormatListNumbered";
 
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
@@ -56,7 +57,7 @@ const Header = ({ history, title, create, transaction }) => {
       <Nav className="mr-auto"></Nav>
       <Nav>
         <Nav.Item
-          className="nav-link action"
+          className="nav-link action fit"
           onClick={() => navigate(Routes.about)}
         >
           <MenuContainer
@@ -70,7 +71,7 @@ const Header = ({ history, title, create, transaction }) => {
       </Nav>
       <Nav>
         <Nav.Item
-          className="nav-link action"
+          className="nav-link action fit"
           onClick={() => navigate(Routes.root)}
         >
           <MenuContainer
@@ -84,7 +85,7 @@ const Header = ({ history, title, create, transaction }) => {
       </Nav>
       <Nav>
         <Nav.Item
-          className="nav-link action"
+          className="nav-link action fit"
           onClick={() => navigate(Routes.stores)}
         >
           <MenuContainer
@@ -98,7 +99,7 @@ const Header = ({ history, title, create, transaction }) => {
       </Nav>
       <Nav>
         <Nav.Item
-          className="nav-link action"
+          className="nav-link action fit"
           onClick={() => navigate(Routes.shelves)}
         >
           <MenuContainer
@@ -111,8 +112,22 @@ const Header = ({ history, title, create, transaction }) => {
         </Nav.Item>
       </Nav>
       <Nav>
+        <Nav.Item
+          className="nav-link action fit"
+          onClick={() => navigate(Routes.items)}
+        >
+          <MenuContainer
+            route={Routes.items}
+            history={history}
+            data-testid="list-icon"
+          >
+            <FormatListNumbered />
+          </MenuContainer>
+        </Nav.Item>
+      </Nav>
+      <Nav>
         {create ? (
-          <Nav.Item className="nav-link action" onClick={create}>
+          <Nav.Item className="nav-link action fit" onClick={create}>
             <IconContainer data-testid="AddIcon">
               {transaction ? (
                 <Spinner size="sm" animation="border" />
@@ -122,7 +137,7 @@ const Header = ({ history, title, create, transaction }) => {
             </IconContainer>
           </Nav.Item>
         ) : (
-          <Nav.Item className="nav-link">
+          <Nav.Item className="nav-link fit">
             {transaction ? (
               <IconContainer>
                 <Spinner size="sm" animation="border" />
