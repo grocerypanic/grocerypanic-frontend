@@ -15,6 +15,7 @@ export const Constants = {
   defaultShelfLife: 7,
   minimumPrice: 0,
   maximumPrice: 9999,
+  maximumTransactions: 50,
 };
 
 export const Providers = {

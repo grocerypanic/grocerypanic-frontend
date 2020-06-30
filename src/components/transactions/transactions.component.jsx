@@ -9,6 +9,7 @@ import HoldingPattern from "../holding-pattern/holding-pattern.component";
 import { isWithinAWeek, isWithinAMonth, nextWeek } from "../../util/datetime";
 
 import Strings from "../../configuration/strings";
+import { Constants } from "../../configuration/backend";
 import { graph } from "../../configuration/theme";
 
 import { Paper } from "../../global-styles/containers";
@@ -20,7 +21,7 @@ const TransactionsReview = ({ item, ready, tr }) => {
   let ActivityChart;
 
   const renderGraph = () => {
-    const labels = tr.map((o, index) => "").slice(graph.limit);
+    const labels = tr.map((o) => "").slice(Constants.maximumTransactions * -1);
     let accumulate = item.quantity;
 
     const calculateQuantity = () => {
@@ -53,12 +54,12 @@ const TransactionsReview = ({ item, ready, tr }) => {
               .map((o, index) => {
                 return { y: o.quantity, x: index };
               })
-              .slice(graph.limit),
+              .slice(Constants.maximumTransactions * -1),
           },
           {
             label: t(Strings.ItemStats.GraphQuantity),
             borderColor: graph.quantityLine,
-            data: calculateQuantity().slice(graph.limit),
+            data: calculateQuantity().slice(Constants.maximumTransactions * -1),
           },
         ],
       },
