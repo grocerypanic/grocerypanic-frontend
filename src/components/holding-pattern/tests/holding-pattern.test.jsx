@@ -36,6 +36,10 @@ describe("Setup Environment", () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         expect(Spinner).toBeCalledTimes(0);
       });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
+      });
     });
 
     describe("with custom values", () => {
@@ -56,6 +60,10 @@ describe("Setup Environment", () => {
         expect(utils.queryByText("Suppressed Component")).toBeTruthy();
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         expect(Spinner).toBeCalledTimes(0);
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
       });
     });
   });
@@ -80,6 +88,10 @@ describe("Setup Environment", () => {
         expect(call.animation).toBe("grow");
         expect(call.variant).toBe("success");
         expect(call.className).toBe("kindly-hang-in-there");
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
       });
     });
 
@@ -106,6 +118,10 @@ describe("Setup Environment", () => {
         expect(call.animation).toBe("other1");
         expect(call.variant).toBe("other2");
         expect(call.className).toBe("kindly-hang-in-there");
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
       });
     });
   });

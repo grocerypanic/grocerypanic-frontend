@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Setup Environment When condition is false with custom values should match the snapshot on file (styles) 1`] = `Suppressed Component`;
+
+exports[`Setup Environment When condition is false with defaults should match the snapshot on file (styles) 1`] = `Suppressed Component`;
+
+exports[`Setup Environment When condition is true with custom values should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100vw;
+  height: 80vh;
+}
+
+.c0 .kindly-hang-in-there {
+  -webkit-transform: scale(3);
+  -ms-transform: scale(3);
+  transform: scale(3);
+}
+
+<ul
+  class="c0"
+  data-testid="HoldingPattern"
+  height="80vh"
+  scale="3"
+>
+  <div
+    style="width: 75px; height: 75px;"
+  >
+    <div>
+      MockSpinner
+    </div>
+  </div>
+</ul>
+`;
+
+exports[`Setup Environment When condition is true with defaults should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100vw;
+  height: 80vh;
+}
+
+.c0 .kindly-hang-in-there {
+  -webkit-transform: scale(3);
+  -ms-transform: scale(3);
+  transform: scale(3);
+}
+
+<ul
+  class="c0"
+  data-testid="HoldingPattern"
+  height="80vh"
+  scale="3"
+>
+  <div
+    style="width: 75px; height: 75px;"
+  >
+    <div>
+      MockSpinner
+    </div>
+  </div>
+</ul>
+`;
