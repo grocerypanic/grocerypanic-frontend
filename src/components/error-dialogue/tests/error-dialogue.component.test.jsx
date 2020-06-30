@@ -89,6 +89,10 @@ describe("Setup Environment", () => {
         );
         done();
       });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
+      });
     });
 
     describe("when given a route with no redirect", () => {
@@ -122,6 +126,10 @@ describe("Setup Environment", () => {
         expect(ErrorProps.clearError).toHaveBeenCalledTimes(1);
         await waitFor(() => expect(history.location.pathname).toBe(testRoute));
         done();
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
       });
     });
 
@@ -159,6 +167,10 @@ describe("Setup Environment", () => {
         );
         done();
       });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
+      });
     });
   });
 
@@ -192,6 +204,10 @@ describe("Setup Environment", () => {
 
       it("should not send any the event", () => {
         expect(mockEvent).toHaveBeenCalledTimes(0);
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
       });
     });
   });
