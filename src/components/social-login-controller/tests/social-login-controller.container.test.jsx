@@ -8,6 +8,8 @@ import SocialLoginController from "../social-login-controller.container";
 import { Providers } from "../../../configuration/backend";
 import Strings from "../../../configuration/strings";
 
+console.warn = jest.fn(); // suppress warnings from the react-social-login library
+
 jest.mock("../social-login-controller.standby");
 const MockGoogleLoginButton = jest.fn();
 StandBy.mockImplementation(({ children }) => <div>{children}</div>);
@@ -40,6 +42,11 @@ describe("Setup Environment", () => {
       delete window.FB;
     });
 
+    it("should issue a warning about depreciating methods in the react-social-login library", () => {
+      expect(console.warn).toBeCalledTimes(1);
+      expect(console.warn.mock.calls).toMatchSnapshot();
+    });
+
     it("should render with the correct message", () => {
       expect(utils.getByText(buttonProps.message)).toBeTruthy();
       expect(utils.getByTestId("SocialController")).toBeTruthy();
@@ -53,6 +60,10 @@ describe("Setup Environment", () => {
         },
         {}
       );
+    });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container.firstChild).toMatchSnapshot();
     });
   });
 
@@ -87,6 +98,10 @@ describe("Setup Environment", () => {
     it("should process a click without doing anything", () => {
       const node = utils.getByTestId("PendingSocialController").children[0];
       fireEvent.click(node, "click");
+    });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container.firstChild).toMatchSnapshot();
     });
   });
 });

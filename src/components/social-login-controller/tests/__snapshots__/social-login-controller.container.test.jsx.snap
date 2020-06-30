@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Setup Environment Google and Facebook Auth Loaded ... should issue a warning about depreciating methods in the react-social-login library 1`] = `
+Array [
+  Array [
+    "Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
+
+* Move data fetching code or side effects to componentDidUpdate.
+* If you're updating state whenever props change, refactor your code to use memoization techniques or move it to static getDerivedStateFromProps. Learn more at: https://fb.me/react-derived-state
+* Rename componentWillReceiveProps to UNSAFE_componentWillReceiveProps to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run \`npx react-codemod rename-unsafe-lifecycles\` in your project source folder.
+
+Please update the following components: %s",
+    "n",
+  ],
+]
+`;
+
+exports[`Setup Environment Google and Facebook Auth Loaded ... should match the snapshot on file (styles) 1`] = `
+<div
+  data-testid="SocialController"
+>
+  <div>
+    TestMessage
+  </div>
+</div>
+`;
+
+exports[`Setup Environment Google and Facebook Auth Not Loaded ... should match the snapshot on file (styles) 1`] = `
+<div
+  data-testid="PendingSocialController"
+>
+  <div>
+    Connecting . . .
+  </div>
+</div>
+`;
