@@ -1,0 +1,585 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Setup Environment when not rendering a newly created item when inside of a transaction when not selected should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: blue;
+  min-width: 220px;
+}
+
+.c0 div:last-child {
+  margin-left: auto;
+}
+
+.c0 .simple-list-item-title-div:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+}
+
+<li
+  class="c0"
+  data-testid="listElement"
+>
+  <div
+    class="c1 simple-list-item-title-div"
+    data-testid="ListTitle"
+  >
+    Shelf1
+  </div>
+  <div />
+</li>
+`;
+
+exports[`Setup Environment when not rendering a newly created item when inside of a transaction when selected should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: blue;
+  min-width: 220px;
+}
+
+.c0 div:last-child {
+  margin-left: auto;
+}
+
+.c0 .simple-list-item-title-div:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+}
+
+<li
+  class="c0"
+  data-testid="listElement"
+>
+  <div
+    class="c1 simple-list-item-title-div"
+    data-testid="ListTitle"
+  >
+    Shelf1
+  </div>
+  <div />
+</li>
+`;
+
+exports[`Setup Environment when not rendering a newly created item when outside of a transaction when not selected should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: blue;
+  min-width: 220px;
+}
+
+.c0 div:last-child {
+  margin-left: auto;
+}
+
+.c0 .simple-list-item-title-div:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+}
+
+<li
+  class="c0"
+  data-testid="listElement"
+>
+  <div
+    class="c1 simple-list-item-title-div"
+    data-testid="ListTitle"
+  >
+    Shelf1
+  </div>
+  <div />
+</li>
+`;
+
+exports[`Setup Environment when not rendering a newly created item when outside of a transaction when selected, and longPress is marked should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: blue;
+  min-width: 220px;
+}
+
+.c0 div:last-child {
+  margin-left: auto;
+}
+
+.c0 .simple-list-item-title-div:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+}
+
+<li
+  class="c0"
+  data-testid="listElement"
+>
+  <div
+    class="c1 simple-list-item-title-div"
+    data-testid="ListTitle"
+  >
+    Shelf1
+  </div>
+  <div>
+    <button
+      class="btn btn-danger"
+      data-testid="deleteButton"
+      style="height: 40px;"
+    >
+      delete
+    </button>
+  </div>
+</li>
+`;
+
+exports[`Setup Environment when not rendering a newly created item when outside of a transaction when selected, and longPress is not marked should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: blue;
+  min-width: 220px;
+}
+
+.c0 div:last-child {
+  margin-left: auto;
+}
+
+.c0 .simple-list-item-title-div:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+}
+
+<li
+  class="c0"
+  data-testid="listElement"
+>
+  <div
+    class="c1 simple-list-item-title-div"
+    data-testid="ListTitle"
+  >
+    Shelf1
+  </div>
+  <div />
+</li>
+`;
+
+exports[`Setup Environment when rendering a newly created item when inside of a transaction should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: blue;
+  min-width: 220px;
+}
+
+.c0 div:last-child {
+  margin-left: auto;
+}
+
+.c0 .simple-list-item-title-div:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+}
+
+<form>
+  <li
+    class="c0"
+    data-testid="listElement"
+  >
+    <div
+      class="c1"
+    >
+      <input
+        data-testid="inputElement"
+        id="newItem"
+        name="newItem"
+        readonly=""
+        required=""
+        size="15"
+        type="newItem"
+        value=""
+      />
+    </div>
+    <div />
+  </li>
+</form>
+`;
+
+exports[`Setup Environment when rendering a newly created item when outside of a transaction when there is an error message should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: blue;
+  min-width: 220px;
+}
+
+.c0 div:last-child {
+  margin-left: auto;
+}
+
+.c0 .simple-list-item-title-div:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+}
+
+<form>
+  <li
+    class="c0"
+    data-testid="listElement"
+  >
+    <div
+      class="c1"
+    >
+      <input
+        data-testid="inputElement"
+        id="newItem"
+        name="newItem"
+        required=""
+        size="15"
+        type="newItem"
+        value=""
+      />
+    </div>
+    <div>
+      <button
+        class="btn btn-success"
+        data-testid="saveButton"
+        style="height: 40px;"
+      >
+        <span>
+          save
+        </span>
+      </button>
+    </div>
+  </li>
+</form>
+`;
+
+exports[`Setup Environment when rendering a newly created item when outside of a transaction when there is no error message should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: blue;
+  min-width: 220px;
+}
+
+.c0 div:last-child {
+  margin-left: auto;
+}
+
+.c0 .simple-list-item-title-div:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+}
+
+<form>
+  <li
+    class="c0"
+    data-testid="listElement"
+  >
+    <div
+      class="c1"
+    >
+      <input
+        data-testid="inputElement"
+        id="newItem"
+        name="newItem"
+        required=""
+        size="15"
+        type="newItem"
+        value=""
+      />
+    </div>
+    <div>
+      <button
+        class="btn btn-success"
+        data-testid="saveButton"
+        style="height: 40px;"
+      >
+        <span>
+          save
+        </span>
+      </button>
+    </div>
+  </li>
+</form>
+`;

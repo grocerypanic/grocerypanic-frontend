@@ -107,6 +107,10 @@ describe("Setup Environment", () => {
           fireEvent.click(itemComponent, "click");
           done();
         });
+
+        it("should match the snapshot on file (styles)", () => {
+          expect(utils.container.firstChild).toMatchSnapshot();
+        });
       });
 
       describe("when selected, and longPress is not marked", () => {
@@ -159,6 +163,10 @@ describe("Setup Environment", () => {
           expect(utils.queryByTestId("inputElement")).toBeFalsy();
           expect(utils.queryByTestId("saveButton")).toBeFalsy();
         });
+
+        it("should match the snapshot on file (styles)", () => {
+          expect(utils.container.firstChild).toMatchSnapshot();
+        });
       });
 
       describe("when selected, and longPress is marked", () => {
@@ -201,6 +209,10 @@ describe("Setup Environment", () => {
           fireEvent.click(itemComponent, "click");
           expect(setActionMsg).toBeCalledTimes(0);
         });
+
+        it("should match the snapshot on file (styles)", () => {
+          expect(utils.container.firstChild).toMatchSnapshot();
+        });
       });
     });
     describe("when inside of a transaction", () => {
@@ -233,6 +245,10 @@ describe("Setup Environment", () => {
           expect(setCreated).toBeCalledTimes(0);
           expect(setSelected).toBeCalledTimes(0);
         });
+
+        it("should match the snapshot on file (styles)", () => {
+          expect(utils.container.firstChild).toMatchSnapshot();
+        });
       });
 
       describe("when selected", () => {
@@ -258,6 +274,10 @@ describe("Setup Environment", () => {
           expect(utils.queryByTestId("listElement")).toBeTruthy();
           expect(utils.queryByTestId("deleteButton")).toBeFalsy();
           expect(utils.queryByTestId("inputElement")).toBeFalsy();
+        });
+
+        it("should match the snapshot on file (styles)", () => {
+          expect(utils.container.firstChild).toMatchSnapshot();
         });
       });
     });
@@ -302,6 +322,10 @@ describe("Setup Environment", () => {
           await userEvent.type(input, "Hello, World!");
           expect(setErrorMsg).toBeCalledWith(null);
           done();
+        });
+
+        it("should match the snapshot on file (styles)", () => {
+          expect(utils.container.firstChild).toMatchSnapshot();
         });
       });
       describe("when there is no error message", () => {
@@ -370,6 +394,10 @@ describe("Setup Environment", () => {
           await (() => expect(setActionMsg).toBeCalledTimes(0));
           done();
         });
+
+        it("should match the snapshot on file (styles)", () => {
+          expect(utils.container.firstChild).toMatchSnapshot();
+        });
       });
     });
 
@@ -411,6 +439,10 @@ describe("Setup Environment", () => {
           expect(setLongPress).toBeCalledTimes(0);
           done();
         }, 500);
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
       });
     });
   });
