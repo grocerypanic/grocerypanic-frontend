@@ -1,0 +1,976 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Setup Environment after transactions are fetched with expired items in inventory should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.c2 {
+  list-style-type: none;
+  list-style-position: outside;
+  margin: 0px;
+  width: 100%;
+  background: #808080;
+  padding: 10px;
+}
+
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin: 5px;
+  padding: 5px;
+}
+
+.c3 .table {
+  margin-bottom: 0px;
+}
+
+.c3 .chartBox {
+  height: 150px;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1 alert alert-success mb-2"
+    >
+      Consumption Statistics
+    </div>
+    <div
+      class="c1 alert alert-danger mb-2"
+    >
+      Expired Items Warning
+    </div>
+    <div
+      class="c1 alert alert-warning mb-2"
+    >
+      1 Item(s) Expiring Soon
+    </div>
+    <div
+      class="c2"
+    >
+      <div
+        class="c3"
+      >
+        <div
+          class="chartBox"
+        >
+          <canvas
+            id="consumptionChart"
+          />
+        </div>
+      </div>
+      <div
+        class="c3"
+      >
+        <table
+          class="table table-sm table-striped table-bordered table-hover"
+        >
+          <tbody>
+            <tr>
+              <td>
+                current inventory
+              </td>
+              <td>
+                1
+              </td>
+            </tr>
+            <tr>
+              <td>
+                last week
+              </td>
+              <td
+                data-testid="lastWeek"
+              >
+                6
+              </td>
+            </tr>
+            <tr>
+              <td>
+                last month
+              </td>
+              <td
+                data-testid="lastMonth"
+              >
+                7
+              </td>
+            </tr>
+            <tr>
+              <td>
+                avg. per week
+              </td>
+              <td
+                data-testid="avgWeek"
+              >
+                4.4
+              </td>
+            </tr>
+            <tr>
+              <td>
+                avg. per month
+              </td>
+              <td
+                data-testid="avgMonth"
+              >
+                5.5
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Setup Environment after transactions are fetched with items expirying soon in inventory should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.c2 {
+  list-style-type: none;
+  list-style-position: outside;
+  margin: 0px;
+  width: 100%;
+  background: #808080;
+  padding: 10px;
+}
+
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin: 5px;
+  padding: 5px;
+}
+
+.c3 .table {
+  margin-bottom: 0px;
+}
+
+.c3 .chartBox {
+  height: 150px;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1 alert alert-success mb-2"
+    >
+      Consumption Statistics
+    </div>
+    <div
+      class="c1 alert alert-warning mb-2"
+    >
+      1 Item(s) Expiring Soon
+    </div>
+    <div
+      class="c2"
+    >
+      <div
+        class="c3"
+      >
+        <div
+          class="chartBox"
+        >
+          <canvas
+            id="consumptionChart"
+          />
+        </div>
+      </div>
+      <div
+        class="c3"
+      >
+        <table
+          class="table table-sm table-striped table-bordered table-hover"
+        >
+          <tbody>
+            <tr>
+              <td>
+                current inventory
+              </td>
+              <td>
+                1
+              </td>
+            </tr>
+            <tr>
+              <td>
+                last week
+              </td>
+              <td
+                data-testid="lastWeek"
+              >
+                6
+              </td>
+            </tr>
+            <tr>
+              <td>
+                last month
+              </td>
+              <td
+                data-testid="lastMonth"
+              >
+                7
+              </td>
+            </tr>
+            <tr>
+              <td>
+                avg. per week
+              </td>
+              <td
+                data-testid="avgWeek"
+              >
+                4.4
+              </td>
+            </tr>
+            <tr>
+              <td>
+                avg. per month
+              </td>
+              <td
+                data-testid="avgMonth"
+              >
+                5.5
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Setup Environment after transactions are fetched with items in the inventory should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.c2 {
+  list-style-type: none;
+  list-style-position: outside;
+  margin: 0px;
+  width: 100%;
+  background: #808080;
+  padding: 10px;
+}
+
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin: 5px;
+  padding: 5px;
+}
+
+.c3 .table {
+  margin-bottom: 0px;
+}
+
+.c3 .chartBox {
+  height: 150px;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1 alert alert-success mb-2"
+    >
+      Consumption Statistics
+    </div>
+    <div
+      class="c1 alert alert-warning mb-2"
+    >
+      1 Item(s) Expiring Soon
+    </div>
+    <div
+      class="c2"
+    >
+      <div
+        class="c3"
+      >
+        <div
+          class="chartBox"
+        >
+          <canvas
+            id="consumptionChart"
+          />
+        </div>
+      </div>
+      <div
+        class="c3"
+      >
+        <table
+          class="table table-sm table-striped table-bordered table-hover"
+        >
+          <tbody>
+            <tr>
+              <td>
+                current inventory
+              </td>
+              <td>
+                1
+              </td>
+            </tr>
+            <tr>
+              <td>
+                last week
+              </td>
+              <td
+                data-testid="lastWeek"
+              >
+                6
+              </td>
+            </tr>
+            <tr>
+              <td>
+                last month
+              </td>
+              <td
+                data-testid="lastMonth"
+              >
+                7
+              </td>
+            </tr>
+            <tr>
+              <td>
+                avg. per week
+              </td>
+              <td
+                data-testid="avgWeek"
+              >
+                4.4
+              </td>
+            </tr>
+            <tr>
+              <td>
+                avg. per month
+              </td>
+              <td
+                data-testid="avgMonth"
+              >
+                5.5
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Setup Environment after transactions are fetched with no items expirying soon in inventory, but an old next_expiry_date set should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.c2 {
+  list-style-type: none;
+  list-style-position: outside;
+  margin: 0px;
+  width: 100%;
+  background: #808080;
+  padding: 10px;
+}
+
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin: 5px;
+  padding: 5px;
+}
+
+.c3 .table {
+  margin-bottom: 0px;
+}
+
+.c3 .chartBox {
+  height: 150px;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1 alert alert-success mb-2"
+    >
+      Consumption Statistics
+    </div>
+    <div
+      class="c1 alert alert-danger mb-2"
+    >
+      Expired Items Warning
+    </div>
+    <div
+      class="c2"
+    >
+      <div
+        class="c3"
+      >
+        <div
+          class="chartBox"
+        >
+          <canvas
+            id="consumptionChart"
+          />
+        </div>
+      </div>
+      <div
+        class="c3"
+      >
+        <table
+          class="table table-sm table-striped table-bordered table-hover"
+        >
+          <tbody>
+            <tr>
+              <td>
+                current inventory
+              </td>
+              <td>
+                1
+              </td>
+            </tr>
+            <tr>
+              <td>
+                last week
+              </td>
+              <td
+                data-testid="lastWeek"
+              >
+                6
+              </td>
+            </tr>
+            <tr>
+              <td>
+                last month
+              </td>
+              <td
+                data-testid="lastMonth"
+              >
+                7
+              </td>
+            </tr>
+            <tr>
+              <td>
+                avg. per week
+              </td>
+              <td
+                data-testid="avgWeek"
+              >
+                4.4
+              </td>
+            </tr>
+            <tr>
+              <td>
+                avg. per month
+              </td>
+              <td
+                data-testid="avgMonth"
+              >
+                5.5
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Setup Environment after transactions are fetched with no transactions should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.c2 {
+  list-style-type: none;
+  list-style-position: outside;
+  margin: 0px;
+  width: 100%;
+  background: #808080;
+  padding: 10px;
+}
+
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 150px;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin: 5px;
+  padding: 5px;
+}
+
+.c3 .table {
+  margin-bottom: 0px;
+}
+
+.c3 .chartBox {
+  height: 150px;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1 alert alert-success mb-2"
+    >
+      Consumption Statistics
+    </div>
+    <div
+      class="c1 alert alert-warning mb-2"
+    >
+      1 Item(s) Expiring Soon
+    </div>
+    <div
+      class="c2"
+    >
+      <div
+        class="c3"
+      >
+        <div
+          class="c4 text-muted"
+        >
+          <div>
+            Not Enough Data
+          </div>
+        </div>
+      </div>
+      <div
+        class="c3"
+      >
+        <table
+          class="table table-sm table-striped table-bordered table-hover"
+        >
+          <tbody>
+            <tr>
+              <td>
+                current inventory
+              </td>
+              <td>
+                1
+              </td>
+            </tr>
+            <tr>
+              <td>
+                last week
+              </td>
+              <td
+                data-testid="lastWeek"
+              >
+                0
+              </td>
+            </tr>
+            <tr>
+              <td>
+                last month
+              </td>
+              <td
+                data-testid="lastMonth"
+              >
+                0
+              </td>
+            </tr>
+            <tr>
+              <td>
+                avg. per week
+              </td>
+              <td
+                data-testid="avgWeek"
+              >
+                0
+              </td>
+            </tr>
+            <tr>
+              <td>
+                avg. per month
+              </td>
+              <td
+                data-testid="avgMonth"
+              >
+                0
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Setup Environment before transactions are fetched with items in the inventory should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.c2 {
+  list-style-type: none;
+  list-style-position: outside;
+  margin: 0px;
+  width: 100%;
+  background: #808080;
+  padding: 10px;
+}
+
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin: 5px;
+  padding: 5px;
+}
+
+.c3 .table {
+  margin-bottom: 0px;
+}
+
+.c3 .chartBox {
+  height: 150px;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1 alert alert-success mb-2"
+    >
+      Consumption Statistics
+    </div>
+    <div
+      class="c1 alert alert-warning mb-2"
+    >
+      1 Item(s) Expiring Soon
+    </div>
+    <div
+      class="c2"
+    >
+      <div
+        class="c3"
+      >
+        <div
+          class="chartBox"
+        >
+          <canvas
+            id="consumptionChart"
+          />
+        </div>
+      </div>
+      <div
+        class="c3"
+      >
+        <table
+          class="table table-sm table-striped table-bordered table-hover"
+        >
+          <tbody>
+            <tr>
+              <td>
+                current inventory
+              </td>
+              <td>
+                1
+              </td>
+            </tr>
+            <tr>
+              <td>
+                last week
+              </td>
+              <td
+                data-testid="lastWeek"
+              >
+                6
+              </td>
+            </tr>
+            <tr>
+              <td>
+                last month
+              </td>
+              <td
+                data-testid="lastMonth"
+              >
+                7
+              </td>
+            </tr>
+            <tr>
+              <td>
+                avg. per week
+              </td>
+              <td
+                data-testid="avgWeek"
+              >
+                4.4
+              </td>
+            </tr>
+            <tr>
+              <td>
+                avg. per month
+              </td>
+              <td
+                data-testid="avgMonth"
+              >
+                5.5
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;

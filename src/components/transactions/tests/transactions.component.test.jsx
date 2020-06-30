@@ -139,6 +139,10 @@ describe("Setup Environment", () => {
         await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
         done();
       });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container).toMatchSnapshot();
+      });
     });
 
     describe("with no transactions", () => {
@@ -167,6 +171,10 @@ describe("Setup Environment", () => {
           utils.queryByText(`${Strings.ItemStats.NotEnoughData}`)
         ).toBeTruthy();
         expect(global.Chart).toBeCalledTimes(0);
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container).toMatchSnapshot();
       });
     });
 
@@ -198,6 +206,10 @@ describe("Setup Environment", () => {
       it("should render the graph", async (done) => {
         await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
         done();
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container).toMatchSnapshot();
       });
     });
 
@@ -231,6 +243,10 @@ describe("Setup Environment", () => {
       it("should render the graph", async (done) => {
         await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
         done();
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container).toMatchSnapshot();
       });
     });
 
@@ -269,6 +285,10 @@ describe("Setup Environment", () => {
         await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
         done();
       });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container).toMatchSnapshot();
+      });
     });
   });
 
@@ -301,6 +321,10 @@ describe("Setup Environment", () => {
       it("should not render the graph", async (done) => {
         expect(global.Chart).toBeCalledTimes(0);
         done();
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container).toMatchSnapshot();
       });
     });
   });
