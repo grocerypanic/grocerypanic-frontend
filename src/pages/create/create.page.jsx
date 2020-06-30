@@ -4,7 +4,7 @@ import { ItemContext } from "../../providers/api/item/item.provider";
 import { UserContext } from "../../providers/user/user.provider";
 import { authExpired } from "../../providers/user/user.async";
 
-import ItemDetailsCreateContainer from "../../components/item-details-form/item-details.create.container";
+import ItemDetailsCreateContainer from "../../components/item-details/item-details.create.container";
 
 import { useTranslation } from "react-i18next";
 import Strings from "../../configuration/strings";

@@ -6,7 +6,7 @@ import { createBrowserHistory } from "history";
 
 import ErrorHandler from "../../error-handler/error-handler.component";
 import HoldingPattern from "../../holding-pattern/holding-pattern.component";
-import ItemDetailsForm from "../item-details.form";
+import ItemDetailsForm from "../../item-details-form/item-details-form.component";
 import ItemDetailsCreateContainer, {
   defaultItem,
 } from "../item-details.create.container";
@@ -26,7 +26,7 @@ import ApiFunctions from "../../../providers/api/api.functions";
 import Strings from "../../../configuration/strings";
 import Routes from "../../../configuration/routes";
 
-jest.mock("../item-details.form");
+jest.mock("../../item-details-form/item-details-form.component");
 jest.mock("../../holding-pattern/holding-pattern.component");
 jest.mock("../../error-handler/error-handler.component");
 

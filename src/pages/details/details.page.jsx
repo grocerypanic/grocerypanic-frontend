@@ -5,7 +5,7 @@ import { ItemContext } from "../../providers/api/item/item.provider";
 import { UserContext } from "../../providers/user/user.provider";
 import { authExpired } from "../../providers/user/user.async";
 
-import ItemDetailsEditContainer from "../../components/item-details-form/item-details.edit.container";
+import ItemDetailsEditContainer from "../../components/item-details/item-details.edit.container";
 
 import { useTranslation } from "react-i18next";
 import Strings from "../../configuration/strings";

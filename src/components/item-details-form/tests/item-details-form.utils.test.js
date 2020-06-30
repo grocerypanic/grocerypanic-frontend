@@ -5,7 +5,7 @@ import {
   normalizeName,
   normalizeId,
   normalizeShelfLifeName,
-} from "../item-details.utils";
+} from "../item-details-form.utils";
 
 const objects = [
   { id: 1, name: "Niall" },

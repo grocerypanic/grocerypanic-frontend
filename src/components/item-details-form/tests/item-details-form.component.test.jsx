@@ -9,7 +9,7 @@ import {
 import { propCount } from "../../../test.fixtures/objectComparison";
 
 import Alert from "../../alert/alert.component";
-import ItemDetailsForm from "../item-details.form";
+import ItemDetailsForm from "../item-details-form.component";
 import Hint from "../../hint/hint.component";
 
 import FormInput from "../../form-input/form-input.component";
@@ -28,6 +28,7 @@ jest.mock("../../form-multiselect/form-multiselect.component");
 
 jest.mock("../../../configuration/theme", () => {
   return {
+    ...jest.requireActual("../../../configuration/theme"),
     ui: {
       alertTimeout: 10,
     },

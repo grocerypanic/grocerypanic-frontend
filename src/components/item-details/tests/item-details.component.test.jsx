@@ -4,14 +4,14 @@ import { propCount } from "../../../test.fixtures/objectComparison";
 
 import Header from "../../header/header.component";
 import ItemDetails from "../item-details.component";
-import ItemDetailsForm from "../item-details.form";
+import ItemDetailsForm from "../../item-details-form/item-details-form.component";
 import TransactionsOverview from "../../transactions/transactions.component";
 
 import Strings from "../../../configuration/strings";
 
 jest.mock("../../header/header.component");
 jest.mock("../../transactions/transactions.component");
-jest.mock("../item-details.form");
+jest.mock("../../item-details-form/item-details-form.component");
 Header.mockImplementation(() => <div>MockHeader</div>);
 ItemDetailsForm.mockImplementation(() => <div>MockItemDetailsForm</div>);
 TransactionsOverview.mockImplementation(() => (

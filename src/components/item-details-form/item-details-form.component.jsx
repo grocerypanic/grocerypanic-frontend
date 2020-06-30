@@ -13,7 +13,8 @@ import DropDown from "../form-dropdown/form-dropdown.component";
 import MultiDropDown from "../form-multiselect/form-multiselect.component";
 
 import { Paper } from "../../global-styles/containers";
-import { FormBox, Outline, Banner, ButtonBox } from "./item-details.styles";
+import { Banner } from "../../global-styles/banner";
+import { FormBox, Outline, ButtonBox } from "./item-details-form.styles";
 
 import { Constants, ShelfLifeConstants } from "../../configuration/backend";
 import Strings from "../../configuration/strings";
@@ -24,7 +25,7 @@ import {
   normalizeName,
   normalizeId,
   normalizeShelfLifeName,
-} from "./item-details.utils";
+} from "./item-details-form.utils";
 
 const ItemDetailsForm = ({
   item,

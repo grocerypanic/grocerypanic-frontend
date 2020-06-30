@@ -4,7 +4,7 @@ import { propCount } from "../../../test.fixtures/objectComparison";
 import { MemoryRouter, Route } from "react-router-dom";
 
 import ItemCreatePage from "../create.page";
-import ItemDetailsCreateContainer from "../../../components/item-details-form/item-details.create.container";
+import ItemDetailsCreateContainer from "../../../components/item-details/item-details.create.container";
 
 import { ItemContext } from "../../../providers/api/item/item.provider";
 
@@ -15,9 +15,7 @@ import UserActions from "../../../providers/user/user.actions";
 import Strings from "../../../configuration/strings";
 import Routes from "../../../configuration/routes";
 
-jest.mock(
-  "../../../components/item-details-form/item-details.create.container"
-);
+jest.mock("../../../components/item-details/item-details.create.container");
 ItemDetailsCreateContainer.mockImplementation(() => <div>MockDetails</div>);
 
 const mockDispatch = jest.fn();

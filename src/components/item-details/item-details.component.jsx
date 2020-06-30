@@ -5,7 +5,7 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 
 import Header from "../header/header.component";
-import ItemDetailsForm from "./item-details.form";
+import ItemDetailsForm from "../item-details-form/item-details-form.component";
 import TransactionsReview from "../transactions/transactions.component";
 
 import { Container } from "../../global-styles/containers";

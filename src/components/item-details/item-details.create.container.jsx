@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 import Header from "../header/header.component";
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 import ErrorHandler from "../error-handler/error-handler.component";
-import ItemDetailsForm from "./item-details.form";
+import ItemDetailsForm from "../item-details-form/item-details-form.component";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";

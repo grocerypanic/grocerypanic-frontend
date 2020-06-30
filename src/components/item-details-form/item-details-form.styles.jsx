@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { primary, white, tertiary } from "../../configuration/theme";
+import { white, tertiary } from "../../configuration/theme";
 
 export const Outline = styled.div`
   list-style-type: none;
@@ -10,13 +10,6 @@ export const Outline = styled.div`
   min-width: 200px;
   background: ${tertiary};
   padding: 10px;
-`;
-
-export const Banner = styled.div`
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 `;
 
 export const FormBox = styled.div`
@@ -45,17 +38,4 @@ export const ButtonBox = styled.div`
   .btn {
     margin-top: 2px;
   }
-`;
-
-export const TabBox = styled.div`
-  .nav-rtl {
-    padding-left: 40px;
-    padding-right: 0px;
-  }
-
-  .nav-rtl li {
-    float: right;
-  }
-  min-width: 220px;
-  max-width: 402px;
 `;
