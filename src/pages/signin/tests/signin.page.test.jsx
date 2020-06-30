@@ -40,11 +40,12 @@ Copyright.mockImplementation(() => <div>MockCopyRight</div>);
 const originalEnvironment = process.env;
 
 describe("Setup Environment", () => {
+  let utils;
   beforeEach(() => {
     jest.clearAllMocks();
     process.env.REACT_APP_FACEBOOK_ACCOUNT_ID = "MOCK_FACEBOOK_ACCOUNT";
     process.env.REACT_APP_GOOGLE_ACCOUNT_ID = "MOCK_GOOGLE_ACCOUNT";
-    render(
+    utils = render(
       <Signin
         handleSocialLogin={handleSocialLogin}
         handleSocialLoginError={handleSocialLoginError}
@@ -92,5 +93,9 @@ describe("Setup Environment", () => {
     expect(call2.onLoginSuccess).toBe(handleSocialLogin);
     expect(call2.onLoginFailure).toBe(handleSocialLoginError);
     done();
+  });
+
+  it("should match the snapshot on file (styles)", () => {
+    expect(utils.container).toMatchSnapshot();
   });
 });

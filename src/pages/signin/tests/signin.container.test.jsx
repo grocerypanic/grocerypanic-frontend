@@ -38,169 +38,134 @@ const mockAnalyticsContext = {
 };
 
 describe("Setup Environment", () => {
-  let tests = [1];
   let utils;
   let currentTest;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    currentTest = tests.shift();
-    utils = render(
-      <AnalyticsContext.Provider value={mockAnalyticsContext}>
-        <UserContext.Provider
-          value={{ user: initialState, dispatch: mockDispatch }}
-        >
-          <SignInContainer />
-        </UserContext.Provider>
-      </AnalyticsContext.Provider>
-    );
   });
 
   afterEach(cleanup);
 
-  it("should render with the handler functions", async (done) => {
-    expect(currentTest).toBe(1);
-    await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-    const call1 = SignIn.mock.calls[0][0];
-    expect(call1.handleSocialLogin).toBeInstanceOf(Function);
-    done();
-  });
-});
+  describe("outside of an auth error", () => {
+    beforeEach(() => {
+      currentTest = { ...initialState };
+      utils = render(
+        <AnalyticsContext.Provider value={mockAnalyticsContext}>
+          <UserContext.Provider
+            value={{ user: currentTest, dispatch: mockDispatch }}
+          >
+            <SignInContainer />
+          </UserContext.Provider>
+        </AnalyticsContext.Provider>
+      );
+    });
 
-describe("Setup Environment for Handlers", () => {
-  let tests = [
-    { ...initialState },
-    { ...initialState },
-    {
-      ...initialState,
-      error: true,
-      errorMessage: "ErrorAuthExpired",
-    },
-    {
-      ...initialState,
-      error: true,
-      errorMessage: "ErrorAuthExpired",
-    },
-  ];
-  let utils;
-  let currentTest;
+    it("should render with the handler functions", async (done) => {
+      await waitFor(() => expect(SignIn).toBeCalledTimes(1));
+      const call1 = SignIn.mock.calls[0][0];
+      expect(call1.handleSocialLogin).toBeInstanceOf(Function);
+      done();
+    });
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-    currentTest = tests.shift();
-    utils = render(
-      <AnalyticsContext.Provider value={mockAnalyticsContext}>
-        <UserContext.Provider
-          value={{ user: currentTest, dispatch: mockDispatch }}
-        >
-          <SignInContainer />
-        </UserContext.Provider>
-      </AnalyticsContext.Provider>
-    );
-  });
+    it("should export a function handleSocialLogin, that works as expected", async (done) => {
+      await waitFor(() => expect(SignIn).toBeCalledTimes(1));
+      await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(0));
+      const call1 = SignIn.mock.calls[0][0];
+      propCount(call1, 2);
 
-  afterEach(cleanup);
+      call1.handleSocialLogin("mockResponse");
+      expect(triggerLogin).toBeCalledTimes(1);
+      expect(loginError).toBeCalledTimes(0);
+      expect(resetLogin).toBeCalledTimes(0);
+      const triggerCall = triggerLogin.mock.calls[0];
+      propCount(triggerCall, 2);
 
-  it("should export a function handleSocialLogin, that works as expected", async (done) => {
-    await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-    await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(0));
-    const call1 = SignIn.mock.calls[0][0];
-    propCount(call1, 2);
+      expect(triggerCall[0]).toBeInstanceOf(Function);
+      expect(triggerCall[1]).toBe("mockResponse");
 
-    call1.handleSocialLogin("mockResponse");
-    expect(triggerLogin).toBeCalledTimes(1);
-    expect(loginError).toBeCalledTimes(0);
-    expect(resetLogin).toBeCalledTimes(0);
-    const triggerCall = triggerLogin.mock.calls[0];
-    propCount(triggerCall, 2);
+      expect(mockAnalyticsContext.event).toBeCalledWith(
+        AnalyticsActions.LoginSuccess
+      );
 
-    expect(triggerCall[0]).toBeInstanceOf(Function);
-    expect(triggerCall[1]).toBe("mockResponse");
+      done();
+    });
 
-    expect(mockAnalyticsContext.event).toBeCalledWith(
-      AnalyticsActions.LoginSuccess
-    );
+    it("should export a function handleSocialLoginError, that works as expected", async (done) => {
+      await waitFor(() => expect(SignIn).toBeCalledTimes(1));
+      await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(0));
+      const call1 = SignIn.mock.calls[0][0];
+      propCount(call1, 2);
 
-    done();
-  });
+      call1.handleSocialLoginError("");
+      expect(triggerLogin).toBeCalledTimes(0);
+      expect(loginError).toBeCalledTimes(1);
+      expect(resetLogin).toBeCalledTimes(0);
 
-  it("should export a function handleSocialLoginError, that works as expected", async (done) => {
-    await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-    await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(0));
-    const call1 = SignIn.mock.calls[0][0];
-    propCount(call1, 2);
+      const errorCall = loginError.mock.calls[0];
+      expect(errorCall[0]).toBeInstanceOf(Function);
+      done();
+    });
 
-    call1.handleSocialLoginError("");
-    expect(triggerLogin).toBeCalledTimes(0);
-    expect(loginError).toBeCalledTimes(1);
-    expect(resetLogin).toBeCalledTimes(0);
+    it("should use state to indirectly call dispatch", async (done) => {
+      await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(0));
+      await waitFor(() => expect(SignIn).toBeCalledTimes(1));
 
-    const errorCall = loginError.mock.calls[0];
-    expect(errorCall[0]).toBeInstanceOf(Function);
-    done();
+      const call1 = SignIn.mock.calls[0][0];
+      call1.handleSocialLogin("mockResponse");
+      expect(triggerLogin).toBeCalledTimes(1);
+
+      const modifyState = triggerLogin.mock.calls[0][0];
+      propCount(modifyState, 0);
+
+      act(() => modifyState("Fake Async Action"));
+      await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+      expect(mockDispatch).toBeCalledWith("Fake Async Action");
+
+      done();
+    });
   });
 
-  it("should handle an error condition as expected", async (done) => {
-    await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(1));
-    await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-    const call1 = ErrorDialogue.mock.calls[0][0];
-    propCount(call1, 4);
+  describe("during an auth error", () => {
+    beforeEach(() => {
+      currentTest = {
+        ...initialState,
+        error: true,
+        errorMessage: "ErrorAuthExpired",
+      };
+      utils = render(
+        <AnalyticsContext.Provider value={mockAnalyticsContext}>
+          <UserContext.Provider
+            value={{ user: currentTest, dispatch: mockDispatch }}
+          >
+            <SignInContainer />
+          </UserContext.Provider>
+        </AnalyticsContext.Provider>
+      );
+    });
 
-    expect(call1.eventError).toBe(AnalyticsActions.LoginError);
-    expect(call1.clearError).toBeInstanceOf(Function);
-    expect(call1.string).toBe(currentTest.errorMessage);
-    expect(call1.stringsRoot).toBe(Strings.SignIn);
-    done();
+    it("should handle an error condition as expected", async (done) => {
+      await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(1));
+      await waitFor(() => expect(SignIn).toBeCalledTimes(0));
+      const call1 = ErrorDialogue.mock.calls[0][0];
+      propCount(call1, 4);
+
+      expect(call1.eventError).toBe(AnalyticsActions.LoginError);
+      expect(call1.clearError).toBeInstanceOf(Function);
+      expect(call1.string).toBe(currentTest.errorMessage);
+      expect(call1.stringsRoot).toBe(Strings.SignIn);
+      done();
+    });
+
+    it("should export a function clearError, that works as expected on an error", async (done) => {
+      await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(1));
+      await waitFor(() => expect(SignIn).toBeCalledTimes(0));
+      const call1 = ErrorDialogue.mock.calls[0][0];
+
+      call1.clearError("mockResponse");
+      const resetCall = resetLogin.mock.calls[0];
+      expect(resetCall[0]).toBeInstanceOf(Function);
+      done();
+    });
   });
-
-  it("should export a function clearError, that works as expected on an error", async (done) => {
-    await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(1));
-    await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-    const call1 = ErrorDialogue.mock.calls[0][0];
-
-    call1.clearError("mockResponse");
-    const resetCall = resetLogin.mock.calls[0];
-    expect(resetCall[0]).toBeInstanceOf(Function);
-    done();
-  });
-});
-
-describe("Setup Environment for Async Dispatch Test", () => {
-  let tests = [{ ...initialState }];
-  let utils;
-  let currentTest;
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-    currentTest = tests.shift();
-    utils = render(
-      <AnalyticsContext.Provider value={mockAnalyticsContext}>
-        <UserContext.Provider
-          value={{ user: currentTest, dispatch: mockDispatch }}
-        >
-          <SignInContainer />
-        </UserContext.Provider>
-      </AnalyticsContext.Provider>
-    );
-  });
-
-  it("should a useEffect hook instead of calling dispatch directly", async (done) => {
-    await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(0));
-    await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-
-    const call1 = SignIn.mock.calls[0][0];
-    call1.handleSocialLogin("mockResponse");
-    expect(triggerLogin).toBeCalledTimes(1);
-
-    const modifyState = triggerLogin.mock.calls[0][0];
-    propCount(modifyState, 0);
-
-    act(() => modifyState("Fake Async Action"));
-    await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
-    expect(mockDispatch).toBeCalledWith("Fake Async Action");
-
-    done();
-  });
-
-  afterEach(cleanup);
 });

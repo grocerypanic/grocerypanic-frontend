@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Setup Environment should match the snapshot on file (styles) 1`] = `
+.c0 {
+  margin-top: calc(50px + 26px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.c3 {
+  padding-bottom: 10px;
+  min-width: 250px;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #006600;
+  color: #FFFFFF;
+  text-align: center;
+  overflow: hidden;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <div
+        class="c2"
+      >
+        <div>
+          MockLock
+        </div>
+      </div>
+      <h1>
+        Sign In
+      </h1>
+      <div
+        class="c3"
+      >
+        <div>
+          SocialLoginButton
+        </div>
+      </div>
+      <div
+        class="c3"
+      >
+        <div>
+          SocialLoginButton
+        </div>
+      </div>
+      <div>
+        MockCopyRight
+      </div>
+    </div>
+  </div>
+</div>
+`;
