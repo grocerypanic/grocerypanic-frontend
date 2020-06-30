@@ -1,30 +1,30 @@
 import React from "react";
 import { render, cleanup } from "@testing-library/react";
 
-import Help from "../simple-list-help.component";
+import Hint from "../hint.component";
 
 import Strings from "../../../configuration/strings";
 
 describe("Setup Environment", () => {
-  let tests = [1];
   let utils;
-  let currentTest;
 
   beforeEach(() => {
-    currentTest = tests.shift();
     utils = render(
-      <Help>{Strings.Testing.GenericMultiLineTranslationTestString}</Help>
+      <Hint>{Strings.Testing.GenericMultiLineTranslationTestString}</Hint>
     );
   });
 
   afterEach(cleanup);
 
   it("should render with the correct message content", () => {
-    expect(currentTest).toBe(1);
-    const node = utils.getByTestId("ListDialogue");
+    const node = utils.getByTestId("HintDialogue");
     expect(node).toBeTruthy();
     expect(
       utils.getAllByText(Strings.Testing.GenericTranslationTestString).length
     ).toBe(2);
+  });
+
+  it("should match the snapshot on file (styles)", () => {
+    expect(utils.container.firstChild).toMatchSnapshot();
   });
 });

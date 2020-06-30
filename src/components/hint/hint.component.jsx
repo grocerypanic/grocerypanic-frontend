@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { ListDialogue, Centered } from "./simple-list-help.styles.jsx";
+import { ListDialogue, Centered } from "./hint.styles.jsx";
 
-const Help = ({ children }) => {
+const Hint = ({ children }) => {
   return (
-    <ListDialogue data-testid="ListDialogue">
+    <ListDialogue data-testid="HintDialogue">
       {children.split("\n").map((item, index) => {
         return <Centered key={index}>{item}</Centered>;
       })}
@@ -13,8 +13,8 @@ const Help = ({ children }) => {
   );
 };
 
-export default Help;
+export default Hint;
 
-Help.propTypes = {
+Hint.propTypes = {
   children: PropTypes.string.isRequired,
 };

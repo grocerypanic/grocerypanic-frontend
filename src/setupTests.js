@@ -3,6 +3,7 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom/extend-expect";
+import "jest-styled-components";
 
 // Manual mocking DID NOT work for this, but this global mock works nicely.
 jest.mock("react-i18next", () => ({

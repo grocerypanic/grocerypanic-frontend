@@ -10,7 +10,7 @@ import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 import ErrorHandler from "../error-handler/error-handler.component";
 import Header from "../header/header.component";
 import SimpleListItem from "../simple-list-item/simple-list-item.component";
-import Help from "../simple-list-help/simple-list-help.component";
+import Hint from "../hint/hint.component";
 import Alert from "../alert/alert.component";
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
@@ -192,7 +192,7 @@ const SimpleList = ({
               </Scroller>
             </Paper>
             <Alert message={actionMsg} />
-            <Help>{helpText}</Help>
+            <Hint>{helpText}</Hint>
           </Container>
         </HoldingPattern>
       </ErrorHandler>

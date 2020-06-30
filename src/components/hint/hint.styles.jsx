@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { tertiary } from "../../configuration/theme";
+import { black } from "../../configuration/theme";
 
 export const ListDialogue = styled.div`
   display: flex;
@@ -10,7 +10,7 @@ export const ListDialogue = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 0.7em;
-  color: ${tertiary};
+  color: ${black};
 `;
 
 export const Centered = styled.div`

@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 
 import Header from "../header/header.component";
 import MenuItem from "../menu-item/menu-item.component";
-import Help from "../simple-list-help/simple-list-help.component";
+import Hint from "../hint/hint.component";
 
 import { Paper, Container } from "../../global-styles/containers";
 import { Scroller, ListBox, Banner } from "./menu.styles";
@@ -47,7 +47,7 @@ const Menu = ({ options, headerTitle, title, history, helpText }) => {
           </Scroller>
         </Paper>
       </Container>
-      <Help>{helpText}</Help>
+      <Hint>{helpText}</Hint>
     </>
   );
 };

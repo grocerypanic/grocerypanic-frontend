@@ -19,7 +19,7 @@ import ErrorHandler from "../../error-handler/error-handler.component";
 import ItemList from "../item-list.component";
 import ItemListRow from "../../item-list-row/item-list-row.component";
 import Header from "../../header/header.component";
-import Help from "../../simple-list-help/simple-list-help.component";
+import Hint from "../../hint/hint.component";
 import Alert from "../../alert/alert.component";
 import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 
@@ -33,7 +33,7 @@ import calculateMaxHeight from "../../../util/height";
 jest.mock("../../holding-pattern/holding-pattern.component");
 jest.mock("../../item-list-row/item-list-row.component");
 jest.mock("../../header/header.component");
-jest.mock("../../simple-list-help/simple-list-help.component");
+jest.mock("../../hint/hint.component");
 jest.mock("../../alert/alert.component");
 jest.mock("../../error-handler/error-handler.component");
 jest.mock("../../../util/height");
@@ -41,7 +41,7 @@ jest.mock("../../../util/height");
 ErrorHandler.mockImplementation(({ children }) => children);
 ItemListRow.mockImplementation(() => <div>MockListItem</div>);
 Header.mockImplementation(() => <div>MockHeader</div>);
-Help.mockImplementation(() => <div>MockHelp</div>);
+Hint.mockImplementation(() => <div>MockHelp</div>);
 Alert.mockImplementation(() => <div>MockAlert</div>);
 HoldingPattern.mockImplementation(({ children }) => children);
 calculateMaxHeight.mockImplementation(() => 200);
@@ -293,12 +293,12 @@ describe("Setup Environment", () => {
             expect(holdingPatternCall.condition).toBe(false);
           });
 
-          it("renders, outside of a transaction should call help with the correct params", () => {
+          it("renders, outside of a transaction should call hint with the correct params", () => {
             expect(current.transaction).toBe(false);
 
-            expect(Help).toHaveBeenCalledTimes(1);
+            expect(Hint).toHaveBeenCalledTimes(1);
 
-            const helpCall = Help.mock.calls[0][0];
+            const helpCall = Hint.mock.calls[0][0];
             propCount(helpCall, 1);
             expect(helpCall.children).toBe(
               Strings.Testing.GenericTranslationTestString

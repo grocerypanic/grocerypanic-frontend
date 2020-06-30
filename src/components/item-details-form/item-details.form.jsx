@@ -7,7 +7,7 @@ import Form from "react-bootstrap/Form";
 import { useTranslation } from "react-i18next";
 
 import Alert from "../alert/alert.component";
-import Help from "../simple-list-help/simple-list-help.component";
+import Hint from "../hint/hint.component";
 import FormInput from "../form-input/form-input.component";
 import DropDown from "../form-dropdown/form-dropdown.component";
 import MultiDropDown from "../form-multiselect/form-multiselect.component";
@@ -264,7 +264,7 @@ const ItemDetailsForm = ({
         </Outline>
       </Paper>
       <Alert message={actionMsg} />
-      <Help>{helpText}</Help>
+      <Hint>{helpText}</Hint>
     </>
   );
 };

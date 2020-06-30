@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import ErrorHandler from "../error-handler/error-handler.component";
 import Header from "../header/header.component";
 import ItemListRow from "../item-list-row/item-list-row.component";
-import Help from "../simple-list-help/simple-list-help.component";
+import Hint from "../hint/hint.component";
 import Alert from "../alert/alert.component";
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
@@ -215,7 +215,7 @@ const ItemList = ({
             </Paper>
           </Container>
           <Alert message={actionMsg} />
-          <Help>{helpText}</Help>
+          <Hint>{helpText}</Hint>
         </HoldingPattern>
       </ErrorHandler>
     </>

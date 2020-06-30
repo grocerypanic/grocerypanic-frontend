@@ -15,18 +15,18 @@ import Menu from "../menu.component";
 
 import Header from "../../header/header.component";
 import MenuItem from "../../menu-item/menu-item.component";
-import Help from "../../simple-list-help/simple-list-help.component";
+import Hint from "../../hint/hint.component";
 
 import calculateMaxHeight from "../../../util/height";
 
 jest.mock("../../header/header.component");
 jest.mock("../../menu-item/menu-item.component");
-jest.mock("../../simple-list-help/simple-list-help.component");
+jest.mock("../../hint/hint.component");
 jest.mock("../../../util/height");
 
 Header.mockImplementation(() => <div>MockComponent</div>);
 MenuItem.mockImplementation(() => <div>MockComponent</div>);
-Help.mockImplementation(() => <div>MockComponent</div>);
+Hint.mockImplementation(() => <div>MockComponent</div>);
 calculateMaxHeight.mockImplementation(() => 200);
 
 const props = {
@@ -61,9 +61,9 @@ describe("Setup environment", () => {
     expect(headerCall.create).toBe(null);
   });
 
-  it("should call the help component with the correct props", () => {
-    expect(Help).toBeCalledTimes(1);
-    const helpCall = Help.mock.calls[0][0];
+  it("should call the hint component with the correct props", () => {
+    expect(Hint).toBeCalledTimes(1);
+    const helpCall = Hint.mock.calls[0][0];
     propCount(helpCall, 1);
     expect(helpCall.children).toBe(props.helpText);
   });

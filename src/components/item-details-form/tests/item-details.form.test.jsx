@@ -10,7 +10,7 @@ import { propCount } from "../../../test.fixtures/objectComparison";
 
 import Alert from "../../alert/alert.component";
 import ItemDetailsForm from "../item-details.form";
-import Help from "../../simple-list-help/simple-list-help.component";
+import Hint from "../../hint/hint.component";
 
 import FormInput from "../../form-input/form-input.component";
 import DropDown from "../../form-dropdown/form-dropdown.component";
@@ -21,7 +21,7 @@ import { ShelfLifeConstants, Constants } from "../../../configuration/backend";
 import Strings from "../../../configuration/strings";
 
 jest.mock("../../alert/alert.component");
-jest.mock("../../simple-list-help/simple-list-help.component");
+jest.mock("../../hint/hint.component");
 jest.mock("../../form-input/form-input.component");
 jest.mock("../../form-dropdown/form-dropdown.component");
 jest.mock("../../form-multiselect/form-multiselect.component");
@@ -35,7 +35,7 @@ jest.mock("../../../configuration/theme", () => {
 });
 
 Alert.mockImplementation(() => <div>MockAlert</div>);
-Help.mockImplementation(() => <div>MockHelp</div>);
+Hint.mockImplementation(() => <div>MockHelp</div>);
 FormInput.mockImplementation(() => <div>MockInput</div>);
 DropDown.mockImplementation(() => <div>MockDropDown</div>);
 MultiDropDown.mockImplementation(() => <div>MockDropDown</div>);
@@ -121,10 +121,10 @@ describe("Setup Environment, Render Tests", () => {
         utils = render(<ItemDetailsForm {...current} />);
       });
 
-      it("renders, outside of a transaction should call help with the correct params", () => {
-        expect(Help).toHaveBeenCalledTimes(2);
+      it("renders, outside of a transaction should call hint with the correct params", () => {
+        expect(Hint).toHaveBeenCalledTimes(2);
 
-        const helpCall = Help.mock.calls[0][0];
+        const helpCall = Hint.mock.calls[0][0];
         propCount(helpCall, 1);
         expect(helpCall.children).toBe(
           Strings.Testing.GenericTranslationTestString
