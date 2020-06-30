@@ -50,4 +50,8 @@ describe("Setup Environment", () => {
     );
     done();
   });
+
+  it("should match the snapshot on file (styles)", () => {
+    expect(utils.container.firstChild).toMatchSnapshot();
+  });
 });
