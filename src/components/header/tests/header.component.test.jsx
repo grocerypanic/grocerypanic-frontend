@@ -159,6 +159,10 @@ describe("during a transaction", () => {
       );
       done();
     });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container.firstChild).toMatchSnapshot();
+    });
   });
   describe("without a create function", () => {
     beforeEach(() => {
@@ -237,6 +241,10 @@ describe("during a transaction", () => {
         expect(history.location.pathname).toEqual("/some/unmatched/path")
       );
       done();
+    });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container.firstChild).toMatchSnapshot();
     });
   });
 });
@@ -323,6 +331,10 @@ describe("outside of a transaction", () => {
       );
       done();
     });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container.firstChild).toMatchSnapshot();
+    });
   });
 
   describe("without a create function", () => {
@@ -401,6 +413,10 @@ describe("outside of a transaction", () => {
         expect(history.location.pathname).toEqual(Routes.shelves)
       );
       done();
+    });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container.firstChild).toMatchSnapshot();
     });
   });
 });

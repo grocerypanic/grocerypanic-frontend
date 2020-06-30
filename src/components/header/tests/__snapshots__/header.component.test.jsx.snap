@@ -1,0 +1,565 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`during a transaction with a create function should match the snapshot on file (styles) 1`] = `
+.c0 {
+  background-color: #006600;
+  height: 50px;
+  padding: 2px;
+  padding-left: 10px;
+}
+
+.c0 .action {
+  cursor: pointer;
+}
+
+.c0 .header-hidden {
+  display: none;
+}
+
+.c1 {
+  height: 50px;
+  width: 50px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  background-color: #006600;
+}
+
+<nav
+  class="c0 navbar navbar-expand navbar-dark fixed-top"
+>
+  <span
+    class="navbar-brand"
+  >
+    <div
+      class="action"
+    >
+      <div
+        class="header-hidden"
+      >
+        Panic
+      </div>
+      <div
+        class="header-visible"
+      >
+        Panic: A Very Real Title
+      </div>
+    </div>
+  </span>
+  <div
+    class="mr-auto navbar-nav"
+  />
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="info-icon"
+      >
+        <div>
+          MockInfo
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="home-icon"
+      >
+        <div>
+          MockHome
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="stores-icon"
+      >
+        <div>
+          MockStore
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="shelves-icon"
+      >
+        <div>
+          MockKitchen
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class="c1"
+        data-testid="AddIcon"
+      >
+        <div>
+          MockSpinner
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+`;
+
+exports[`during a transaction without a create function should match the snapshot on file (styles) 1`] = `
+.c0 {
+  background-color: #006600;
+  height: 50px;
+  padding: 2px;
+  padding-left: 10px;
+}
+
+.c0 .action {
+  cursor: pointer;
+}
+
+.c0 .header-hidden {
+  display: none;
+}
+
+.c1 {
+  height: 50px;
+  width: 50px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  background-color: #006600;
+}
+
+<nav
+  class="c0 navbar navbar-expand navbar-dark fixed-top"
+>
+  <span
+    class="navbar-brand"
+  >
+    <div
+      class="action"
+    >
+      <div
+        class="header-hidden"
+      >
+        Panic
+      </div>
+      <div
+        class="header-visible"
+      >
+        Panic: undefined
+      </div>
+    </div>
+  </span>
+  <div
+    class="mr-auto navbar-nav"
+  />
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="info-icon"
+      >
+        <div>
+          MockInfo
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="home-icon"
+      >
+        <div>
+          MockHome
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="stores-icon"
+      >
+        <div>
+          MockStore
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="shelves-icon"
+      >
+        <div>
+          MockKitchen
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link nav-item"
+    >
+      <div
+        class="c1"
+      >
+        <div>
+          MockSpinner
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+`;
+
+exports[`outside of a transaction with a create function should match the snapshot on file (styles) 1`] = `
+.c0 {
+  background-color: #006600;
+  height: 50px;
+  padding: 2px;
+  padding-left: 10px;
+}
+
+.c0 .action {
+  cursor: pointer;
+}
+
+.c0 .header-hidden {
+  display: none;
+}
+
+.c1 {
+  height: 50px;
+  width: 50px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  background-color: #006600;
+}
+
+<nav
+  class="c0 navbar navbar-expand navbar-dark fixed-top"
+>
+  <span
+    class="navbar-brand"
+  >
+    <div
+      class="action"
+    >
+      <div
+        class="header-hidden"
+      >
+        Panic
+      </div>
+      <div
+        class="header-visible"
+      >
+        Panic: undefined
+      </div>
+    </div>
+  </span>
+  <div
+    class="mr-auto navbar-nav"
+  />
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="info-icon"
+      >
+        <div>
+          MockInfo
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="home-icon"
+      >
+        <div>
+          MockHome
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="stores-icon"
+      >
+        <div>
+          MockStore
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="shelves-icon"
+      >
+        <div>
+          MockKitchen
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class="c1"
+        data-testid="AddIcon"
+      >
+        <div>
+          MockAdd
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+`;
+
+exports[`outside of a transaction without a create function should match the snapshot on file (styles) 1`] = `
+.c0 {
+  background-color: #006600;
+  height: 50px;
+  padding: 2px;
+  padding-left: 10px;
+}
+
+.c0 .action {
+  cursor: pointer;
+}
+
+.c0 .header-hidden {
+  display: none;
+}
+
+.c1 {
+  height: 50px;
+  width: 50px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #006600;
+  background-color: #006600;
+}
+
+<nav
+  class="c0 navbar navbar-expand navbar-dark fixed-top"
+>
+  <span
+    class="navbar-brand"
+  >
+    <div
+      class="action"
+    >
+      <div
+        class="header-hidden"
+      >
+        Panic
+      </div>
+      <div
+        class="header-visible"
+      >
+        Panic: undefined
+      </div>
+    </div>
+  </span>
+  <div
+    class="mr-auto navbar-nav"
+  />
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="info-icon"
+      >
+        <div>
+          MockInfo
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="home-icon"
+      >
+        <div>
+          MockHome
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="stores-icon"
+      >
+        <div>
+          MockStore
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="shelves-icon"
+      >
+        <div>
+          MockKitchen
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link nav-item"
+    >
+      <div
+        class="c1"
+        data-testid="noAddIcon"
+      >
+        <div>
+          MockAdd
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+`;
