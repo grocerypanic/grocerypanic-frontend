@@ -7,7 +7,7 @@ import {
   fireEvent,
 } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
-import { Router } from "react-router-dom";
+import { Router, BrowserRouter } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
@@ -108,6 +108,7 @@ describe("Setup Environment", () => {
   let utils;
   let mockTitle = "mockTitle";
   let mockHeaderTitle = "mockHeaderTitle";
+  let history;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -122,14 +123,15 @@ describe("Setup Environment", () => {
   const renderHelper = (
     itemContextValue,
     transactionContextValue,
-    history,
-    override = null
+    currentHistory,
+    override = null,
+    command = render
   ) => {
-    return render(
+    return command(
       <AnalyticsContext.Provider value={mockAnalyticsContext}>
         <ItemContext.Provider value={itemContextValue}>
           <TransactionContext.Provider value={transactionContextValue}>
-            <Router history={history}>
+            <Router history={currentHistory}>
               {override === null ? (
                 <ItemList
                   title={mockTitle}
@@ -181,7 +183,7 @@ describe("Setup Environment", () => {
       describe("with wait for api engaged", () => {
         beforeEach(() => {
           current.inventory = [...mockItems];
-          let history = createBrowserHistory();
+          history = createBrowserHistory();
           history.push(Routes.items);
 
           const itemContext = {
@@ -419,6 +421,46 @@ describe("Setup Environment", () => {
             await waitFor(() =>
               expect(window.location.pathname).toBe(Routes.create)
             );
+
+            // The url has changed, so this should get called again
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(2)
+            );
+
+            done();
+          });
+
+          it("renders, whenever the route changes startlist is triggered again.", async (done) => {
+            expect(Header).toHaveBeenCalledTimes(1);
+            const { create } = Header.mock.calls[0][0];
+
+            // Use the create function to change the url
+
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(1)
+            );
+
+            act(() => {
+              create();
+            });
+
+            await waitFor(() =>
+              expect(window.location.pathname).toBe(Routes.create)
+            );
+
+            // The url has changed, so this should get called again
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(2)
+            );
+
+            // The new call to the item dispatcher, is to update the items
+
+            const apiCall = mockItemDispatch.mock.calls[1][0];
+            propCount(apiCall, 4);
+            expect(apiCall.type).toBe(ApiActions.StartList);
+            expect(apiCall.func).toBe(ApiFunctions.asyncList);
+            expect(apiCall.dispatch).toBeInstanceOf(Function);
+            expect(apiCall.filter).toBeInstanceOf(URLSearchParams);
 
             done();
           });

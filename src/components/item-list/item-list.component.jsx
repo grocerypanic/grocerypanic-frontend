@@ -85,6 +85,7 @@ const ItemList = ({
     setPerformTransactionAsync(null);
   }, [performTransactionAsync]);
 
+  // Ensure This Is Recalculated On Every Route Change
   React.useEffect(() => {
     const filter = new URLSearchParams(window.location.search);
     itemDispatch({
@@ -93,7 +94,7 @@ const ItemList = ({
       dispatch: setPerformItemAsync,
       filter: filter,
     });
-  }, []);
+  }, [history.location.key]);
 
   const handleCreate = () => {
     if (transactionStatus()) return;
