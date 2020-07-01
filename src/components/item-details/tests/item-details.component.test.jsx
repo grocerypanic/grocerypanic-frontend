@@ -7,7 +7,7 @@ import ItemDetailsForm from "../../item-details-form/item-details-form.component
 import TransactionsOverview from "../../transactions/transactions.component";
 
 import { HeaderContext } from "../../../providers/header/header.provider";
-import { initialHeaderSettings } from "../../../providers/header/header.initial";
+import initialHeaderSettings from "../../../providers/header/header.initial";
 
 import Strings from "../../../configuration/strings";
 

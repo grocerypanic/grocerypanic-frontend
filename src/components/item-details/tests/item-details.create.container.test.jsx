@@ -18,7 +18,7 @@ import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
 import { StoreContext } from "../../../providers/api/store/store.provider";
 import { HeaderContext } from "../../../providers/header/header.provider";
 
-import { initialHeaderSettings } from "../../../providers/header/header.initial";
+import initialHeaderSettings from "../../../providers/header/header.initial";
 import ItemInitialValue from "../../../providers/api/item/item.initial";
 import ShelfInitialValue from "../../../providers/api/shelf/shelf.initial";
 import StoreInitialValue from "../../../providers/api/store/store.initial";
