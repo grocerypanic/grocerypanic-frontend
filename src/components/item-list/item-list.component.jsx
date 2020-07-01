@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
 import ErrorHandler from "../error-handler/error-handler.component";
-import Header from "../header/header.component";
+import Header from "../header.old/header.component";
 import ItemListRow from "../item-list-row/item-list-row.component";
 import Hint from "../hint/hint.component";
 import Alert from "../alert/alert.component";
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
+import { HeaderContext } from "../../providers/header/header.provider";
 import { ItemContext } from "../../providers/api/item/item.provider";
 import { TransactionContext } from "../../providers/api/transaction/transaction.provider";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
@@ -45,6 +46,7 @@ const ItemList = ({
     dispatch: transactionDispatch,
   } = React.useContext(TransactionContext);
   const { event } = React.useContext(AnalyticsContext);
+  const { updateHeader } = React.useContext(HeaderContext);
 
   const [errorMsg, setErrorMsg] = React.useState(null);
   const [actionMsg, setActionMsg] = React.useState(null);
@@ -149,6 +151,15 @@ const ItemList = ({
       callback: generateCallback(receivedItem, parseInt(quantity) * -1),
     });
   };
+
+  React.useEffect(() => {
+    updateHeader({
+      title: headerTitle,
+      create: handleCreate,
+      transaction: transactionStatus(),
+      disableNav: false,
+    });
+  }, [item.transaction, transaction.transaction]);
 
   // Bundle Up Props For List Items
 

@@ -7,7 +7,7 @@ import {
   fireEvent,
 } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
-import { Router, BrowserRouter } from "react-router-dom";
+import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
@@ -18,10 +18,12 @@ import { TransactionContext } from "../../../providers/api/transaction/transacti
 import ErrorHandler from "../../error-handler/error-handler.component";
 import ItemList from "../item-list.component";
 import ItemListRow from "../../item-list-row/item-list-row.component";
-import Header from "../../header/header.component";
 import Hint from "../../hint/hint.component";
 import Alert from "../../alert/alert.component";
 import HoldingPattern from "../../holding-pattern/holding-pattern.component";
+
+import { HeaderContext } from "../../../providers/header/header.provider";
+import initialHeaderSettings from "../../../providers/header/header.initial";
 
 import ApiActions from "../../../providers/api/api.actions";
 import ApiFunctions from "../../../providers/api/api.functions";
@@ -32,7 +34,6 @@ import calculateMaxHeight from "../../../util/height";
 
 jest.mock("../../holding-pattern/holding-pattern.component");
 jest.mock("../../item-list-row/item-list-row.component");
-jest.mock("../../header/header.component");
 jest.mock("../../hint/hint.component");
 jest.mock("../../alert/alert.component");
 jest.mock("../../error-handler/error-handler.component");
@@ -40,12 +41,12 @@ jest.mock("../../../util/height");
 
 ErrorHandler.mockImplementation(({ children }) => children);
 ItemListRow.mockImplementation(() => <div>MockListItem</div>);
-Header.mockImplementation(() => <div>MockHeader</div>);
 Hint.mockImplementation(() => <div>MockHelp</div>);
 Alert.mockImplementation(() => <div>MockAlert</div>);
 HoldingPattern.mockImplementation(({ children }) => children);
 calculateMaxHeight.mockImplementation(() => 200);
 
+const mockHeaderUpdate = jest.fn();
 const mockItemDispatch = jest.fn();
 const mockTransactionDispatch = jest.fn();
 const mockHandleExpiredAuth = jest.fn();
@@ -129,32 +130,37 @@ describe("Setup Environment", () => {
   ) => {
     return command(
       <AnalyticsContext.Provider value={mockAnalyticsContext}>
-        <ItemContext.Provider value={itemContextValue}>
-          <TransactionContext.Provider value={transactionContextValue}>
-            <Router history={currentHistory}>
-              {override === null ? (
-                <ItemList
-                  title={mockTitle}
-                  headerTitle={mockHeaderTitle}
-                  ApiObjectContext={ItemContext}
-                  placeHolderMessage={mockPlaceHolderMessage}
-                  handleExpiredAuth={mockHandleExpiredAuth}
-                  helpText={Strings.Testing.GenericTranslationTestString}
-                />
-              ) : (
-                <ItemList
-                  title={mockTitle}
-                  headerTitle={mockHeaderTitle}
-                  ApiObjectContext={ItemContext}
-                  placeHolderMessage={mockPlaceHolderMessage}
-                  handleExpiredAuth={mockHandleExpiredAuth}
-                  helpText={Strings.Testing.GenericTranslationTestString}
-                  waitForApi={override}
-                />
-              )}
-            </Router>
-          </TransactionContext.Provider>
-        </ItemContext.Provider>
+        <HeaderContext.Provider
+          value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
+        >
+          <ItemContext.Provider value={itemContextValue}>
+            <TransactionContext.Provider value={transactionContextValue}>
+              <Router history={currentHistory}>
+                {override === null ? (
+                  <ItemList
+                    title={mockTitle}
+                    headerTitle={mockHeaderTitle}
+                    ApiObjectContext={ItemContext}
+                    placeHolderMessage={mockPlaceHolderMessage}
+                    handleExpiredAuth={mockHandleExpiredAuth}
+                    helpText={Strings.Testing.GenericTranslationTestString}
+                  />
+                ) : (
+                  <ItemList
+                    title={mockTitle}
+                    headerTitle={mockHeaderTitle}
+                    ApiObjectContext={ItemContext}
+                    placeHolderMessage={mockPlaceHolderMessage}
+                    handleExpiredAuth={mockHandleExpiredAuth}
+                    helpText={Strings.Testing.GenericTranslationTestString}
+                    waitForApi={override}
+                  />
+                )}
+              </Router>
+            </TransactionContext.Provider>
+          </ItemContext.Provider>
+        </HeaderContext.Provider>
+        s
       </AnalyticsContext.Provider>
     );
   };
@@ -275,18 +281,15 @@ describe("Setup Environment", () => {
             expect(errorHandlerCall.children).toBeTruthy();
           });
 
-          it("renders, outside of a transaction should call header with the correct params", () => {
+          it("renders, should call header with the correct params", () => {
             expect(current.transaction).toBe(false);
 
-            expect(Header).toHaveBeenCalledTimes(1);
-
-            const headerCall = Header.mock.calls[0][0];
-            propCount(headerCall, 3);
+            expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+            const headerCall = mockHeaderUpdate.mock.calls[0][0];
             expect(headerCall.title).toBe(mockHeaderTitle);
-            expect(headerCall.transaction).toBe(current.transaction);
-
             expect(headerCall.create).toBeInstanceOf(Function);
-            expect(headerCall.create.name).toBe("handleCreate");
+            expect(headerCall.transaction).toBe(false);
+            expect(headerCall.disableNav).toBe(false);
           });
 
           it("renders, outside of a transaction should call HoldingPattern with the correct params", () => {
@@ -409,8 +412,8 @@ describe("Setup Environment", () => {
           });
 
           it("renders, handles a create event", async (done) => {
-            expect(Header).toHaveBeenCalledTimes(1);
-            const { create } = Header.mock.calls[0][0];
+            expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+            const { create } = mockHeaderUpdate.mock.calls[0][0];
             expect(current.transaction).toBeFalsy();
 
             ItemListRow.mockClear();
@@ -431,8 +434,8 @@ describe("Setup Environment", () => {
           });
 
           it("renders, whenever the route changes startlist is triggered again.", async (done) => {
-            expect(Header).toHaveBeenCalledTimes(1);
-            const { create } = Header.mock.calls[0][0];
+            expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+            const { create } = mockHeaderUpdate.mock.calls[0][0];
 
             // Use the create function to change the url
 
@@ -761,7 +764,7 @@ describe("Setup Environment", () => {
           it("renders, outside of a transaction, with no items in the list, and renders the mockPlaceHolderMessage", () => {
             expect(current.transaction).toBe(false);
 
-            expect(Header).toHaveBeenCalledTimes(1);
+            expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
             expect(ItemListRow).toBeCalledTimes(0);
             expect(utils.getByText(mockPlaceHolderMessage)).toBeTruthy();
           });
@@ -802,6 +805,17 @@ describe("Setup Environment", () => {
         utils = renderHelper(itemContext, transactionContext, history, false);
       });
 
+      it("renders, should call header with the correct params", () => {
+        expect(current.transaction).toBe(true);
+
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+        const headerCall = mockHeaderUpdate.mock.calls[0][0];
+        expect(headerCall.title).toBe(mockHeaderTitle);
+        expect(headerCall.create).toBeInstanceOf(Function);
+        expect(headerCall.transaction).toBe(true);
+        expect(headerCall.disableNav).toBe(false);
+      });
+
       it("renders, should call HoldingPattern with the correct params", () => {
         expect(current.transaction).toBe(true);
 
@@ -813,8 +827,8 @@ describe("Setup Environment", () => {
       });
 
       it("renders, and then when there is an transaction bypasses calls to handleCreate", async (done) => {
-        expect(Header).toHaveBeenCalledTimes(1);
-        const { create } = Header.mock.calls[0][0];
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+        const { create } = mockHeaderUpdate.mock.calls[0][0];
         expect(current.transaction).toBeTruthy();
 
         ItemListRow.mockClear(); // no changes, no rerender
