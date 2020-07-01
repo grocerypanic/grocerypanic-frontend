@@ -3,6 +3,7 @@ import assets from "./assets";
 export const Strings = {
   en: {
     MainTitle: "Panic",
+    MainHeaderTitle: "Grocery Management",
     FeedBack: {
       Request1: "I would appreciate any feedback or suggestions!",
       Request2: `Please leave them${assets.nonBreakingSpace}`,

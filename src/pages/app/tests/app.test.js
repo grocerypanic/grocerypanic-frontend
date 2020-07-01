@@ -12,11 +12,14 @@ import ItemsPage from "../../items/items.page";
 import CreatePage from "../../create/create.page";
 import DetailsPage from "../../details/details.page";
 import MenuPage from "../../menu/menu.page";
-import Header from "../../../components/header/header.component";
+import Header from "../../../components/header.new/header.component";
 
 import { UserContext } from "../../../providers/user/user.provider";
+import { HeaderContext } from "../../../providers/header/header.provider";
+import { initialHeaderSettings } from "../../../providers/header/header.initial";
 
 import Routes from "../../../configuration/routes";
+import Strings from "../../../configuration/strings";
 
 jest.mock("../../../providers/analytics/analytics.provider");
 
@@ -28,7 +31,7 @@ jest.mock("../../menu/menu.page");
 jest.mock("../../details/details.page");
 jest.mock("../../create/create.page");
 jest.mock("../../about/about.page");
-jest.mock("../../../components/header/header.component");
+jest.mock("../../../components/header.new/header.component");
 
 About.mockImplementation(() => <div>MockPlaceholderAboutPage</div>);
 SignIn.mockImplementation(() => <div>MockPlaceholderSignin</div>);
@@ -41,6 +44,7 @@ CreatePage.mockImplementation(() => <div>MockPlaceholderCreatePage</div>);
 Header.mockImplementation(() => <div>MockHeader</div>);
 
 const mockDispatch = jest.fn();
+const mockHeaderUpdate = jest.fn();
 
 describe("Check Routing", () => {
   let utils;
@@ -57,13 +61,17 @@ describe("Check Routing", () => {
   const renderHelper = (currentTest) => {
     history.push(setup.path);
     return render(
-      <UserContext.Provider
-        value={{ user: currentTest.state, dispatch: mockDispatch }}
+      <HeaderContext.Provider
+        value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
       >
-        <Router history={history}>
-          <App />
-        </Router>
-      </UserContext.Provider>
+        <UserContext.Provider
+          value={{ user: currentTest.state, dispatch: mockDispatch }}
+        >
+          <Router history={history}>
+            <App />
+          </Router>
+        </UserContext.Provider>
+      </HeaderContext.Provider>
     );
   };
 
@@ -90,12 +98,19 @@ describe("Check Routing", () => {
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
       });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
+      });
     });
     describe("inactive login", () => {
       beforeEach(() => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
+
       it("should redirect to signin on root url (from menu page)", async (done) => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
@@ -112,6 +127,12 @@ describe("Check Routing", () => {
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
       });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
+      });
     });
   });
 
@@ -122,6 +143,7 @@ describe("Check Routing", () => {
         setup.state.login = true;
         utils = renderHelper({ ...setup });
       });
+
       it("should render the menu root page", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
@@ -137,6 +159,12 @@ describe("Check Routing", () => {
       });
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
+      });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
       });
     });
     describe("inactive login", () => {
@@ -159,6 +187,12 @@ describe("Check Routing", () => {
       });
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
+      });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
       });
     });
   });
@@ -187,6 +221,12 @@ describe("Check Routing", () => {
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
       });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
+      });
     });
 
     describe("inactive login", () => {
@@ -194,6 +234,7 @@ describe("Check Routing", () => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
+
       it("should redirect to signin on stores url (from stores page)", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
@@ -209,6 +250,12 @@ describe("Check Routing", () => {
       });
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
+      });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
       });
     });
   });
@@ -237,6 +284,12 @@ describe("Check Routing", () => {
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
       });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
+      });
     });
 
     describe("inactive login", () => {
@@ -244,6 +297,7 @@ describe("Check Routing", () => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
+
       it("should redirect to signin on shelves url (from shelves page)", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
@@ -259,6 +313,12 @@ describe("Check Routing", () => {
       });
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
+      });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
       });
     });
   });
@@ -287,6 +347,12 @@ describe("Check Routing", () => {
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
       });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
+      });
     });
 
     describe("inactive login", () => {
@@ -294,6 +360,7 @@ describe("Check Routing", () => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
+
       it("should redirect to signin on items url (from items page)", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
@@ -309,6 +376,12 @@ describe("Check Routing", () => {
       });
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
+      });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
       });
     });
   });
@@ -337,6 +410,12 @@ describe("Check Routing", () => {
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
       });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
+      });
     });
 
     describe("inactive login", () => {
@@ -344,6 +423,7 @@ describe("Check Routing", () => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
+
       it("should redirect to signin on details url (from details page)", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
@@ -359,6 +439,12 @@ describe("Check Routing", () => {
       });
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
+      });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
       });
     });
   });
@@ -387,6 +473,12 @@ describe("Check Routing", () => {
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
       });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
+      });
     });
 
     describe("inactive login", () => {
@@ -394,6 +486,7 @@ describe("Check Routing", () => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
+
       it("should redirect to signin on create url (from create page)", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
@@ -409,6 +502,12 @@ describe("Check Routing", () => {
       });
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
+      });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
       });
     });
   });
@@ -437,6 +536,12 @@ describe("Check Routing", () => {
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
       });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
+      });
     });
 
     describe("inactive login", () => {
@@ -444,6 +549,7 @@ describe("Check Routing", () => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
+
       it("should redirect to signin on about url (from about page)", async (done) => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(1));
@@ -459,6 +565,12 @@ describe("Check Routing", () => {
       });
       it("should render the header", () => {
         expect(Header).toBeCalledTimes(1);
+      });
+      it("should configure the header properly", () => {
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.MainHeaderTitle,
+          disableNav: true,
+        });
       });
     });
   });
