@@ -56,30 +56,4 @@ describe("Check the Inital Provider State", () => {
     await waitFor(() => expect(received.headerSettings).toStrictEqual(attrs));
     done();
   });
-
-  it("the update function should work as expected when given no properties", async (done) => {
-    let received = {};
-    render(
-      <HeaderProvider>
-        <HeaderContext.Consumer>
-          {(state) => (
-            <div>
-              {Object.keys(state).forEach(function (key) {
-                received[key] = state[key];
-              })}
-            </div>
-          )}
-        </HeaderContext.Consumer>
-      </HeaderProvider>
-    );
-
-    const attrs = {};
-
-    act(() => received.updateHeader(attrs));
-
-    await waitFor(() =>
-      expect(received.headerSettings).toStrictEqual(InitialState.headerSettings)
-    );
-    done();
-  });
 });
