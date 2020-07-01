@@ -1,18 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import Header from "../header/header.component";
 import calculateMaxHeight from "../../util/height";
 
 import { Paper, Container } from "../../global-styles/containers";
 import { ItemizedBanner } from "../../global-styles/banner";
 import { Scroller, ContentBorder, Content } from "./dialogue.styles";
+import { HeaderContext } from "../../providers/header/header.provider";
 
 const Dialogue = ({ headerTitle, title, body, Footer }) => {
+  const { updateHeader } = React.useContext(HeaderContext);
   const [listSize, setListSize] = React.useState(calculateMaxHeight());
   const recalculateHeight = () => setListSize(calculateMaxHeight());
 
   React.useEffect(() => {
+    updateHeader({
+      title: headerTitle,
+      create: null,
+      transaction: false,
+      disableNav: false,
+    });
     window.addEventListener("resize", recalculateHeight);
     return () => {
       window.removeEventListener("resize", recalculateHeight);
@@ -21,7 +28,6 @@ const Dialogue = ({ headerTitle, title, body, Footer }) => {
 
   return (
     <>
-      <Header title={headerTitle} transaction={false} />
       <Container>
         <Paper>
           <ItemizedBanner className="alert alert-success">

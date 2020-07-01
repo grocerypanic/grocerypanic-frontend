@@ -107,9 +107,6 @@ exports[`Setup Environment when passed parameters should match the snapshot on f
 }
 
 <div>
-  <div>
-    MockHeader
-  </div>
   <div
     class="c0"
   >

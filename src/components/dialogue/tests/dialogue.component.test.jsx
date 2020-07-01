@@ -1,16 +1,16 @@
 import React from "react";
 import { render, cleanup, waitFor, fireEvent } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
 
-import Header from "../../header/header.component";
 import Dialogue from "../dialogue.component";
+
+import { HeaderContext } from "../../../providers/header/header.provider";
+import { initialHeaderSettings } from "../../../providers/header/header.initial";
 
 import calculateMaxHeight from "../../../util/height";
 
-jest.mock("../../header/header.component");
 jest.mock("../../../util/height");
+const mockHeaderUpdate = jest.fn();
 
-Header.mockImplementation(() => <div>MockHeader</div>);
 calculateMaxHeight.mockImplementation(() => 200);
 const Footer = jest.fn(() => <div>MockFooter</div>);
 
@@ -35,7 +35,13 @@ describe("Setup Environment", () => {
   afterEach(cleanup);
 
   const renderHelper = (currentProps) => {
-    return render(<Dialogue {...currentProps} />);
+    return render(
+      <HeaderContext.Provider
+        value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
+      >
+        <Dialogue {...currentProps} />
+      </HeaderContext.Provider>
+    );
   };
 
   describe("when passed parameters", () => {
@@ -44,12 +50,13 @@ describe("Setup Environment", () => {
     });
 
     it("renders, should call header with the correct params", () => {
-      expect(Header).toHaveBeenCalledTimes(1);
-
-      const headerCall = Header.mock.calls[0][0];
-      propCount(headerCall, 2);
-      expect(headerCall.title).toBe(defaultProps.headerTitle);
-      expect(headerCall.transaction).toBe(false);
+      expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+      expect(mockHeaderUpdate).toBeCalledWith({
+        title: defaultProps.headerTitle,
+        create: null,
+        transaction: false,
+        disableNav: false,
+      });
     });
 
     it("renders, should display the title", () => {
