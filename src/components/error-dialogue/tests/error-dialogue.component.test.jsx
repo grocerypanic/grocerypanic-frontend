@@ -5,8 +5,8 @@ import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import ErrorDialogue from "../error-dialogue.component";
-import { initialHeaderSettings } from "../../../providers/header/header.initial";
 
+import initialHeaderSettings from "../../../providers/header/header.initial";
 import { HeaderContext } from "../../../providers/header/header.provider";
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";

@@ -4,7 +4,7 @@ import { render, cleanup, waitFor, fireEvent } from "@testing-library/react";
 import Dialogue from "../dialogue.component";
 
 import { HeaderContext } from "../../../providers/header/header.provider";
-import { initialHeaderSettings } from "../../../providers/header/header.initial";
+import initialHeaderSettings from "../../../providers/header/header.initial";
 
 import calculateMaxHeight from "../../../util/height";
 
