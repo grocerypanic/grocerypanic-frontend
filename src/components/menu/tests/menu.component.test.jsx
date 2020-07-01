@@ -11,23 +11,24 @@ import { propCount } from "../../../test.fixtures/objectComparison";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
+import { HeaderContext } from "../../../providers/header/header.provider";
+import initialHeaderSettings from "../../../providers/header/header.initial";
+
 import Menu from "../menu.component";
 
-import Header from "../../header/header.component";
 import MenuItem from "../../menu-item/menu-item.component";
 import Hint from "../../hint/hint.component";
 
 import calculateMaxHeight from "../../../util/height";
 
-jest.mock("../../header/header.component");
 jest.mock("../../menu-item/menu-item.component");
 jest.mock("../../hint/hint.component");
 jest.mock("../../../util/height");
 
-Header.mockImplementation(() => <div>MockComponent</div>);
 MenuItem.mockImplementation(() => <div>MockComponent</div>);
 Hint.mockImplementation(() => <div>MockComponent</div>);
 calculateMaxHeight.mockImplementation(() => 200);
+const mockHeaderUpdate = jest.fn();
 
 const props = {
   options: [{ name: "option1", location: "option1" }],
@@ -45,20 +46,24 @@ describe("Setup environment", () => {
     jest.clearAllMocks();
     utils = render(
       <Router history={history}>
-        <Menu {...props} />
+        <HeaderContext.Provider
+          value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
+        >
+          <Menu {...props} />
+        </HeaderContext.Provider>
       </Router>
     );
   });
 
   afterEach(cleanup);
 
-  it("should call the header component with the correct props", () => {
-    expect(Header).toBeCalledTimes(1);
-    const headerCall = Header.mock.calls[0][0];
-    propCount(headerCall, 3);
+  it("renders, should call header with the correct params", () => {
+    expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+    const headerCall = mockHeaderUpdate.mock.calls[0][0];
     expect(headerCall.title).toBe(props.headerTitle);
-    expect(headerCall.transaction).toBe(false);
     expect(headerCall.create).toBe(null);
+    expect(headerCall.transaction).toBe(false);
+    expect(headerCall.disableNav).toBe(false);
   });
 
   it("should call the hint component with the correct props", () => {

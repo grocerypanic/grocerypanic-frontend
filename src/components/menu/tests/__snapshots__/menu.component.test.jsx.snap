@@ -79,9 +79,6 @@ exports[`Setup environment should match the snapshot on file (styles) 1`] = `
 }
 
 <div>
-  <div>
-    MockComponent
-  </div>
   <div
     class="c0"
   >

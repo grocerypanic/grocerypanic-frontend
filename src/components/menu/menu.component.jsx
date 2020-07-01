@@ -2,9 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
-import Header from "../header/header.component";
 import MenuItem from "../menu-item/menu-item.component";
 import Hint from "../hint/hint.component";
+
+import { HeaderContext } from "../../providers/header/header.provider";
 
 import { Paper, Container } from "../../global-styles/containers";
 import { ItemizedBanner } from "../../global-styles/banner";
@@ -16,10 +17,17 @@ const Menu = ({ options, headerTitle, title, history, helpText }) => {
     history.push(route);
   };
   const [listSize, setListSize] = React.useState(calculateMaxHeight());
+  const { updateHeader } = React.useContext(HeaderContext);
 
   const recalculateHeight = () => setListSize(calculateMaxHeight());
 
   React.useEffect(() => {
+    updateHeader({
+      title: headerTitle,
+      create: null,
+      transaction: false,
+      disableNav: false,
+    });
     window.addEventListener("resize", recalculateHeight);
     return () => {
       window.removeEventListener("resize", recalculateHeight);
@@ -28,7 +36,6 @@ const Menu = ({ options, headerTitle, title, history, helpText }) => {
 
   return (
     <>
-      <Header title={headerTitle} transaction={false} create={null} />
       <Container>
         <Paper>
           <ItemizedBanner className="alert alert-success">
