@@ -3,6 +3,7 @@
 import React from "react";
 
 import AnalyticsProvider from "./analytics/analytics.provider";
+import HeaderProvider from "./header/header.provider";
 
 import ItemProvider from "./api/item/item.provider";
 import ShelfProvider from "./api/shelf/shelf.provider";
@@ -14,15 +15,17 @@ import UserProvider from "./user/user.provider";
 const RootProvider = ({ children }) => {
   return (
     <UserProvider>
-      <AnalyticsProvider>
-        <ItemProvider>
-          <ShelfProvider>
-            <StoreProvider>
-              <TransactionProvider>{children}</TransactionProvider>
-            </StoreProvider>
-          </ShelfProvider>
-        </ItemProvider>
-      </AnalyticsProvider>
+      <HeaderProvider>
+        <AnalyticsProvider>
+          <ItemProvider>
+            <ShelfProvider>
+              <StoreProvider>
+                <TransactionProvider>{children}</TransactionProvider>
+              </StoreProvider>
+            </ShelfProvider>
+          </ItemProvider>
+        </AnalyticsProvider>
+      </HeaderProvider>
     </UserProvider>
   );
 };
