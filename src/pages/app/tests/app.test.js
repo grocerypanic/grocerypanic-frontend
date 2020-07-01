@@ -16,7 +16,7 @@ import Header from "../../../components/header.new/header.component";
 
 import { UserContext } from "../../../providers/user/user.provider";
 import { HeaderContext } from "../../../providers/header/header.provider";
-import { initialHeaderSettings } from "../../../providers/header/header.initial";
+import initialHeaderSettings from "../../../providers/header/header.initial";
 
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
