@@ -12,6 +12,7 @@ import ItemsPage from "../../items/items.page";
 import CreatePage from "../../create/create.page";
 import DetailsPage from "../../details/details.page";
 import MenuPage from "../../menu/menu.page";
+import Header from "../../../components/header/header.component";
 
 import { UserContext } from "../../../providers/user/user.provider";
 
@@ -27,6 +28,7 @@ jest.mock("../../menu/menu.page");
 jest.mock("../../details/details.page");
 jest.mock("../../create/create.page");
 jest.mock("../../about/about.page");
+jest.mock("../../../components/header/header.component");
 
 About.mockImplementation(() => <div>MockPlaceholderAboutPage</div>);
 SignIn.mockImplementation(() => <div>MockPlaceholderSignin</div>);
@@ -36,6 +38,7 @@ ItemsPage.mockImplementation(() => <div>MockPlaceholderItemsPage</div>);
 DetailsPage.mockImplementation(() => <div>MockPlaceholderDetailsPage</div>);
 MenuPage.mockImplementation(() => <div>MockPlaceholderMenuPage</div>);
 CreatePage.mockImplementation(() => <div>MockPlaceholderCreatePage</div>);
+Header.mockImplementation(() => <div>MockHeader</div>);
 
 const mockDispatch = jest.fn();
 
@@ -84,6 +87,9 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.root);
         done();
       });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
+      });
     });
     describe("inactive login", () => {
       beforeEach(() => {
@@ -102,6 +108,9 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
+      });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
       });
     });
   });
@@ -126,6 +135,9 @@ describe("Check Routing", () => {
         await waitFor(() => expect(window.location.pathname).toBe(Routes.root));
         done();
       });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
+      });
     });
     describe("inactive login", () => {
       beforeEach(() => {
@@ -144,6 +156,9 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
+      });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
       });
     });
   });
@@ -169,6 +184,9 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.stores);
         done();
       });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
+      });
     });
 
     describe("inactive login", () => {
@@ -188,6 +206,9 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
+      });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
       });
     });
   });
@@ -213,6 +234,9 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.shelves);
         done();
       });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
+      });
     });
 
     describe("inactive login", () => {
@@ -232,6 +256,9 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
+      });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
       });
     });
   });
@@ -257,6 +284,9 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.items);
         done();
       });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
+      });
     });
 
     describe("inactive login", () => {
@@ -276,6 +306,9 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
+      });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
       });
     });
   });
@@ -301,6 +334,9 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.details);
         done();
       });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
+      });
     });
 
     describe("inactive login", () => {
@@ -320,6 +356,9 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
+      });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
       });
     });
   });
@@ -345,6 +384,9 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.create);
         done();
       });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
+      });
     });
 
     describe("inactive login", () => {
@@ -364,6 +406,9 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
+      });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
       });
     });
   });
@@ -389,6 +434,9 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.about);
         done();
       });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
+      });
     });
 
     describe("inactive login", () => {
@@ -408,6 +456,9 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
+      });
+      it("should render the header", () => {
+        expect(Header).toBeCalledTimes(1);
       });
     });
   });
