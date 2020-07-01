@@ -55,7 +55,7 @@ const ItemDetails = ({
 
   React.useEffect(() => {
     updateHeader({
-      title: Strings.ErrorDialogue.headerTitle,
+      title: headerTitle,
       create: null,
       transaction: transaction,
       disableNav: false,

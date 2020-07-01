@@ -4,10 +4,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
-import Header from "../header.old/header.component";
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 import ErrorHandler from "../error-handler/error-handler.component";
 import ItemDetailsForm from "../item-details-form/item-details-form.component";
+import { HeaderContext } from "../../providers/header/header.provider";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
@@ -50,6 +50,7 @@ const ItemDetailsCreateContainer = ({
     StoreContext
   );
   const { event } = React.useContext(AnalyticsContext);
+  const { updateHeader } = React.useContext(HeaderContext);
 
   const [performItemAsync, setPerformItemAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performShelfAsync, setPerformShelfAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
@@ -67,6 +68,15 @@ const ItemDetailsCreateContainer = ({
     // Detect Transactions on Any API Plane
     setTransaction(item.transaction || shelf.transaction || store.transaction);
   }, [item, store, shelf]);
+
+  React.useEffect(() => {
+    updateHeader({
+      title: headerTitle,
+      create: null,
+      transaction: transaction,
+      disableNav: false,
+    });
+  }, [transaction]);
 
   React.useEffect(() => {
     if (!performItemAsync) return;
@@ -151,7 +161,6 @@ const ItemDetailsCreateContainer = ({
       string={"ApiCommunicationError"}
       redirect={Routes.goBack}
     >
-      <Header title={headerTitle} transaction={transaction} />
       <HoldingPattern condition={checkForNonReceivedContent()}>
         <ErrorHandler
           condition={!store.inventory.length || !shelf.inventory.length}

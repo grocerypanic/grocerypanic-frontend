@@ -99,7 +99,7 @@ describe("Setup Environment", () => {
 
       expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
       expect(mockHeaderUpdate).toBeCalledWith({
-        title: Strings.ItemDetails.headerTitle,
+        title: current.headerTitle,
         create: null,
         transaction: false,
         disableNav: false,
@@ -194,7 +194,7 @@ describe("Setup Environment", () => {
 
       expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
       expect(mockHeaderUpdate).toBeCalledWith({
-        title: Strings.ItemDetails.headerTitle,
+        title: current.headerTitle,
         create: null,
         transaction: true,
         disableNav: false,

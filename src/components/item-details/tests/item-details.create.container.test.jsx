@@ -16,7 +16,9 @@ import { AnalyticsContext } from "../../../providers/analytics/analytics.provide
 import { ItemContext } from "../../../providers/api/item/item.provider";
 import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
 import { StoreContext } from "../../../providers/api/store/store.provider";
+import { HeaderContext } from "../../../providers/header/header.provider";
 
+import { initialHeaderSettings } from "../../../providers/header/header.initial";
 import ItemInitialValue from "../../../providers/api/item/item.initial";
 import ShelfInitialValue from "../../../providers/api/shelf/shelf.initial";
 import StoreInitialValue from "../../../providers/api/store/store.initial";
@@ -34,6 +36,7 @@ ErrorHandler.mockImplementation(({ children }) => children);
 ItemDetailsForm.mockImplementation(() => <div>MockDetails</div>);
 HoldingPattern.mockImplementation(({ children }) => children);
 
+const mockHeaderUpdate = jest.fn();
 const mockItemDispatch = jest.fn();
 const mockStoreDispatch = jest.fn();
 const mockShelfDispatch = jest.fn();
@@ -97,7 +100,6 @@ describe("Setup Environment", () => {
   let utils;
   let current;
   let originalPath = "/some/unmatched/path";
-  let newPath = "/newPath";
 
   beforeEach(() => {
     current = { ...props };
@@ -115,26 +117,40 @@ describe("Setup Environment", () => {
 
       utils = render(
         <Router history={history}>
-          <AnalyticsContext.Provider value={mockAnalyticsContext}>
-            <StoreContext.Provider
-              value={{ ...mockStoreProvider, transaction: false }}
-            >
-              <ShelfContext.Provider
-                value={{ ...mockShelfProvider, transaction: false }}
+          <HeaderContext.Provider
+            value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
+          >
+            <AnalyticsContext.Provider value={mockAnalyticsContext}>
+              <StoreContext.Provider
+                value={{ ...mockStoreProvider, transaction: false }}
               >
-                <ItemContext.Provider
-                  value={{
-                    ...mockItemProvider,
-                    transaction: false,
-                  }}
+                <ShelfContext.Provider
+                  value={{ ...mockShelfProvider, transaction: false }}
                 >
-                  <ItemDetailsCreateContainer {...current} />
-                </ItemContext.Provider>
-              </ShelfContext.Provider>
-            </StoreContext.Provider>
-          </AnalyticsContext.Provider>
+                  <ItemContext.Provider
+                    value={{
+                      ...mockItemProvider,
+                      transaction: false,
+                    }}
+                  >
+                    <ItemDetailsCreateContainer {...current} />
+                  </ItemContext.Provider>
+                </ShelfContext.Provider>
+              </StoreContext.Provider>
+            </AnalyticsContext.Provider>
+          </HeaderContext.Provider>
         </Router>
       );
+    });
+
+    it("renders, update the header with the correct params", () => {
+      expect(mockHeaderUpdate).toHaveBeenCalledTimes(2);
+      expect(mockHeaderUpdate).toHaveBeenLastCalledWith({
+        title: current.headerTitle,
+        create: null,
+        transaction: false,
+        disableNav: false,
+      });
     });
 
     it("renders, bypasses ErrorHandler1 as expected", async (done) => {
@@ -321,24 +337,28 @@ describe("Setup Environment", () => {
     const renderHelper = (storeState, shelfState) =>
       render(
         <Router history={history}>
-          <AnalyticsContext.Provider value={mockAnalyticsContext}>
-            <StoreContext.Provider
-              value={{ ...storeState, transaction: false }}
-            >
-              <ShelfContext.Provider
-                value={{ ...shelfState, transaction: false }}
+          <HeaderContext.Provider
+            value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
+          >
+            <AnalyticsContext.Provider value={mockAnalyticsContext}>
+              <StoreContext.Provider
+                value={{ ...storeState, transaction: false }}
               >
-                <ItemContext.Provider
-                  value={{
-                    ...mockItemProvider,
-                    transaction: false,
-                  }}
+                <ShelfContext.Provider
+                  value={{ ...shelfState, transaction: false }}
                 >
-                  <ItemDetailsCreateContainer {...current} />
-                </ItemContext.Provider>
-              </ShelfContext.Provider>
-            </StoreContext.Provider>
-          </AnalyticsContext.Provider>
+                  <ItemContext.Provider
+                    value={{
+                      ...mockItemProvider,
+                      transaction: false,
+                    }}
+                  >
+                    <ItemDetailsCreateContainer {...current} />
+                  </ItemContext.Provider>
+                </ShelfContext.Provider>
+              </StoreContext.Provider>
+            </AnalyticsContext.Provider>
+          </HeaderContext.Provider>
         </Router>
       );
 
@@ -388,24 +408,28 @@ describe("Setup Environment", () => {
     ) =>
       render(
         <MemoryRouter>
-          <AnalyticsContext.Provider value={mockAnalyticsContext}>
-            <StoreContext.Provider
-              value={{ ...storeContext, transaction: false }}
-            >
-              <ShelfContext.Provider
-                value={{ ...shelfContext, transaction: false }}
+          <HeaderContext.Provider
+            value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
+          >
+            <AnalyticsContext.Provider value={mockAnalyticsContext}>
+              <StoreContext.Provider
+                value={{ ...storeContext, transaction: false }}
               >
-                <ItemContext.Provider
-                  value={{
-                    ...itemContext,
-                    transaction: false,
-                  }}
+                <ShelfContext.Provider
+                  value={{ ...shelfContext, transaction: false }}
                 >
-                  <ItemDetailsCreateContainer {...currentProps} />
-                </ItemContext.Provider>
-              </ShelfContext.Provider>
-            </StoreContext.Provider>
-          </AnalyticsContext.Provider>
+                  <ItemContext.Provider
+                    value={{
+                      ...itemContext,
+                      transaction: false,
+                    }}
+                  >
+                    <ItemDetailsCreateContainer {...currentProps} />
+                  </ItemContext.Provider>
+                </ShelfContext.Provider>
+              </StoreContext.Provider>
+            </AnalyticsContext.Provider>
+          </HeaderContext.Provider>
         </MemoryRouter>
       );
 
@@ -425,6 +449,16 @@ describe("Setup Environment", () => {
           mockItemProvider,
           current
         );
+      });
+
+      it("renders, update the header with the correct params", () => {
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(2);
+        expect(mockHeaderUpdate).toHaveBeenLastCalledWith({
+          title: current.headerTitle,
+          create: null,
+          transaction: false,
+          disableNav: false,
+        });
       });
 
       it("renders, calls the ErrorHandler with the correct params", () => {
@@ -473,6 +507,16 @@ describe("Setup Environment", () => {
         );
       });
 
+      it("renders, update the header with the correct params", () => {
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(2);
+        expect(mockHeaderUpdate).toHaveBeenLastCalledWith({
+          title: current.headerTitle,
+          create: null,
+          transaction: false,
+          disableNav: false,
+        });
+      });
+
       it("renders, calls the ErrorHandler with the correct params", () => {
         expect(ErrorHandler).toHaveBeenCalledTimes(6);
 
@@ -517,6 +561,16 @@ describe("Setup Environment", () => {
           TestContext,
           current
         );
+      });
+
+      it("renders, update the header with the correct params", () => {
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(2);
+        expect(mockHeaderUpdate).toHaveBeenLastCalledWith({
+          title: current.headerTitle,
+          create: null,
+          transaction: false,
+          disableNav: false,
+        });
       });
 
       it("renders, calls the ErrorHandler with the correct params", () => {
