@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
-import Header from "../header/header.component";
+import Header from "../header.old/header.component";
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 import ErrorHandler from "../error-handler/error-handler.component";
 import ItemDetailsForm from "../item-details-form/item-details-form.component";

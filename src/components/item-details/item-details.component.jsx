@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 
-import Header from "../header/header.component";
 import ItemDetailsForm from "../item-details-form/item-details-form.component";
 import TransactionsReview from "../transactions/transactions.component";
+import { HeaderContext } from "../../providers/header/header.provider";
 
 import { Container } from "../../global-styles/containers";
 import { TabBox } from "./item-details.styles";
@@ -24,6 +24,7 @@ const ItemDetails = ({
   const [tab, setTab] = useState("edit");
   const { t } = useTranslation();
   const [tabWidth, setTabWidth] = useState(200);
+  const { updateHeader } = React.useContext(HeaderContext);
 
   const changeTab = (key) => {
     setTab(key);
@@ -52,9 +53,17 @@ const ItemDetails = ({
     };
   }, []);
 
+  React.useEffect(() => {
+    updateHeader({
+      title: Strings.ErrorDialogue.headerTitle,
+      create: null,
+      transaction: transaction,
+      disableNav: false,
+    });
+  }, [transaction]);
+
   return (
     <>
-      <Header title={headerTitle} transaction={transaction} />
       <Container tabs={true}>
         <TabBox>
           <div className="TabBox">

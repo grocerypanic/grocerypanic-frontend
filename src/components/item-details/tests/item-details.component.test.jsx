@@ -2,21 +2,23 @@ import React from "react";
 import { render, cleanup, fireEvent, waitFor } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
-import Header from "../../header/header.component";
 import ItemDetails from "../item-details.component";
 import ItemDetailsForm from "../../item-details-form/item-details-form.component";
 import TransactionsOverview from "../../transactions/transactions.component";
 
+import { HeaderContext } from "../../../providers/header/header.provider";
+import { initialHeaderSettings } from "../../../providers/header/header.initial";
+
 import Strings from "../../../configuration/strings";
 
-jest.mock("../../header/header.component");
 jest.mock("../../transactions/transactions.component");
 jest.mock("../../item-details-form/item-details-form.component");
-Header.mockImplementation(() => <div>MockHeader</div>);
 ItemDetailsForm.mockImplementation(() => <div>MockItemDetailsForm</div>);
 TransactionsOverview.mockImplementation(() => (
   <div>MockTransactionOverview</div>
 ));
+
+const mockHeaderUpdate = jest.fn();
 
 const mockTransactions = [{ id: 1, item: 1, date: "2019-09-15", quantity: 5 }];
 
@@ -59,6 +61,16 @@ const props = {
   requestTransactions: jest.fn(),
 };
 
+const renderHelper = (currentProps) => {
+  return render(
+    <HeaderContext.Provider
+      value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
+    >
+      <ItemDetails {...currentProps} />
+    </HeaderContext.Provider>
+  );
+};
+
 describe("Setup Environment", () => {
   let utils;
   let current;
@@ -78,19 +90,20 @@ describe("Setup Environment", () => {
     beforeEach(() => {
       jest.clearAllMocks();
       current = { ...props, allItems: [...props.allItems] };
-      utils = render(<ItemDetails {...current} />);
+      utils = renderHelper(current);
     });
     afterEach(cleanup);
 
     it("renders, should call header with the correct params", () => {
       expect(current.transaction).toBe(false);
 
-      expect(Header).toHaveBeenCalledTimes(1);
-
-      const headerCall = Header.mock.calls[0][0];
-      propCount(headerCall, 2);
-      expect(headerCall.title).toBe(current.headerTitle);
-      expect(headerCall.transaction).toBe(current.transaction);
+      expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+      expect(mockHeaderUpdate).toBeCalledWith({
+        title: Strings.ItemDetails.headerTitle,
+        create: null,
+        transaction: false,
+        disableNav: false,
+      });
     });
 
     it("renders, should create the tabs as expected", () => {
@@ -172,9 +185,21 @@ describe("Setup Environment", () => {
     beforeEach(() => {
       jest.clearAllMocks();
       current = { ...props, transaction: true };
-      utils = render(<ItemDetails {...current} />);
+      utils = renderHelper(current);
     });
     afterEach(cleanup);
+
+    it("renders, should call header with the correct params", () => {
+      expect(current.transaction).toBe(true);
+
+      expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+      expect(mockHeaderUpdate).toBeCalledWith({
+        title: Strings.ItemDetails.headerTitle,
+        create: null,
+        transaction: true,
+        disableNav: false,
+      });
+    });
 
     it("renders, should still navigate to the stats page", async (done) => {
       expect(current.transaction).toBe(true);
