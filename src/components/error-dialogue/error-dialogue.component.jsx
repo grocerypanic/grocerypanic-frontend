@@ -8,6 +8,7 @@ import { Paper, Container } from "../../global-styles/containers";
 import { NotePad, Page, OK, ErrorBox, Centered } from "./error-dialogue.styles";
 
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
+import { HeaderContext } from "../../providers/header/header.provider";
 
 import Routes from "../../configuration/routes";
 import Strings from "../../configuration/strings";
@@ -22,6 +23,7 @@ const ErrorDialogue = ({
 }) => {
   const { t } = useTranslation();
   const { event } = React.useContext(AnalyticsContext);
+  const { updateHeader } = React.useContext(HeaderContext);
 
   const handleClick = () => {
     clearError();
@@ -31,6 +33,12 @@ const ErrorDialogue = ({
   };
 
   React.useEffect(() => {
+    updateHeader({
+      title: Strings.ErrorDialogue.headerTitle,
+      create: null,
+      transaction: false,
+      disableNav: true,
+    });
     if (eventMessage) event(eventMessage);
   }, []);
 

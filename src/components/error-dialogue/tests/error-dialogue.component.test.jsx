@@ -5,7 +5,9 @@ import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import ErrorDialogue from "../error-dialogue.component";
+import { initialHeaderSettings } from "../../../providers/header/header.initial";
 
+import { HeaderContext } from "../../../providers/header/header.provider";
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 
@@ -18,6 +20,7 @@ jest.mock("@material-ui/icons/WarningOutlined", () => ({
 }));
 WarningOutlinedIcon.mockImplementation(() => <div>MockWarning</div>);
 
+const mockHeaderUpdate = jest.fn();
 const mockEvent = jest.fn();
 const mockAnalyticsSettings = { event: mockEvent, initialized: true };
 
@@ -30,6 +33,20 @@ let ErrorProps = {
 };
 
 const history = createBrowserHistory();
+
+const renderHelper = (history, currentProps) => {
+  return render(
+    <HeaderContext.Provider
+      value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
+    >
+      <Router history={history}>
+        <AnalyticsContext.Provider value={mockAnalyticsSettings}>
+          <ErrorDialogue {...currentProps} history={history} />
+        </AnalyticsContext.Provider>
+      </Router>
+    </HeaderContext.Provider>
+  );
+};
 
 describe("Setup Environment", () => {
   let utils;
@@ -53,13 +70,17 @@ describe("Setup Environment", () => {
       beforeEach(() => {
         current.redirect = Routes.goBack;
         history.push(testRoute);
-        utils = render(
-          <Router history={history}>
-            <AnalyticsContext.Provider value={mockAnalyticsSettings}>
-              <ErrorDialogue {...current} history={history} />
-            </AnalyticsContext.Provider>
-          </Router>
-        );
+        utils = renderHelper(history, { ...current });
+      });
+
+      it("renders, should call header with the correct params", () => {
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.ErrorDialogue.headerTitle,
+          create: null,
+          transaction: false,
+          disableNav: true,
+        });
       });
 
       it("should render with the correct components and messages", () => {
@@ -99,13 +120,17 @@ describe("Setup Environment", () => {
       beforeEach(() => {
         delete current.redirect;
         history.push(testRoute);
-        utils = render(
-          <Router history={history}>
-            <AnalyticsContext.Provider value={mockAnalyticsSettings}>
-              <ErrorDialogue {...current} history={history} />
-            </AnalyticsContext.Provider>
-          </Router>
-        );
+        utils = renderHelper(history, { ...current });
+      });
+
+      it("renders, should call header with the correct params", () => {
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.ErrorDialogue.headerTitle,
+          create: null,
+          transaction: false,
+          disableNav: true,
+        });
       });
 
       it("should render with the correct components and messages", () => {
@@ -137,13 +162,17 @@ describe("Setup Environment", () => {
       beforeEach(() => {
         current.redirect = "/brand/new/route";
         history.push(testRoute);
-        utils = render(
-          <Router history={history}>
-            <AnalyticsContext.Provider value={mockAnalyticsSettings}>
-              <ErrorDialogue {...current} history={history} />
-            </AnalyticsContext.Provider>
-          </Router>
-        );
+        utils = renderHelper(history, { ...current });
+      });
+
+      it("renders, should call header with the correct params", () => {
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.ErrorDialogue.headerTitle,
+          create: null,
+          transaction: false,
+          disableNav: true,
+        });
       });
 
       it("should render with the correct components and messages", () => {
@@ -184,13 +213,17 @@ describe("Setup Environment", () => {
       beforeEach(() => {
         current.redirect = Routes.goBack;
         history.push(testRoute);
-        utils = render(
-          <Router history={history}>
-            <AnalyticsContext.Provider value={mockAnalyticsSettings}>
-              <ErrorDialogue {...current} history={history} />
-            </AnalyticsContext.Provider>
-          </Router>
-        );
+        utils = renderHelper(history, { ...current });
+      });
+
+      it("renders, should call header with the correct params", () => {
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+        expect(mockHeaderUpdate).toBeCalledWith({
+          title: Strings.ErrorDialogue.headerTitle,
+          create: null,
+          transaction: false,
+          disableNav: true,
+        });
       });
 
       it("should render with the correct components and messages", () => {
