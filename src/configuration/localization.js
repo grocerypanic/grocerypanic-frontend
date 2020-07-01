@@ -1,13 +1,15 @@
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
-import Strings from "./strings";
+import { Strings } from "./strings";
 
 const i18nConfig = {
-  fallbackLng: "en",
-  debug: false,
-  ns: ["translations"],
-  defaultNS: "translations",
-  keySeparator: false,
+  fallbackLng: {
+    default: ["en"],
+  },
+  debug: true,
+  ns: ["translation"],
+  defaultNS: "translation",
+  keySeparator: ".",
   interpolation: {
     escapeValue: false,
     formatSeparator: ",",
