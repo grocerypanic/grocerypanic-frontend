@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
 import ErrorHandler from "../error-handler/error-handler.component";
-import Header from "../header.old/header.component";
 import ItemListRow from "../item-list-row/item-list-row.component";
 import Hint from "../hint/hint.component";
 import Alert from "../alert/alert.component";
@@ -184,11 +183,6 @@ const ItemList = ({
         string={"ApiError"}
         redirect={Routes.goBack}
       >
-        <Header
-          title={headerTitle}
-          transaction={transactionStatus()}
-          create={handleCreate}
-        />
         <HoldingPattern condition={!ready && waitForApi}>
           <Container>
             <Paper>
