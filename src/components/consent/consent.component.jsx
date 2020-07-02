@@ -5,8 +5,6 @@ import cookie from "cookie_js";
 
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 
-import Strings from "../../configuration/strings";
-
 export const AnalyticsCookieName = "CookieConsent";
 
 const Consent = () => {
@@ -22,10 +20,10 @@ const Consent = () => {
     <CookieConsent
       enableDeclineButton
       onAccept={setup}
-      buttonText={t(Strings.CookiePolicy.CookieAcceptText)}
-      declineButtonText={t(Strings.CookiePolicy.CookieDeclineText)}
+      buttonText={t("CookiePolicy.CookieAcceptText")}
+      declineButtonText={t("CookiePolicy.CookieDeclineText")}
     >
-      {t(Strings.CookiePolicy.CookieMessage)}
+      {t("CookiePolicy.CookieMessage")}
     </CookieConsent>
   );
 };

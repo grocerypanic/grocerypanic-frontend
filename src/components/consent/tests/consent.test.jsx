@@ -33,7 +33,7 @@ describe("Check Error Rendering", () => {
 
     afterEach(cleanup);
 
-    it("renders with expected elements", () => {
+    it("renders with the consent dialogue", () => {
       expect(CookieConsent).toHaveBeenCalledTimes(1);
       const props = CookieConsent.mock.calls[0][0];
       expect(props.acceptOnScroll).toBeFalsy();
@@ -60,7 +60,7 @@ describe("Check Error Rendering", () => {
 
     afterEach(cleanup);
 
-    it("renders with expected elements", () => {
+    it("renders without the consent dialogue", () => {
       expect(CookieConsent).toHaveBeenCalledTimes(0);
     });
 

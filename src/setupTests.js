@@ -5,16 +5,23 @@
 import "@testing-library/jest-dom/extend-expect";
 import "jest-styled-components";
 
-// Manual mocking DID NOT work for this, but this global mock works nicely.
-jest.mock("react-i18next", () => ({
-  useTranslation: () => ({ t: (key) => key }),
-  Trans: ({ children }) => children,
-  I18nextProvider: ({ children }) => children,
-  withTranslation: () => (Component) => {
-    Component.defaultProps = { ...Component.defaultProps, t: (key) => key };
-    return Component;
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import { Strings } from "./configuration/strings";
+
+i18n.use(initReactI18next).init({
+  lng: "en",
+  fallbackLng: "en",
+  ns: ["translation"],
+  defaultNS: "translation",
+  debug: true,
+  interpolation: {
+    escapeValue: false,
   },
-}));
+  resources: { ...Strings },
+});
+
+export default i18n;
 
 global.fail = (message) => {
   throw new Error(message);
