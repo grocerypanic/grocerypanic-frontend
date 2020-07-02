@@ -11,8 +11,13 @@ const Consent = () => {
   const { setup } = useContext(AnalyticsContext);
   const { t } = useTranslation();
 
+  React.useEffect(() => {
+    if (cookie.get(AnalyticsCookieName) === "true") {
+      setup();
+    }
+  }, []); // eslint-disable-line
+
   if (cookie.get(AnalyticsCookieName) === "true") {
-    setup();
     return null;
   }
 
