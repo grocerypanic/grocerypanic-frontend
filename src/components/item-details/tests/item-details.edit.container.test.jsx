@@ -3,6 +3,7 @@ import { render, cleanup, waitFor, act } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 import { MemoryRouter, Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
+import i18next from "i18next";
 
 import ErrorHandler from "../../error-handler/error-handler.component";
 import HoldingPattern from "../../holding-pattern/holding-pattern.component";
@@ -592,17 +593,22 @@ describe("Setup Environment", () => {
         );
       });
 
-      it("renders, calls the ErrorHandler with the correct params", () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(3);
+      it("renders, should call the error handler with the correct params", async (done) => {
+        await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(3));
+        const call = ErrorHandler.mock.calls[0][0];
+        propCount(call, 6);
+        expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
+        expect(call.condition).toBe(true);
+        expect(call.clearError).toBeInstanceOf(Function);
+        expect(call.messageTranslationKey).toBe("ItemDetails.ApiError");
+        expect(call.redirect).toBe(Routes.goBack);
+        expect(call.children).toBeTruthy();
 
-        const errorHandlerCall = ErrorHandler.mock.calls[0][0];
-        propCount(errorHandlerCall, 7);
-        expect(errorHandlerCall.condition).toBe(true);
-        expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
-        expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
-        expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
-        expect(errorHandlerCall.redirect).toBe(Routes.goBack);
-        expect(errorHandlerCall.children).toBeTruthy();
+        expect(i18next.t("ItemDetails.ApiError")).toBe(
+          Strings.ItemDetails.ApiError
+        );
+
+        done();
       });
 
       it("renders, clear error works as expected", async (done) => {
@@ -639,17 +645,22 @@ describe("Setup Environment", () => {
         );
       });
 
-      it("renders, calls the ErrorHandler with the correct params", () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(3);
+      it("renders, should call the error handler with the correct params", async (done) => {
+        await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(3));
+        const call = ErrorHandler.mock.calls[0][0];
+        propCount(call, 6);
+        expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
+        expect(call.condition).toBe(true);
+        expect(call.clearError).toBeInstanceOf(Function);
+        expect(call.messageTranslationKey).toBe("ItemDetails.ApiError");
+        expect(call.redirect).toBe(Routes.goBack);
+        expect(call.children).toBeTruthy();
 
-        const errorHandlerCall = ErrorHandler.mock.calls[0][0];
-        propCount(errorHandlerCall, 7);
-        expect(errorHandlerCall.condition).toBe(true);
-        expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
-        expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
-        expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
-        expect(errorHandlerCall.redirect).toBe(Routes.goBack);
-        expect(errorHandlerCall.children).toBeTruthy();
+        expect(i18next.t("ItemDetails.ApiError")).toBe(
+          Strings.ItemDetails.ApiError
+        );
+
+        done();
       });
 
       it("renders, clear error works as expected", async (done) => {
@@ -686,17 +697,22 @@ describe("Setup Environment", () => {
         );
       });
 
-      it("renders, calls the ErrorHandler with the correct params", () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(3);
+      it("renders, should call the error handler with the correct params", async (done) => {
+        await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(3));
+        const call = ErrorHandler.mock.calls[0][0];
+        propCount(call, 6);
+        expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
+        expect(call.condition).toBe(true);
+        expect(call.clearError).toBeInstanceOf(Function);
+        expect(call.messageTranslationKey).toBe("ItemDetails.ApiError");
+        expect(call.redirect).toBe(Routes.goBack);
+        expect(call.children).toBeTruthy();
 
-        const errorHandlerCall = ErrorHandler.mock.calls[0][0];
-        propCount(errorHandlerCall, 7);
-        expect(errorHandlerCall.condition).toBe(true);
-        expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
-        expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
-        expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
-        expect(errorHandlerCall.redirect).toBe(Routes.goBack);
-        expect(errorHandlerCall.children).toBeTruthy();
+        expect(i18next.t("ItemDetails.ApiError")).toBe(
+          Strings.ItemDetails.ApiError
+        );
+
+        done();
       });
 
       it("renders, clear error works as expected", async (done) => {
@@ -733,17 +749,22 @@ describe("Setup Environment", () => {
         );
       });
 
-      it("renders, calls the ErrorHandler with the correct params", () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(3);
+      it("renders, should call the error handler with the correct params", async (done) => {
+        await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(3));
+        const call = ErrorHandler.mock.calls[0][0];
+        propCount(call, 6);
+        expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
+        expect(call.condition).toBe(true);
+        expect(call.clearError).toBeInstanceOf(Function);
+        expect(call.messageTranslationKey).toBe("ItemDetails.ApiError");
+        expect(call.redirect).toBe(Routes.goBack);
+        expect(call.children).toBeTruthy();
 
-        const errorHandlerCall = ErrorHandler.mock.calls[0][0];
-        propCount(errorHandlerCall, 7);
-        expect(errorHandlerCall.condition).toBe(true);
-        expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
-        expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
-        expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
-        expect(errorHandlerCall.redirect).toBe(Routes.goBack);
-        expect(errorHandlerCall.children).toBeTruthy();
+        expect(i18next.t("ItemDetails.ApiError")).toBe(
+          Strings.ItemDetails.ApiError
+        );
+
+        done();
       });
 
       it("renders, clear error works as expected", async (done) => {

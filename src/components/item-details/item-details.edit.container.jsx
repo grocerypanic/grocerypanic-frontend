@@ -189,8 +189,7 @@ const ItemDetailsEditContainer = ({
       condition={item.error || store.error || shelf.error || tr.error}
       clearError={clearError}
       eventMessage={AnalyticsActions.ApiError}
-      stringsRoot={Strings.ItemDetails}
-      string={"ApiError"}
+      messageTranslationKey={"ItemDetails.ApiError"}
       redirect={Routes.goBack}
     >
       <HoldingPattern condition={calculatedItem === defaultItem}>
