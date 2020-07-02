@@ -7,6 +7,7 @@ import {
   fireEvent,
 } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
+import i18next from "i18next";
 
 import ErrorHandler from "../../error-handler/error-handler.component";
 import Hint from "../../hint/hint.component";
@@ -192,14 +193,20 @@ describe("Setup Environment", () => {
         it("renders, should call the error handler with the correct params", async (done) => {
           await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
           const call = ErrorHandler.mock.calls[0][0];
-          propCount(call, 7);
+          propCount(call, 6);
           expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
           expect(call.condition).toBe(false);
           expect(call.clearError).toBeInstanceOf(Function);
-          expect(call.stringsRoot).toBe(Strings.SimpleList);
-          expect(call.string).toBe("ApiCommunicationError");
+          expect(call.messageTranslationKey).toBe(
+            "SimpleList.ApiCommunicationError"
+          );
           expect(call.redirect).toBe(Routes.goBack);
           expect(call.children).toBeTruthy();
+
+          expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
+            Strings.SimpleList.ApiCommunicationError
+          );
+
           done();
         });
 
@@ -478,14 +485,20 @@ describe("Setup Environment", () => {
         it("renders, should call the error handler with the correct params", async (done) => {
           await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
           const call = ErrorHandler.mock.calls[0][0];
-          propCount(call, 7);
+          propCount(call, 6);
           expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
           expect(call.condition).toBe(false);
           expect(call.clearError).toBeInstanceOf(Function);
-          expect(call.stringsRoot).toBe(Strings.SimpleList);
-          expect(call.string).toBe("ApiCommunicationError");
+          expect(call.messageTranslationKey).toBe(
+            "SimpleList.ApiCommunicationError"
+          );
           expect(call.redirect).toBe(Routes.goBack);
           expect(call.children).toBeTruthy();
+
+          expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
+            Strings.SimpleList.ApiCommunicationError
+          );
+
           done();
         });
 
@@ -503,14 +516,20 @@ describe("Setup Environment", () => {
       it("renders, should call the error handler with the correct params", async (done) => {
         await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
         const call = ErrorHandler.mock.calls[0][0];
-        propCount(call, 7);
+        propCount(call, 6);
         expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
         expect(call.condition).toBe(true);
         expect(call.clearError).toBeInstanceOf(Function);
-        expect(call.stringsRoot).toBe(Strings.SimpleList);
-        expect(call.string).toBe("ApiCommunicationError");
+        expect(call.messageTranslationKey).toBe(
+          "SimpleList.ApiCommunicationError"
+        );
         expect(call.redirect).toBe(Routes.goBack);
         expect(call.children).toBeTruthy();
+
+        expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
+          Strings.SimpleList.ApiCommunicationError
+        );
+
         done();
       });
 
@@ -534,6 +553,27 @@ describe("Setup Environment", () => {
       current = { ...apiObjectState, transaction: true };
       utils = renderHelper(current);
     });
+
+    it("renders, should call the error handler with the correct params", async (done) => {
+      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
+      const call = ErrorHandler.mock.calls[0][0];
+      propCount(call, 6);
+      expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
+      expect(call.condition).toBe(false);
+      expect(call.clearError).toBeInstanceOf(Function);
+      expect(call.messageTranslationKey).toBe(
+        "SimpleList.ApiCommunicationError"
+      );
+      expect(call.redirect).toBe(Routes.goBack);
+      expect(call.children).toBeTruthy();
+
+      expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
+        Strings.SimpleList.ApiCommunicationError
+      );
+
+      done();
+    });
+
     it("renders, and then when there is an transaction bypasses calls to handleCreate", async (done) => {
       expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
       const { create } = mockHeaderUpdate.mock.calls[0][0];

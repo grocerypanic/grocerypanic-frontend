@@ -147,8 +147,7 @@ const SimpleList = ({
         condition={apiObject.error}
         clearError={clearError}
         eventMessage={AnalyticsActions.ApiError}
-        stringsRoot={Strings.SimpleList}
-        string={"ApiCommunicationError"}
+        messageTranslationKey={"SimpleList.ApiCommunicationError"}
         redirect={Routes.goBack}
       >
         <HoldingPattern condition={!itemsFetched.complete && waitForApi}>
