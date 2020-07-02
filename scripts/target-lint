@@ -1,0 +1,4 @@
+#!/bin/bash
+
+eslint $1/*.js*
+eslint $1/**/*.js*
