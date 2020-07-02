@@ -24,7 +24,7 @@ const Dialogue = ({ headerTitle, title, body, Footer }) => {
     return () => {
       window.removeEventListener("resize", recalculateHeight);
     };
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <>

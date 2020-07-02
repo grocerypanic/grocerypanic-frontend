@@ -17,8 +17,6 @@ import SignInContainer from "../signin.container";
 import SignIn from "../signin.page";
 import ErrorDialogue from "../../../components/error-dialogue/error-dialogue.component";
 
-import Strings from "../../../configuration/strings";
-
 jest.mock("../signin.page");
 
 jest.mock("../../../providers/user/user.async");
@@ -38,7 +36,6 @@ const mockAnalyticsContext = {
 };
 
 describe("Setup Environment", () => {
-  let utils;
   let currentTest;
 
   beforeEach(() => {
@@ -50,7 +47,7 @@ describe("Setup Environment", () => {
   describe("outside of an auth error", () => {
     beforeEach(() => {
       currentTest = { ...initialState };
-      utils = render(
+      render(
         <AnalyticsContext.Provider value={mockAnalyticsContext}>
           <UserContext.Provider
             value={{ user: currentTest, dispatch: mockDispatch }}
@@ -133,7 +130,7 @@ describe("Setup Environment", () => {
         error: true,
         errorMessage: "ErrorAuthExpired",
       };
-      utils = render(
+      render(
         <AnalyticsContext.Provider value={mockAnalyticsContext}>
           <UserContext.Provider
             value={{ user: currentTest, dispatch: mockDispatch }}

@@ -83,14 +83,14 @@ const ItemDetailsForm = ({
         { name: `${item.shelf_life} Days`, id: item.shelf_life },
       ]);
     }
-  }, [shelves]);
+  }, [shelves]); // eslint-disable-line
 
   React.useEffect(() => {
     window.addEventListener("resize", updatePriceWidth);
     return () => {
       window.removeEventListener("resize", updatePriceWidth);
     };
-  }, []);
+  }, []); // eslint-disable-line
 
   // Reassemble the form data into an object and pass back to handleSave
   // Perform validation as needed

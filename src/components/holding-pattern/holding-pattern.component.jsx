@@ -22,7 +22,7 @@ const HoldingPattern = ({
     updateHeader({
       disableNav: true,
     });
-  }, []);
+  }, []); // eslint-disable-line
 
   if (!condition) return children;
 

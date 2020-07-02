@@ -23,7 +23,7 @@ const SignInContainer = () => {
     if (!performAsync) return;
     dispatch(performAsync);
     setPerformAsync(null);
-  }, [performAsync]);
+  }, [performAsync]); // eslint-disable-line
 
   const handleSocialLogin = (response) => {
     event(AnalyticsActions.LoginSuccess);

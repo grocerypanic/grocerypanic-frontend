@@ -38,7 +38,7 @@ const ErrorDialogue = ({
       disableNav: true,
     });
     if (eventMessage) event(eventMessage);
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <Container>

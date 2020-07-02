@@ -25,11 +25,11 @@ const ProtectedRoute = ({
 
   React.useEffect(() => {
     handleRedirect();
-  }, [user]);
+  }, [user]); // eslint-disable-line
 
   React.useEffect(() => {
     handleRedirect();
-  }, []);
+  }, []); // eslint-disable-line
 
   return <Route {...otherProps} />;
 };

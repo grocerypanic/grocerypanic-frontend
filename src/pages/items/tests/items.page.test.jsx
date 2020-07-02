@@ -20,15 +20,10 @@ ItemList.mockImplementation(() => <div>MockList</div>);
 const mockDispatch = jest.fn();
 
 describe("Check the correct props are passed to simple list", () => {
-  let tests = [1];
-  let utils;
-  let currentTest;
-
   beforeEach(() => {
     jest.clearAllMocks();
 
-    currentTest = tests.shift();
-    utils = render(
+    render(
       <UserContext.Provider
         value={{ user: initialState, dispatch: mockDispatch }}
       >

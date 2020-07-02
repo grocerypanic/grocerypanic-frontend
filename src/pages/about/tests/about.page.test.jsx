@@ -1,5 +1,5 @@
 import React from "react";
-import { render, cleanup, waitFor, act } from "@testing-library/react";
+import { render, cleanup, waitFor } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
 import AboutPage from "../about.page";
@@ -14,12 +14,10 @@ Dialogue.mockImplementation(() => <div>MockDialogue</div>);
 FeedBack.mockImplementation(() => <div>MockFeedBack</div>);
 
 describe("Check the correct props are passed to ", () => {
-  let utils;
-
   beforeEach(() => {
     jest.clearAllMocks();
 
-    utils = render(<AboutPage />);
+    render(<AboutPage />);
   });
 
   afterEach(cleanup);

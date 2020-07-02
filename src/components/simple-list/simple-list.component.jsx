@@ -69,7 +69,7 @@ const SimpleList = ({
     if (performAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
     dispatch(performAsync);
     setPerformAsync(null);
-  }, [performAsync]);
+  }, [performAsync]); // eslint-disable-line
 
   React.useEffect(() => {
     dispatch({
@@ -78,7 +78,7 @@ const SimpleList = ({
       dispatch: setPerformAsync,
       callback: setItemsFetched,
     });
-  }, []);
+  }, []); // eslint-disable-line
 
   React.useEffect(() => {
     updateHeader({
@@ -87,7 +87,7 @@ const SimpleList = ({
       transaction: apiObject.transaction,
       disableNav: false,
     });
-  }, [apiObject.transaction]);
+  }, [apiObject.transaction]); // eslint-disable-line
 
   const handleCreate = () => {
     if (apiObject.transaction) return;

@@ -7,7 +7,6 @@ import { authExpired } from "../../providers/user/user.async";
 import ItemDetailsCreateContainer from "../../components/item-details/item-details.create.container";
 
 import { useTranslation } from "react-i18next";
-import Strings from "../../configuration/strings";
 
 const ItemCreatePage = () => {
   const { t } = useTranslation();
@@ -19,7 +18,7 @@ const ItemCreatePage = () => {
     if (!performAsync) return;
     dispatch(performAsync);
     setPerformAsync(null);
-  }, [performAsync]);
+  }, [performAsync]); // eslint-disable-line
 
   const handleExpiredAuth = () => {
     authExpired(setPerformAsync);

@@ -18,7 +18,7 @@ const ShelvesPage = () => {
     if (!performAsync) return;
     dispatch(performAsync);
     setPerformAsync(null);
-  }, [performAsync]);
+  }, [performAsync]); // eslint-disable-line
 
   const handleExpiredAuth = () => {
     authExpired(setPerformAsync);

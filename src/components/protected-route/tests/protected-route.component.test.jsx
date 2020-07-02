@@ -2,7 +2,7 @@ import React from "react";
 import { render, cleanup } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
-import { Router, Route, withRouter } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import ProtectedRoute from "../protected-route.component";
@@ -23,7 +23,6 @@ jest.mock("react-router-dom", () => ({
 const mockDispatch = jest.fn();
 Route.mockImplementation(() => MockComponentContents);
 
-let utils;
 let call;
 let currentTest = {
   negative: false,
@@ -36,7 +35,6 @@ let currentTest = {
 };
 
 const RenderFunction = ({ state, history, ...otherProps }) => {
-  const WrappedRouter = withRouter(ProtectedRoute);
   return (
     <UserContext.Provider value={{ user: state, dispatch: mockDispatch }}>
       <Router history={history}>
@@ -62,7 +60,7 @@ describe("Setup Environment", () => {
         currentTest.history.push("/");
         currentTest.attr = "login";
         const state = { ...initialState, login: true };
-        utils = render(<RenderFunction state={state} {...currentTest} />);
+        render(<RenderFunction state={state} {...currentTest} />);
       });
 
       it("should render the component as expected", () => {
@@ -83,7 +81,7 @@ describe("Setup Environment", () => {
         currentTest.history.push("/");
         currentTest.attr = "login";
         const state = { ...initialState, login: false };
-        utils = render(<RenderFunction state={state} {...currentTest} />);
+        render(<RenderFunction state={state} {...currentTest} />);
       });
 
       it("should redirect as expected", () => {
@@ -111,7 +109,7 @@ describe("Setup Environment", () => {
         currentTest.history.push("/");
         currentTest.attr = "error";
         const state = { ...initialState, error: false };
-        utils = render(<RenderFunction state={state} {...currentTest} />);
+        render(<RenderFunction state={state} {...currentTest} />);
       });
 
       it("should render the component as expected", () => {
@@ -132,7 +130,7 @@ describe("Setup Environment", () => {
         currentTest.history.push("/");
         currentTest.attr = "error";
         const state = { ...initialState, error: true };
-        utils = render(<RenderFunction state={state} {...currentTest} />);
+        render(<RenderFunction state={state} {...currentTest} />);
       });
 
       it("should redirect as expected", () => {

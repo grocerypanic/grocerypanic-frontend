@@ -30,7 +30,7 @@ function App() {
       title: Strings.MainHeaderTitle,
       disableNav: true,
     });
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <>

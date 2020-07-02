@@ -22,13 +22,10 @@ const mockDispatch = jest.fn();
 const ItemId = "1";
 
 describe("Check the correct props are passed to simple list", () => {
-  let utils;
-
   beforeEach(() => {
     jest.clearAllMocks();
-    const match = { params: { id: ItemId } };
 
-    utils = render(
+    render(
       <UserContext.Provider
         value={{ user: initialState, dispatch: mockDispatch }}
       >

@@ -32,7 +32,7 @@ const Menu = ({ options, headerTitle, title, history, helpText }) => {
     return () => {
       window.removeEventListener("resize", recalculateHeight);
     };
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <>
