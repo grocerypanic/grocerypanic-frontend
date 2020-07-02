@@ -13,7 +13,7 @@ export const Strings = {
       },
       AboutPage: {
         Title: "Panic Grocery Management",
-        HeaderTitle: "Panic: About",
+        HeaderTitle: "About",
         Body:
           "Panic was written during the 2020 pandemic with the goal of helping folks organize their grocery shopping.\nI had very little front-end experience before starting this app, so this was an opportunity for me to try something new.  I would not have been able to complete this project without the help I received, despite alot of pressure for me to abandon it half way.  So thanks!",
       },
@@ -47,18 +47,18 @@ export const Strings = {
       },
       MainMenu: {
         Title: "Main Menu",
-        HeaderTitle: "Panic: Main Menu",
+        HeaderTitle: "Main Menu",
         HelpText: "Make a selection to proceed.",
       },
       CreateItem: {
         Title: "Create New Item",
-        HeaderTitle: "Create",
+        HeaderTitle: "New Item",
         HelpText:
           "Fill out the values, click the save button to finalize.\nDon't modify quantity here.",
       },
       ItemDetails: {
         Title: "Edit Item Details",
-        HeaderTitle: "Details",
+        HeaderTitle: "Item Details",
         HelpText:
           "Fill out the values, click the save button to finalize.\nDon't modify quantity here.",
         NameLabel: "Name",
@@ -90,7 +90,7 @@ export const Strings = {
       },
       ItemStats: {
         Title: "Consumption Statistics",
-        HeaderTitle: "Details",
+        HeaderTitle: "Item Details",
         HelpText: "Here is some help.",
         RecommendExpiredItems: "Expired Items Warning",
         RecommendExpiringSoon: "Item(s) Expiring Soon",
