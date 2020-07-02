@@ -179,8 +179,7 @@ const ItemList = ({
         condition={item.error || transaction.error}
         clearError={clearError}
         eventMessage={AnalyticsActions.ApiError}
-        stringsRoot={Strings.ItemList}
-        string={"ApiError"}
+        messageTranslationKey={"ItemList.ApiError"}
         redirect={Routes.goBack}
       >
         <HoldingPattern condition={!ready && waitForApi}>

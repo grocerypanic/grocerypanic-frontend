@@ -9,6 +9,7 @@ import {
 import { propCount } from "../../../test.fixtures/objectComparison";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
+import i18next from "i18next";
 
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
@@ -264,21 +265,22 @@ describe("Setup Environment", () => {
             );
           });
 
-          it("renders, outside of a transaction should call ErrorHandler with the correct params", () => {
-            expect(current.transaction).toBe(false);
+          it("renders, should call the error handler with the correct params", async (done) => {
+            await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
+            const call = ErrorHandler.mock.calls[0][0];
+            propCount(call, 6);
+            expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
+            expect(call.condition).toBe(false);
+            expect(call.clearError).toBeInstanceOf(Function);
+            expect(call.messageTranslationKey).toBe("ItemList.ApiError");
+            expect(call.redirect).toBe(Routes.goBack);
+            expect(call.children).toBeTruthy();
 
-            expect(ErrorHandler).toHaveBeenCalledTimes(1);
-
-            const errorHandlerCall = ErrorHandler.mock.calls[0][0];
-            propCount(errorHandlerCall, 7);
-            expect(errorHandlerCall.condition).toBe(false);
-            expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
-            expect(errorHandlerCall.eventMessage).toBe(
-              AnalyticsActions.ApiError
+            expect(i18next.t("ItemList.ApiError")).toBe(
+              Strings.ItemList.ApiError
             );
-            expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemList);
-            expect(errorHandlerCall.redirect).toBe(Routes.goBack);
-            expect(errorHandlerCall.children).toBeTruthy();
+
+            done();
           });
 
           it("renders, should call header with the correct params", () => {
@@ -915,19 +917,20 @@ describe("Setup Environment", () => {
       utils = renderHelper(itemContext, transactionContext, history);
     });
 
-    it("renders, outside of a transaction should call ErrorHandler with the correct params", () => {
-      expect(current.transaction).toBe(false);
+    it("renders, should call the error handler with the correct params", async (done) => {
+      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
+      const call = ErrorHandler.mock.calls[0][0];
+      propCount(call, 6);
+      expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
+      expect(call.condition).toBe(true);
+      expect(call.clearError).toBeInstanceOf(Function);
+      expect(call.messageTranslationKey).toBe("ItemList.ApiError");
+      expect(call.redirect).toBe(Routes.goBack);
+      expect(call.children).toBeTruthy();
 
-      expect(ErrorHandler).toHaveBeenCalledTimes(1);
+      expect(i18next.t("ItemList.ApiError")).toBe(Strings.ItemList.ApiError);
 
-      const errorHandlerCall = ErrorHandler.mock.calls[0][0];
-      propCount(errorHandlerCall, 7);
-      expect(errorHandlerCall.condition).toBe(true);
-      expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
-      expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
-      expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemList);
-      expect(errorHandlerCall.redirect).toBe(Routes.goBack);
-      expect(errorHandlerCall.children).toBeTruthy();
+      done();
     });
 
     it("renders, clear error works as expected", async (done) => {
