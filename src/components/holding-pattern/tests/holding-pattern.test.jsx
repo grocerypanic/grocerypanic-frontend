@@ -5,12 +5,14 @@ import { propCount } from "../../../test.fixtures/objectComparison";
 import HoldingPattern from "../holding-pattern.component";
 import Spinner from "react-bootstrap/Spinner";
 
+import initialHeaderSettings from "../../../providers/header/header.initial";
+import { HeaderContext } from "../../../providers/header/header.provider";
+
+const mockHeaderUpdate = jest.fn();
 jest.mock("react-bootstrap/Spinner", () => ({
   __esModule: true,
   default: jest.fn(() => <div>MockSpinner</div>),
 }));
-
-let condition = false;
 
 describe("Setup Environment", () => {
   let utils;
@@ -20,15 +22,24 @@ describe("Setup Environment", () => {
 
   afterEach(cleanup);
 
+  const renderHelper = (currentProps) => {
+    return render(
+      <HeaderContext.Provider
+        value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
+      >
+        <HoldingPattern {...currentProps}>Suppressed Component</HoldingPattern>
+      </HeaderContext.Provider>
+    );
+  };
+
   describe("When condition is false", () => {
     describe("with defaults", () => {
       beforeEach(() => {
-        condition = false;
-        utils = render(
-          <HoldingPattern condition={condition}>
-            Suppressed Component
-          </HoldingPattern>
-        );
+        utils = renderHelper({ condition: false });
+      });
+
+      it("renders, should call header with the correct params", () => {
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(0);
       });
 
       it("should render with the correct message", () => {
@@ -44,16 +55,15 @@ describe("Setup Environment", () => {
 
     describe("with custom values", () => {
       beforeEach(() => {
-        condition = false;
-        utils = render(
-          <HoldingPattern
-            animation={"other1"}
-            color={"other2"}
-            condition={condition}
-          >
-            Suppressed Component
-          </HoldingPattern>
-        );
+        utils = renderHelper({
+          condition: false,
+          animation: "other1",
+          color: "other2",
+        });
+      });
+
+      it("renders, should call header with the correct params", () => {
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(0);
       });
 
       it("should render with the correct message", () => {
@@ -71,12 +81,14 @@ describe("Setup Environment", () => {
   describe("When condition is true", () => {
     describe("with defaults", () => {
       beforeEach(() => {
-        condition = true;
-        utils = render(
-          <HoldingPattern condition={condition}>
-            Suppressed Component
-          </HoldingPattern>
-        );
+        utils = renderHelper({ condition: true });
+      });
+
+      it("renders, should call header with the correct params", () => {
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+        expect(mockHeaderUpdate).toBeCalledWith({
+          disableNav: true,
+        });
       });
 
       it("should render the spinner instead", () => {
@@ -97,16 +109,18 @@ describe("Setup Environment", () => {
 
     describe("with custom values", () => {
       beforeEach(() => {
-        condition = true;
-        utils = render(
-          <HoldingPattern
-            animation={"other1"}
-            color={"other2"}
-            condition={condition}
-          >
-            Suppressed Component
-          </HoldingPattern>
-        );
+        utils = renderHelper({
+          condition: true,
+          animation: "other1",
+          color: "other2",
+        });
+      });
+
+      it("renders, should call header with the correct params", () => {
+        expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+        expect(mockHeaderUpdate).toBeCalledWith({
+          disableNav: true,
+        });
       });
 
       it("should render with the correct message", () => {

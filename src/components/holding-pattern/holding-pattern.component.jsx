@@ -1,6 +1,8 @@
 import React from "react";
 import Spinner from "react-bootstrap/Spinner";
 
+import { HeaderContext } from "../../providers/header/header.provider";
+
 import { CenterBox } from "./holding-pattern.styles";
 
 const HoldingPattern = ({
@@ -13,7 +15,17 @@ const HoldingPattern = ({
   divWidth = 75,
   divHeight = 75,
 }) => {
+  const { updateHeader } = React.useContext(HeaderContext);
+
+  React.useEffect(() => {
+    if (!condition) return;
+    updateHeader({
+      disableNav: true,
+    });
+  }, []);
+
   if (!condition) return children;
+
   return (
     <CenterBox scale={scale} height={height} data-testid="HoldingPattern">
       <div style={{ width: divWidth, height: divHeight }}>
