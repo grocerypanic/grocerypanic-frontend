@@ -9,9 +9,11 @@ import {
 import { propCount } from "../../../test.fixtures/objectComparison";
 
 import ErrorHandler from "../../error-handler/error-handler.component";
-import Header from "../../header/header.component";
 import Hint from "../../hint/hint.component";
 import HoldingPattern from "../../holding-pattern/holding-pattern.component";
+
+import { HeaderContext } from "../../../providers/header/header.provider";
+import initialHeaderSettings from "../../../providers/header/header.initial";
 
 import {
   AnalyticsActions,
@@ -31,7 +33,6 @@ import calculateMaxHeight from "../../../util/height";
 
 jest.mock("../../holding-pattern/holding-pattern.component");
 jest.mock("../../simple-list-item/simple-list-item.component");
-jest.mock("../../header/header.component");
 jest.mock("../../hint/hint.component");
 jest.mock("../../../util/height");
 jest.mock("../../error-handler/error-handler.component");
@@ -39,10 +40,10 @@ jest.mock("../../error-handler/error-handler.component");
 ErrorHandler.mockImplementation(({ children }) => children);
 HoldingPattern.mockImplementation(({ children }) => children);
 SimpleListItem.mockImplementation(() => <div>MockListItem</div>);
-Header.mockImplementation(() => <div>MockHeader</div>);
 Hint.mockImplementation(() => <div>MockHelp</div>);
 calculateMaxHeight.mockImplementation(() => 200);
 
+const mockHeaderUpdate = jest.fn();
 const mockDispatch = jest.fn();
 const mockHandleExpiredAuth = jest.fn();
 const mockRedirectTag = "store";
@@ -114,25 +115,29 @@ describe("Setup Environment", () => {
   const renderHelper = (currentProps) => {
     return render(
       <AnalyticsContext.Provider value={mockAnalyticsContext}>
-        <ApiContext.Provider
-          value={{
-            apiObject: currentProps,
-            dispatch: mockDispatch,
-          }}
+        <HeaderContext.Provider
+          value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
         >
-          <SimpleList
-            title={mockTitle}
-            headerTitle={mockHeaderTitle}
-            create={create}
-            transaction={currentProps.transaction}
-            ApiObjectContext={ApiContext}
-            placeHolderMessage={mockPlaceHolderMessage}
-            handleExpiredAuth={mockHandleExpiredAuth}
-            helpText={Strings.Testing.GenericTranslationTestString}
-            redirectTag={mockRedirectTag}
-            waitForApi={false}
-          />
-        </ApiContext.Provider>
+          <ApiContext.Provider
+            value={{
+              apiObject: currentProps,
+              dispatch: mockDispatch,
+            }}
+          >
+            <SimpleList
+              title={mockTitle}
+              headerTitle={mockHeaderTitle}
+              create={create}
+              transaction={currentProps.transaction}
+              ApiObjectContext={ApiContext}
+              placeHolderMessage={mockPlaceHolderMessage}
+              handleExpiredAuth={mockHandleExpiredAuth}
+              helpText={Strings.Testing.GenericTranslationTestString}
+              redirectTag={mockRedirectTag}
+              waitForApi={false}
+            />
+          </ApiContext.Provider>
+        </HeaderContext.Provider>
       </AnalyticsContext.Provider>
     );
   };
@@ -147,15 +152,25 @@ describe("Setup Environment", () => {
 
         it("renders, outside of a transaction, with no items in the list, and renders the mockPlaceHolderMessage", () => {
           expect(current.transaction).toBe(false);
-
           expect(SimpleListItem).toBeCalledTimes(0);
-          expect(Header).toHaveBeenCalledTimes(1);
+          expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
 
           expect(utils.getByText(mockPlaceHolderMessage)).toBeTruthy();
         });
 
+        it("renders, should call header with the correct params", () => {
+          expect(current.transaction).toBe(false);
+
+          expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+          const headerCall = mockHeaderUpdate.mock.calls[0][0];
+          expect(headerCall.title).toBe(mockHeaderTitle);
+          expect(headerCall.create).toBeInstanceOf(Function);
+          expect(headerCall.transaction).toBe(false);
+          expect(headerCall.disableNav).toBe(false);
+        });
+
         it("renders, and skips the holding pattern to trigger the spinner", async (done) => {
-          expect(Header).toHaveBeenCalledTimes(1);
+          expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
           expect(HoldingPattern).toHaveBeenCalledTimes(1);
           const holdingPatternCall = HoldingPattern.mock.calls[0][0];
           propCount(holdingPatternCall, 2);
@@ -211,18 +226,15 @@ describe("Setup Environment", () => {
           done();
         });
 
-        it("renders, outside of a transaction should call header with the correct params", () => {
+        it("renders, should call header with the correct params", () => {
           expect(current.transaction).toBe(false);
 
-          expect(Header).toHaveBeenCalledTimes(1);
-
-          const headerCall = Header.mock.calls[0][0];
-          propCount(headerCall, 3);
+          expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+          const headerCall = mockHeaderUpdate.mock.calls[0][0];
           expect(headerCall.title).toBe(mockHeaderTitle);
-          expect(headerCall.transaction).toBe(current.transaction);
-
           expect(headerCall.create).toBeInstanceOf(Function);
-          expect(headerCall.create.name).toBe("handleCreate");
+          expect(headerCall.transaction).toBe(false);
+          expect(headerCall.disableNav).toBe(false);
         });
 
         it("renders, outside of a transaction should call hint with the correct params", () => {
@@ -323,8 +335,8 @@ describe("Setup Environment", () => {
         });
 
         it("renders, when handleCreate is called, it creates a new object", async (done) => {
-          expect(Header).toHaveBeenCalledTimes(1);
-          const { create } = Header.mock.calls[0][0];
+          expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+          const { create } = mockHeaderUpdate.mock.calls[0][0];
           expect(current.transaction).toBeFalsy();
 
           SimpleListItem.mockClear(); // rerender
@@ -445,7 +457,6 @@ describe("Setup Environment", () => {
         });
 
         it("renders, and skips the holding pattern to trigger the spinner", async (done) => {
-          expect(Header).toHaveBeenCalledTimes(1);
           expect(HoldingPattern).toHaveBeenCalledTimes(1);
           const holdingPatternCall = HoldingPattern.mock.calls[0][0];
           propCount(holdingPatternCall, 2);
@@ -524,8 +535,8 @@ describe("Setup Environment", () => {
       utils = renderHelper(current);
     });
     it("renders, and then when there is an transaction bypasses calls to handleCreate", async (done) => {
-      expect(Header).toHaveBeenCalledTimes(1);
-      const { create } = Header.mock.calls[0][0];
+      expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+      const { create } = mockHeaderUpdate.mock.calls[0][0];
       expect(current.transaction).toBeTruthy();
 
       SimpleListItem.mockClear(); // no changes, no rerender
@@ -571,8 +582,16 @@ describe("Setup Environment", () => {
       done();
     });
 
+    it("renders, should call header with the correct params", () => {
+      expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+      const headerCall = mockHeaderUpdate.mock.calls[0][0];
+      expect(headerCall.title).toBe(mockHeaderTitle);
+      expect(headerCall.create).toBeInstanceOf(Function);
+      expect(headerCall.transaction).toBe(true);
+      expect(headerCall.disableNav).toBe(false);
+    });
+
     it("renders, and skips the holding pattern to trigger the spinner", async (done) => {
-      expect(Header).toHaveBeenCalledTimes(1);
       expect(HoldingPattern).toHaveBeenCalledTimes(1);
       const holdingPatternCall = HoldingPattern.mock.calls[0][0];
       propCount(holdingPatternCall, 2);
@@ -601,29 +620,42 @@ describe("Setup Environment", () => {
       current = { ...apiObjectState, transaction: true };
       utils = render(
         <AnalyticsContext.Provider value={mockAnalyticsContext}>
-          <ApiContext.Provider
-            value={{
-              apiObject: current,
-              dispatch: mockDispatch,
-            }}
+          <HeaderContext.Provider
+            value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
           >
-            <SimpleList
-              title={mockTitle}
-              headerTitle={mockHeaderTitle}
-              create={create}
-              transaction={current.transaction}
-              ApiObjectContext={ApiContext}
-              placeHolderMessage={mockPlaceHolderMessage}
-              handleExpiredAuth={mockHandleExpiredAuth}
-              helpText={Strings.Testing.GenericTranslationTestString}
-              redirectTag={mockRedirectTag}
-            />
-          </ApiContext.Provider>
+            <ApiContext.Provider
+              value={{
+                apiObject: current,
+                dispatch: mockDispatch,
+              }}
+            >
+              <SimpleList
+                title={mockTitle}
+                headerTitle={mockHeaderTitle}
+                create={create}
+                transaction={current.transaction}
+                ApiObjectContext={ApiContext}
+                placeHolderMessage={mockPlaceHolderMessage}
+                handleExpiredAuth={mockHandleExpiredAuth}
+                helpText={Strings.Testing.GenericTranslationTestString}
+                redirectTag={mockRedirectTag}
+              />
+            </ApiContext.Provider>
+          </HeaderContext.Provider>
         </AnalyticsContext.Provider>
       );
     });
+
+    it("renders, should call header with the correct params", () => {
+      expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+      const headerCall = mockHeaderUpdate.mock.calls[0][0];
+      expect(headerCall.title).toBe(mockHeaderTitle);
+      expect(headerCall.create).toBeInstanceOf(Function);
+      expect(headerCall.transaction).toBe(true);
+      expect(headerCall.disableNav).toBe(false);
+    });
+
     it("renders, and loads the holding pattern to trigger the spinner", async (done) => {
-      expect(Header).toHaveBeenCalledTimes(1);
       expect(HoldingPattern).toHaveBeenCalledTimes(1);
       const holdingPatternCall = HoldingPattern.mock.calls[0][0];
       propCount(holdingPatternCall, 2);

@@ -100,9 +100,6 @@ exports[`Setup Environment during a transaction should match the snapshot on fil
 }
 
 <div>
-  <div>
-    MockHeader
-  </div>
   <div
     class="c0"
   >
@@ -253,9 +250,6 @@ exports[`Setup Environment outside of a transaction during an api error should m
 }
 
 <div>
-  <div>
-    MockHeader
-  </div>
   <div
     class="c0"
   >
@@ -406,9 +400,6 @@ exports[`Setup Environment outside of a transaction outside of an api error 3 it
 }
 
 <div>
-  <div>
-    MockHeader
-  </div>
   <div
     class="c0"
   >
@@ -583,9 +574,6 @@ exports[`Setup Environment outside of a transaction outside of an api error no i
 }
 
 <div>
-  <div>
-    MockHeader
-  </div>
   <div
     class="c0"
   >
@@ -732,9 +720,6 @@ exports[`Setup Environment pending api load should match the snapshot on file (s
 }
 
 <div>
-  <div>
-    MockHeader
-  </div>
   <div
     class="c0"
   >

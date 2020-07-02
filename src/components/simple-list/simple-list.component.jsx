@@ -6,9 +6,9 @@ import {
   IndexedAnalyticsActions,
 } from "../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
+import { HeaderContext } from "../../providers/header/header.provider";
 
 import ErrorHandler from "../error-handler/error-handler.component";
-import Header from "../header/header.component";
 import SimpleListItem from "../simple-list-item/simple-list-item.component";
 import Hint from "../hint/hint.component";
 import Alert from "../alert/alert.component";
@@ -38,6 +38,7 @@ const SimpleList = ({
 }) => {
   const { apiObject, dispatch } = React.useContext(ApiObjectContext);
   const { event } = React.useContext(AnalyticsContext);
+  const { updateHeader } = React.useContext(HeaderContext);
 
   const [actionMsg, setActionMsg] = React.useState(null);
   const [selected, setSelected] = React.useState(null);
@@ -78,6 +79,15 @@ const SimpleList = ({
       callback: setItemsFetched,
     });
   }, []);
+
+  React.useEffect(() => {
+    updateHeader({
+      title: headerTitle,
+      create: handleCreate,
+      transaction: apiObject.transaction,
+      disableNav: false,
+    });
+  }, [apiObject.transaction]);
 
   const handleCreate = () => {
     if (apiObject.transaction) return;
@@ -141,11 +151,6 @@ const SimpleList = ({
         string={"ApiCommunicationError"}
         redirect={Routes.goBack}
       >
-        <Header
-          title={headerTitle}
-          transaction={apiObject.transaction}
-          create={handleCreate}
-        />
         <HoldingPattern condition={!itemsFetched.complete && waitForApi}>
           <Container>
             <Paper>
