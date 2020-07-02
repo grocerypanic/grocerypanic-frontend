@@ -5,8 +5,6 @@ import { withTranslation } from "react-i18next";
 
 import StandBy from "./social-login-controller.standby";
 
-import Strings from "../../configuration/strings";
-
 class SocialLoginController extends React.Component {
   render() {
     const { t } = this.props;
@@ -15,7 +13,7 @@ class SocialLoginController extends React.Component {
     if (!window.gapi && !window.FB)
       return (
         <div data-testid="PendingSocialController">
-          <StandBy>{t(Strings.SignIn.PendingSocialConnection)}</StandBy>
+          <StandBy>{t("SignIn.PendingSocialConnection")}</StandBy>
         </div>
       );
 
