@@ -106,10 +106,8 @@ const mockAnalyticsContext = {
 };
 
 describe("Setup Environment", () => {
-  let utils;
   let current;
   let originalPath = "/some/unmatched/path";
-  let newPath = "/newPath";
 
   beforeEach(() => {
     current = { ...props };
@@ -166,7 +164,7 @@ describe("Setup Environment", () => {
       itemProvider.apiObject.inventory = [mockItem];
       current.itemId = "2";
       current.testHook = true;
-      utils = renderHelper(history, false, current, itemProvider);
+      renderHelper(history, false, current, itemProvider);
 
       await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
       expect(mockItemDispatch.mock.calls[0][0].type).toBe(
@@ -181,7 +179,7 @@ describe("Setup Environment", () => {
       itemProvider.apiObject.inventory = [];
       current.itemId = "2";
       current.testHook = true;
-      utils = renderHelper(history, false, current, itemProvider);
+      renderHelper(history, false, current, itemProvider);
 
       await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
       expect(mockItemDispatch.mock.calls[0][0].type).toBe(
@@ -196,7 +194,7 @@ describe("Setup Environment", () => {
       itemProvider.apiObject.inventory = [];
       current.itemId = "2";
       current.testHook = false;
-      utils = renderHelper(history, false, current, itemProvider);
+      renderHelper(history, false, current, itemProvider);
 
       await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
       expect(mockItemDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
@@ -208,7 +206,7 @@ describe("Setup Environment", () => {
       itemProvider.apiObject.inventory = [];
       current.itemId = "2";
       current.testHook = false;
-      utils = renderHelper(history, false, current, itemProvider);
+      renderHelper(history, false, current, itemProvider);
 
       await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
       const itemDispatch = mockItemDispatch.mock.calls[0][0].dispatch;
@@ -229,7 +227,7 @@ describe("Setup Environment", () => {
         history.location.pathname = originalPath;
         history.goBack = mockGoBack;
 
-        utils = renderHelper(history, false, current);
+        renderHelper(history, false, current);
       });
 
       it("renders, bypasses HoldingPattern as expected", async (done) => {
@@ -514,7 +512,7 @@ describe("Setup Environment", () => {
         // enable testHook to block TR requests manually
         current.testHook = true;
 
-        utils = renderHelper(
+        renderHelper(
           history,
           false,
           current,
@@ -585,7 +583,7 @@ describe("Setup Environment", () => {
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = renderHelper(
+        renderHelper(
           TestContext,
           mockShelfProvider,
           mockItemProvider,
@@ -632,7 +630,7 @@ describe("Setup Environment", () => {
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = renderHelper(
+        renderHelper(
           mockStoreProvider,
           TestContext,
           mockItemProvider,
@@ -679,7 +677,7 @@ describe("Setup Environment", () => {
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = renderHelper(
+        renderHelper(
           mockStoreProvider,
           mockShelfProvider,
           TestContext,
@@ -726,7 +724,7 @@ describe("Setup Environment", () => {
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = renderHelper(
+        renderHelper(
           mockStoreProvider,
           mockShelfProvider,
           mockItemProvider,

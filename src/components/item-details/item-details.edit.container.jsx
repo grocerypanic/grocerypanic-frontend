@@ -85,7 +85,7 @@ const ItemDetailsEditContainer = ({
         type: ApiActions.FailureGet,
       });
     }
-  }, [item]);
+  }, [item]); // eslint-disable-line
 
   React.useEffect(() => {
     if (!performItemAsync) return;
@@ -98,14 +98,14 @@ const ItemDetailsEditContainer = ({
     }
     itemDispatch(performItemAsync);
     setPerformItemAsync(null);
-  }, [performItemAsync]);
+  }, [performItemAsync]); // eslint-disable-line
 
   React.useEffect(() => {
     if (!performShelfAsync) return;
     if (performShelfAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
     shelfDispatch(performShelfAsync);
     setPerformShelfAsync(null);
-  }, [performShelfAsync]);
+  }, [performShelfAsync]); // eslint-disable-line
 
   React.useEffect(() => {}, []);
 
@@ -114,7 +114,7 @@ const ItemDetailsEditContainer = ({
     if (performStoreAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
     storeDispatch(performStoreAsync);
     setPerformStoreAsync(null);
-  }, [performStoreAsync]);
+  }, [performStoreAsync]); // eslint-disable-line
 
   React.useEffect(() => {
     if (!performTrAsync) return;
@@ -122,7 +122,7 @@ const ItemDetailsEditContainer = ({
     if (performTrAsync.type === ApiActions.SuccessList) setTrComplete(true);
     trDispatch(performTrAsync);
     setPerformTrAsync(null);
-  }, [performTrAsync]);
+  }, [performTrAsync]); // eslint-disable-line
 
   React.useEffect(() => {
     setPerformItemAsync({

@@ -11,8 +11,6 @@ import { HeaderContext } from "../../providers/header/header.provider";
 import { Container } from "../../global-styles/containers";
 import { TabBox } from "./item-details.styles";
 
-import Strings from "../../configuration/strings";
-
 const ItemDetails = ({
   headerTitle,
   transaction,
@@ -60,7 +58,7 @@ const ItemDetails = ({
       transaction: transaction,
       disableNav: false,
     });
-  }, [transaction]);
+  }, [transaction]); // eslint-disable-line
 
   return (
     <>
@@ -72,7 +70,7 @@ const ItemDetails = ({
               activeKey={tab}
               onSelect={(k) => changeTab(k)}
             >
-              <Tab eventKey="edit" title={t(Strings.ItemDetails.Tabs.Edit)}>
+              <Tab eventKey="edit" title={t("ItemDetails.Tabs.Edit")}>
                 <div className="selection">
                   <ItemDetailsForm
                     transaction={transaction}
@@ -80,7 +78,7 @@ const ItemDetails = ({
                   />
                 </div>
               </Tab>
-              <Tab eventKey="stats" title={t(Strings.ItemDetails.Tabs.Stats)}>
+              <Tab eventKey="stats" title={t("ItemDetails.Tabs.Stats")}>
                 <div style={{ width: tabWidth }}>
                   <TransactionsReview
                     item={OtherFormProps.item}

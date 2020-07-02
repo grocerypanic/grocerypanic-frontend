@@ -15,7 +15,6 @@ import ApiFuctions from "../../providers/api/api.functions";
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 
-import Strings from "../../configuration/strings";
 import Routes from "../../configuration/routes";
 
 import { ItemContext } from "../../providers/api/item/item.provider";
@@ -76,7 +75,7 @@ const ItemDetailsCreateContainer = ({
       transaction: transaction,
       disableNav: false,
     });
-  }, [transaction]);
+  }, [transaction]); // eslint-disable-line
 
   React.useEffect(() => {
     if (!performItemAsync) return;
@@ -84,21 +83,21 @@ const ItemDetailsCreateContainer = ({
     if (performItemAsync.type === ApiActions.SuccessAdd) history.goBack();
     itemDispatch(performItemAsync);
     setPerformItemAsync(null);
-  }, [performItemAsync]);
+  }, [performItemAsync]); // eslint-disable-line
 
   React.useEffect(() => {
     if (!performShelfAsync) return;
     if (performShelfAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
     shelfDispatch(performShelfAsync);
     setPerformShelfAsync(null);
-  }, [performShelfAsync]);
+  }, [performShelfAsync]); // eslint-disable-line
 
   React.useEffect(() => {
     if (!performStoreAsync) return;
     if (performStoreAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
     storeDispatch(performStoreAsync);
     setPerformStoreAsync(null);
-  }, [performStoreAsync]);
+  }, [performStoreAsync]); // eslint-disable-line
 
   // Set the first shelf by default
   React.useEffect(() => {

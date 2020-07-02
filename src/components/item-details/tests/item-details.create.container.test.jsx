@@ -99,7 +99,6 @@ const props = {
 };
 
 describe("Setup Environment", () => {
-  let utils;
   let current;
   let originalPath = "/some/unmatched/path";
 
@@ -117,7 +116,7 @@ describe("Setup Environment", () => {
       history.location.pathname = originalPath;
       history.goBack = mockGoBack;
 
-      utils = render(
+      render(
         <Router history={history}>
           <HeaderContext.Provider
             value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
@@ -377,7 +376,7 @@ describe("Setup Environment", () => {
       );
 
     it("should render false on empty shelves and empty stores", async (done) => {
-      utils = renderHelper(testStore, testShelf);
+      renderHelper(testStore, testShelf);
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[5][0];
       expect(call.condition).toBe(false);
@@ -386,7 +385,7 @@ describe("Setup Environment", () => {
 
     it("should render false on some shelves and empty stores", async (done) => {
       testShelf.apiObject.inventory = [mockShelf];
-      utils = renderHelper(testStore, testShelf);
+      renderHelper(testStore, testShelf);
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[5][0];
       expect(call.condition).toBe(false);
@@ -395,7 +394,7 @@ describe("Setup Environment", () => {
 
     it("should render false on empty shelves and some stores", async (done) => {
       testStore.apiObject.inventory = [mockStore];
-      utils = renderHelper(testStore, testShelf);
+      renderHelper(testStore, testShelf);
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[5][0];
       expect(call.condition).toBe(false);
@@ -405,7 +404,7 @@ describe("Setup Environment", () => {
     it("should render true on empty shelves and empty stores", async (done) => {
       testStore.apiObject.inventory = [mockStore];
       testShelf.apiObject.inventory = [mockShelf];
-      utils = renderHelper(testStore, testShelf);
+      renderHelper(testStore, testShelf);
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[5][0];
       expect(call.condition).toBe(false);
@@ -457,12 +456,7 @@ describe("Setup Environment", () => {
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = renderHelper(
-          TestContext,
-          mockShelfProvider,
-          mockItemProvider,
-          current
-        );
+        renderHelper(TestContext, mockShelfProvider, mockItemProvider, current);
       });
 
       it("renders, update the header with the correct params", () => {
@@ -519,12 +513,7 @@ describe("Setup Environment", () => {
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = renderHelper(
-          mockStoreProvider,
-          TestContext,
-          mockItemProvider,
-          current
-        );
+        renderHelper(mockStoreProvider, TestContext, mockItemProvider, current);
       });
 
       it("renders, update the header with the correct params", () => {
@@ -581,7 +570,7 @@ describe("Setup Environment", () => {
         };
         TestContext.apiObject.transaction = false;
         TestContext.apiObject.error = true;
-        utils = renderHelper(
+        renderHelper(
           mockStoreProvider,
           mockShelfProvider,
           TestContext,
