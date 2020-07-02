@@ -69,365 +69,761 @@ const renderHelper = (headerValues, history) => {
   );
 };
 
-describe("during a transaction", () => {
-  let utils;
-  const history = createBrowserHistory();
-  history.location.pathname = "/some/unmatched/path";
+describe("with nav enabled", () => {
+  describe("during a transaction", () => {
+    let utils;
+    const history = createBrowserHistory();
+    history.location.pathname = "/some/unmatched/path";
+    let disableNav = false;
 
-  describe("with a create function", () => {
-    beforeEach(() => {
-      history.location.pathname = "/some/unmatched/path";
-      jest.clearAllMocks();
-      const values = {
-        headerSettings: {
-          title: mockTitle,
-          create: mockCreate,
-          transaction: true,
-          disableNav: false,
-        },
-        updateHeader: mockHeaderUpdate,
-      };
-      utils = renderHelper(values, history);
+    describe("with a create function", () => {
+      beforeEach(() => {
+        history.location.pathname = "/some/unmatched/path";
+        jest.clearAllMocks();
+        const values = {
+          headerSettings: {
+            title: mockTitle,
+            create: mockCreate,
+            transaction: true,
+            disableNav,
+          },
+          updateHeader: mockHeaderUpdate,
+        };
+        utils = renderHelper(values, history);
+      });
+
+      afterEach(cleanup);
+
+      it("should show the create button", () => {
+        expect(utils.queryByTestId("noAddIcon")).toBeFalsy();
+        expect(utils.getByTestId("AddIcon")).toBeTruthy();
+        expect(AddIcon.default).toHaveBeenCalledTimes(0);
+      });
+
+      it("should render the title correctly in mobile mode", async (done) => {
+        window.innerWidth = 380;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByText(Strings.MainTitle).className).toBe(
+            "header-visible"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
+          ).toBe("header-hidden")
+        );
+        done();
+      });
+
+      it("should render the title correctly in desktop mode", async (done) => {
+        window.innerWidth = 680;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByText(Strings.MainTitle).className).toBe(
+            "header-hidden"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
+          ).toBe("header-visible")
+        );
+        done();
+      });
+
+      it("should call the spinner", () => {
+        expect(bootstrap.Spinner).toHaveBeenCalledTimes(1);
+      });
+
+      it("should call the nav buttons", () => {
+        expect(FormatListNumbered.default).toHaveBeenCalledTimes(1);
+        expect(InfoIcon.default).toHaveBeenCalledTimes(1);
+        expect(HomeIcon.default).toHaveBeenCalledTimes(1);
+        expect(StoreIcon.default).toHaveBeenCalledTimes(1);
+        expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
+      });
+
+      it("should render the nav buttons correctly in mobile mode", async (done) => {
+        window.innerWidth = 380;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByTestId("list-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("info-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("home-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByTestId("shelves-icon").parentElement.className
+          ).toBe("nav-link action fit nav-item")
+        );
+        done();
+      });
+
+      it("should render the nav buttons correctly in desktop mode", async (done) => {
+        window.innerWidth = 680;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByTestId("list-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("info-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("home-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByTestId("shelves-icon").parentElement.className
+          ).toBe("nav-link action nav-item")
+        );
+        done();
+      });
+
+      it("should not navigate to about, when title is clicked", async (done) => {
+        const title = utils.getByText(Strings.MainTitle);
+        fireEvent.click(title, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual("/some/unmatched/path")
+        );
+        done();
+      });
+
+      it("should not navigate to about, when info is clicked", async (done) => {
+        const home = utils.getByTestId("info-icon");
+        fireEvent.click(home, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual("/some/unmatched/path")
+        );
+        done();
+      });
+
+      it("should not navigate to home, when home is clicked", async (done) => {
+        const home = utils.getByTestId("home-icon");
+        fireEvent.click(home, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual("/some/unmatched/path")
+        );
+        done();
+      });
+
+      it("should not navigate to stores, when stores is clicked", async (done) => {
+        const home = utils.getByTestId("stores-icon");
+        fireEvent.click(home, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual("/some/unmatched/path")
+        );
+        done();
+      });
+
+      it("should not navigate to shelves, when shelves is clicked", async (done) => {
+        const home = utils.getByTestId("shelves-icon");
+        fireEvent.click(home, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual("/some/unmatched/path")
+        );
+        done();
+      });
+
+      it("should not navigate to items, when the list icon is clicked", async (done) => {
+        const inventory = utils.getByTestId("list-icon");
+        fireEvent.click(inventory, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual("/some/unmatched/path")
+        );
+        done();
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
+      });
     });
+    describe("without a create function", () => {
+      beforeEach(() => {
+        history.location.pathname = "/some/unmatched/path";
+        jest.clearAllMocks();
+        const values = {
+          headerSettings: {
+            title: mockTitle,
+            create: null,
+            transaction: true,
+            disableNav,
+          },
+          updateHeader: mockHeaderUpdate,
+        };
+        utils = renderHelper(values, history);
+      });
 
-    afterEach(cleanup);
+      afterEach(cleanup);
 
-    it("should show the create button", () => {
-      expect(utils.queryByTestId("noAddIcon")).toBeFalsy();
-      expect(utils.getByTestId("AddIcon")).toBeTruthy();
-      expect(AddIcon.default).toHaveBeenCalledTimes(0);
-    });
+      it("should not show the create button", () => {
+        expect(utils.queryByTestId("noAddIcon")).toBeFalsy();
+        expect(utils.queryByTestId("AddIcon")).toBeFalsy();
+        expect(AddIcon.default).toHaveBeenCalledTimes(0);
+      });
 
-    it("should render the title correctly in mobile mode", async (done) => {
-      window.innerWidth = 380;
-      fireEvent(window, new Event("resize"));
-      await waitFor(() =>
-        expect(utils.getByText(Strings.MainTitle).className).toBe(
-          "header-visible"
-        )
-      );
-      await waitFor(() =>
-        expect(
-          utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
-        ).toBe("header-hidden")
-      );
-      done();
-    });
+      it("should render the title", () => {
+        expect(utils.getByText(Strings.MainTitle)).toBeTruthy();
+      });
 
-    it("should render the title correctly in desktop mode", async (done) => {
-      window.innerWidth = 680;
-      fireEvent(window, new Event("resize"));
-      await waitFor(() =>
-        expect(utils.getByText(Strings.MainTitle).className).toBe(
-          "header-hidden"
-        )
-      );
-      await waitFor(() =>
-        expect(
-          utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
-        ).toBe("header-visible")
-      );
-      done();
-    });
+      it("should call the spinner", () => {
+        expect(bootstrap.Spinner).toHaveBeenCalledTimes(1);
+      });
 
-    it("should call the spinner", () => {
-      expect(bootstrap.Spinner).toHaveBeenCalledTimes(1);
-    });
+      it("should call the nav buttons", () => {
+        expect(FormatListNumbered.default).toHaveBeenCalledTimes(1);
+        expect(InfoIcon.default).toHaveBeenCalledTimes(1);
+        expect(HomeIcon.default).toHaveBeenCalledTimes(1);
+        expect(StoreIcon.default).toHaveBeenCalledTimes(1);
+        expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
+      });
 
-    it("should call the nav buttons", () => {
-      expect(FormatListNumbered.default).toHaveBeenCalledTimes(1);
-      expect(InfoIcon.default).toHaveBeenCalledTimes(1);
-      expect(HomeIcon.default).toHaveBeenCalledTimes(1);
-      expect(StoreIcon.default).toHaveBeenCalledTimes(1);
-      expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
-    });
+      it("should render the nav buttons correctly in mobile mode", async (done) => {
+        window.innerWidth = 380;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByTestId("list-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("info-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("home-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByTestId("shelves-icon").parentElement.className
+          ).toBe("nav-link action fit nav-item")
+        );
+        done();
+      });
 
-    it("should render the nav buttons correctly in mobile mode", async (done) => {
-      window.innerWidth = 380;
-      fireEvent(window, new Event("resize"));
-      await waitFor(() =>
-        expect(utils.getByTestId("list-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("info-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("home-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("shelves-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      done();
-    });
+      it("should render the nav buttons correctly in desktop mode", async (done) => {
+        window.innerWidth = 680;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByTestId("list-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("info-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("home-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByTestId("shelves-icon").parentElement.className
+          ).toBe("nav-link action nav-item")
+        );
+        done();
+      });
 
-    it("should render the nav buttons correctly in desktop mode", async (done) => {
-      window.innerWidth = 680;
-      fireEvent(window, new Event("resize"));
-      await waitFor(() =>
-        expect(utils.getByTestId("list-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("info-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("home-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("shelves-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      done();
-    });
+      it("should not navigate to about, when title is clicked", async (done) => {
+        const title = utils.getByText(Strings.MainTitle);
+        fireEvent.click(title, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual("/some/unmatched/path")
+        );
+        done();
+      });
 
-    it("should not navigate to about, when title is clicked", async (done) => {
-      const title = utils.getByText(Strings.MainTitle);
-      fireEvent.click(title, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
+      it("should not navigate to about, when info is clicked", async (done) => {
+        const home = utils.getByTestId("info-icon");
+        fireEvent.click(home, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual("/some/unmatched/path")
+        );
+        done();
+      });
 
-    it("should not navigate to about, when info is clicked", async (done) => {
-      const home = utils.getByTestId("info-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
+      it("should not navigate to home, when home is clicked", async (done) => {
+        const home = utils.getByTestId("home-icon");
+        fireEvent.click(home, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual("/some/unmatched/path")
+        );
+        done();
+      });
 
-    it("should not navigate to home, when home is clicked", async (done) => {
-      const home = utils.getByTestId("home-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
+      it("should not navigate to stores, when stores is clicked", async (done) => {
+        const home = utils.getByTestId("stores-icon");
+        fireEvent.click(home, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual("/some/unmatched/path")
+        );
+        done();
+      });
 
-    it("should not navigate to stores, when stores is clicked", async (done) => {
-      const home = utils.getByTestId("stores-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
+      it("should not navigate to shelves, when shelves is clicked", async (done) => {
+        const home = utils.getByTestId("shelves-icon");
+        fireEvent.click(home, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual("/some/unmatched/path")
+        );
+        done();
+      });
 
-    it("should not navigate to shelves, when shelves is clicked", async (done) => {
-      const home = utils.getByTestId("shelves-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
+      it("should not navigate to items, when the list icon is clicked", async (done) => {
+        const inventory = utils.getByTestId("list-icon");
+        fireEvent.click(inventory, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual("/some/unmatched/path")
+        );
+        done();
+      });
 
-    it("should not navigate to items, when the list icon is clicked", async (done) => {
-      const inventory = utils.getByTestId("list-icon");
-      fireEvent.click(inventory, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
-
-    it("should match the snapshot on file (styles)", () => {
-      expect(utils.container.firstChild).toMatchSnapshot();
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
+      });
     });
   });
-  describe("without a create function", () => {
-    beforeEach(() => {
-      history.location.pathname = "/some/unmatched/path";
-      jest.clearAllMocks();
-      const values = {
-        headerSettings: {
-          title: mockTitle,
-          create: null,
-          transaction: true,
-          disableNav: false,
-        },
-        updateHeader: mockHeaderUpdate,
-      };
-      utils = renderHelper(values, history);
-    });
+
+  describe("outside of a transaction", () => {
+    let utils;
+    const history = createBrowserHistory();
 
     afterEach(cleanup);
 
-    it("should not show the create button", () => {
-      expect(utils.queryByTestId("noAddIcon")).toBeFalsy();
-      expect(utils.queryByTestId("AddIcon")).toBeFalsy();
-      expect(AddIcon.default).toHaveBeenCalledTimes(0);
+    describe("with a create function", () => {
+      beforeEach(() => {
+        history.location.pathname = "/some/unmatched/path";
+        jest.clearAllMocks();
+        const values = {
+          headerSettings: {
+            title: mockTitle,
+            create: mockCreate,
+            transaction: false,
+            disableNav: false,
+          },
+          updateHeader: mockHeaderUpdate,
+        };
+        utils = renderHelper(values, history);
+      });
+
+      it("should show the create button", () => {
+        expect(utils.queryByTestId("noAddIcon")).toBeFalsy();
+        expect(utils.getByTestId("AddIcon")).toBeTruthy();
+        expect(AddIcon.default).toHaveBeenCalledTimes(1);
+      });
+
+      it("should render the title correctly in mobile mode", async (done) => {
+        window.innerWidth = 380;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByText(Strings.MainTitle).className).toBe(
+            "header-visible"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
+          ).toBe("header-hidden")
+        );
+        done();
+      });
+
+      it("should render the title correctly in desktop mode", async (done) => {
+        window.innerWidth = 680;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByText(Strings.MainTitle).className).toBe(
+            "header-hidden"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
+          ).toBe("header-visible")
+        );
+        done();
+      });
+
+      it("should not call the spinner", () => {
+        expect(bootstrap.Spinner).toHaveBeenCalledTimes(0);
+      });
+
+      it("should call the nav buttons", () => {
+        expect(FormatListNumbered.default).toHaveBeenCalledTimes(1);
+        expect(InfoIcon.default).toHaveBeenCalledTimes(1);
+        expect(HomeIcon.default).toHaveBeenCalledTimes(1);
+        expect(StoreIcon.default).toHaveBeenCalledTimes(1);
+        expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
+      });
+
+      it("should render the nav buttons correctly in mobile mode", async (done) => {
+        window.innerWidth = 380;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByTestId("list-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("info-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("home-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByTestId("shelves-icon").parentElement.className
+          ).toBe("nav-link action fit nav-item")
+        );
+        done();
+      });
+
+      it("should render the nav buttons correctly in desktop mode", async (done) => {
+        window.innerWidth = 680;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByTestId("list-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("info-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("home-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByTestId("shelves-icon").parentElement.className
+          ).toBe("nav-link action nav-item")
+        );
+        done();
+      });
+
+      it("should navigate to about, when title is clicked", async (done) => {
+        const title = utils.getByText(Strings.MainTitle);
+        fireEvent.click(title, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual(Routes.about)
+        );
+        done();
+      });
+
+      it("should navigate to about, when info is clicked", async (done) => {
+        const info = utils.getByTestId("info-icon");
+        fireEvent.click(info, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual(Routes.about)
+        );
+        done();
+      });
+
+      it("should navigate to home, when home is clicked", async (done) => {
+        const home = utils.getByTestId("home-icon");
+        fireEvent.click(home, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual(Routes.root)
+        );
+        done();
+      });
+
+      it("should navigate to stores, when stores is clicked", async (done) => {
+        const stores = utils.getByTestId("stores-icon");
+        fireEvent.click(stores, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual(Routes.stores)
+        );
+        done();
+      });
+
+      it("should navigate to shelves, when shelves is clicked", async (done) => {
+        const shelves = utils.getByTestId("shelves-icon");
+        fireEvent.click(shelves, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual(Routes.shelves)
+        );
+        done();
+      });
+
+      it("should navigate to items, when the list is clicked, and the current url has a search param", async (done) => {
+        history.location.search = "?color=blue";
+        const inventory = utils.getByTestId("list-icon");
+        fireEvent.click(inventory, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual(Routes.items)
+        );
+        done();
+      });
+
+      it("should not navigate to items, when the list is clicked, and the current url has no search params", async (done) => {
+        history.location.pathname = Routes.items;
+        const oldKey = history.location.key;
+        const inventory = utils.getByTestId("list-icon");
+        fireEvent.click(inventory, "click");
+        await waitFor(() => expect(history.location.key).toEqual(oldKey));
+        done();
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
+      });
     });
 
-    it("should render the title", () => {
-      expect(utils.getByText(Strings.MainTitle)).toBeTruthy();
-    });
+    describe("without a create function", () => {
+      beforeEach(() => {
+        history.location.pathname = "/some/unmatched/path";
+        jest.clearAllMocks();
+        const values = {
+          headerSettings: {
+            title: mockTitle,
+            create: null,
+            transaction: false,
+            disableNav: false,
+          },
+          updateHeader: mockHeaderUpdate,
+        };
+        utils = renderHelper(values, history);
+      });
 
-    it("should call the spinner", () => {
-      expect(bootstrap.Spinner).toHaveBeenCalledTimes(1);
-    });
+      afterEach(cleanup);
 
-    it("should call the nav buttons", () => {
-      expect(FormatListNumbered.default).toHaveBeenCalledTimes(1);
-      expect(InfoIcon.default).toHaveBeenCalledTimes(1);
-      expect(HomeIcon.default).toHaveBeenCalledTimes(1);
-      expect(StoreIcon.default).toHaveBeenCalledTimes(1);
-      expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
-    });
+      it("should not show the create button", () => {
+        expect(utils.queryByTestId("noAddIcon")).toBeTruthy();
+        expect(utils.queryByTestId("AddIcon")).toBeFalsy();
+        expect(AddIcon.default).toHaveBeenCalledTimes(1);
+      });
 
-    it("should render the nav buttons correctly in mobile mode", async (done) => {
-      window.innerWidth = 380;
-      fireEvent(window, new Event("resize"));
-      await waitFor(() =>
-        expect(utils.getByTestId("list-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("info-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("home-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("shelves-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      done();
-    });
+      it("should render the title correctly in mobile mode", async (done) => {
+        window.innerWidth = 380;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByText(Strings.MainTitle).className).toBe(
+            "header-visible"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
+          ).toBe("header-hidden")
+        );
+        done();
+      });
 
-    it("should render the nav buttons correctly in desktop mode", async (done) => {
-      window.innerWidth = 680;
-      fireEvent(window, new Event("resize"));
-      await waitFor(() =>
-        expect(utils.getByTestId("list-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("info-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("home-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("shelves-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      done();
-    });
+      it("should render the title correctly in desktop mode", async (done) => {
+        window.innerWidth = 680;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByText(Strings.MainTitle).className).toBe(
+            "header-hidden"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
+          ).toBe("header-visible")
+        );
+        done();
+      });
 
-    it("should not navigate to about, when title is clicked", async (done) => {
-      const title = utils.getByText(Strings.MainTitle);
-      fireEvent.click(title, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
+      it("should not call the spinner", () => {
+        expect(bootstrap.Spinner).toHaveBeenCalledTimes(0);
+      });
 
-    it("should not navigate to about, when info is clicked", async (done) => {
-      const home = utils.getByTestId("info-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
+      it("should call the nav buttons", () => {
+        expect(FormatListNumbered.default).toHaveBeenCalledTimes(1);
+        expect(InfoIcon.default).toHaveBeenCalledTimes(1);
+        expect(HomeIcon.default).toHaveBeenCalledTimes(1);
+        expect(StoreIcon.default).toHaveBeenCalledTimes(1);
+        expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
+      });
 
-    it("should not navigate to home, when home is clicked", async (done) => {
-      const home = utils.getByTestId("home-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
+      it("should render the nav buttons correctly in mobile mode", async (done) => {
+        window.innerWidth = 380;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByTestId("list-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("info-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("home-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
+            "nav-link action fit nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByTestId("shelves-icon").parentElement.className
+          ).toBe("nav-link action fit nav-item")
+        );
+        done();
+      });
 
-    it("should not navigate to stores, when stores is clicked", async (done) => {
-      const home = utils.getByTestId("stores-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
+      it("should render the nav buttons correctly in desktop mode", async (done) => {
+        window.innerWidth = 680;
+        fireEvent(window, new Event("resize"));
+        await waitFor(() =>
+          expect(utils.getByTestId("list-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("info-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("home-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
+            "nav-link action nav-item"
+          )
+        );
+        await waitFor(() =>
+          expect(
+            utils.getByTestId("shelves-icon").parentElement.className
+          ).toBe("nav-link action nav-item")
+        );
+        done();
+      });
 
-    it("should not navigate to shelves, when shelves is clicked", async (done) => {
-      const home = utils.getByTestId("shelves-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
+      it("should navigate to about, when title is clicked", async (done) => {
+        const title = utils.getByText(Strings.MainTitle);
+        fireEvent.click(title, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual(Routes.about)
+        );
+        done();
+      });
 
-    it("should not navigate to items, when the list icon is clicked", async (done) => {
-      const inventory = utils.getByTestId("list-icon");
-      fireEvent.click(inventory, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual("/some/unmatched/path")
-      );
-      done();
-    });
+      it("should navigate to about, when info is clicked", async (done) => {
+        const info = utils.getByTestId("info-icon");
+        fireEvent.click(info, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual(Routes.about)
+        );
+        done();
+      });
 
-    it("should match the snapshot on file (styles)", () => {
-      expect(utils.container.firstChild).toMatchSnapshot();
+      it("should navigate to home, when home is clicked", async (done) => {
+        const home = utils.getByTestId("home-icon");
+        fireEvent.click(home, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual(Routes.root)
+        );
+        done();
+      });
+
+      it("should navigate to stores, when stores is clicked", async (done) => {
+        const home = utils.getByTestId("stores-icon");
+        fireEvent.click(home, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual(Routes.stores)
+        );
+        done();
+      });
+
+      it("should navigate to shelves, when shelves is clicked", async (done) => {
+        const home = utils.getByTestId("shelves-icon");
+        fireEvent.click(home, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual(Routes.shelves)
+        );
+        done();
+      });
+
+      it("should navigate to items, when the list is clicked", async (done) => {
+        const inventory = utils.getByTestId("list-icon");
+        fireEvent.click(inventory, "click");
+        await waitFor(() =>
+          expect(history.location.pathname).toEqual(Routes.items)
+        );
+        done();
+      });
+
+      it("should match the snapshot on file (styles)", () => {
+        expect(utils.container.firstChild).toMatchSnapshot();
+      });
     });
   });
 });
 
-describe("outside of a transaction", () => {
+describe("with nav disabled", () => {
   let utils;
-  const create = jest.fn();
   const history = createBrowserHistory();
+  let disableNav = true;
 
   afterEach(cleanup);
 
@@ -440,17 +836,17 @@ describe("outside of a transaction", () => {
           title: mockTitle,
           create: mockCreate,
           transaction: false,
-          disableNav: false,
+          disableNav,
         },
         updateHeader: mockHeaderUpdate,
       };
       utils = renderHelper(values, history);
     });
 
-    it("should show the create button", () => {
+    it("should not show the create button", () => {
       expect(utils.queryByTestId("noAddIcon")).toBeFalsy();
-      expect(utils.getByTestId("AddIcon")).toBeTruthy();
-      expect(AddIcon.default).toHaveBeenCalledTimes(1);
+      expect(utils.queryByTestId("AddIcon")).toBeFalsy();
+      expect(AddIcon.default).toHaveBeenCalledTimes(0);
     });
 
     it("should render the title correctly in mobile mode", async (done) => {
@@ -489,137 +885,20 @@ describe("outside of a transaction", () => {
       expect(bootstrap.Spinner).toHaveBeenCalledTimes(0);
     });
 
-    it("should call the nav buttons", () => {
-      expect(FormatListNumbered.default).toHaveBeenCalledTimes(1);
-      expect(InfoIcon.default).toHaveBeenCalledTimes(1);
-      expect(HomeIcon.default).toHaveBeenCalledTimes(1);
-      expect(StoreIcon.default).toHaveBeenCalledTimes(1);
-      expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
+    it("should not call the nav buttons", () => {
+      expect(FormatListNumbered.default).toHaveBeenCalledTimes(0);
+      expect(InfoIcon.default).toHaveBeenCalledTimes(0);
+      expect(HomeIcon.default).toHaveBeenCalledTimes(0);
+      expect(StoreIcon.default).toHaveBeenCalledTimes(0);
+      expect(KitchenIcon.default).toHaveBeenCalledTimes(0);
     });
 
-    it("should render the nav buttons correctly in mobile mode", async (done) => {
-      window.innerWidth = 380;
-      fireEvent(window, new Event("resize"));
-      await waitFor(() =>
-        expect(utils.getByTestId("list-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("info-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("home-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("shelves-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      done();
-    });
-
-    it("should render the nav buttons correctly in desktop mode", async (done) => {
-      window.innerWidth = 680;
-      fireEvent(window, new Event("resize"));
-      await waitFor(() =>
-        expect(utils.getByTestId("list-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("info-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("home-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("shelves-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      done();
-    });
-
-    it("should navigate to about, when title is clicked", async (done) => {
+    it("should not navigate to about, when title is clicked", async (done) => {
       const title = utils.getByText(Strings.MainTitle);
       fireEvent.click(title, "click");
       await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.about)
+        expect(history.location.pathname).toEqual("/some/unmatched/path")
       );
-      done();
-    });
-
-    it("should navigate to about, when info is clicked", async (done) => {
-      const info = utils.getByTestId("info-icon");
-      fireEvent.click(info, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.about)
-      );
-      done();
-    });
-
-    it("should navigate to home, when home is clicked", async (done) => {
-      const home = utils.getByTestId("home-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.root)
-      );
-      done();
-    });
-
-    it("should navigate to stores, when stores is clicked", async (done) => {
-      const stores = utils.getByTestId("stores-icon");
-      fireEvent.click(stores, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.stores)
-      );
-      done();
-    });
-
-    it("should navigate to shelves, when shelves is clicked", async (done) => {
-      const shelves = utils.getByTestId("shelves-icon");
-      fireEvent.click(shelves, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.shelves)
-      );
-      done();
-    });
-
-    it("should navigate to items, when the list is clicked, and the current url has a search param", async (done) => {
-      history.location.search = "?color=blue";
-      const inventory = utils.getByTestId("list-icon");
-      fireEvent.click(inventory, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.items)
-      );
-      done();
-    });
-
-    it("should not navigate to items, when the list is clicked, and the current url has no search params", async (done) => {
-      history.location.pathname = Routes.items;
-      const oldKey = history.location.key;
-      const inventory = utils.getByTestId("list-icon");
-      fireEvent.click(inventory, "click");
-      await waitFor(() => expect(history.location.key).toEqual(oldKey));
       done();
     });
 
@@ -637,19 +916,17 @@ describe("outside of a transaction", () => {
           title: mockTitle,
           create: null,
           transaction: false,
-          disableNav: false,
+          disableNav,
         },
         updateHeader: mockHeaderUpdate,
       };
       utils = renderHelper(values, history);
     });
 
-    afterEach(cleanup);
-
     it("should not show the create button", () => {
-      expect(utils.queryByTestId("noAddIcon")).toBeTruthy();
+      expect(utils.queryByTestId("noAddIcon")).toBeFalsy();
       expect(utils.queryByTestId("AddIcon")).toBeFalsy();
-      expect(AddIcon.default).toHaveBeenCalledTimes(1);
+      expect(AddIcon.default).toHaveBeenCalledTimes(0);
     });
 
     it("should render the title correctly in mobile mode", async (done) => {
@@ -688,126 +965,19 @@ describe("outside of a transaction", () => {
       expect(bootstrap.Spinner).toHaveBeenCalledTimes(0);
     });
 
-    it("should call the nav buttons", () => {
-      expect(FormatListNumbered.default).toHaveBeenCalledTimes(1);
-      expect(InfoIcon.default).toHaveBeenCalledTimes(1);
-      expect(HomeIcon.default).toHaveBeenCalledTimes(1);
-      expect(StoreIcon.default).toHaveBeenCalledTimes(1);
-      expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
+    it("should not call the nav buttons", () => {
+      expect(FormatListNumbered.default).toHaveBeenCalledTimes(0);
+      expect(InfoIcon.default).toHaveBeenCalledTimes(0);
+      expect(HomeIcon.default).toHaveBeenCalledTimes(0);
+      expect(StoreIcon.default).toHaveBeenCalledTimes(0);
+      expect(KitchenIcon.default).toHaveBeenCalledTimes(0);
     });
 
-    it("should render the nav buttons correctly in mobile mode", async (done) => {
-      window.innerWidth = 380;
-      fireEvent(window, new Event("resize"));
-      await waitFor(() =>
-        expect(utils.getByTestId("list-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("info-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("home-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("shelves-icon").parentElement.className).toBe(
-          "nav-link action fit nav-item"
-        )
-      );
-      done();
-    });
-
-    it("should render the nav buttons correctly in desktop mode", async (done) => {
-      window.innerWidth = 680;
-      fireEvent(window, new Event("resize"));
-      await waitFor(() =>
-        expect(utils.getByTestId("list-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("info-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("home-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("stores-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      await waitFor(() =>
-        expect(utils.getByTestId("shelves-icon").parentElement.className).toBe(
-          "nav-link action nav-item"
-        )
-      );
-      done();
-    });
-
-    it("should navigate to about, when title is clicked", async (done) => {
+    it("should not navigate to about, when title is clicked", async (done) => {
       const title = utils.getByText(Strings.MainTitle);
       fireEvent.click(title, "click");
       await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.about)
-      );
-      done();
-    });
-
-    it("should navigate to about, when info is clicked", async (done) => {
-      const info = utils.getByTestId("info-icon");
-      fireEvent.click(info, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.about)
-      );
-      done();
-    });
-
-    it("should navigate to home, when home is clicked", async (done) => {
-      const home = utils.getByTestId("home-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.root)
-      );
-      done();
-    });
-
-    it("should navigate to stores, when stores is clicked", async (done) => {
-      const home = utils.getByTestId("stores-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.stores)
-      );
-      done();
-    });
-
-    it("should navigate to shelves, when shelves is clicked", async (done) => {
-      const home = utils.getByTestId("shelves-icon");
-      fireEvent.click(home, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.shelves)
-      );
-      done();
-    });
-
-    it("should navigate to items, when the list is clicked", async (done) => {
-      const inventory = utils.getByTestId("list-icon");
-      fireEvent.click(inventory, "click");
-      await waitFor(() =>
-        expect(history.location.pathname).toEqual(Routes.items)
+        expect(history.location.pathname).toEqual("/some/unmatched/path")
       );
       done();
     });
