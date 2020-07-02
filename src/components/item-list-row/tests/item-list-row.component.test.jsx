@@ -9,7 +9,7 @@ import DropdownToggle from "react-bootstrap/DropdownToggle";
 import GeneratePopOver from "../../popover/popover.component";
 
 import Strings from "../../../configuration/strings";
-import { ui } from "../../../configuration/theme";
+import { ui } from "../../../configuration/theme"; // eslint-disable-line
 
 jest.mock("react-bootstrap/Dropdown", () => ({
   __esModule: true,
@@ -84,6 +84,10 @@ let testData = {
 let utils;
 let current;
 
+const renderHelper = (currentProps) => {
+  return render(<ItemListRow {...currentProps} />);
+};
+
 describe("Setup Environment", () => {
   beforeEach(() => {
     current = { ...testData, item: { ...mockItem }, allItems: [mockItem] };
@@ -94,7 +98,7 @@ describe("Setup Environment", () => {
         current.item.name = "Corn";
         current.listValues.transaction = false;
         jest.clearAllMocks();
-        utils = render(<ItemListRow {...current} />);
+        utils = renderHelper(current);
       });
       afterEach(cleanup);
 
@@ -181,7 +185,7 @@ describe("Setup Environment", () => {
       beforeEach(() => {
         current.listValues.transaction = false;
         jest.clearAllMocks();
-        utils = render(<ItemListRow {...current} />);
+        utils = renderHelper(current);
       });
       afterEach(cleanup);
 
@@ -360,7 +364,7 @@ describe("Setup Environment", () => {
       current.listValues.transaction = true;
       current.listValues.selected = null;
       jest.clearAllMocks();
-      utils = render(<ItemListRow {...current} />);
+      utils = renderHelper(current);
     });
 
     afterEach(cleanup);
@@ -425,7 +429,7 @@ describe("Setup Environment", () => {
         current.item.next_expiry_date = moment().add(23, "days");
         current.shelf_life = 25;
         jest.clearAllMocks();
-        utils = render(<ItemListRow {...current} />);
+        utils = renderHelper(current);
       });
 
       afterEach(cleanup);
@@ -448,7 +452,7 @@ describe("Setup Environment", () => {
         current.item.next_expiry_date = moment().add(3, "days");
         current.shelf_life = 25;
         jest.clearAllMocks();
-        utils = render(<ItemListRow {...current} />);
+        utils = renderHelper(current);
       });
 
       afterEach(cleanup);
@@ -471,7 +475,7 @@ describe("Setup Environment", () => {
         current.item.next_expiry_date = moment().subtract(3, "days");
         current.shelf_life = 25;
         jest.clearAllMocks();
-        utils = render(<ItemListRow {...current} />);
+        utils = renderHelper(current);
       });
 
       afterEach(cleanup);
@@ -494,7 +498,7 @@ describe("Setup Environment", () => {
         current.item.next_expiry_date = moment().add(20, "days");
         current.shelf_life = 25;
         jest.clearAllMocks();
-        utils = render(<ItemListRow {...current} />);
+        utils = renderHelper(current);
       });
 
       afterEach(cleanup);

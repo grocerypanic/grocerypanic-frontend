@@ -12,10 +12,6 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 
-import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
-
-import Strings from "../../configuration/strings";
 import Routes from "../../configuration/routes";
 import GeneratePopOver from "../popover/popover.component";
 
@@ -32,7 +28,6 @@ const ItemListRow = ({
   history,
 }) => {
   const { t } = useTranslation();
-  const { event } = React.useContext(AnalyticsContext);
   const { restock, consume, setErrorMsg, setActionMsg } = listFunctions;
   const { transaction } = listValues;
 
@@ -55,7 +50,7 @@ const ItemListRow = ({
     if (transaction) return;
     e.preventDefault();
     if (item.quantity < quantity) {
-      setErrorMsg(t(Strings.InventoryPage.ErrorInsufficientInventory));
+      setErrorMsg(t("InventoryPage.ErrorInsufficientInventory"));
       return setTimeout(() => setErrorMsg(null), ui.alertTimeout);
     }
     consume(item, quantity);
@@ -89,8 +84,8 @@ const ItemListRow = ({
       <Digit data-testid="item-quantity" className={getExpiryClass()}>
         <GeneratePopOver
           translate={t}
-          title={Strings.InventoryPage.Quantity.Title}
-          message={Strings.InventoryPage.Quantity.Message}
+          title={"InventoryPage.Quantity.Title"}
+          message={"InventoryPage.Quantity.Message"}
         >
           <div data-testid="quantity">{item.quantity}</div>
         </GeneratePopOver>
@@ -98,8 +93,8 @@ const ItemListRow = ({
       <Digit className="text-danger">
         <GeneratePopOver
           translate={t}
-          title={Strings.InventoryPage.Expired.Title}
-          message={Strings.InventoryPage.Expired.Message}
+          title={"InventoryPage.Expired.Title"}
+          message={"InventoryPage.Expired.Message"}
         >
           <div data-testid="expired">{item.expired}</div>
         </GeneratePopOver>
