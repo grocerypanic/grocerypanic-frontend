@@ -15,7 +15,6 @@ import Alert from "../alert/alert.component";
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
 import Routes from "../../configuration/routes";
-import Strings from "../../configuration/strings";
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
 

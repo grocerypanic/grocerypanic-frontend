@@ -16,7 +16,6 @@ import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
-import Strings from "../../configuration/strings";
 import Routes from "../../configuration/routes";
 
 import preventContext from "../../util/preventDefault";

@@ -17,7 +17,6 @@ import { TransactionContext } from "../../providers/api/transaction/transaction.
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
-import Strings from "../../configuration/strings";
 import Routes from "../../configuration/routes";
 
 const defaultItem = {
