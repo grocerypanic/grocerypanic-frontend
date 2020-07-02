@@ -9,7 +9,7 @@ const i18nConfig = {
   fallbackLng: {
     default: ["en"],
   },
-  debug: isNotProductionOrTest() ? true : false,
+  debug: isNotProductionOrTest(),
   ns: ["translation"],
   defaultNS: "translation",
   keySeparator: ".",

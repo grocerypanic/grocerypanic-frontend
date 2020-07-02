@@ -21,7 +21,7 @@ i18n.use(initReactI18next).init({
   resources: { ...Strings },
 });
 
-export default i18n;
+global.i18n = i18n;
 
 global.fail = (message) => {
   throw new Error(message);
