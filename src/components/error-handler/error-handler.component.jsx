@@ -13,7 +13,6 @@ ErrorHandler.propTypes = {
   condition: PropTypes.bool.isRequired,
   clearError: PropTypes.func.isRequired,
   eventMessage: PropTypes.object,
-  stringsRoot: PropTypes.object.isRequired,
-  string: PropTypes.string.isRequired,
+  messageTranslationKey: PropTypes.string.isRequired,
   redirect: PropTypes.string.isRequired,
 };

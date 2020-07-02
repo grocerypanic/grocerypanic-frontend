@@ -46,8 +46,7 @@ const SignInContainer = () => {
         <ErrorDialogue
           eventError={AnalyticsActions.LoginError}
           clearError={clearLogin}
-          stringsRoot={Strings.SignIn}
-          string={user.errorMessage}
+          messageTranslationKey={user.errorMessage}
         />
       ) : (
         <SignIn

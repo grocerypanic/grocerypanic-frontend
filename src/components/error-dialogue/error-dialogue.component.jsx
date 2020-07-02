@@ -11,13 +11,11 @@ import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 import { HeaderContext } from "../../providers/header/header.provider";
 
 import Routes from "../../configuration/routes";
-import Strings from "../../configuration/strings";
 
 const ErrorDialogue = ({
   clearError,
   eventMessage,
-  stringsRoot,
-  string,
+  messageTranslationKey,
   redirect,
   history,
 }) => {
@@ -34,7 +32,7 @@ const ErrorDialogue = ({
 
   React.useEffect(() => {
     updateHeader({
-      title: Strings.ErrorDialogue.headerTitle,
+      title: "ErrorDialogue.ErrorDialogueHeaderTitle",
       create: null,
       transaction: false,
       disableNav: true,
@@ -48,10 +46,10 @@ const ErrorDialogue = ({
         <ErrorBox>
           <WarningOutlinedIcon />
         </ErrorBox>
-        <h1>{t(Strings.ErrorDialogue.ErrorDialogueTitle)}</h1>
+        <h1>{t("ErrorDialogue.ErrorDialogueTitle")}</h1>
         <NotePad>
           <Page className="alert alert-danger">
-            {t(stringsRoot[string])
+            {t(messageTranslationKey)
               .split("\n")
               .map((item, index) => {
                 return <Centered key={index}>{item}</Centered>;
@@ -63,7 +61,7 @@ const ErrorDialogue = ({
           onClick={handleClick}
           className="btn btn-success"
         >
-          {t(Strings.ErrorDialogue.ErrorDialogueConfirm)}
+          {t("ErrorDialogue.ErrorDialogueConfirm")}
         </OK>
       </Paper>
     </Container>
@@ -75,8 +73,7 @@ export default withRouter(ErrorDialogue);
 ErrorDialogue.propTypes = {
   clearError: PropTypes.func.isRequired,
   eventMessage: PropTypes.object,
-  stringsRoot: PropTypes.object.isRequired,
-  string: PropTypes.string.isRequired,
+  messageTranslationKey: PropTypes.string.isRequired,
   redirect: PropTypes.string,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,

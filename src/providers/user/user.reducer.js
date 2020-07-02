@@ -33,7 +33,7 @@ const userReducer = (state, action) => {
         email: "",
         avatar: "",
         error: true,
-        errorMessage: "ErrorLoginFailure", // Strings Key
+        errorMessage: "SignIn.ErrorLoginFailure", // Strings Key
         login: false,
       };
     case UserActions.AuthExpired:
@@ -43,7 +43,7 @@ const userReducer = (state, action) => {
         email: "",
         avatar: "",
         error: true,
-        errorMessage: "ErrorAuthExpired", // Strings Key
+        errorMessage: "SignIn.ErrorAuthExpired", // Strings Key
         login: false,
       };
     case UserActions.DuplicateAccount:
@@ -53,7 +53,7 @@ const userReducer = (state, action) => {
         email: "",
         avatar: "",
         error: true,
-        errorMessage: "ErrorDuplicateAccount", // Strings Key
+        errorMessage: "SignIn.ErrorDuplicateAccount", // Strings Key
         login: false,
       };
     case UserActions.SuccessFetchUser:

@@ -85,7 +85,7 @@ describe("Check The Reducer Functionality", () => {
     expect(received.username).toBe(payload.username);
     expect(received.error).toBe(true);
     expect(received.login).toBe(false);
-    expect(received.errorMessage).toBe("ErrorLoginFailure");
+    expect(received.errorMessage).toBe("SignIn.ErrorLoginFailure");
   });
 
   it("handles ResetUser correctly", () => {
@@ -127,7 +127,7 @@ describe("Check The Reducer Functionality", () => {
     expect(received.username).toBe("someguy");
     expect(received.error).toBe(true);
     expect(received.login).toBe(false);
-    expect(received.errorMessage).toBe("ErrorAuthExpired");
+    expect(received.errorMessage).toBe("SignIn.ErrorAuthExpired");
   });
 
   it("handles DuplicateAccount correctly", () => {
@@ -148,6 +148,6 @@ describe("Check The Reducer Functionality", () => {
     expect(received.username).toBe("");
     expect(received.error).toBe(true);
     expect(received.login).toBe(false);
-    expect(received.errorMessage).toBe("ErrorDuplicateAccount");
+    expect(received.errorMessage).toBe("SignIn.ErrorDuplicateAccount");
   });
 });

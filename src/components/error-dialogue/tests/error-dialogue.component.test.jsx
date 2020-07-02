@@ -3,6 +3,7 @@ import { render, cleanup, fireEvent, waitFor } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import WarningOutlinedIcon from "@material-ui/icons/WarningOutlined";
+import i18next from "i18next";
 
 import ErrorDialogue from "../error-dialogue.component";
 
@@ -28,8 +29,7 @@ const mockAnalyticsSettings = { event: mockEvent, initialized: true };
 let ErrorProps = {
   clearError: jest.fn(),
   eventMessage: AnalyticsActions.TestAction,
-  stringsRoot: Strings.Testing,
-  string: "GenericMultiLineTranslationTestString", // String Key
+  messageTranslationKey: "Testing.GenericMultiLineTranslationTestString",
   redirect: Routes.root,
 };
 
@@ -77,11 +77,14 @@ describe("Setup Environment", () => {
       it("renders, should call header with the correct params", () => {
         expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
         expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.ErrorDialogue.headerTitle,
+          title: "ErrorDialogue.ErrorDialogueHeaderTitle",
           create: null,
           transaction: false,
           disableNav: true,
         });
+        expect(i18next.t("ErrorDialogue.ErrorDialogueHeaderTitle")).toBe(
+          Strings.ErrorDialogue.ErrorDialogueHeaderTitle
+        );
       });
 
       it("should render with the correct components and messages", () => {
@@ -127,11 +130,14 @@ describe("Setup Environment", () => {
       it("renders, should call header with the correct params", () => {
         expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
         expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.ErrorDialogue.headerTitle,
+          title: "ErrorDialogue.ErrorDialogueHeaderTitle",
           create: null,
           transaction: false,
           disableNav: true,
         });
+        expect(i18next.t("ErrorDialogue.ErrorDialogueHeaderTitle")).toBe(
+          Strings.ErrorDialogue.ErrorDialogueHeaderTitle
+        );
       });
 
       it("should render with the correct components and messages", () => {
@@ -169,11 +175,14 @@ describe("Setup Environment", () => {
       it("renders, should call header with the correct params", () => {
         expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
         expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.ErrorDialogue.headerTitle,
+          title: "ErrorDialogue.ErrorDialogueHeaderTitle",
           create: null,
           transaction: false,
           disableNav: true,
         });
+        expect(i18next.t("ErrorDialogue.ErrorDialogueHeaderTitle")).toBe(
+          Strings.ErrorDialogue.ErrorDialogueHeaderTitle
+        );
       });
 
       it("should render with the correct components and messages", () => {
@@ -220,11 +229,14 @@ describe("Setup Environment", () => {
       it("renders, should call header with the correct params", () => {
         expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
         expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.ErrorDialogue.headerTitle,
+          title: "ErrorDialogue.ErrorDialogueHeaderTitle",
           create: null,
           transaction: false,
           disableNav: true,
         });
+        expect(i18next.t("ErrorDialogue.ErrorDialogueHeaderTitle")).toBe(
+          Strings.ErrorDialogue.ErrorDialogueHeaderTitle
+        );
       });
 
       it("should render with the correct components and messages", () => {

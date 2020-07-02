@@ -4,6 +4,8 @@ import { propCount } from "../../../test.fixtures/objectComparison";
 import { MemoryRouter, Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
+import i18Next from "i18next";
+
 import ErrorHandler from "../../error-handler/error-handler.component";
 import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 import ItemDetailsForm from "../../item-details-form/item-details-form.component";
@@ -156,14 +158,20 @@ describe("Setup Environment", () => {
     it("renders, bypasses ErrorHandler1 as expected", async (done) => {
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[2][0];
-      propCount(call, 7);
+      propCount(call, 6);
       expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
       expect(call.condition).toBe(false);
       expect(call.clearError).toBeInstanceOf(Function);
-      expect(call.stringsRoot).toBe(Strings.ItemDetails);
-      expect(call.string).toBe("ApiCommunicationError");
+      expect(call.messageTranslationKey).toBe(
+        "ItemDetails.ApiCommunicationError"
+      );
       expect(call.redirect).toBe(Routes.goBack);
       expect(call.children).toBeTruthy();
+
+      expect(i18Next.t("ItemDetails.ApiCommunicationError")).toBe(
+        Strings.ItemDetails.ApiCommunicationError
+      );
+
       done();
     });
 
@@ -178,14 +186,20 @@ describe("Setup Environment", () => {
     it("renders, bypasses ErrorHandler2 as expected", async (done) => {
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[5][0];
-      propCount(call, 7);
+      propCount(call, 6);
       expect(call.eventMessage).toBe(null);
       expect(call.condition).toBe(false);
       expect(call.clearError).toBeInstanceOf(Function);
-      expect(call.stringsRoot).toBe(Strings.ItemDetails);
-      expect(call.string).toBe("NeedShelvesAndStores");
+      expect(call.messageTranslationKey).toBe(
+        "ItemDetails.NeedShelvesAndStores"
+      );
       expect(call.redirect).toBe(Routes.goBack);
       expect(call.children).toBeTruthy();
+
+      expect(i18Next.t("ItemDetails.NeedShelvesAndStores")).toBe(
+        Strings.ItemDetails.NeedShelvesAndStores
+      );
+
       done();
     });
 
@@ -465,13 +479,19 @@ describe("Setup Environment", () => {
         expect(ErrorHandler).toHaveBeenCalledTimes(6);
 
         const errorHandlerCall = ErrorHandler.mock.calls[0][0];
-        propCount(errorHandlerCall, 7);
+        propCount(errorHandlerCall, 6);
         expect(errorHandlerCall.condition).toBe(true);
         expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
         expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
-        expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
+        expect(errorHandlerCall.messageTranslationKey).toBe(
+          "ItemDetails.ApiCommunicationError"
+        );
         expect(errorHandlerCall.redirect).toBe(Routes.goBack);
         expect(errorHandlerCall.children).toBeTruthy();
+
+        expect(i18Next.t("ItemDetails.ApiCommunicationError")).toBe(
+          Strings.ItemDetails.ApiCommunicationError
+        );
       });
 
       it("renders, clear error works as expected", async (done) => {
@@ -521,13 +541,19 @@ describe("Setup Environment", () => {
         expect(ErrorHandler).toHaveBeenCalledTimes(6);
 
         const errorHandlerCall = ErrorHandler.mock.calls[0][0];
-        propCount(errorHandlerCall, 7);
+        propCount(errorHandlerCall, 6);
         expect(errorHandlerCall.condition).toBe(true);
         expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
         expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
-        expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
+        expect(errorHandlerCall.messageTranslationKey).toBe(
+          "ItemDetails.ApiCommunicationError"
+        );
         expect(errorHandlerCall.redirect).toBe(Routes.goBack);
         expect(errorHandlerCall.children).toBeTruthy();
+
+        expect(i18Next.t("ItemDetails.ApiCommunicationError")).toBe(
+          Strings.ItemDetails.ApiCommunicationError
+        );
       });
 
       it("renders, clear error works as expected", async (done) => {
@@ -577,13 +603,19 @@ describe("Setup Environment", () => {
         expect(ErrorHandler).toHaveBeenCalledTimes(6);
 
         const errorHandlerCall = ErrorHandler.mock.calls[0][0];
-        propCount(errorHandlerCall, 7);
+        propCount(errorHandlerCall, 6);
         expect(errorHandlerCall.condition).toBe(true);
         expect(errorHandlerCall.clearError).toBeInstanceOf(Function);
         expect(errorHandlerCall.eventMessage).toBe(AnalyticsActions.ApiError);
-        expect(errorHandlerCall.stringsRoot).toBe(Strings.ItemDetails);
+        expect(errorHandlerCall.messageTranslationKey).toBe(
+          "ItemDetails.ApiCommunicationError"
+        );
         expect(errorHandlerCall.redirect).toBe(Routes.goBack);
         expect(errorHandlerCall.children).toBeTruthy();
+
+        expect(i18Next.t("ItemDetails.ApiCommunicationError")).toBe(
+          Strings.ItemDetails.ApiCommunicationError
+        );
       });
 
       it("renders, clear error works as expected", async (done) => {

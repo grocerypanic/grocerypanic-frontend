@@ -5,19 +5,18 @@ import ErrorHandler from "../error-handler.component";
 import ErrorDialogue from "../../error-dialogue/error-dialogue.component";
 
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
-import Strings from "../../../configuration/strings";
 
 jest.mock("../../error-dialogue/error-dialogue.component");
 ErrorDialogue.mockImplementation(() => <div>I am a error!</div>);
 
 let current;
+const mockContent = "Suppressed Component";
 
 const props = {
   condition: true,
   clearError: jest.fn(),
   eventMessage: AnalyticsActions.TestAction,
-  stringsRoot: Strings.Testing,
-  string: "GenericMultiLineTranslationTestString",
+  messageTranslationKey: "Testing.GenericMultiLineTranslationTestString",
   redirect: "/SomePath",
 };
 
@@ -30,16 +29,18 @@ describe("Setup Environment", () => {
 
   afterEach(cleanup);
 
+  const renderHelper = (currentProps) => {
+    return render(<ErrorHandler {...currentProps}>{mockContent}</ErrorHandler>);
+  };
+
   describe("When condition is false", () => {
     beforeEach(() => {
       current.condition = false;
-      utils = render(
-        <ErrorHandler {...current}>Suppressed Component</ErrorHandler>
-      );
+      utils = renderHelper(current);
     });
 
     it("should render with the correct message", () => {
-      expect(utils.queryByText("Suppressed Component")).toBeTruthy();
+      expect(utils.queryByText(mockContent)).toBeTruthy();
       expect(ErrorDialogue).toBeCalledTimes(0);
     });
   });
@@ -47,13 +48,11 @@ describe("Setup Environment", () => {
   describe("When condition is true", () => {
     beforeEach(() => {
       current.condition = true;
-      utils = render(
-        <ErrorHandler {...current}>Suppressed Component</ErrorHandler>
-      );
+      utils = renderHelper(current);
     });
 
     it("should render the spinner instead", () => {
-      expect(utils.queryByText("Suppressed Component")).toBeFalsy();
+      expect(utils.queryByText(mockContent)).toBeFalsy();
       expect(ErrorDialogue).toBeCalledTimes(1);
     });
   });

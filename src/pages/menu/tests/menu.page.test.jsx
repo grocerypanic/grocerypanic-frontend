@@ -14,15 +14,10 @@ Menu.mockImplementation(() => <div>MockList</div>);
 const mockDispatch = jest.fn();
 
 describe("Check the correct props are passed to the menu", () => {
-  let tests = [1];
-  let utils;
-  let currentTest;
-
   beforeEach(() => {
     jest.clearAllMocks();
 
-    currentTest = tests.shift();
-    utils = render(<MenuPage />);
+    render(<MenuPage />);
   });
 
   afterEach(cleanup);

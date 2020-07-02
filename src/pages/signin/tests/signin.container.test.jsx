@@ -148,12 +148,11 @@ describe("Setup Environment", () => {
       await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(1));
       await waitFor(() => expect(SignIn).toBeCalledTimes(0));
       const call1 = ErrorDialogue.mock.calls[0][0];
-      propCount(call1, 4);
+      propCount(call1, 3);
 
       expect(call1.eventError).toBe(AnalyticsActions.LoginError);
       expect(call1.clearError).toBeInstanceOf(Function);
-      expect(call1.string).toBe(currentTest.errorMessage);
-      expect(call1.stringsRoot).toBe(Strings.SignIn);
+      expect(call1.messageTranslationKey).toBe(currentTest.errorMessage);
       done();
     });
 

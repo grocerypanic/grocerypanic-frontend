@@ -157,8 +157,7 @@ const ItemDetailsCreateContainer = ({
       condition={item.error || store.error || shelf.error}
       clearError={clearError}
       eventMessage={AnalyticsActions.ApiError}
-      stringsRoot={Strings.ItemDetails}
-      string={"ApiCommunicationError"}
+      messageTranslationKey={"ItemDetails.ApiCommunicationError"}
       redirect={Routes.goBack}
     >
       <HoldingPattern condition={checkForNonReceivedContent()}>
@@ -166,8 +165,7 @@ const ItemDetailsCreateContainer = ({
           condition={!store.inventory.length || !shelf.inventory.length}
           clearError={() => {}}
           eventMessage={null}
-          stringsRoot={Strings.ItemDetails}
-          string={"NeedShelvesAndStores"}
+          messageTranslationKey={"ItemDetails.NeedShelvesAndStores"}
           redirect={Routes.goBack}
         >
           <Container>

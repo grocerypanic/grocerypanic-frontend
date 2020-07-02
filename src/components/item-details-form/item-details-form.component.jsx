@@ -17,7 +17,6 @@ import { Banner } from "../../global-styles/banner";
 import { FormBox, Outline, ButtonBox } from "./item-details-form.styles";
 
 import { Constants, ShelfLifeConstants } from "../../configuration/backend";
-import Strings from "../../configuration/strings";
 import { ui } from "../../configuration/theme";
 
 import {
@@ -99,14 +98,14 @@ const ItemDetailsForm = ({
     if (transaction) return;
     const derivedShelfLife = normalizeId(shelfLifeState, ShelfLifeConstants);
     if (preferredStoresState.length === 0) {
-      setErrorMsg(t(Strings.ItemDetails.ErrorUnselectedStore));
+      setErrorMsg(t("ItemDetails.ErrorUnselectedStore"));
       return setTimeout(() => setErrorMsg(null), ui.alertTimeout);
     }
     const search = allItems.find(
       (o) => o.id !== item.id && o.name === nameState
     );
     if (search) {
-      setErrorMsg(t(Strings.ItemDetails.ErrorExistingItem));
+      setErrorMsg(t("ItemDetails.ErrorExistingItem"));
       return setTimeout(() => setErrorMsg(null), ui.alertTimeout);
     }
     const newItem = {
@@ -119,14 +118,14 @@ const ItemDetailsForm = ({
       shelf: normalizeId(shelfState, shelves),
     };
     handleSave(newItem);
-    setActionMsg(t(Strings.ItemDetails.SaveAction));
+    setActionMsg(t("ItemDetails.SaveAction"));
     return setTimeout(() => setActionMsg(null), ui.alertTimeout);
   };
 
   const handleDeleteButton = (e) => {
     if (transaction) return;
     handleDelete(item);
-    setActionMsg(t(Strings.ItemDetails.DeleteAction));
+    setActionMsg(t("ItemDetails.DeleteAction"));
   };
 
   return (
@@ -154,7 +153,7 @@ const ItemDetailsForm = ({
                   item={item}
                   transaction={transaction}
                   type="text"
-                  label={`${t(Strings.ItemDetails.NameLabel)}:`}
+                  label={`${t("ItemDetails.NameLabel")}:`}
                   details={""}
                   itemColumn={"col-10"}
                   minLength={2}
@@ -170,7 +169,7 @@ const ItemDetailsForm = ({
                   item={item}
                   transaction={transaction}
                   type="number"
-                  label={`${t(Strings.ItemDetails.QuantityLabel)}`}
+                  label={`${t("ItemDetails.QuantityLabel")}`}
                   details={""}
                   labelColumn={"col-1"}
                   itemColumn={"col-4"}
@@ -187,7 +186,7 @@ const ItemDetailsForm = ({
                   item={item}
                   transaction={transaction}
                   type="number"
-                  label={`${t(Strings.ItemDetails.PriceLabel)}`}
+                  label={`${t("ItemDetails.PriceLabel")}`}
                   details={""}
                   labelColumn={"col-1"}
                   itemColumn={priceBootstrapWidth}
@@ -204,7 +203,7 @@ const ItemDetailsForm = ({
                   fieldName="shelf_life"
                   options={shelfOptions}
                   transaction={transaction}
-                  details={t(Strings.ItemDetails.ShelfLifeDetail)}
+                  details={t("ItemDetails.ShelfLifeDetail")}
                   labelColumn={""}
                   itemColumn={"col-12"}
                 />
@@ -217,7 +216,7 @@ const ItemDetailsForm = ({
                   fieldName="preferred_stores"
                   options={stores}
                   transaction={transaction}
-                  details={t(Strings.ItemDetails.PerferredLocationDetails)}
+                  details={t("ItemDetails.PerferredLocationDetails")}
                   labelColumn={""}
                   itemColumn={"col-12"}
                 />
@@ -230,7 +229,7 @@ const ItemDetailsForm = ({
                   fieldName="shelf"
                   options={shelves}
                   transaction={transaction}
-                  details={t(Strings.ItemDetails.ShelvesDetail)}
+                  details={t("ItemDetails.ShelvesDetail")}
                   labelColumn={""}
                   itemColumn={"col-12"}
                 />
@@ -245,7 +244,7 @@ const ItemDetailsForm = ({
                     }`}
                     onClick={handleDeleteButton}
                   >
-                    {Strings.ItemDetails.DeleteButton}
+                    {t("ItemDetails.DeleteButton")}
                   </button>
                 ) : (
                   <div></div>
@@ -257,7 +256,7 @@ const ItemDetailsForm = ({
                     transaction ? "btn-secondary" : "btn-success"
                   }`}
                 >
-                  {Strings.ItemDetails.SaveButton}
+                  {t("ItemDetails.SaveButton")}
                 </button>
               </ButtonBox>
             </Form>
