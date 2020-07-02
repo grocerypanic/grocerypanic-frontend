@@ -1,13 +1,14 @@
 import React from "react";
 import { render, cleanup, fireEvent, waitFor } from "@testing-library/react";
-import WarningOutlinedIcon from "@material-ui/icons/WarningOutlined";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
+import WarningOutlinedIcon from "@material-ui/icons/WarningOutlined";
 
 import ErrorDialogue from "../error-dialogue.component";
 
 import initialHeaderSettings from "../../../providers/header/header.initial";
 import { HeaderContext } from "../../../providers/header/header.provider";
+
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 

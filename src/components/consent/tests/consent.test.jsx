@@ -19,14 +19,12 @@ const mockAnalyticsSettings = {
 };
 
 describe("Check Error Rendering", () => {
-  let utils;
-
   describe("Without a consent cookie present", () => {
     beforeEach(() => {
       cookie.remove(AnalyticsCookieName);
       mockSetup.mockClear();
       CookieConsent.mockClear();
-      utils = render(
+      render(
         <AnalyticsContext.Provider value={mockAnalyticsSettings}>
           <Consent />
         </AnalyticsContext.Provider>
@@ -53,7 +51,7 @@ describe("Check Error Rendering", () => {
       cookie.set(AnalyticsCookieName, "true");
       mockSetup.mockClear();
       CookieConsent.mockClear();
-      utils = render(
+      render(
         <AnalyticsContext.Provider value={mockAnalyticsSettings}>
           <Consent />
         </AnalyticsContext.Provider>
