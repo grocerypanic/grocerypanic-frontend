@@ -16,6 +16,7 @@
     "@material-ui/core": "^4.10.0",
     "@material-ui/icons": "^4.9.1",
     "bootstrap": "^4.5.0",
+    "cookie_js": "^1.4.0",
     "i18next": "^19.4.4",
     "i18next-browser-languagedetector": "^4.1.1",
     "jest-styled-components": "^7.0.2",
@@ -40,7 +41,7 @@
     "build": "react-scripts build",
     "test": "TZ='America/Toronto' react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject",
-    "lint": "eslint ./src --max-warnings 0",
+    "lint": "eslint \"./src/**/*.+(js|jsx)\"",
     "clean": "eslint --fix ./src; prettier --write \"./src/**/*.+(js|jsx|json|yml|yaml|css|scss|md|vue)\"",
     "coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --coverage --coverageDirectory=coverage --watchAll=false"
   },
