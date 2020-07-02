@@ -7,7 +7,7 @@ import { HeaderContext } from "../../providers/header/header.provider";
 import Consent from "../../components/consent/consent.component";
 import ProtectedRoute from "../../components/protected-route/protected-route.component";
 import HoldingPattern from "../../components/holding-pattern/holding-pattern.component";
-import Header from "../../components/header.new/header.component";
+import Header from "../../components/header/header.component";
 
 // Configuration
 import Routes from "../../configuration/routes";

@@ -12,7 +12,7 @@ import ItemsPage from "../../items/items.page";
 import CreatePage from "../../create/create.page";
 import DetailsPage from "../../details/details.page";
 import MenuPage from "../../menu/menu.page";
-import Header from "../../../components/header.new/header.component";
+import Header from "../../../components/header/header.component";
 
 import { UserContext } from "../../../providers/user/user.provider";
 import { HeaderContext } from "../../../providers/header/header.provider";
@@ -31,7 +31,7 @@ jest.mock("../../menu/menu.page");
 jest.mock("../../details/details.page");
 jest.mock("../../create/create.page");
 jest.mock("../../about/about.page");
-jest.mock("../../../components/header.new/header.component");
+jest.mock("../../../components/header/header.component");
 
 About.mockImplementation(() => <div>MockPlaceholderAboutPage</div>);
 SignIn.mockImplementation(() => <div>MockPlaceholderSignin</div>);
