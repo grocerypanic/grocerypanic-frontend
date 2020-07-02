@@ -8,7 +8,6 @@ import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
 import { isWithinAWeek, isWithinAMonth, nextWeek } from "../../util/datetime";
 
-import Strings from "../../configuration/strings";
 import { Constants } from "../../configuration/backend";
 import { graph } from "../../configuration/theme";
 
@@ -48,7 +47,7 @@ const TransactionsReview = ({ item, ready, tr }) => {
         labels,
         datasets: [
           {
-            label: t(Strings.ItemStats.GraphChangEvent),
+            label: t("ItemStats.GraphChangEvent"),
             borderColor: graph.changeLine,
             data: tr
               .map((o, index) => {
@@ -57,7 +56,7 @@ const TransactionsReview = ({ item, ready, tr }) => {
               .slice(Constants.maximumTransactions * -1),
           },
           {
-            label: t(Strings.ItemStats.GraphQuantity),
+            label: t("ItemStats.GraphQuantity"),
             borderColor: graph.quantityLine,
             data: calculateQuantity().slice(Constants.maximumTransactions * -1),
           },
@@ -94,7 +93,7 @@ const TransactionsReview = ({ item, ready, tr }) => {
     return () => {
       ActivityChart.destroy();
     };
-  }, [tr, ready]);
+  }, [tr, ready]); // eslint-disable-line
 
   const consumedWithinLastWeek = () => {
     const results = tr.filter((o) => o.quantity < 0 && isWithinAWeek(o.date));
@@ -154,17 +153,17 @@ const TransactionsReview = ({ item, ready, tr }) => {
     <>
       <Paper>
         <Banner className="alert alert-success mb-2">
-          {t(Strings.ItemStats.Title)}
+          {t("ItemStats.Title")}
         </Banner>
         {calculateExpired() ? (
           <Banner className="alert alert-danger mb-2">
-            {t(Strings.ItemStats.RecommendExpiredItems)}
+            {t("ItemStats.RecommendExpiredItems")}
           </Banner>
         ) : null}
         {nextWeek(item.next_expiry_date) && item.next_expiry_quantity > 0 ? (
           <Banner className="alert alert-warning mb-2">
             {`${item.next_expiry_quantity} ${t(
-              Strings.ItemStats.RecommendExpiringSoon
+              "ItemStats.RecommendExpiringSoon"
             )}`}
           </Banner>
         ) : null}
@@ -184,7 +183,7 @@ const TransactionsReview = ({ item, ready, tr }) => {
                 </div>
               ) : (
                 <PlaceHolder className="text-muted">
-                  <div>{t(Strings.ItemStats.NotEnoughData)}</div>
+                  <div>{t("ItemStats.NotEnoughData")}</div>
                 </PlaceHolder>
               )}
             </HoldingPattern>
@@ -193,23 +192,23 @@ const TransactionsReview = ({ item, ready, tr }) => {
             <Table striped bordered hover size="sm">
               <tbody>
                 <tr>
-                  <td>{t(Strings.ItemStats.ConsumptionCurrentInventory)}</td>
+                  <td>{t("ItemStats.ConsumptionCurrentInventory")}</td>
                   <td>{item.quantity}</td>
                 </tr>
                 <tr>
-                  <td>{t(Strings.ItemStats.ConsumptionConsumedLastWeek)}</td>
+                  <td>{t("ItemStats.ConsumptionConsumedLastWeek")}</td>
                   <td data-testid="lastWeek">{consumedWithinLastWeek()}</td>
                 </tr>
                 <tr>
-                  <td>{t(Strings.ItemStats.ConsumptionConsumedLastMonth)}</td>
+                  <td>{t("ItemStats.ConsumptionConsumedLastMonth")}</td>
                   <td data-testid="lastMonth">{consumedWithinLastMonth()}</td>
                 </tr>
                 <tr>
-                  <td>{t(Strings.ItemStats.ConsumptionAvgWeek)}</td>
+                  <td>{t("ItemStats.ConsumptionAvgWeek")}</td>
                   <td data-testid="avgWeek">{averageWeeklyConsumption()}</td>
                 </tr>
                 <tr>
-                  <td>{t(Strings.ItemStats.ConsumptionAvgMonth)}</td>
+                  <td>{t("ItemStats.ConsumptionAvgMonth")}</td>
                   <td data-testid="avgMonth">{averageMonthlyConsumption()}</td>
                 </tr>
               </tbody>

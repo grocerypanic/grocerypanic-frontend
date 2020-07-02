@@ -7,7 +7,6 @@ import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 import TransactionsReview from "../transactions.component";
 
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 
 import Strings from "../../../configuration/strings";
 import { convertDatesToLocal } from "../../../providers/api/api.util";
