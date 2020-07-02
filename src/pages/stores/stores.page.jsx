@@ -7,7 +7,6 @@ import { UserContext } from "../../providers/user/user.provider";
 import { authExpired } from "../../providers/user/user.async";
 
 import { useTranslation } from "react-i18next";
-import Strings from "../../configuration/strings";
 
 const StoresPage = () => {
   const { t } = useTranslation();
@@ -27,12 +26,12 @@ const StoresPage = () => {
 
   return (
     <SimpleList
-      title={t(Strings.StorePage.Title)}
-      headerTitle={t(Strings.StorePage.HeaderTitle)}
+      title={t("StorePage.Title")}
+      headerTitle={t("StorePage.HeaderTitle")}
       ApiObjectContext={StoreContext}
-      placeHolderMessage={t(Strings.StorePage.PlaceHolderMessage)}
+      placeHolderMessage={t("StorePage.PlaceHolderMessage")}
       handleExpiredAuth={handleExpiredAuth}
-      helpText={t(Strings.StorePage.HelpText)}
+      helpText={t("StorePage.HelpText")}
       redirectTag={"preferred_stores"}
     />
   );

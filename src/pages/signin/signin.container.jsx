@@ -13,8 +13,6 @@ import {
   loginError,
 } from "../../providers/user/user.async";
 
-import Strings from "../../configuration/strings";
-
 const SignInContainer = () => {
   const { event } = React.useContext(AnalyticsContext);
   const { user, dispatch } = React.useContext(UserContext);

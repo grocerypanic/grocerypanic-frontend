@@ -7,7 +7,6 @@ import { UserContext } from "../../providers/user/user.provider";
 import { authExpired } from "../../providers/user/user.async";
 
 import { useTranslation } from "react-i18next";
-import Strings from "../../configuration/strings";
 
 const ShelvesPage = () => {
   const { t } = useTranslation();
@@ -27,12 +26,12 @@ const ShelvesPage = () => {
 
   return (
     <SimpleList
-      title={t(Strings.ShelfPage.Title)}
-      headerTitle={t(Strings.ShelfPage.HeaderTitle)}
+      title={t("ShelfPage.Title")}
+      headerTitle={t("ShelfPage.HeaderTitle")}
       ApiObjectContext={ShelfContext}
-      placeHolderMessage={t(Strings.ShelfPage.PlaceHolderMessage)}
+      placeHolderMessage={t("ShelfPage.PlaceHolderMessage")}
       handleExpiredAuth={handleExpiredAuth}
-      helpText={t(Strings.ShelfPage.HelpText)}
+      helpText={t("ShelfPage.HelpText")}
       redirectTag={"shelf"}
     />
   );

@@ -7,7 +7,6 @@ import { UserContext } from "../../providers/user/user.provider";
 import { authExpired } from "../../providers/user/user.async";
 
 import { useTranslation } from "react-i18next";
-import Strings from "../../configuration/strings";
 
 const ItemsPage = () => {
   const { t } = useTranslation();
@@ -27,12 +26,12 @@ const ItemsPage = () => {
 
   return (
     <ItemList
-      title={t(Strings.InventoryPage.Title)}
-      headerTitle={t(Strings.InventoryPage.HeaderTitle)}
+      title={t("InventoryPage.Title")}
+      headerTitle={t("InventoryPage.HeaderTitle")}
       ApiObjectContext={ItemContext}
-      placeHolderMessage={t(Strings.InventoryPage.PlaceHolderMessage)}
+      placeHolderMessage={t("InventoryPage.PlaceHolderMessage")}
       handleExpiredAuth={handleExpiredAuth}
-      helpText={t(Strings.InventoryPage.HelpText)}
+      helpText={t("InventoryPage.HelpText")}
     />
   );
 };
