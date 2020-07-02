@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
-import Strings from "../../configuration/strings";
 import Routes from "../../configuration/routes";
 import { FilterTag } from "../../configuration/backend";
 import { ui } from "../../configuration/theme";
@@ -68,22 +67,22 @@ const SimpleListItem = ({
 
   const handleSave = (value) => {
     if (value.length < 2) {
-      setErrorMsg(t(Strings.SimpleList.ValidationFailure));
+      setErrorMsg(t("SimpleList.ValidationFailure"));
       return;
     }
     const search = allItems.find((instance) => instance.name === value);
     if (search) {
-      setErrorMsg(t(Strings.SimpleList.ValidationAlreadyExists));
+      setErrorMsg(t("SimpleList.ValidationAlreadyExists"));
       return;
     }
-    setActionMsg(`${t(Strings.SimpleList.CreatedAction)} ${value}`);
+    setActionMsg(`${t("SimpleList.CreatedAction")} ${value}`);
     add(value);
     return setTimeout(() => setActionMsg(null), ui.alertTimeout);
   };
 
   const handleDelete = (id) => {
     setSelected(null);
-    setActionMsg(`${t(Strings.SimpleList.DeletedAction)} ${item.name}`);
+    setActionMsg(`${t("SimpleList.DeletedAction")} ${item.name}`);
     del(item.id);
     return setTimeout(() => setActionMsg(null), ui.alertTimeout);
   };
@@ -125,7 +124,7 @@ const SimpleListItem = ({
                 className="btn btn-success"
                 style={{ height: "40px" }}
               >
-                <span>{t(Strings.SimpleList.SaveButton)}</span>
+                <span>{t("SimpleList.SaveButton")}</span>
               </button>
             </div>
           ) : (
@@ -158,7 +157,7 @@ const SimpleListItem = ({
             className="btn btn-danger"
             style={{ height: "40px" }}
           >
-            {t(Strings.SimpleList.DeleteButton)}
+            {t("SimpleList.DeleteButton")}
           </button>
         ) : null}
       </div>
