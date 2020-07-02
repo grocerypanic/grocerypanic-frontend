@@ -29,11 +29,11 @@ const ItemDetailsPage = ({ match }) => {
   return (
     <ItemDetailsEditContainer
       itemId={match.params.id}
-      title={t(Strings.ItemDetails.Title)}
-      headerTitle={t(Strings.ItemDetails.HeaderTitle)}
+      title={t("ItemDetails.Title")}
+      headerTitle={t("ItemDetails.HeaderTitle")}
       ApiObjectContext={ItemContext}
       handleExpiredAuth={handleExpiredAuth}
-      helpText={t(Strings.ItemDetails.HelpText)}
+      helpText={t("ItemDetails.HelpText")}
     />
   );
 };
