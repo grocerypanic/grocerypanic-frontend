@@ -22,7 +22,6 @@ import {
 } from "./header.styles";
 
 import Routes from "../../configuration/routes";
-import Strings from "../../configuration/strings";
 import { headerMobileThreshold } from "../../configuration/theme";
 
 const Header = ({ history }) => {
@@ -55,8 +54,8 @@ const Header = ({ history }) => {
       <NavContainer collapseOnSelect variant="dark" fixed="top">
         <Navbar.Brand>
           <div className="action">
-            <div className={display(mobile)}>{t(Strings.MainTitle)}</div>
-            <div className={display(!mobile)}>{`${t(Strings.MainTitle)}: ${t(
+            <div className={display(mobile)}>{t("MainTitle")}</div>
+            <div className={display(!mobile)}>{`${t("MainTitle")}: ${t(
               headerSettings.title
             )}`}</div>
           </div>
@@ -69,8 +68,8 @@ const Header = ({ history }) => {
     <NavContainer collapseOnSelect variant="dark" fixed="top">
       <Navbar.Brand>
         <div className="action" onClick={() => navigate(Routes.about)}>
-          <div className={display(mobile)}>{t(Strings.MainTitle)}</div>
-          <div className={display(!mobile)}>{`${t(Strings.MainTitle)}: ${
+          <div className={display(mobile)}>{t("MainTitle")}</div>
+          <div className={display(!mobile)}>{`${t("MainTitle")}: ${
             headerSettings.title
           }`}</div>
         </div>
