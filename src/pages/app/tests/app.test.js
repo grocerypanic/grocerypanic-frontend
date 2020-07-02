@@ -2,6 +2,7 @@ import React from "react";
 import { render, cleanup, waitFor } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
+import i18next from "i18next";
 
 import App from "../app.js";
 import SignIn from "../../signin/signin.container";
@@ -75,6 +76,15 @@ describe("Check Routing", () => {
     );
   };
 
+  const checkHeader = () => {
+    expect(Header).toBeCalledTimes(1);
+    expect(mockHeaderUpdate).toBeCalledWith({
+      title: "MainHeaderTitle",
+      disableNav: true,
+    });
+    expect(i18next.t("MainHeaderTitle")).toBe(Strings.MainHeaderTitle);
+  };
+
   describe("root url", () => {
     beforeEach(() => (setup.path = Routes.root));
     describe("active login", () => {
@@ -95,14 +105,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.root);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
     describe("inactive login", () => {
@@ -124,14 +128,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
   });
@@ -157,14 +155,8 @@ describe("Check Routing", () => {
         await waitFor(() => expect(window.location.pathname).toBe(Routes.root));
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
     describe("inactive login", () => {
@@ -185,14 +177,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
   });
@@ -218,14 +204,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.stores);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
 
@@ -248,14 +228,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
   });
@@ -281,14 +255,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.shelves);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
 
@@ -311,14 +279,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
   });
@@ -344,14 +306,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.items);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
 
@@ -374,14 +330,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
   });
@@ -407,14 +357,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.details);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
 
@@ -437,14 +381,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
   });
@@ -470,14 +408,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.create);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
 
@@ -500,14 +432,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
   });
@@ -533,14 +459,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.about);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
 
@@ -563,14 +483,8 @@ describe("Check Routing", () => {
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
-      it("should render the header", () => {
-        expect(Header).toBeCalledTimes(1);
-      });
       it("should configure the header properly", () => {
-        expect(mockHeaderUpdate).toBeCalledWith({
-          title: Strings.MainHeaderTitle,
-          disableNav: true,
-        });
+        checkHeader();
       });
     });
   });

@@ -11,7 +11,6 @@ import Header from "../../components/header/header.component";
 
 // Configuration
 import Routes from "../../configuration/routes";
-import Strings from "../../configuration/strings";
 
 const About = lazy(() => import("../about/about.page"));
 const Create = lazy(() => import("../create/create.page"));
@@ -27,7 +26,7 @@ function App() {
 
   React.useEffect(() => {
     updateHeader({
-      title: Strings.MainHeaderTitle,
+      title: "MainHeaderTitle",
       disableNav: true,
     });
   }, []); // eslint-disable-line
