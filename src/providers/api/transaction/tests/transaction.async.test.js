@@ -17,5 +17,5 @@ AsyncTest(
   asyncDel,
   asyncList,
   implemented,
-  "1/"
+  "1/item/"
 );
