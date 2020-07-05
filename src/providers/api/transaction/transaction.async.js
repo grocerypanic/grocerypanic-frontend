@@ -42,14 +42,20 @@ export const asyncList = async ({ state, action }) => {
   const { dispatch, callback } = action;
   const [response, status] = await Request(
     "GET",
-    Paths.manageTransactions + action.payload.id + "/item/"
+    Paths.manageTransactions + `?item=${encodeURIComponent(action.payload.id)}`
   );
   if (match2xx(status)) {
-    const processedResponse = response.map((i) => convertDatesToLocal(i));
+    const processedResponse = response.results.map((i) =>
+      convertDatesToLocal(i)
+    );
     return new Promise(function (resolve) {
       dispatch({
         type: ApiActions.SuccessList,
-        payload: { inventory: processedResponse.sort(apiResultCompare) },
+        payload: {
+          inventory: processedResponse.sort(apiResultCompare),
+          next: response.next,
+          previous: response.previous,
+        },
         callback,
       });
     });

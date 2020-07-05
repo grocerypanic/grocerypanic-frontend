@@ -10,9 +10,7 @@ jest.mock("../../../util/requests");
 export const AsyncTest = (
   apiEndpoint,
   initialState,
-  asyncAdd,
-  asyncDel,
-  asyncList,
+  asyncFn,
   implemented, // List of implemented api functions
   optionalListParams = ""
 ) => {
@@ -24,6 +22,13 @@ export const AsyncTest = (
     name: "MockObject",
     next_expiry_date: "2020-01-01",
     date: "2020-01-01",
+  };
+
+  const mockObject2 = {
+    id: 2,
+    name: "MockObject",
+    next_expiry_date: "2021-01-01",
+    date: "2021-01-01",
   };
 
   const comparisonObject = convertDatesToLocal(mockObject);
@@ -55,7 +60,7 @@ export const AsyncTest = (
           };
           State2.inventory.push({ ...comparisonObject });
 
-          asyncAdd({ state: State1, action });
+          asyncFn.asyncAdd({ state: State1, action });
 
           expect(Request).toBeCalledWith("POST", apiEndpoint, {
             name: action.payload.name,
@@ -84,7 +89,7 @@ export const AsyncTest = (
           };
           State2.inventory.push({ ...mockObject });
 
-          asyncDel({ state: State2, action });
+          asyncFn.asyncDel({ state: State2, action });
 
           expect(Request).toBeCalledWith(
             "DELETE",
@@ -114,9 +119,16 @@ export const AsyncTest = (
             inventory: [...State1.inventory],
           };
           State2.inventory.push({ ...mockObject });
-          Request.mockReturnValue([[{ ...mockObject }], responseCode]);
+          Request.mockReturnValue([
+            {
+              results: [{ ...mockObject }],
+              next: "next",
+              previous: "previous",
+            },
+            responseCode,
+          ]);
 
-          asyncList({ state: State2, action });
+          asyncFn.asyncList({ state: State2, action });
 
           expect(Request).toBeCalledWith(
             "GET",
@@ -127,6 +139,116 @@ export const AsyncTest = (
             type: ApiActions.SuccessList,
             payload: {
               inventory: [{ ...comparisonObject }],
+              next: "next",
+              previous: "previous",
+            },
+            callback: mockCallBack,
+          });
+          done();
+        });
+      }
+
+      if (implemented.includes(ApiFunctions.asyncGet)) {
+        it("should call the API, and then dispatch correctly when asyncGet is called, item already in state", async (done) => {
+          const oldObjectState = {
+            ...mockObject,
+            name: "This name needs to be updated.",
+          };
+          let newState = [{ ...mockObject }];
+
+          action = {
+            payload: { id: mockObject.id },
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push(oldObjectState);
+
+          asyncFn.asyncGet({ state: State2, action });
+
+          expect(Request).toBeCalledWith(
+            "GET",
+            apiEndpoint + `${mockObject.id}/`
+          );
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          newState = newState.map((i) => convertDatesToLocal(i));
+
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.SuccessGet,
+            payload: {
+              inventory: newState,
+            },
+            callback: mockCallBack,
+          });
+          done();
+        });
+
+        it("should call the API, and then dispatch correctly when asyncGet is called, item not in existing state", async (done) => {
+          // mockobject2 is in state, fetching mockobject
+
+          action = {
+            payload: { id: mockObject.id },
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push({ ...mockObject2 });
+
+          asyncFn.asyncGet({ state: State2, action });
+
+          expect(Request).toBeCalledWith(
+            "GET",
+            apiEndpoint + `${mockObject.id}/`
+          );
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.SuccessGet,
+            payload: {
+              inventory: [...State2.inventory, convertDatesToLocal(mockObject)],
+            },
+            callback: mockCallBack,
+          });
+          done();
+        });
+      }
+
+      if (implemented.includes(ApiFunctions.asyncUpdate)) {
+        it("should call the API, and then dispatch correctly when asyncUpdate is called", async (done) => {
+          action = {
+            payload: { ...mockObject, name: "updated name goes here" },
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push({ ...mockObject });
+
+          Request.mockReturnValue([{ ...action.payload }, responseCode]);
+
+          asyncFn.asyncUpdate({ state: State2, action });
+
+          expect(Request).toBeCalledWith(
+            "PUT",
+            apiEndpoint + `${mockObject.id}/`,
+            {
+              ...action.payload,
+            }
+          );
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.SuccessUpdate,
+            payload: {
+              inventory: [{ ...action.payload }].map((i) =>
+                convertDatesToLocal(i)
+              ),
             },
             callback: mockCallBack,
           });
@@ -157,7 +279,7 @@ export const AsyncTest = (
           };
           State2.inventory.push({ ...mockObject });
 
-          asyncAdd({ state: State1, action });
+          asyncFn.asyncAdd({ state: State1, action });
 
           expect(Request).toBeCalledWith("POST", apiEndpoint, {
             name: action.payload.name,
@@ -184,7 +306,7 @@ export const AsyncTest = (
           };
           State2.inventory.push({ ...mockObject });
 
-          asyncDel({ state: State2, action });
+          asyncFn.asyncDel({ state: State2, action });
 
           expect(Request).toBeCalledWith(
             "DELETE",
@@ -213,7 +335,7 @@ export const AsyncTest = (
           State2.inventory.push({ ...mockObject });
           Request.mockReturnValue([[{ ...mockObject }], responseCode]);
 
-          asyncList({ state: State2, action });
+          asyncFn.asyncList({ state: State2, action });
 
           expect(Request).toBeCalledWith(
             "GET",
@@ -222,6 +344,63 @@ export const AsyncTest = (
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.FailureList,
+            callback: mockCallBack,
+          });
+          done();
+        });
+      }
+
+      if (implemented.includes(ApiFunctions.asyncGet)) {
+        it("should call the API, and then dispatch correctly when asyncGet is called", async (done) => {
+          action = {
+            payload: { id: mockObject.id },
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push({ ...mockObject });
+
+          asyncFn.asyncGet({ state: State2, action });
+
+          expect(Request).toBeCalledWith(
+            "GET",
+            apiEndpoint + `${action.payload.id}/`
+          );
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.FailureGet,
+            callback: mockCallBack,
+          });
+          done();
+        });
+      }
+
+      if (implemented.includes(ApiFunctions.asyncUpdate)) {
+        it("should call the API, and then dispatch correctly when asyncUpdate is called", async (done) => {
+          action = {
+            payload: { ...mockObject },
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push({ ...mockObject });
+
+          asyncFn.asyncUpdate({ state: State2, action });
+
+          expect(Request).toBeCalledWith(
+            "PUT",
+            apiEndpoint + `${action.payload.id}/`,
+            { ...mockObject }
+          );
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.FailureUpdate,
             callback: mockCallBack,
           });
           done();
@@ -251,7 +430,7 @@ export const AsyncTest = (
           };
           State2.inventory.push({ ...mockObject });
 
-          asyncAdd({ state: State1, action });
+          asyncFn.asyncAdd({ state: State1, action });
 
           expect(Request).toBeCalledWith("POST", apiEndpoint, {
             name: action.payload.name,
@@ -278,7 +457,7 @@ export const AsyncTest = (
           };
           State2.inventory.push({ ...mockObject });
 
-          asyncDel({ state: State2, action });
+          asyncFn.asyncDel({ state: State2, action });
 
           expect(Request).toBeCalledWith(
             "DELETE",
@@ -307,11 +486,68 @@ export const AsyncTest = (
           State2.inventory.push({ ...mockObject });
           Request.mockReturnValue([[{ ...mockObject }], responseCode]);
 
-          asyncList({ state: State2, action });
+          asyncFn.asyncList({ state: State2, action });
 
           expect(Request).toBeCalledWith(
             "GET",
             apiEndpoint + optionalListParams
+          );
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.FailureAuth,
+            callback: mockCallBack,
+          });
+          done();
+        });
+      }
+
+      if (implemented.includes(ApiFunctions.asyncGet)) {
+        it("should call the API, and then dispatch correctly when asyncGet is called", async (done) => {
+          action = {
+            payload: { name: mockObject.name },
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push({ ...mockObject });
+
+          asyncFn.asyncGet({ state: State2, action });
+
+          expect(Request).toBeCalledWith(
+            "GET",
+            apiEndpoint + `${action.payload.id}/`
+          );
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.FailureAuth,
+            callback: mockCallBack,
+          });
+          done();
+        });
+      }
+
+      if (implemented.includes(ApiFunctions.asyncUpdate)) {
+        it("should call the API, and then dispatch correctly when asyncUpdate is called", async (done) => {
+          action = {
+            payload: { ...mockObject },
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push({ ...mockObject });
+
+          asyncFn.asyncUpdate({ state: State2, action });
+
+          expect(Request).toBeCalledWith(
+            "PUT",
+            apiEndpoint + `${action.payload.id}/`,
+            { ...mockObject }
           );
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({

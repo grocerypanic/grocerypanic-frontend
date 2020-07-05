@@ -2,6 +2,7 @@ import { waitFor } from "@testing-library/react";
 
 import ApiActions from "../api.actions";
 import ApiFunctions from "../api.functions";
+import { propCount } from "../../../test.fixtures/objectComparison";
 
 export const ReducerTest = (
   classType,
@@ -38,6 +39,7 @@ export const ReducerTest = (
         payload: mockPayload,
       };
       const received = testReducer(InitialState, action);
+      propCount(received, Object.keys(InitialState).length);
       expect(received).toEqual(ExpectedState);
       expect(received.class).toBe(classType);
 
@@ -69,6 +71,7 @@ export const ReducerTest = (
         callback: mockCallBack,
       };
       const received = testReducer(stateWithPayload, action);
+      propCount(received, Object.keys(InitialState).length);
       expect(received).toEqual(ExpectedState);
       expect(received.class).toBe(classType);
       await waitFor(() => expect(asyncDel).toHaveBeenCalledTimes(1));
@@ -95,6 +98,7 @@ export const ReducerTest = (
         callback: mockCallBack,
       };
       const received = testReducer(InitialState, action);
+      propCount(received, Object.keys(InitialState).length);
       expect(received).toEqual(ExpectedState);
       expect(received.class).toBe(classType);
       await waitFor(() => expect(asyncGet).toHaveBeenCalledTimes(1));
@@ -121,6 +125,7 @@ export const ReducerTest = (
         callback: mockCallBack,
       };
       const received = testReducer(InitialState, action);
+      propCount(received, Object.keys(InitialState).length);
       expect(received).toEqual(ExpectedState);
       expect(received.class).toBe(classType);
       await waitFor(() => expect(asyncList).toHaveBeenCalledTimes(1));
@@ -147,6 +152,7 @@ export const ReducerTest = (
         callback: mockCallBack,
       };
       const received = testReducer(InitialState, action);
+      propCount(received, Object.keys(InitialState).length);
       expect(received).toEqual(ExpectedState);
       expect(received.class).toBe(classType);
       await waitFor(() => expect(asyncUpdate).toHaveBeenCalledTimes(1));
@@ -168,6 +174,7 @@ export const ReducerTest = (
         type: ApiActions.SuccessAdd,
         payload,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(false);
@@ -185,6 +192,7 @@ export const ReducerTest = (
         payload,
         callback: mockCallBack,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(false);
@@ -202,6 +210,7 @@ export const ReducerTest = (
         payload,
         callback: mockCallBack,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(false);
@@ -213,14 +222,19 @@ export const ReducerTest = (
     it("handles SuccessList correctly", () => {
       const payload = {
         inventory: [{ ...mockObject }],
+        next: "next",
+        previous: "previous",
       };
       const received = testReducer(InitialState, {
         type: ApiActions.SuccessList,
         payload,
         callback: mockCallBack,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
+      expect(received.next).toEqual(payload.next);
+      expect(received.previous).toEqual(payload.previous);
       expect(received.error).toBe(false);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
@@ -236,6 +250,7 @@ export const ReducerTest = (
         payload,
         callback: mockCallBack,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(false);
@@ -252,6 +267,7 @@ export const ReducerTest = (
         type: ApiActions.FailureAdd,
         payload,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBe(mockErrorMessage);
       expect(received.inventory).toEqual([]);
       expect(received.error).toBe(true);
@@ -269,6 +285,7 @@ export const ReducerTest = (
         payload,
         callback: mockCallBack,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBe(mockErrorMessage);
       expect(received.inventory).toEqual([]);
       expect(received.error).toBe(true);
@@ -285,6 +302,7 @@ export const ReducerTest = (
         payload,
         callback: mockCallBack,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(true);
@@ -302,6 +320,7 @@ export const ReducerTest = (
         payload,
         callback: mockCallBack,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBe(mockErrorMessage);
       expect(received.inventory).toEqual([]);
       expect(received.error).toBe(true);
@@ -319,6 +338,7 @@ export const ReducerTest = (
         payload,
         callback: mockCallBack,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.error).toBe(true);
@@ -337,6 +357,7 @@ export const ReducerTest = (
         type: ApiActions.ClearErrors,
         callback: mockCallBack,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.error).toBe(false);
       expect(received.errorMessage).toBe(null);
       expect(received.class).toBe(classType);
@@ -352,6 +373,7 @@ export const ReducerTest = (
       const received = testReducer(state, {
         type: ApiActions.ClearErrors,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.error).toBe(false);
       expect(received.errorMessage).toBe(null);
       expect(received.class).toBe(classType);
@@ -363,11 +385,12 @@ export const ReducerTest = (
         ...InitialState,
         error: true,
         errorMessage: "Error",
-        transacton: true,
+        transaction: true,
       };
       const received = testReducer(state, {
         type: ApiActions.FailureAuth,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.error).toBe(false);
       expect(received.errorMessage).toBe(null);
       expect(received.transaction).toBe(false);
@@ -380,12 +403,13 @@ export const ReducerTest = (
         ...InitialState,
         error: true,
         errorMessage: "Error",
-        transacton: true,
+        transaction: true,
       };
       const received = testReducer(state, {
         type: ApiActions.FailureAuth,
         callback: mockCallBack,
       });
+      propCount(received, Object.keys(InitialState).length);
       expect(received.error).toBe(false);
       expect(received.errorMessage).toBe(null);
       expect(received.transaction).toBe(false);

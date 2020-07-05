@@ -1,8 +1,7 @@
+import genericInitialState from "../api.initial";
+
 const initialState = {
-  inventory: [],
-  transaction: false,
-  error: false,
-  errorMessage: null,
+  ...genericInitialState,
   class: "store",
 };
 
