@@ -29,10 +29,10 @@ const generateReducer = (async, name) => {
       case ApiActions.FailureList:
       case ApiActions.FailureUpdate:
         // Must return an error message to inform user
-        new Promise(function (resolve) {
-          if (action.callback)
+        if (action.callback)
+          new Promise(function (resolve) {
             action.callback({ success: false, complete: true });
-        });
+          });
         return {
           ...state,
           inventory: [...state.inventory],
@@ -46,10 +46,10 @@ const generateReducer = (async, name) => {
       case ApiActions.SuccessList:
       case ApiActions.SuccessUpdate:
         // Must return a new list of shelves
-        new Promise(function (resolve) {
-          if (action.callback)
+        if (action.callback)
+          new Promise(function (resolve) {
             action.callback({ success: true, complete: true });
-        });
+          });
         return {
           ...state,
           inventory: [...state.inventory],
@@ -60,10 +60,10 @@ const generateReducer = (async, name) => {
         };
       case ApiActions.ClearErrors:
         // Clears out any error message
-        new Promise(function (resolve) {
-          if (action.callback)
+        if (action.callback)
+          new Promise(function (resolve) {
             action.callback({ success: false, complete: false });
-        });
+          });
         return {
           ...state,
           inventory: [...state.inventory],
@@ -72,10 +72,10 @@ const generateReducer = (async, name) => {
         };
       case ApiActions.FailureAuth:
         // Clears out any error message, let's higher order components handle relogin
-        new Promise(function (resolve) {
-          if (action.callback)
+        if (action.callback)
+          new Promise(function (resolve) {
             action.callback({ success: false, complete: false });
-        });
+          });
         return {
           ...state,
           inventory: [...state.inventory],
