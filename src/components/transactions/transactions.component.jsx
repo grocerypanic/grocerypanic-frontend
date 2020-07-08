@@ -58,7 +58,8 @@ const TransactionsReview = ({ item, ready, tr }) => {
               .map((o, index) => {
                 return { y: o.quantity, x: index };
               })
-              .slice(Constants.maximumTransactions * -1),
+              .slice(Constants.maximumTransactions * -1)
+              .reverse(),
           },
           {
             label: t("ItemStats.GraphQuantity"),
