@@ -2,7 +2,7 @@ import { Paths } from "../../../configuration/backend";
 import match2xx from "../../../util/requests/status";
 import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
-import { apiResultCompare, convertDatesToLocal } from "../api.util.js";
+import { convertDatesToLocal } from "../api.util.js";
 
 const authFailure = (dispatch, callback) => {
   return new Promise(function (resolve) {
@@ -20,12 +20,11 @@ export const asyncAdd = async ({ state, action }) => {
   // Status Code is 2xx
   if (match2xx(status)) {
     return new Promise(function (resolve) {
-      const newInventory = [...state.inventory];
-      newInventory.push(convertDatesToLocal(response));
+      state.inventory.push(convertDatesToLocal(response));
       dispatch({
         type: ApiActions.SuccessAdd,
         payload: {
-          inventory: [...newInventory].sort(apiResultCompare),
+          inventory: state.inventory,
         },
         callback,
       });
@@ -52,7 +51,7 @@ export const asyncList = async ({ state, action }) => {
       dispatch({
         type: ApiActions.SuccessList,
         payload: {
-          inventory: processedResponse.sort(apiResultCompare),
+          inventory: processedResponse,
           next: response.next,
           previous: response.previous,
         },
