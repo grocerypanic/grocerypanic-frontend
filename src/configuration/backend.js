@@ -16,6 +16,7 @@ export const Constants = {
   minimumPrice: 0,
   maximumPrice: 9999,
   maximumTransactions: 50,
+  AnalyticsCookieName: "PanicDataConsent-" + process.env.NODE_ENV.toUpperCase(),
 };
 
 export const Providers = {

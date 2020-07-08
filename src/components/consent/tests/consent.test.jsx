@@ -5,7 +5,8 @@ import cookie from "cookie_js";
 
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 
-import Consent, { AnalyticsCookieName } from "../consent.component";
+import Consent from "../consent.component";
+import { Constants } from "../../../configuration/backend";
 
 import Strings from "../../../configuration/strings";
 
@@ -21,7 +22,7 @@ const mockAnalyticsSettings = {
 describe("Check Error Rendering", () => {
   describe("Without a consent cookie present", () => {
     beforeEach(() => {
-      cookie.remove(AnalyticsCookieName);
+      cookie.remove(Constants.AnalyticsCookieName);
       mockSetup.mockClear();
       CookieConsent.mockClear();
       render(
@@ -48,7 +49,7 @@ describe("Check Error Rendering", () => {
 
   describe("With a consent cookie present", () => {
     beforeEach(() => {
-      cookie.set(AnalyticsCookieName, "true");
+      cookie.set(Constants.AnalyticsCookieName, "true");
       mockSetup.mockClear();
       CookieConsent.mockClear();
       render(
