@@ -69,7 +69,10 @@ export const asyncDel = async ({ state, action }) => {
 
 export const asyncList = async ({ state, action }) => {
   const { dispatch, callback } = action;
-  const [response, status] = await Request("GET", Paths.manageShelves);
+  const [response, status] = await Request(
+    "GET",
+    action.override ? action.override : Paths.manageShelves
+  );
   if (match2xx(status)) {
     const processedResponse = response.results.map((i) =>
       convertDatesToLocal(i)

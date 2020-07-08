@@ -116,7 +116,7 @@ export const AsyncTest = (
       if (implemented.includes(ApiFunctions.asyncList)) {
         it("should call the API, and then dispatch correctly when asyncList is called", async (done) => {
           action = {
-            payload: { ...mockObject },
+            payload: { id: mockObject.id }, // Support Transaction Lookups
             dispatch: mockDispatch,
             callback: mockCallBack,
           };
@@ -140,6 +140,44 @@ export const AsyncTest = (
             "GET",
             apiEndpoint + optionalListParams
           );
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.SuccessList,
+            payload: {
+              inventory: [{ ...comparisonObject }],
+              next: "next",
+              previous: "previous",
+            },
+            callback: mockCallBack,
+          });
+          done();
+        });
+      }
+
+      if (implemented.includes(ApiFunctions.asyncList)) {
+        it("should call the API, and then dispatch correctly when asyncList is called with a override argument", async (done) => {
+          action = {
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+            override: "http://paginated.target.url/from/django/api",
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push({ ...mockObject });
+          Request.mockReturnValue([
+            {
+              results: [{ ...mockObject }],
+              next: "next",
+              previous: "previous",
+            },
+            responseCode,
+          ]);
+
+          asyncFn.asyncList({ state: State2, action });
+
+          expect(Request).toBeCalledWith("GET", action.override);
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.SuccessList,

@@ -116,7 +116,7 @@ export const asyncList = async ({ state, action }) => {
   }
   const [response, status] = await Request(
     "GET",
-    Paths.manageItems + filterPath
+    action.override ? action.override : Paths.manageItems + filterPath
   );
   if (match2xx(status)) {
     const processedResponse = response.results.map((i) =>

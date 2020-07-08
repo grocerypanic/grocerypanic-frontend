@@ -45,7 +45,10 @@ export const asyncList = async ({ state, action }) => {
   const { dispatch, callback } = action;
   const [response, status] = await Request(
     "GET",
-    Paths.manageTransactions + `?item=${encodeURIComponent(action.payload.id)}`
+    action.override
+      ? action.override
+      : Paths.manageTransactions +
+          `?item=${encodeURIComponent(action.payload.id)}`
   );
   if (match2xx(status)) {
     const processedResponse = response.results.map((i) =>
