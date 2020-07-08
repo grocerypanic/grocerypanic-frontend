@@ -13,6 +13,11 @@ const logMessage = (when, name, state, action) => {
     `%c ** ${name} ${when} ${action.type}:`,
     "color: blue; font-weight: bold;"
   );
+  console.log(
+    "%c   Time:",
+    "color: red; font-weight: bold;",
+    Date.now() / 1000
+  );
   console.log("%c   State:", "color: green; font-weight: bold;", state);
   console.log("%c   Action:", "color: green; font-weight: bold;", action);
 };

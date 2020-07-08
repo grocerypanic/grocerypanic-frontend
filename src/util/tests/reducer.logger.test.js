@@ -1,5 +1,8 @@
 import withReducer from "../reducer.logger.js";
 
+// Freeze Time
+Date.now = jest.fn(() => new Date("2019-06-16T11:01:58.135Z"));
+
 describe("Check Logging Functionality", () => {
   const original_environment = process.env;
   let originalLogger;
@@ -48,6 +51,7 @@ describe("Check Logging Functionality", () => {
         "color: blue; font-weight: bold;",
         undefined,
       ],
+      ["%c   Time:", "color: red; font-weight: bold;", 1560682918.135],
       ["%c   State:", "color: green; font-weight: bold;", state],
       ["%c   Action:", "color: green; font-weight: bold;", action],
       [
@@ -55,6 +59,7 @@ describe("Check Logging Functionality", () => {
         "color: blue; font-weight: bold;",
         undefined,
       ],
+      ["%c   Time:", "color: red; font-weight: bold;", 1560682918.135],
       ["%c   State:", "color: green; font-weight: bold;", state],
       ["%c   Action:", "color: green; font-weight: bold;", action],
     ]);
