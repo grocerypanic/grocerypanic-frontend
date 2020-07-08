@@ -1,6 +1,6 @@
 import moment from "moment";
 
-import { apiResultCompare, convertDatesToLocal } from "../api.util";
+import { apiResultCompare, generateConverter } from "../api.util";
 
 const mockItem = {
   id: 99,
@@ -18,7 +18,7 @@ const mockItem = {
 const mockTransaction = {
   id: 99,
   item: 22,
-  date: "2020-01-15",
+  datetime: "2020-01-15",
   quantity: 5,
 };
 
@@ -29,7 +29,7 @@ const withNames = [
 
 const withIDs = [{ id: 1 }, { id: 2 }];
 
-describe("Setup Environment", () => {
+describe("Setup Environment for Object Sorting", () => {
   beforeEach(() => {});
 
   it("should handle greater than with name", () => {
@@ -57,54 +57,64 @@ describe("Setup Environment", () => {
   });
 });
 
-describe("Check convertDatesToLocal works as expect", () => {
-  it("should convert item expiry when given a string as input", () => {
-    const testDate = "2020-01-01";
-    const testDateAsDate = moment.utc(testDate).unix();
-    let expected = testDateAsDate + moment().utcOffset() * 60;
-    expected = moment
-      .unix(expected)
-      .set({ hour: 23, minute: 59, second: 59, millisecond: 999 })
-      .unix();
+describe("Check generateConverter works as expected", () => {
+  let convertDatesToLocal;
 
-    const testObject = { ...mockItem, next_expiry_date: testDate };
-    const converted = convertDatesToLocal(testObject);
+  describe("when working on items", () => {
+    beforeEach(() => {
+      convertDatesToLocal = generateConverter("item");
+    });
 
-    expect(expected).toBe(converted.next_expiry_date.unix());
+    it("should convert item expiry when given a string as input", () => {
+      convertDatesToLocal = generateConverter("item");
+      const testDate = "2020-01-01";
+      const testDateAsDate = moment.utc(testDate).unix();
+      let expected = testDateAsDate + moment().utcOffset() * 60;
+      expected = moment
+        .unix(expected)
+        .set({ hour: 23, minute: 59, second: 59, millisecond: 999 })
+        .unix();
+
+      const testObject = { ...mockItem, next_expiry_date: testDate };
+      const converted = convertDatesToLocal(testObject);
+
+      expect(expected).toBe(converted.next_expiry_date.unix());
+    });
+
+    it("should return an untouched item expiry when given a moment object as input", () => {
+      const testDate = "2020-01-01";
+      const testDateAsDate = moment.utc(testDate);
+
+      const testObject = { ...mockItem, next_expiry_date: testDateAsDate };
+      const converted = convertDatesToLocal(testObject);
+
+      expect(converted).toBe(testObject);
+    });
   });
 
-  it("should convert transaction date when given a string as input", () => {
-    const testDate = "2020-01-01";
-    const testDateAsDate = moment.utc(testDate).unix();
-    let expected = testDateAsDate + moment().utcOffset() * 60;
-    expected = moment
-      .unix(expected)
-      .set({ hour: 23, minute: 59, second: 59, millisecond: 999 })
-      .unix();
+  describe("when working on transactions", () => {
+    beforeEach(() => {
+      convertDatesToLocal = generateConverter("transaction");
+    });
 
-    const testObject = { ...mockTransaction, date: testDate };
-    const converted = convertDatesToLocal(testObject);
+    it("should convert transaction date when given a string as input", () => {
+      const testDate = "2020-01-01";
+      const testDateAsDate = moment.utc(testDate);
 
-    expect(expected).toBe(converted.date.unix());
-  });
+      const testObject = { ...mockTransaction, datetime: testDate };
+      const converted = convertDatesToLocal(testObject);
 
-  it("should return an untouched item expiry when given a moment object as input", () => {
-    const testDate = "2020-01-01";
-    const testDateAsDate = moment.utc(testDate);
+      expect(testDateAsDate).toStrictEqual(converted.datetime);
+    });
 
-    const testObject = { ...mockItem, next_expiry_date: testDateAsDate };
-    const converted = convertDatesToLocal(testObject);
+    it("should return an untouched item expiry when given a moment object as input", () => {
+      const testDate = "2020-01-01";
+      const testDateAsDate = moment.utc(testDate);
 
-    expect(converted).toBe(testObject);
-  });
+      const testObject = { ...mockTransaction, datetime: testDateAsDate };
+      const converted = convertDatesToLocal(testObject);
 
-  it("should return an untouched transaction date when given a moment object as input", () => {
-    const testDate = "2020-01-01";
-    const testDateAsDate = moment.utc(testDate);
-
-    const testObject = { ...mockTransaction, date: testDateAsDate };
-    const converted = convertDatesToLocal(testObject);
-
-    expect(converted).toBe(testObject);
+      expect(converted).toBe(testObject);
+    });
   });
 });

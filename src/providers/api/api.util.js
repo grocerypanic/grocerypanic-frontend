@@ -1,6 +1,9 @@
 import moment from "moment";
 
-const DATEFIELDS = ["next_expiry_date", "date"];
+const DATEFIELDS = {
+  item: "next_expiry_date",
+  transaction: "datetime",
+};
 
 export const apiResultCompare = (a, b) => {
   let name1, name2;
@@ -22,30 +25,28 @@ export const apiResultCompare = (a, b) => {
   return comparison;
 };
 
-export const convertDatesToLocal = (object) => {
-  let alreadyConverted = false;
-  DATEFIELDS.forEach((field) => {
-    if (object[field]) {
-      if (typeof object[field] === "object") alreadyConverted = true;
+export const generateConverter = (objectClass) => {
+  let field = DATEFIELDS[objectClass];
+  const convertToMoment = (object) => {
+    let converted_value;
+    switch (field) {
+      case "next_expiry_date":
+        if (typeof object[field] === "object") return object;
+        converted_value = moment.utc(object[field]).unix();
+        converted_value = moment
+          .unix(converted_value)
+          .add(moment().utcOffset(), "minutes")
+          .set({ hour: 23, minute: 59, second: 59, millisecond: 999 });
+        object[field] = converted_value;
+        return object;
+      case "datetime":
+        if (typeof object[field] === "object") return object;
+        converted_value = moment.utc(object[field]);
+        object[field] = converted_value;
+        return object;
+      default:
+        return object;
     }
-    return false;
-  });
-
-  if (alreadyConverted) return object;
-
-  let newItem = { ...object };
-
-  DATEFIELDS.forEach((field) => {
-    if (newItem[field]) {
-      // Convert To Unix Time
-      newItem[field] = moment.utc(object[field]).unix();
-      // Add timezone offset, and set to end of day
-      newItem[field] = moment
-        .unix(newItem[field])
-        .add(moment().utcOffset(), "minutes")
-        .set({ hour: 23, minute: 59, second: 59, millisecond: 999 });
-    }
-  });
-
-  return newItem;
+  };
+  return convertToMoment;
 };

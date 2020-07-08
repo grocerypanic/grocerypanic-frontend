@@ -2,10 +2,13 @@ import { waitFor } from "@testing-library/react";
 
 import ApiActions from "../api.actions";
 import ApiFunctions from "../api.functions";
-import { convertDatesToLocal } from "../api.util";
+import { generateConverter } from "../api.util";
 
 import Request from "../../../util/requests";
 jest.mock("../../../util/requests");
+
+// Freeze Time
+Date.now = jest.fn(() => new Date("2019-06-16T11:01:58.135Z"));
 
 export const AsyncTest = (
   apiEndpoint,
@@ -17,18 +20,20 @@ export const AsyncTest = (
   const mockDispatch = jest.fn();
   const mockCallBack = jest.fn();
 
+  const convertDatesToLocal = generateConverter(initialState.class);
+
   const mockObject = {
     id: 1,
     name: "MockObject",
     next_expiry_date: "2020-01-01",
-    date: "2020-01-01",
+    datetime: "2020-01-01",
   };
 
   const mockObject2 = {
     id: 2,
     name: "MockObject",
     next_expiry_date: "2021-01-01",
-    date: "2021-01-01",
+    datetime: "2021-01-01",
   };
 
   const comparisonObject = convertDatesToLocal(mockObject);
@@ -58,7 +63,7 @@ export const AsyncTest = (
             ...State1,
             inventory: [...State1.inventory],
           };
-          State2.inventory.push({ ...comparisonObject });
+          State2.inventory.unshift({ ...comparisonObject });
 
           asyncFn.asyncAdd({ state: State1, action });
 
@@ -71,6 +76,7 @@ export const AsyncTest = (
             payload: {
               inventory: State2.inventory,
             },
+            callback: undefined,
           });
           done();
         });

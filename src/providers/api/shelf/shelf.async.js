@@ -2,7 +2,11 @@ import { Paths } from "../../../configuration/backend";
 import match2xx from "../../../util/requests/status";
 import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
-import { apiResultCompare, convertDatesToLocal } from "../api.util.js";
+
+import { generateConverter } from "../api.util.js";
+import InitialState from "./shelf.initial";
+
+const convertDatesToLocal = generateConverter(InitialState.class);
 
 const authFailure = (dispatch, callback) => {
   return new Promise(function (resolve) {
@@ -23,7 +27,7 @@ export const asyncAdd = async ({ state, action }) => {
       dispatch({
         type: ApiActions.SuccessAdd,
         payload: {
-          inventory: [...newInventory].sort(apiResultCompare),
+          inventory: [...newInventory],
         },
         callback,
       });
@@ -48,9 +52,9 @@ export const asyncDel = async ({ state, action }) => {
       dispatch({
         type: ApiActions.SuccessDel,
         payload: {
-          inventory: state.inventory
-            .filter((item) => item.id !== action.payload.id)
-            .sort(apiResultCompare),
+          inventory: state.inventory.filter(
+            (item) => item.id !== action.payload.id
+          ),
         },
         callback,
       });
@@ -74,7 +78,7 @@ export const asyncList = async ({ state, action }) => {
       dispatch({
         type: ApiActions.SuccessList,
         payload: {
-          inventory: processedResponse.sort(apiResultCompare),
+          inventory: processedResponse,
           next: response.next,
           previous: response.previous,
         },

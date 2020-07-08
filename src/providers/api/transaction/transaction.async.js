@@ -2,7 +2,11 @@ import { Paths } from "../../../configuration/backend";
 import match2xx from "../../../util/requests/status";
 import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
-import { convertDatesToLocal } from "../api.util.js";
+
+import { generateConverter } from "../api.util.js";
+import InitialState from "./transaction.initial";
+
+const convertDatesToLocal = generateConverter(InitialState.class);
 
 const authFailure = (dispatch, callback) => {
   return new Promise(function (resolve) {

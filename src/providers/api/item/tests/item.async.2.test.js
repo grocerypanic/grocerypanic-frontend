@@ -1,7 +1,7 @@
 import { waitFor } from "@testing-library/react";
 
 import ApiActions from "../../api.actions";
-import { convertDatesToLocal } from "../../api.util.js";
+import { generateConverter } from "../../api.util.js";
 
 import Request from "../../../../util/requests";
 import initialState from "../item.initial";
@@ -9,6 +9,8 @@ import { ItemFilters, FilterTag } from "../../../../configuration/backend";
 
 import { Paths } from "../../../../configuration/backend";
 import { asyncList } from "../item.async";
+
+const convertDatesToLocal = generateConverter(initialState.class);
 
 jest.mock("../../../../util/requests");
 const mockDispatch = jest.fn();
@@ -73,9 +75,8 @@ describe("Check asyncList handles filtering results correctly", () => {
       ...State1,
       inventory: [...State1.inventory],
     };
-    // Enforces Sort Order
-    State2.inventory.push({ ...mockItem2 });
     State2.inventory.push({ ...mockItem1 });
+    State2.inventory.push({ ...mockItem2 });
 
     asyncList({ state: State2, action });
 
@@ -113,9 +114,8 @@ describe("Check asyncList handles filtering results correctly", () => {
       ...State1,
       inventory: [...State1.inventory],
     };
-    // Enforces Sort Order
-    State2.inventory.push({ ...mockItem2 });
     State2.inventory.push({ ...mockItem1 });
+    State2.inventory.push({ ...mockItem2 });
 
     asyncList({ state: State2, action });
 
@@ -153,9 +153,8 @@ describe("Check asyncList handles filtering results correctly", () => {
       ...State1,
       inventory: [...State1.inventory],
     };
-    // Enforces Sort Order
-    State2.inventory.push({ ...mockItem2 });
     State2.inventory.push({ ...mockItem1 });
+    State2.inventory.push({ ...mockItem2 });
 
     asyncList({ state: State2, action });
 
