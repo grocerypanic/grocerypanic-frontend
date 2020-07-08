@@ -25,7 +25,6 @@ const TransactionsReview = ({ item, ready, tr }) => {
 
     const calculateQuantity = () => {
       const quantity = tr
-        .reverse()
         .map((o) => {
           accumulate -= o.quantity;
           return accumulate;
@@ -95,21 +94,26 @@ const TransactionsReview = ({ item, ready, tr }) => {
     };
   }, [tr, ready]); // eslint-disable-line
 
-  const consumedWithinLastWeek = () => {
-    const results = tr.filter((o) => o.quantity < 0 && isWithinAWeek(o.date));
+  const consumedWithinLastWeek = (transaction_values) => {
+    const results = transaction_values.filter(
+      (o) => o.quantity < 0 && isWithinAWeek(o.datetime)
+    );
     return Math.abs(results.reduce((c, o) => (c += o.quantity), 0));
   };
 
-  const consumedWithinLastMonth = () => {
-    const results = tr.filter((o) => o.quantity < 0 && isWithinAMonth(o.date));
+  const consumedWithinLastMonth = (transaction_values) => {
+    const results = transaction_values.filter(
+      (o) => o.quantity < 0 && isWithinAMonth(o.datetime)
+    );
     return Math.abs(results.reduce((c, o) => (c += o.quantity), 0));
   };
 
-  const averageWeeklyConsumption = () => {
+  const averageWeeklyConsumption = (transaction_values) => {
     const results = {};
-    tr.forEach((o) => {
+    transaction_values.forEach((o) => {
       if (o.quantity > 0) return;
-      const header = String(o.date.isoWeekYear()) + String(o.date.isoWeek());
+      const header =
+        String(o.datetime.isoWeekYear()) + String(o.datetime.isoWeek());
       if (results[header]) {
         results[header] += o.quantity;
       } else {
@@ -122,11 +126,11 @@ const TransactionsReview = ({ item, ready, tr }) => {
     return avg;
   };
 
-  const averageMonthlyConsumption = () => {
+  const averageMonthlyConsumption = (transaction_values) => {
     const results = {};
-    tr.forEach((o) => {
+    transaction_values.forEach((o) => {
       if (o.quantity > 0) return;
-      const header = String(o.date.year()) + String(o.date.month());
+      const header = String(o.datetime.year()) + String(o.datetime.month());
       if (results[header]) {
         results[header] += o.quantity;
       } else {
@@ -197,19 +201,21 @@ const TransactionsReview = ({ item, ready, tr }) => {
                 </tr>
                 <tr>
                   <td>{t("ItemStats.ConsumptionConsumedLastWeek")}</td>
-                  <td data-testid="lastWeek">{consumedWithinLastWeek()}</td>
+                  <td data-testid="lastWeek">{consumedWithinLastWeek(tr)}</td>
                 </tr>
                 <tr>
                   <td>{t("ItemStats.ConsumptionConsumedLastMonth")}</td>
-                  <td data-testid="lastMonth">{consumedWithinLastMonth()}</td>
+                  <td data-testid="lastMonth">{consumedWithinLastMonth(tr)}</td>
                 </tr>
                 <tr>
                   <td>{t("ItemStats.ConsumptionAvgWeek")}</td>
-                  <td data-testid="avgWeek">{averageWeeklyConsumption()}</td>
+                  <td data-testid="avgWeek">{averageWeeklyConsumption(tr)}</td>
                 </tr>
                 <tr>
                   <td>{t("ItemStats.ConsumptionAvgMonth")}</td>
-                  <td data-testid="avgMonth">{averageMonthlyConsumption()}</td>
+                  <td data-testid="avgMonth">
+                    {averageMonthlyConsumption(tr)}
+                  </td>
                 </tr>
               </tbody>
             </Table>

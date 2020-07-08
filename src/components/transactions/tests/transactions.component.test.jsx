@@ -7,9 +7,11 @@ import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 import TransactionsReview from "../transactions.component";
 
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
+import InitialState from "../../../providers/api/transaction/transaction.initial";
+import ItemInitialState from "../../../providers/api/item/item.initial";
 
 import Strings from "../../../configuration/strings";
-import { convertDatesToLocal } from "../../../providers/api/api.util";
+import { generateConverter } from "../../../providers/api/api.util";
 import { graph } from "../../../configuration/theme";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
@@ -31,7 +33,10 @@ const OriginalDate = Date.now;
 const mockDate = () =>
   (Date.now = jest.fn(() => new Date("2020-06-16T11:01:58.135Z")));
 
-const mockItem = convertDatesToLocal({
+const convertDatesToLocal = generateConverter(InitialState.class);
+const convertItemDatesToLocal = generateConverter(ItemInitialState.class);
+
+const mockItem = convertItemDatesToLocal({
   expired: 0,
   id: 1,
   name: "Vegan Cheese",
@@ -45,16 +50,17 @@ const mockItem = convertDatesToLocal({
 });
 
 const mockTransactions = [
-  { id: 1, item: 1, date: "2019-09-15", quantity: -5 },
-  { id: 2, item: 1, date: "2019-10-15", quantity: 5 },
-  { id: 3, item: 1, date: "2019-11-15", quantity: -5 },
-  { id: 4, item: 1, date: "2019-12-15", quantity: 5 },
-  { id: 5, item: 1, date: "2020-01-15", quantity: -5 },
-  { id: 6, item: 1, date: "2020-02-15", quantity: 5 },
-  { id: 7, item: 1, date: "2020-03-15", quantity: 5 },
-  { id: 8, item: 1, date: "2020-06-05", quantity: -1 },
-  { id: 9, item: 1, date: "2020-06-10", quantity: -3 },
-  { id: 10, item: 1, date: "2020-06-15", quantity: -3 },
+  { id: 1, item: 1, datetime: "2019-09-15", quantity: -5 },
+  { id: 2, item: 1, datetime: "2019-10-15", quantity: 5 },
+  { id: 3, item: 1, datetime: "2019-11-15", quantity: -5 },
+  { id: 4, item: 1, datetime: "2019-12-15", quantity: 5 },
+  { id: 5, item: 1, datetime: "2020-01-15", quantity: -5 },
+  { id: 5, item: 1, datetime: "2020-01-16", quantity: -5 },
+  { id: 6, item: 1, datetime: "2020-02-15", quantity: 5 },
+  { id: 7, item: 1, datetime: "2020-03-15", quantity: 5 },
+  { id: 8, item: 1, datetime: "2020-06-05", quantity: -1 },
+  { id: 9, item: 1, datetime: "2020-06-10", quantity: -3 },
+  { id: 10, item: 1, datetime: "2020-06-15", quantity: -3 },
 ].map((o) => convertDatesToLocal(o));
 
 describe("Setup Environment", () => {
@@ -110,14 +116,14 @@ describe("Setup Environment", () => {
         expect(
           utils.queryByText(`${Strings.ItemStats.ConsumptionAvgWeek}`)
         ).toBeTruthy();
-        expect(utils.getByTestId("avgWeek").textContent).toBe("4.4");
+        expect(utils.getByTestId("avgWeek").textContent).toBe("4.5");
       });
 
       it("should display weekly consumption data", () => {
         expect(
           utils.queryByText(`${Strings.ItemStats.ConsumptionAvgMonth}`)
         ).toBeTruthy();
-        expect(utils.getByTestId("avgMonth").textContent).toBe("5.5");
+        expect(utils.getByTestId("avgMonth").textContent).toBe("6.8");
       });
 
       it("should call the holding pattern with expected arguments", async (done) => {
