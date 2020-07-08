@@ -9,4 +9,8 @@ export const PaginationControl = styled.div`
     padding-bottom: 2px;
     cursor: pointer;
   }
+  .page-message {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 `;

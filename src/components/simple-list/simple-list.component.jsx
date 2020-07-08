@@ -12,6 +12,7 @@ import ErrorHandler from "../error-handler/error-handler.component";
 import SimpleListItem from "../simple-list-item/simple-list-item.component";
 import Hint from "../hint/hint.component";
 import Alert from "../alert/alert.component";
+import Pagination from "../pagination/pagination.component";
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
 import Routes from "../../configuration/routes";
@@ -121,6 +122,16 @@ const SimpleList = ({
     setPerformAsync({ type: ApiActions.ClearErrors });
   };
 
+  const handlePagination = (page) => {
+    setPerformAsync({
+      type: ApiActions.StartList,
+      func: ApiFuctions.asyncList,
+      dispatch: setPerformAsync,
+      callback: setItemsFetched,
+      override: page,
+    });
+  };
+
   // Bundle Up Props For List Items
 
   const listFunctions = {
@@ -150,7 +161,11 @@ const SimpleList = ({
         redirect={Routes.goBack}
       >
         <HoldingPattern condition={!itemsFetched.complete && waitForApi}>
-          <Container>
+          <Container tabs={true}>
+            <Pagination
+              apiObject={apiObject}
+              handlePagination={handlePagination}
+            />
             <Paper>
               {errorMsg && created ? (
                 <ItemizedBanner className="alert alert-danger">
