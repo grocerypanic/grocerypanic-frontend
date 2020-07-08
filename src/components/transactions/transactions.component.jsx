@@ -6,7 +6,13 @@ import PropTypes from "prop-types";
 
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
-import { isWithinAWeek, isWithinAMonth, nextWeek } from "../../util/datetime";
+import { nextWeek } from "../../util/datetime";
+import {
+  consumedWithinLastWeek,
+  consumedWithinLastMonth,
+  averageWeeklyConsumption,
+  averageMonthlyConsumption,
+} from "../../util/consumption";
 
 import { Constants } from "../../configuration/backend";
 import { graph } from "../../configuration/theme";
@@ -93,55 +99,6 @@ const TransactionsReview = ({ item, ready, tr }) => {
       ActivityChart.destroy();
     };
   }, [tr, ready]); // eslint-disable-line
-
-  const consumedWithinLastWeek = (transaction_values) => {
-    const results = transaction_values.filter(
-      (o) => o.quantity < 0 && isWithinAWeek(o.datetime)
-    );
-    return Math.abs(results.reduce((c, o) => (c += o.quantity), 0));
-  };
-
-  const consumedWithinLastMonth = (transaction_values) => {
-    const results = transaction_values.filter(
-      (o) => o.quantity < 0 && isWithinAMonth(o.datetime)
-    );
-    return Math.abs(results.reduce((c, o) => (c += o.quantity), 0));
-  };
-
-  const averageWeeklyConsumption = (transaction_values) => {
-    const results = {};
-    transaction_values.forEach((o) => {
-      if (o.quantity > 0) return;
-      const header =
-        String(o.datetime.isoWeekYear()) + String(o.datetime.isoWeek());
-      if (results[header]) {
-        results[header] += o.quantity;
-      } else {
-        results[header] = o.quantity;
-      }
-    });
-    if (Object.values(results).length === 0) return 0;
-    const sum = Object.values(results).reduce((a, b) => a + b, 0);
-    const avg = Math.abs(sum / Object.values(results).length).toFixed(1);
-    return avg;
-  };
-
-  const averageMonthlyConsumption = (transaction_values) => {
-    const results = {};
-    transaction_values.forEach((o) => {
-      if (o.quantity > 0) return;
-      const header = String(o.datetime.year()) + String(o.datetime.month());
-      if (results[header]) {
-        results[header] += o.quantity;
-      } else {
-        results[header] = o.quantity;
-      }
-    });
-    if (Object.values(results).length === 0) return 0;
-    const sum = Object.values(results).reduce((a, b) => a + b, 0);
-    const avg = Math.abs(sum / Object.values(results).length).toFixed(1);
-    return avg;
-  };
 
   const calculateExpired = () => {
     if (item.expired > 0) return true;

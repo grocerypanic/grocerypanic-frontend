@@ -55,12 +55,12 @@ const mockTransactions = [
   { id: 3, item: 1, datetime: "2019-11-15", quantity: -5 },
   { id: 4, item: 1, datetime: "2019-12-15", quantity: 5 },
   { id: 5, item: 1, datetime: "2020-01-15", quantity: -5 },
-  { id: 5, item: 1, datetime: "2020-01-16", quantity: -5 },
-  { id: 6, item: 1, datetime: "2020-02-15", quantity: 5 },
-  { id: 7, item: 1, datetime: "2020-03-15", quantity: 5 },
-  { id: 8, item: 1, datetime: "2020-06-05", quantity: -1 },
-  { id: 9, item: 1, datetime: "2020-06-10", quantity: -3 },
-  { id: 10, item: 1, datetime: "2020-06-15", quantity: -3 },
+  { id: 6, item: 1, datetime: "2020-01-16", quantity: -5 },
+  { id: 7, item: 1, datetime: "2020-02-15", quantity: 5 },
+  { id: 8, item: 1, datetime: "2020-03-15", quantity: 5 },
+  { id: 9, item: 1, datetime: "2020-06-05", quantity: -1 },
+  { id: 10, item: 1, datetime: "2020-06-10", quantity: -3 },
+  { id: 11, item: 1, datetime: "2020-06-15", quantity: -3 },
 ].map((o) => convertDatesToLocal(o));
 
 describe("Setup Environment", () => {
