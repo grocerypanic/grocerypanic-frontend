@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  render,
-  cleanup,
-  act,
-  waitFor,
-  fireEvent,
-} from "@testing-library/react";
+import { render, waitFor, fireEvent } from "@testing-library/react";
 
 import Pagination from "../pagination.component";
 
