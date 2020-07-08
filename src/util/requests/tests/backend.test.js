@@ -16,9 +16,66 @@ let contentType;
 let sourceData;
 let requestPath = "/somePath";
 
+const originalEnvironment = process.env.REACT_APP_PANIC_BACKEND;
+const phonyServer = "http://phonyserver";
+
 describe("test the Backend method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    process.env.REACT_APP_PANIC_BACKEND = phonyServer;
+  });
+
+  afterEach(() => {
+    process.env.REACT_APP_PANIC_BACKEND = originalEnvironment;
+  });
+
+  it("handle a 200 get request as expected, when content type is json, and path is overriden", async (done) => {
+    process.env.REACT_APP_PANIC_BACKEND = "http://mybackendserver";
+
+    statusCode = 200;
+    responseData = { data: "Valuable Data" };
+    contentType = "application/json";
+    mockLocalStorage.mockImplementation(() => "MockCSRFtoken");
+    mockFetch.mockImplementation(() =>
+      Promise.resolve({
+        headers: { get: () => contentType },
+        json: () => Promise.resolve(responseData),
+        status: statusCode,
+      })
+    );
+
+    const [response, status] = await Backend(
+      "GET",
+      `${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
+    );
+
+    expect(mockFetch).toBeCalledWith(
+      `${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`,
+      {
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      }
+    );
+
+    expect(status).toBe(statusCode);
+    expect(response).toBe(responseData);
+
+    expect(debug).toBeCalledTimes(4);
+    expect(debug).toBeCalledWith(
+      `API GET:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
+    );
+    expect(debug).toBeCalledWith(`API Response Status Code:\n 200`);
+    expect(debug).toBeCalledWith(`API Response Data:\n`);
+    expect(debug).toBeCalledWith(responseData);
+
+    // Safe Method for CSRF no token lookup
+    expect(mockLocalStorage).toBeCalledTimes(0);
+
+    done();
   });
 
   it("handle a 200 get request as expected, when content type is json", async (done) => {
@@ -36,7 +93,7 @@ describe("test the Backend method", () => {
 
     const [response, status] = await Backend("GET", requestPath);
 
-    expect(mockFetch).toBeCalledWith(requestPath, {
+    expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
       credentials: "include",
       headers: {
         Accept: "application/json",
@@ -77,7 +134,7 @@ describe("test the Backend method", () => {
 
     const [response, status] = await Backend("GET", requestPath);
 
-    expect(mockFetch).toBeCalledWith(requestPath, {
+    expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
       credentials: "include",
       headers: {
         Accept: "application/json",
@@ -118,7 +175,7 @@ describe("test the Backend method", () => {
 
     const [response, status] = await Backend("GET", requestPath);
 
-    expect(mockFetch).toBeCalledWith(requestPath, {
+    expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
       credentials: "include",
       headers: {
         Accept: "application/json",
@@ -158,7 +215,7 @@ describe("test the Backend method", () => {
 
     const [response, status] = await Backend("POST", requestPath, sourceData);
 
-    expect(mockFetch).toBeCalledWith(requestPath, {
+    expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
       body: JSON.stringify(sourceData),
       credentials: "include",
       headers: {
@@ -203,7 +260,7 @@ describe("test the Backend method", () => {
 
     const [response, status] = await Backend("POST", requestPath, sourceData);
 
-    expect(mockFetch).toBeCalledWith(requestPath, {
+    expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
       body: JSON.stringify(sourceData),
       credentials: "include",
       headers: {

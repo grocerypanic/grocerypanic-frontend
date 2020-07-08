@@ -2,7 +2,15 @@ import debug from "../debug";
 import { Constants, SafeMethods } from "../../configuration/backend";
 
 const Backend = (method, path, data = null) => {
-  debug(`API ${method}:\n ${process.env.REACT_APP_PANIC_BACKEND}${path}`);
+  // Prepend Backend Hostname and Protocol If Needed
+  let url;
+  if (!path.includes(process.env.REACT_APP_PANIC_BACKEND)) {
+    url = `${process.env.REACT_APP_PANIC_BACKEND}${path}`;
+  } else {
+    url = path;
+  }
+
+  debug(`API ${method}:\n ${url}`);
   if (data) debug(`Body:\n ${JSON.stringify(data)}`);
   let csrf;
   let statusCode;
@@ -22,10 +30,7 @@ const Backend = (method, path, data = null) => {
     if (csrf) options.headers[Constants.csrfHeaderName] = csrf;
   }
 
-  const response = fetch(
-    `${process.env.REACT_APP_PANIC_BACKEND}${path}`,
-    options
-  )
+  const response = fetch(url, options)
     .then(async (fetchResponse) => {
       const contentType = fetchResponse.headers.get("content-type");
       statusCode = fetchResponse.status;
