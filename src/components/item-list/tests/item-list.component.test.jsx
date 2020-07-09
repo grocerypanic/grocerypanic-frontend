@@ -96,7 +96,7 @@ const mockItems = [
 
 const mockDataState = {
   transaction: false,
-  error: false,
+  fail: false,
   errorMsg: null,
 };
 
@@ -181,9 +181,9 @@ describe("Setup Environment", () => {
     expect(call.listFunctions.consume.name).toBe("handleConsume");
   };
 
-  describe("outside of an error", () => {
+  describe("outside of a failure", () => {
     beforeEach(() => {
-      current.error = false;
+      current.fail = false;
     });
     describe("outside of a transaction", () => {
       beforeEach(() => {
@@ -954,9 +954,9 @@ describe("Setup Environment", () => {
     });
   });
 
-  describe("during an error", () => {
+  describe("during an api failure", () => {
     beforeEach(() => {
-      current.error = true;
+      current.fail = true;
       let history = createBrowserHistory();
       history.push(Routes.items);
       const itemContext = {

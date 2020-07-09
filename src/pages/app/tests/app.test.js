@@ -54,7 +54,7 @@ describe("Check Routing", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    setup = { state: { error: false } };
+    setup = { state: { fail: false } };
   });
 
   afterEach(cleanup);

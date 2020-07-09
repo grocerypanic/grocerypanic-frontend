@@ -2,6 +2,7 @@ import ApiActions from "../api.actions";
 
 import withMiddleware from "../../../util/user.middleware";
 import reducerLoggingMiddleware from "../../../util/reducer.logger";
+import ApiMessages from "../api.messages";
 
 const generateReducer = (async, name) => {
   const reducer = (state, action) => {
@@ -36,7 +37,7 @@ const generateReducer = (async, name) => {
         return {
           ...state,
           inventory: [...state.inventory],
-          error: true,
+          fail: true,
           transaction: false,
           ...action.payload,
         };
@@ -54,7 +55,7 @@ const generateReducer = (async, name) => {
           ...state,
           inventory: [...state.inventory],
           errorMessage: null,
-          error: false,
+          fail: false,
           transaction: false,
           ...action.payload,
         };
@@ -68,7 +69,7 @@ const generateReducer = (async, name) => {
           ...state,
           inventory: [...state.inventory],
           errorMessage: null,
-          error: false,
+          fail: false,
         };
       case ApiActions.FailureAuth:
         // Clears out any error message, let's higher order components handle relogin
@@ -81,7 +82,7 @@ const generateReducer = (async, name) => {
           inventory: [...state.inventory],
           transaction: false,
           errorMessage: null,
-          error: false,
+          fail: false,
         };
       case ApiActions.DuplicateObject:
         // Specific Response When A Duplicate Object Error is Raised By The API
@@ -93,8 +94,8 @@ const generateReducer = (async, name) => {
           ...state,
           inventory: [...state.inventory],
           transaction: false,
-          errorMessage: null,
-          error: false,
+          errorMessage: ApiMessages.duplicateObject,
+          fail: false,
         };
       default:
         return state;

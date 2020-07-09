@@ -154,7 +154,7 @@ const SimpleList = ({
   return (
     <>
       <ErrorHandler
-        condition={apiObject.error}
+        condition={apiObject.fail}
         clearError={clearError}
         eventMessage={AnalyticsActions.ApiError}
         messageTranslationKey={"SimpleList.ApiCommunicationError"}

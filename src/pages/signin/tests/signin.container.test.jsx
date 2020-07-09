@@ -46,7 +46,7 @@ describe("Setup Environment", () => {
 
   describe("outside of an auth error", () => {
     beforeEach(() => {
-      currentTest = { ...initialState };
+      currentTest = { ...initialState, error: false };
       render(
         <AnalyticsContext.Provider value={mockAnalyticsContext}>
           <UserContext.Provider

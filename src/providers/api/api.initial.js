@@ -1,7 +1,7 @@
 const genericInitialState = {
   inventory: [],
   transaction: false,
-  error: false,
+  fail: false,
   errorMessage: null,
   next: null,
   previous: null,

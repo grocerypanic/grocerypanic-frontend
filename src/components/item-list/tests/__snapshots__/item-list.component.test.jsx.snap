@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Setup Environment during an error should match the snapshot on file (styles) 1`] = `
+exports[`Setup Environment during an api failure should match the snapshot on file (styles) 1`] = `
 .c0 {
   margin-top: 50px;
   display: -webkit-box;
@@ -123,7 +123,7 @@ exports[`Setup Environment during an error should match the snapshot on file (st
 </div>
 `;
 
-exports[`Setup Environment outside of an error inside of a transaction should match the snapshot on file (styles) 1`] = `
+exports[`Setup Environment outside of a failure inside of a transaction should match the snapshot on file (styles) 1`] = `
 .c0 {
   margin-top: 50px;
   display: -webkit-box;
@@ -246,7 +246,7 @@ exports[`Setup Environment outside of an error inside of a transaction should ma
 </div>
 `;
 
-exports[`Setup Environment outside of an error outside of a transaction with wait for api engaged should match the snapshot on file (styles) 1`] = `
+exports[`Setup Environment outside of a failure outside of a transaction with wait for api engaged should match the snapshot on file (styles) 1`] = `
 .c0 {
   margin-top: 50px;
   display: -webkit-box;
@@ -369,7 +369,7 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
 </div>
 `;
 
-exports[`Setup Environment outside of an error outside of a transaction with wait for api not engaged with items in the inventory should match the snapshot on file (styles) 1`] = `
+exports[`Setup Environment outside of a failure outside of a transaction with wait for api not engaged with items in the inventory should match the snapshot on file (styles) 1`] = `
 .c0 {
   margin-top: 50px;
   display: -webkit-box;
@@ -492,7 +492,7 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
 </div>
 `;
 
-exports[`Setup Environment outside of an error outside of a transaction with wait for api not engaged with no items in the inventory should match the snapshot on file (styles) 1`] = `
+exports[`Setup Environment outside of a failure outside of a transaction with wait for api not engaged with no items in the inventory should match the snapshot on file (styles) 1`] = `
 .c0 {
   margin-top: 50px;
   display: -webkit-box;

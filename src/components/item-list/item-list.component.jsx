@@ -186,7 +186,7 @@ const ItemList = ({
   return (
     <>
       <ErrorHandler
-        condition={item.error || transaction.error}
+        condition={item.fail || transaction.fail}
         clearError={clearError}
         eventMessage={AnalyticsActions.ApiError}
         messageTranslationKey={"ItemList.ApiError"}

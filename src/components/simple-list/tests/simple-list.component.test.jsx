@@ -60,7 +60,7 @@ const mockData = [
 ];
 const mockDataState = {
   transaction: false,
-  error: false,
+  fail: false,
   errorMsg: null,
 };
 
@@ -570,7 +570,7 @@ describe("Setup Environment", () => {
 
     describe("during an api error", () => {
       beforeEach(() => {
-        current = { ...apiObjectState, transaction: false, error: true };
+        current = { ...apiObjectState, transaction: false, fail: true };
         utils = renderHelper(current);
       });
       it("renders, should call the error handler with the correct params", async (done) => {

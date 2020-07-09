@@ -2,6 +2,8 @@ import { waitFor } from "@testing-library/react";
 
 import ApiActions from "../api.actions";
 import ApiFunctions from "../api.functions";
+import ApiMessages from "../api.messages";
+
 import { propCount } from "../../../test.fixtures/objectComparison";
 
 export const ReducerTest = (
@@ -177,7 +179,7 @@ export const ReducerTest = (
       propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
-      expect(received.error).toBe(false);
+      expect(received.fail).toBe(false);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledTimes(0);
@@ -195,7 +197,7 @@ export const ReducerTest = (
       propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
-      expect(received.error).toBe(false);
+      expect(received.fail).toBe(false);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: true, complete: true });
@@ -213,7 +215,7 @@ export const ReducerTest = (
       propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
-      expect(received.error).toBe(false);
+      expect(received.fail).toBe(false);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: true, complete: true });
@@ -235,7 +237,7 @@ export const ReducerTest = (
       expect(received.inventory).toEqual(payload.inventory);
       expect(received.next).toEqual(payload.next);
       expect(received.previous).toEqual(payload.previous);
-      expect(received.error).toBe(false);
+      expect(received.fail).toBe(false);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: true, complete: true });
@@ -253,7 +255,7 @@ export const ReducerTest = (
       propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
-      expect(received.error).toBe(false);
+      expect(received.fail).toBe(false);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: true, complete: true });
@@ -270,7 +272,7 @@ export const ReducerTest = (
       propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBe(mockErrorMessage);
       expect(received.inventory).toEqual([]);
-      expect(received.error).toBe(true);
+      expect(received.fail).toBe(true);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledTimes(0);
@@ -288,7 +290,7 @@ export const ReducerTest = (
       propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBe(mockErrorMessage);
       expect(received.inventory).toEqual([]);
-      expect(received.error).toBe(true);
+      expect(received.fail).toBe(true);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: true });
     });
@@ -305,7 +307,7 @@ export const ReducerTest = (
       propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
-      expect(received.error).toBe(true);
+      expect(received.fail).toBe(true);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: true });
@@ -323,7 +325,7 @@ export const ReducerTest = (
       propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBe(mockErrorMessage);
       expect(received.inventory).toEqual([]);
-      expect(received.error).toBe(true);
+      expect(received.fail).toBe(true);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: true });
@@ -341,7 +343,7 @@ export const ReducerTest = (
       propCount(received, Object.keys(InitialState).length);
       expect(received.errorMessage).toBeNull();
       expect(received.inventory).toEqual(payload.inventory);
-      expect(received.error).toBe(true);
+      expect(received.fail).toBe(true);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: true });
@@ -350,7 +352,7 @@ export const ReducerTest = (
     it("handles ClearErrors correctly", () => {
       const state = {
         ...InitialState,
-        error: true,
+        fail: true,
         errorMessage: "Error",
       };
       const received = testReducer(state, {
@@ -358,7 +360,7 @@ export const ReducerTest = (
         callback: mockCallBack,
       });
       propCount(received, Object.keys(InitialState).length);
-      expect(received.error).toBe(false);
+      expect(received.fail).toBe(false);
       expect(received.errorMessage).toBe(null);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
@@ -367,14 +369,14 @@ export const ReducerTest = (
     it("handles ClearErrors correctly, no callback", () => {
       const state = {
         ...InitialState,
-        error: true,
+        fail: true,
         errorMessage: "Error",
       };
       const received = testReducer(state, {
         type: ApiActions.ClearErrors,
       });
       propCount(received, Object.keys(InitialState).length);
-      expect(received.error).toBe(false);
+      expect(received.fail).toBe(false);
       expect(received.errorMessage).toBe(null);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledTimes(0);
@@ -383,7 +385,7 @@ export const ReducerTest = (
     it("handles FailureAuth correctly", () => {
       const state = {
         ...InitialState,
-        error: true,
+        fail: true,
         errorMessage: "Error",
         transaction: true,
       };
@@ -392,7 +394,7 @@ export const ReducerTest = (
         callback: mockCallBack,
       });
       propCount(received, Object.keys(InitialState).length);
-      expect(received.error).toBe(false);
+      expect(received.fail).toBe(false);
       expect(received.errorMessage).toBe(null);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
@@ -402,7 +404,7 @@ export const ReducerTest = (
     it("handles FailureAuth correctly, no callback", () => {
       const state = {
         ...InitialState,
-        error: true,
+        fail: true,
         errorMessage: "Error",
         transaction: true,
       };
@@ -410,7 +412,7 @@ export const ReducerTest = (
         type: ApiActions.FailureAuth,
       });
       propCount(received, Object.keys(InitialState).length);
-      expect(received.error).toBe(false);
+      expect(received.fail).toBe(false);
       expect(received.errorMessage).toBe(null);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
@@ -420,7 +422,7 @@ export const ReducerTest = (
     it("handles DuplicateObject correctly", () => {
       const state = {
         ...InitialState,
-        error: true,
+        fail: true,
         errorMessage: "Error",
         transaction: true,
       };
@@ -429,8 +431,8 @@ export const ReducerTest = (
         callback: mockCallBack,
       });
       propCount(received, Object.keys(InitialState).length);
-      expect(received.error).toBe(false);
-      expect(received.errorMessage).toBe(null);
+      expect(received.fail).toBe(false);
+      expect(received.errorMessage).toBe(ApiMessages.duplicateObject);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
@@ -439,7 +441,7 @@ export const ReducerTest = (
     it("handles DuplicateObject correctly, no callback", () => {
       const state = {
         ...InitialState,
-        error: true,
+        fail: true,
         errorMessage: "Error",
         transaction: true,
       };
@@ -447,8 +449,8 @@ export const ReducerTest = (
         type: ApiActions.DuplicateObject,
       });
       propCount(received, Object.keys(InitialState).length);
-      expect(received.error).toBe(false);
-      expect(received.errorMessage).toBe(null);
+      expect(received.fail).toBe(false);
+      expect(received.errorMessage).toBe(ApiMessages.duplicateObject);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledTimes(0);
