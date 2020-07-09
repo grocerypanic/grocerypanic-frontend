@@ -10,10 +10,6 @@ jest.mock("../../../../util/requests");
 
 const implemented = [ApiFunctions.asyncAdd, ApiFunctions.asyncList];
 
-AsyncTest(
-  Paths.manageTransactions,
-  InitialState,
-  AsyncFn,
-  implemented,
-  "?item=1"
-);
+AsyncTest(Paths.manageTransactions, InitialState, AsyncFn, implemented, {
+  item: 1,
+});

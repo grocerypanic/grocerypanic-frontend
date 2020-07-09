@@ -17,7 +17,7 @@ export const AsyncTest = (
   initialState,
   asyncFn,
   implemented, // List of implemented api functions
-  optionalListParams = ""
+  optionalListParams = {}
 ) => {
   const mockDispatch = jest.fn();
   const mockCallBack = jest.fn();
@@ -138,10 +138,12 @@ export const AsyncTest = (
 
           asyncFn.asyncList({ state: State2, action });
 
-          expect(Request).toBeCalledWith(
-            "GET",
-            apiEndpoint + optionalListParams
-          );
+          let url = apiEndpoint;
+          if (Object.keys(optionalListParams).length > 0)
+            url =
+              url + "?" + new URLSearchParams(optionalListParams).toString();
+
+          expect(Request).toBeCalledWith("GET", url);
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.SuccessList,
@@ -154,9 +156,7 @@ export const AsyncTest = (
           });
           done();
         });
-      }
 
-      if (implemented.includes(ApiFunctions.asyncList)) {
         it("should call the API, and then dispatch correctly when asyncList is called with a override argument", async (done) => {
           action = {
             dispatch: mockDispatch,
@@ -180,6 +180,51 @@ export const AsyncTest = (
           asyncFn.asyncList({ state: State2, action });
 
           expect(Request).toBeCalledWith("GET", action.override);
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.SuccessList,
+            payload: {
+              inventory: [{ ...comparisonObject }],
+              next: "next",
+              previous: "previous",
+            },
+            callback: mockCallBack,
+          });
+          done();
+        });
+
+        it("should call the API, and then dispatch correctly when asyncList is called with a page request", async (done) => {
+          action = {
+            payload: { id: mockObject.id }, // Support Transaction Lookups
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+          };
+          action[Constants.pageLookupParam] = 2; // Assign page lookup by backend constant
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push({ ...mockObject });
+          Request.mockReturnValue([
+            {
+              results: [{ ...mockObject }],
+              next: "next",
+              previous: "previous",
+            },
+            responseCode,
+          ]);
+
+          asyncFn.asyncList({ state: State2, action });
+
+          let params = "";
+          if (Object.keys(optionalListParams).length > 0) {
+            params =
+              params + new URLSearchParams(optionalListParams).toString();
+            params += "&";
+          }
+          params += new URLSearchParams({ page: action.page }).toString();
+
+          expect(Request).toBeCalledWith("GET", apiEndpoint + "?" + params);
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.SuccessList,
@@ -383,10 +428,12 @@ export const AsyncTest = (
 
           asyncFn.asyncList({ state: State2, action });
 
-          expect(Request).toBeCalledWith(
-            "GET",
-            apiEndpoint + optionalListParams
-          );
+          let url = apiEndpoint;
+          if (Object.keys(optionalListParams).length > 0)
+            url =
+              url + "?" + new URLSearchParams(optionalListParams).toString();
+
+          expect(Request).toBeCalledWith("GET", url);
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.FailureList,
@@ -534,10 +581,12 @@ export const AsyncTest = (
 
           asyncFn.asyncList({ state: State2, action });
 
-          expect(Request).toBeCalledWith(
-            "GET",
-            apiEndpoint + optionalListParams
-          );
+          let url = apiEndpoint;
+          if (Object.keys(optionalListParams).length > 0)
+            url =
+              url + "?" + new URLSearchParams(optionalListParams).toString();
+
+          expect(Request).toBeCalledWith("GET", url);
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.FailureAuth,

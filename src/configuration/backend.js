@@ -18,6 +18,7 @@ export const Constants = {
   maximumTransactions: 50,
   AnalyticsCookieName: "PanicDataConsent-" + process.env.NODE_ENV.toUpperCase(),
   duplicateObjectApiError: { non_field_errors: ["Object already exists."] },
+  pageLookupParam: "page",
 };
 
 export const Providers = {

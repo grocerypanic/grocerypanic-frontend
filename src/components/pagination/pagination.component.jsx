@@ -13,6 +13,8 @@ const Pagination = ({ apiObject, handlePagination }) => {
     handlePagination(direction);
   };
 
+  // TODO: add a router to this component, and push state to add a page offset query string
+
   return (
     <PaginationControl>
       <ul className="pagination">
