@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
 import ErrorHandler from "../error-handler/error-handler.component";
+import Pagination from "../pagination/pagination.component";
 import ItemListRow from "../item-list-row/item-list-row.component";
 import Hint from "../hint/hint.component";
 import Alert from "../alert/alert.component";
@@ -150,6 +151,16 @@ const ItemList = ({
     });
   };
 
+  const handlePagination = (page) => {
+    setReady(false);
+    setPerformItemAsync({
+      type: ApiActions.StartList,
+      func: ApiFuctions.asyncList,
+      dispatch: setPerformItemAsync,
+      override: page,
+    });
+  };
+
   React.useEffect(() => {
     updateHeader({
       title: headerTitle,
@@ -182,7 +193,8 @@ const ItemList = ({
         redirect={Routes.goBack}
       >
         <HoldingPattern condition={!ready && waitForApi}>
-          <Container>
+          <Container tabs={true}>
+            <Pagination apiObject={item} handlePagination={handlePagination} />
             <Paper>
               {errorMsg ? (
                 <ItemizedBanner className="alert alert-danger">

@@ -17,6 +17,7 @@ import { ItemContext } from "../../../providers/api/item/item.provider";
 import { TransactionContext } from "../../../providers/api/transaction/transaction.provider";
 
 import ErrorHandler from "../../error-handler/error-handler.component";
+import Pagination from "../../pagination/pagination.component";
 import ItemList from "../item-list.component";
 import ItemListRow from "../../item-list-row/item-list-row.component";
 import Hint from "../../hint/hint.component";
@@ -39,11 +40,13 @@ jest.mock("../../hint/hint.component");
 jest.mock("../../alert/alert.component");
 jest.mock("../../error-handler/error-handler.component");
 jest.mock("../../../util/height");
+jest.mock("../../pagination/pagination.component");
 
 ErrorHandler.mockImplementation(({ children }) => children);
 ItemListRow.mockImplementation(() => <div>MockListItem</div>);
 Hint.mockImplementation(() => <div>MockHelp</div>);
 Alert.mockImplementation(() => <div>MockAlert</div>);
+Pagination.mockImplementation(() => <div>MockPagination</div>);
 HoldingPattern.mockImplementation(({ children }) => children);
 calculateMaxHeight.mockImplementation(() => 200);
 
@@ -215,6 +218,16 @@ describe("Setup Environment", () => {
           expect(holdingPatternCall.condition).toBe(true);
         });
 
+        it("renders, should call pagination with the correct params", () => {
+          expect(current.transaction).toBe(false);
+
+          expect(Pagination).toHaveBeenCalledTimes(1);
+          const pagination = Pagination.mock.calls[0][0];
+          propCount(pagination, 2);
+          expect(pagination.apiObject).toStrictEqual(current);
+          expect(pagination.handlePagination).toBeInstanceOf(Function);
+        });
+
         it("renders, after a successful list fetch, it should call HoldingPattern with the correct params", async (done) => {
           expect(current.transaction).toBe(false);
 
@@ -292,6 +305,37 @@ describe("Setup Environment", () => {
             expect(headerCall.create).toBeInstanceOf(Function);
             expect(headerCall.transaction).toBe(false);
             expect(headerCall.disableNav).toBe(false);
+          });
+
+          it("renders, should call pagination with the correct params", () => {
+            expect(current.transaction).toBe(false);
+
+            expect(Pagination).toHaveBeenCalledTimes(1);
+            const pagination = Pagination.mock.calls[0][0];
+            propCount(pagination, 2);
+            expect(pagination.apiObject).toStrictEqual(current);
+            expect(pagination.handlePagination).toBeInstanceOf(Function);
+          });
+
+          it("renders, should handle a call to handlePagination correctly", async (done) => {
+            expect(current.transaction).toBe(false);
+            expect(Pagination).toHaveBeenCalledTimes(1);
+            const handlePagination =
+              Pagination.mock.calls[0][0].handlePagination;
+
+            act(() => handlePagination("http://next"));
+
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(2)
+            );
+
+            const apiCall = mockItemDispatch.mock.calls[1][0];
+            propCount(apiCall, 4);
+            expect(apiCall.type).toBe(ApiActions.StartList);
+            expect(apiCall.func).toBe(ApiFunctions.asyncList);
+            expect(apiCall.dispatch).toBeInstanceOf(Function);
+            expect(apiCall.override).toBe("http://next");
+            done();
           });
 
           it("renders, outside of a transaction should call HoldingPattern with the correct params", () => {
@@ -818,6 +862,16 @@ describe("Setup Environment", () => {
         expect(headerCall.disableNav).toBe(false);
       });
 
+      it("renders, should call pagination with the correct params", () => {
+        expect(current.transaction).toBe(true);
+
+        expect(Pagination).toHaveBeenCalledTimes(1);
+        const pagination = Pagination.mock.calls[0][0];
+        propCount(pagination, 2);
+        expect(pagination.apiObject).toStrictEqual(current);
+        expect(pagination.handlePagination).toBeInstanceOf(Function);
+      });
+
       it("renders, should call HoldingPattern with the correct params", () => {
         expect(current.transaction).toBe(true);
 
@@ -915,6 +969,16 @@ describe("Setup Environment", () => {
       };
 
       utils = renderHelper(itemContext, transactionContext, history);
+    });
+
+    it("renders, should call pagination with the correct params", () => {
+      expect(current.transaction).toBe(false);
+
+      expect(Pagination).toHaveBeenCalledTimes(1);
+      const pagination = Pagination.mock.calls[0][0];
+      propCount(pagination, 2);
+      expect(pagination.apiObject).toStrictEqual(current);
+      expect(pagination.handlePagination).toBeInstanceOf(Function);
     });
 
     it("renders, should call the error handler with the correct params", async (done) => {

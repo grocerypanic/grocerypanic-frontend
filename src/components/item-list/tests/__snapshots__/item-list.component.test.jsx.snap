@@ -2,7 +2,7 @@
 
 exports[`Setup Environment during an error should match the snapshot on file (styles) 1`] = `
 .c0 {
-  margin-top: calc(50px + 26px);
+  margin-top: 50px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -82,6 +82,9 @@ exports[`Setup Environment during an error should match the snapshot on file (st
   <div
     class="c0"
   >
+    <div>
+      MockPagination
+    </div>
     <div
       class="c1"
     >
@@ -122,7 +125,7 @@ exports[`Setup Environment during an error should match the snapshot on file (st
 
 exports[`Setup Environment outside of an error inside of a transaction should match the snapshot on file (styles) 1`] = `
 .c0 {
-  margin-top: calc(50px + 26px);
+  margin-top: 50px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -202,6 +205,9 @@ exports[`Setup Environment outside of an error inside of a transaction should ma
   <div
     class="c0"
   >
+    <div>
+      MockPagination
+    </div>
     <div
       class="c1"
     >
@@ -242,7 +248,7 @@ exports[`Setup Environment outside of an error inside of a transaction should ma
 
 exports[`Setup Environment outside of an error outside of a transaction with wait for api engaged should match the snapshot on file (styles) 1`] = `
 .c0 {
-  margin-top: calc(50px + 26px);
+  margin-top: 50px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -322,6 +328,9 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
   <div
     class="c0"
   >
+    <div>
+      MockPagination
+    </div>
     <div
       class="c1"
     >
@@ -362,7 +371,7 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
 
 exports[`Setup Environment outside of an error outside of a transaction with wait for api not engaged with items in the inventory should match the snapshot on file (styles) 1`] = `
 .c0 {
-  margin-top: calc(50px + 26px);
+  margin-top: 50px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -442,6 +451,9 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
   <div
     class="c0"
   >
+    <div>
+      MockPagination
+    </div>
     <div
       class="c1"
     >
@@ -482,7 +494,7 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
 
 exports[`Setup Environment outside of an error outside of a transaction with wait for api not engaged with no items in the inventory should match the snapshot on file (styles) 1`] = `
 .c0 {
-  margin-top: calc(50px + 26px);
+  margin-top: 50px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -586,6 +598,9 @@ exports[`Setup Environment outside of an error outside of a transaction with wai
   <div
     class="c0"
   >
+    <div>
+      MockPagination
+    </div>
     <div
       class="c1"
     >
