@@ -7,7 +7,7 @@ import Request from "../../../../util/requests";
 import initialState from "../item.initial";
 import { ItemFilters, FilterTag } from "../../../../configuration/backend";
 
-import { Paths } from "../../../../configuration/backend";
+import { Constants, Paths } from "../../../../configuration/backend";
 import { asyncList } from "../item.async";
 
 const convertDatesToLocal = generateConverter(initialState.class);
@@ -175,6 +175,53 @@ describe("Check asyncList handles filtering results correctly", () => {
     );
     await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     State2.inventory = State2.inventory.map((i) => convertDatesToLocal(i));
+    expect(mockDispatch).toBeCalledWith({
+      type: ApiActions.SuccessList,
+      payload: {
+        inventory: State2.inventory,
+        next: "next",
+        previous: "previous",
+      },
+      callback: mockCallBack,
+    });
+    done();
+  });
+
+  it("should call the API, and then dispatch correctly when asyncList is called, filter test 4 with page request", async (done) => {
+    const filter = new URLSearchParams(mockUrls[2]);
+    action = {
+      payload: { id: mockItem1.id }, // Support Transaction Lookups
+      dispatch: mockDispatch,
+      callback: mockCallBack,
+      filter: filter,
+    };
+    action[Constants.pageLookupParam] = 2; // Assign page lookup by backend constant
+    State2 = {
+      ...State1,
+      inventory: [...State1.inventory],
+    };
+    State2.inventory.push({ ...mockItem1 });
+    State2.inventory.push({ ...mockItem2 });
+
+    asyncList({ state: State2, action });
+
+    expect(Request).toBeCalledWith(
+      "GET",
+      Paths.manageItems +
+        "?" +
+        Constants.pageLookupParam +
+        "=" +
+        action[Constants.pageLookupParam] +
+        "&" +
+        ItemFilters[0] +
+        "=" +
+        filter.get(ItemFilters[0]) +
+        "&" +
+        ItemFilters[1] +
+        "=" +
+        filter.get(ItemFilters[1])
+    );
+    await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     expect(mockDispatch).toBeCalledWith({
       type: ApiActions.SuccessList,
       payload: {

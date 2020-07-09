@@ -159,6 +159,7 @@ export const AsyncTest = (
 
         it("should call the API, and then dispatch correctly when asyncList is called with a override argument", async (done) => {
           action = {
+            payload: { id: mockObject.id }, // Support Transaction Lookups
             dispatch: mockDispatch,
             callback: mockCallBack,
             override: "http://paginated.target.url/from/django/api",
@@ -179,7 +180,9 @@ export const AsyncTest = (
 
           asyncFn.asyncList({ state: State2, action });
 
-          expect(Request).toBeCalledWith("GET", action.override);
+          let url = action.override;
+
+          expect(Request).toBeCalledWith("GET", url);
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.SuccessList,
@@ -216,13 +219,12 @@ export const AsyncTest = (
 
           asyncFn.asyncList({ state: State2, action });
 
-          let params = "";
+          let params = new URLSearchParams({ page: action.page }).toString();
           if (Object.keys(optionalListParams).length > 0) {
+            if (!params) params = "&";
             params =
               params + new URLSearchParams(optionalListParams).toString();
-            params += "&";
           }
-          params += new URLSearchParams({ page: action.page }).toString();
 
           expect(Request).toBeCalledWith("GET", apiEndpoint + "?" + params);
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));

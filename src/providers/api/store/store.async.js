@@ -6,6 +6,7 @@ import {
   authFailure,
   duplicateObject,
   asyncDispatch,
+  calculateListUrl,
 } from "../api.async.helpers";
 
 import { generateConverter } from "../api.util.js";
@@ -75,9 +76,10 @@ export const asyncDel = async ({ state, action }) => {
 
 export const asyncList = async ({ state, action }) => {
   const { dispatch, callback } = action;
+
   const [response, status] = await Request(
     "GET",
-    action.override ? action.override : Paths.manageStores
+    calculateListUrl(action, Paths.manageStores)
   );
   if (match2xx(status)) {
     new Promise((resolve) => {

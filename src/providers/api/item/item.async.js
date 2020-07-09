@@ -6,11 +6,10 @@ import {
   authFailure,
   duplicateObject,
   asyncDispatch,
+  calculateListUrl,
 } from "../api.async.helpers";
 import { generateConverter } from "../api.util.js";
 import InitialState from "./item.initial";
-
-import { ItemFilters, FilterTag } from "../../../configuration/backend";
 
 const convertDatesToLocal = generateConverter(InitialState.class);
 
@@ -108,23 +107,10 @@ export const asyncGet = async ({ state, action }) => {
 };
 
 export const asyncList = async ({ state, action }) => {
-  const { dispatch, filter, callback } = action;
-  let filterPath = "";
-  let FilterNames = [...ItemFilters, FilterTag];
-  if (filter) {
-    for (const filterName of FilterNames) {
-      const filterValue = filter.get(filterName);
-      if (filterValue) {
-        if (filterPath === "") filterPath += "?";
-        if (filterPath !== "?") filterPath += "&";
-        filterPath += `${filterName}=${filterValue}`;
-      }
-    }
-  }
-  const [response, status] = await Request(
-    "GET",
-    action.override ? action.override : Paths.manageItems + filterPath
-  );
+  const { dispatch, callback } = action;
+  let url = calculateListUrl(action, Paths.manageItems);
+
+  const [response, status] = await Request("GET", url);
   if (match2xx(status)) {
     new Promise((resolve) => {
       const processedResponse = response.results.map((i) =>

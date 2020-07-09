@@ -6,6 +6,7 @@ import {
   authFailure,
   duplicateObject,
   asyncDispatch,
+  calculateListUrl,
 } from "../api.async.helpers";
 
 import { generateConverter } from "../api.util.js";
@@ -47,13 +48,12 @@ export const asyncAdd = async ({ state, action }) => {
 
 export const asyncList = async ({ state, action }) => {
   const { dispatch, callback } = action;
-  const [response, status] = await Request(
-    "GET",
-    action.override
-      ? action.override
-      : Paths.manageTransactions +
-          `?item=${encodeURIComponent(action.payload.id)}`
-  );
+  const param = new URLSearchParams({ item: action.payload.id }).toString();
+
+  let url;
+  url = calculateListUrl(action, Paths.manageTransactions, param);
+
+  const [response, status] = await Request("GET", url);
   if (match2xx(status)) {
     new Promise((resolve) => {
       const processedResponse = response.results.map((i) =>
