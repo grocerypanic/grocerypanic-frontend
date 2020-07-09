@@ -389,6 +389,25 @@ export const ReducerTest = (
       };
       const received = testReducer(state, {
         type: ApiActions.FailureAuth,
+        callback: mockCallBack,
+      });
+      propCount(received, Object.keys(InitialState).length);
+      expect(received.error).toBe(false);
+      expect(received.errorMessage).toBe(null);
+      expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
+      expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
+    });
+
+    it("handles FailureAuth correctly, no callback", () => {
+      const state = {
+        ...InitialState,
+        error: true,
+        errorMessage: "Error",
+        transaction: true,
+      };
+      const received = testReducer(state, {
+        type: ApiActions.FailureAuth,
       });
       propCount(received, Object.keys(InitialState).length);
       expect(received.error).toBe(false);
@@ -398,7 +417,7 @@ export const ReducerTest = (
       expect(mockCallBack).toBeCalledTimes(0);
     });
 
-    it("handles FailureAuth correctly", () => {
+    it("handles DuplicateObject correctly", () => {
       const state = {
         ...InitialState,
         error: true,
@@ -406,7 +425,7 @@ export const ReducerTest = (
         transaction: true,
       };
       const received = testReducer(state, {
-        type: ApiActions.FailureAuth,
+        type: ApiActions.DuplicateObject,
         callback: mockCallBack,
       });
       propCount(received, Object.keys(InitialState).length);
@@ -415,6 +434,24 @@ export const ReducerTest = (
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
+    });
+
+    it("handles DuplicateObject correctly, no callback", () => {
+      const state = {
+        ...InitialState,
+        error: true,
+        errorMessage: "Error",
+        transaction: true,
+      };
+      const received = testReducer(state, {
+        type: ApiActions.DuplicateObject,
+      });
+      propCount(received, Object.keys(InitialState).length);
+      expect(received.error).toBe(false);
+      expect(received.errorMessage).toBe(null);
+      expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
+      expect(mockCallBack).toBeCalledTimes(0);
     });
   });
 };

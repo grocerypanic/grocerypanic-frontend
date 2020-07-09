@@ -3,6 +3,7 @@
 const ApiActions = {
   ClearErrors: "ClearErrors",
   FailureAuth: "FailureAuth",
+  DuplicateObject: "DuplicateObject",
   // Add An Api Object
   StartAdd: "StartAdd",
   SuccessAdd: "SuccessAdd",

@@ -83,6 +83,19 @@ const generateReducer = (async, name) => {
           errorMessage: null,
           error: false,
         };
+      case ApiActions.DuplicateObject:
+        // Specific Response When A Duplicate Object Error is Raised By The API
+        if (action.callback)
+          new Promise(function (resolve) {
+            action.callback({ success: false, complete: false });
+          });
+        return {
+          ...state,
+          inventory: [...state.inventory],
+          transaction: false,
+          errorMessage: null,
+          error: false,
+        };
       default:
         return state;
     }
