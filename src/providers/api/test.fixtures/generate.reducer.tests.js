@@ -2,7 +2,6 @@ import { waitFor } from "@testing-library/react";
 
 import ApiActions from "../api.actions";
 import ApiFunctions from "../api.functions";
-import ApiMessages from "../api.messages";
 
 import { propCount } from "../../../test.fixtures/objectComparison";
 
@@ -432,7 +431,7 @@ export const ReducerTest = (
       });
       propCount(received, Object.keys(InitialState).length);
       expect(received.fail).toBe(false);
-      expect(received.errorMessage).toBe(ApiMessages.duplicateObject);
+      expect(received.errorMessage).toBe(null);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
@@ -450,7 +449,7 @@ export const ReducerTest = (
       });
       propCount(received, Object.keys(InitialState).length);
       expect(received.fail).toBe(false);
-      expect(received.errorMessage).toBe(ApiMessages.duplicateObject);
+      expect(received.errorMessage).toBe(null);
       expect(received.transaction).toBe(false);
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledTimes(0);

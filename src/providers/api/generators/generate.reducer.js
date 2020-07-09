@@ -2,7 +2,6 @@ import ApiActions from "../api.actions";
 
 import withMiddleware from "../../../util/user.middleware";
 import reducerLoggingMiddleware from "../../../util/reducer.logger";
-import ApiMessages from "../api.messages";
 
 const generateReducer = (async, name) => {
   const reducer = (state, action) => {
@@ -94,7 +93,7 @@ const generateReducer = (async, name) => {
           ...state,
           inventory: [...state.inventory],
           transaction: false,
-          errorMessage: ApiMessages.duplicateObject,
+          errorMessage: null,
           fail: false,
         };
       default:
