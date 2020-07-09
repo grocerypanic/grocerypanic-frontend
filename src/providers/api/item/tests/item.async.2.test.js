@@ -16,6 +16,9 @@ jest.mock("../../../../util/requests");
 const mockDispatch = jest.fn();
 const mockCallBack = jest.fn();
 
+// Freeze Time
+Date.now = jest.fn(() => new Date("2019-06-16T11:01:58.135Z"));
+
 let State1;
 let State2;
 let action;
