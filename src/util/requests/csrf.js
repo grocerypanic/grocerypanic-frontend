@@ -1,5 +1,5 @@
 import Backend from "./backend";
-import match2xx from "./status";
+import { match2xx } from "./status";
 import { Paths, Constants } from "../../configuration/backend";
 
 const RefreshCSRF = async () => {

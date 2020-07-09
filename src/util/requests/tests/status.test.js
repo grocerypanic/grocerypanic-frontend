@@ -1,4 +1,5 @@
-import match2xx from "../status";
+import { match2xx, match400duplicate } from "../status";
+import { Constants } from "../../../configuration/backend";
 
 describe("setup the environment for testing match2xx", () => {
   beforeEach(() => {});
@@ -25,5 +26,57 @@ describe("setup the environment for testing match2xx", () => {
 
   it("should not match a 501", () => {
     expect(match2xx(501)).toBeFalsy();
+  });
+});
+
+describe("setup the environment for testing match400duplicate", () => {
+  let statusCode;
+  let apiResponse;
+  describe("given a duplicate error from the api", () => {
+    beforeEach(() => {
+      apiResponse = Constants.duplicateObjectApiError;
+    });
+    describe("given a 400 status code", () => {
+      beforeEach(() => {
+        statusCode = 400;
+      });
+      it("should match this condition and return true", () => {
+        expect(match400duplicate(statusCode, apiResponse)).toBe(true);
+      });
+    });
+
+    describe("given a 200 status code", () => {
+      beforeEach(() => {
+        statusCode = 200;
+      });
+      it("should not match this condition and return false", () => {
+        expect(match400duplicate(statusCode, apiResponse)).toBe(false);
+      });
+    });
+  });
+
+  describe("given a non matching message from the api", () => {
+    beforeEach(() => {
+      apiResponse = {
+        happy: "I'm happy, but looking.",
+      };
+    });
+    describe("given a 400 status code", () => {
+      beforeEach(() => {
+        statusCode = 400;
+      });
+      it("should not match this condition and return false", () => {
+        expect(match400duplicate(statusCode, apiResponse)).toBe(false);
+      });
+    });
+
+    describe("given a 200 status code", () => {
+      beforeEach(() => {
+        statusCode = 200;
+      });
+      it("should not match this condition and return false", () => {
+        expect(match400duplicate(statusCode, apiResponse)).toBe(false);
+      });
+    });
   });
 });

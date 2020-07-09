@@ -1,5 +1,5 @@
 import { Paths, Providers } from "../../configuration/backend";
-import match2xx from "../../util/requests/status";
+import { match2xx } from "../../util/requests/status";
 import Request from "../../util/requests";
 import { Constants } from "../../configuration/backend";
 import UserActions from "./user.actions";

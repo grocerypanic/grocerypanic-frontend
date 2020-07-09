@@ -1,5 +1,5 @@
 import { Paths } from "../../../configuration/backend";
-import match2xx from "../../../util/requests/status";
+import { match2xx } from "../../../util/requests/status";
 import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
 
