@@ -1,7 +1,7 @@
 import withReducer from "../reducer.logger.js";
 
-// Freeze Time
-Date.now = jest.fn(() => new Date("2019-06-16T11:01:58.135Z"));
+// Freeze Performance Time
+performance.now = jest.fn();
 
 describe("Check Logging Functionality", () => {
   const original_environment = process.env;
@@ -44,6 +44,8 @@ describe("Check Logging Functionality", () => {
     delete process.env.JEST_WORKER_ID;
     const state = {};
     const action = { type: "BogusAction2" };
+    performance.now.mockReturnValueOnce(1);
+    performance.now.mockReturnValueOnce(2);
     reducer(state, action);
     expect(outputData).toEqual([
       [
@@ -51,7 +53,6 @@ describe("Check Logging Functionality", () => {
         "color: blue; font-weight: bold;",
         undefined,
       ],
-      ["%c   Time:", "color: red; font-weight: bold;", 1560682918.135],
       ["%c   State:", "color: green; font-weight: bold;", state],
       ["%c   Action:", "color: green; font-weight: bold;", action],
       [
@@ -59,7 +60,7 @@ describe("Check Logging Functionality", () => {
         "color: blue; font-weight: bold;",
         undefined,
       ],
-      ["%c   Time:", "color: red; font-weight: bold;", 1560682918.135],
+      ["%c   Time:", "color: red; font-weight: bold;", 0.001],
       ["%c   State:", "color: green; font-weight: bold;", state],
       ["%c   Action:", "color: green; font-weight: bold;", action],
     ]);
