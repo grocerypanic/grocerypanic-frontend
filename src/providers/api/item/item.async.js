@@ -1,19 +1,14 @@
 import { Paths } from "../../../configuration/backend";
-import { match2xx } from "../../../util/requests/status";
+import { match2xx, match400duplicate } from "../../../util/requests/status";
 import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
+import { authFailure, duplicateObject } from "../api.async.helpers";
 import { generateConverter } from "../api.util.js";
 import InitialState from "./item.initial";
 
 import { ItemFilters, FilterTag } from "../../../configuration/backend";
 
 const convertDatesToLocal = generateConverter(InitialState.class);
-
-const authFailure = (dispatch, callback) => {
-  return new Promise(function (resolve) {
-    dispatch({ type: ApiActions.FailureAuth, callback });
-  });
-};
 
 export const asyncAdd = async ({ state, action }) => {
   const { dispatch, callback } = action;
@@ -33,6 +28,9 @@ export const asyncAdd = async ({ state, action }) => {
       });
     });
   }
+  // Duplicate Object Errors
+  if (match400duplicate(status, response))
+    return duplicateObject(dispatch, callback);
   if (status === 401) return authFailure(dispatch, callback);
   return dispatch({
     type: ApiActions.FailureAdd,
@@ -164,6 +162,9 @@ export const asyncUpdate = async ({ state, action }) => {
       });
     });
   }
+  // Duplicate Object Errors
+  if (match400duplicate(status, response))
+    return duplicateObject(dispatch, callback);
   if (status === 401) return authFailure(dispatch, callback);
   return dispatch({
     type: ApiActions.FailureUpdate,

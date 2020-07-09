@@ -3,6 +3,7 @@ import { waitFor } from "@testing-library/react";
 import ApiActions from "../api.actions";
 import ApiFunctions from "../api.functions";
 import { generateConverter } from "../api.util";
+import { Constants } from "../../../configuration/backend";
 
 import Request from "../../../util/requests";
 jest.mock("../../../util/requests");
@@ -596,6 +597,123 @@ export const AsyncTest = (
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.FailureAuth,
+            callback: mockCallBack,
+          });
+          done();
+        });
+      }
+    });
+
+    describe("Duplicate Object Error Response", () => {
+      beforeEach((done) => {
+        jest.clearAllMocks();
+        State1 = { ...initialState, inventory: [...initialState.inventory] };
+        responseCode = 400;
+        Request.mockReturnValue([
+          { ...Constants.duplicateObjectApiError },
+          responseCode,
+        ]);
+        done();
+      });
+
+      if (implemented.includes(ApiFunctions.asyncAdd)) {
+        it("should call the API, and then dispatch correctly when asyncAdd is called", async (done) => {
+          action = {
+            payload: { name: mockObject.name },
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+
+          asyncFn.asyncAdd({ state: State1, action });
+
+          expect(Request).toBeCalledWith("POST", apiEndpoint, {
+            name: action.payload.name,
+          });
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.DuplicateObject,
+            callback: mockCallBack,
+          });
+          done();
+        });
+
+        it("should call the API, and then dispatch correctly when asyncAdd is called, no callback", async (done) => {
+          action = {
+            payload: { name: mockObject.name },
+            dispatch: mockDispatch,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+
+          asyncFn.asyncAdd({ state: State1, action });
+
+          expect(Request).toBeCalledWith("POST", apiEndpoint, {
+            name: action.payload.name,
+          });
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.DuplicateObject,
+            callback: undefined,
+          });
+          done();
+        });
+      }
+
+      if (implemented.includes(ApiFunctions.asyncUpdate)) {
+        it("should call the API, and then dispatch correctly when asyncUpdate is called", async (done) => {
+          action = {
+            payload: { ...mockObject },
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push({ ...mockObject });
+
+          asyncFn.asyncUpdate({ state: State2, action });
+
+          expect(Request).toBeCalledWith(
+            "PUT",
+            apiEndpoint + `${action.payload.id}/`,
+            { ...mockObject }
+          );
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.DuplicateObject,
+            callback: mockCallBack,
+          });
+          done();
+        });
+        it("should call the API, and then dispatch correctly when asyncUpdate is called, no callback", async (done) => {
+          action = {
+            payload: { ...mockObject },
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push({ ...mockObject });
+
+          asyncFn.asyncUpdate({ state: State2, action });
+
+          expect(Request).toBeCalledWith(
+            "PUT",
+            apiEndpoint + `${action.payload.id}/`,
+            { ...mockObject }
+          );
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.DuplicateObject,
             callback: mockCallBack,
           });
           done();
