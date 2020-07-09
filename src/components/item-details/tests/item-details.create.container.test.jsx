@@ -209,22 +209,19 @@ describe("Setup Environment", () => {
       done();
     });
 
-    it("renders, calls items.StartList on first render", async (done) => {
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
-      const call = mockItemDispatch.mock.calls[0][0];
-      propCount(call, 4);
-      expect(call.type).toBe(ApiActions.StartList);
-      expect(call.func).toBe(ApiFunctions.asyncList);
-      expect(call.dispatch).toBeInstanceOf(Function);
-      expect(call.callback).toBeInstanceOf(Function);
-      done();
-    });
-
     it("renders, calls item auth failure as expected", async (done) => {
+      await waitFor(() => expect(ItemDetailsForm).toHaveBeenCalledTimes(3));
+      const handleSave = ItemDetailsForm.mock.calls[2][0].handleSave;
+      expect(handleSave).toBeInstanceOf(Function);
+
+      // Use Handle Save to Get Access to Item Dispatcher
+
+      const mockObject = { id: 99, name: "New Item" };
+      act(() => handleSave(mockObject));
+
       await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
       const itemDispatch = mockItemDispatch.mock.calls[0][0].dispatch;
 
-      expect(mockHandleExpiredAuth).toBeCalledTimes(0);
       act(() => itemDispatch({ type: ApiActions.FailureAuth }));
       await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
 
@@ -299,8 +296,8 @@ describe("Setup Environment", () => {
       expect(handleSave).toBeInstanceOf(Function);
       act(() => handleSave(mockObject));
 
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
-      const updateDispatch = mockItemDispatch.mock.calls[1][0];
+      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+      const updateDispatch = mockItemDispatch.mock.calls[0][0];
       propCount(updateDispatch, 4);
 
       expect(updateDispatch.type).toBe(ApiActions.StartAdd);
@@ -324,8 +321,8 @@ describe("Setup Environment", () => {
       expect(handleSave).toBeInstanceOf(Function);
       act(() => handleSave(mockObject));
 
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
-      const dispatch = mockItemDispatch.mock.calls[1][0].dispatch;
+      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+      const dispatch = mockItemDispatch.mock.calls[0][0].dispatch;
 
       // After save goes back to the previous page
       act(() => dispatch({ type: ApiActions.SuccessAdd }));

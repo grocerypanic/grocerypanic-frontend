@@ -60,7 +60,6 @@ const ItemDetailsEditContainer = ({
 
   const [calculatedItem, setCalculatedItem] = React.useState(defaultItem);
 
-  const [listItemsComplete, setListItemsComplete] = React.useState(testHook);
   const [listTrComplete, setTrComplete] = React.useState(testHook);
 
   React.useEffect(() => {
@@ -75,24 +74,14 @@ const ItemDetailsEditContainer = ({
 
   React.useEffect(() => {
     if (item.error) return;
-    if (item.inventory.length > 0) {
-      const search = item.inventory.find((i) => i.id === parseInt(itemId));
-      if (search) return setCalculatedItem(search);
-    }
-    if (listItemsComplete) {
-      itemDispatch({
-        type: ApiActions.FailureGet,
-      });
-    }
+    const search = item.inventory.find((i) => i.id === parseInt(itemId));
+    if (search) return setCalculatedItem(search);
   }, [item]); // eslint-disable-line
 
   React.useEffect(() => {
     if (!performItemAsync) return;
     if (performItemAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
-    if (performItemAsync.type === ApiActions.SuccessList)
-      performItemAsync.callback = setListItemsComplete;
     if (performItemAsync.type === ApiActions.SuccessDel) {
-      setListItemsComplete(false);
       history.goBack();
     }
     itemDispatch(performItemAsync);
@@ -125,9 +114,10 @@ const ItemDetailsEditContainer = ({
 
   React.useEffect(() => {
     setPerformItemAsync({
-      type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
+      type: ApiActions.StartGet,
+      func: ApiFuctions.asyncGet,
       dispatch: setPerformItemAsync,
+      payload: { id: itemId },
     });
     setPerformStoreAsync({
       type: ApiActions.StartList,
@@ -139,7 +129,7 @@ const ItemDetailsEditContainer = ({
       func: ApiFuctions.asyncList,
       dispatch: setPerformShelfAsync,
     });
-  }, []);
+  }, []); // eslint-disable-line
 
   const handleTransactionRequest = () => {
     if (listTrComplete) return;

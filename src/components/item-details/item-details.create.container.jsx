@@ -61,7 +61,6 @@ const ItemDetailsCreateContainer = ({
   const callBackState = { success: false, complete: false };
   const [receivedShelves, setReceivedShelves] = React.useState(callBackState);
   const [receivedStores, setReceivedStores] = React.useState(callBackState);
-  const [receivedItems, setReceivedItems] = React.useState(callBackState);
 
   React.useEffect(() => {
     // Detect Transactions on Any API Plane
@@ -118,12 +117,6 @@ const ItemDetailsCreateContainer = ({
       dispatch: setPerformStoreAsync,
       callback: setReceivedStores,
     });
-    setPerformItemAsync({
-      type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
-      dispatch: setPerformItemAsync,
-      callback: setReceivedItems,
-    });
   }, []);
 
   const handleSave = (newItem) => {
@@ -144,11 +137,7 @@ const ItemDetailsCreateContainer = ({
 
   const checkForNonReceivedContent = () => {
     /* istanbul ignore next */
-    return (
-      !receivedStores.complete ||
-      !receivedShelves.complete ||
-      !receivedItems.complete
-    );
+    return !receivedStores.complete || !receivedShelves.complete;
   };
 
   return (

@@ -161,36 +161,6 @@ describe("Setup Environment", () => {
       };
     });
 
-    it("renders, attempts to load item that does not exist, throws error", async (done) => {
-      itemProvider.apiObject.inventory = [mockItem];
-      current.itemId = "2";
-      current.testHook = true;
-      renderHelper(history, false, current, itemProvider);
-
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
-      expect(mockItemDispatch.mock.calls[0][0].type).toBe(
-        ApiActions.FailureGet
-      );
-      expect(mockItemDispatch.mock.calls[1][0].type).toBe(ApiActions.StartList);
-
-      done();
-    });
-
-    it("renders, attempts to load item that does not exist, with no inputs, throws error", async (done) => {
-      itemProvider.apiObject.inventory = [];
-      current.itemId = "2";
-      current.testHook = true;
-      renderHelper(history, false, current, itemProvider);
-
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
-      expect(mockItemDispatch.mock.calls[0][0].type).toBe(
-        ApiActions.FailureGet
-      );
-      expect(mockItemDispatch.mock.calls[1][0].type).toBe(ApiActions.StartList);
-
-      done();
-    });
-
     it("renders, attempts to load item that does not exist, fetch not performed yet", async (done) => {
       itemProvider.apiObject.inventory = [];
       current.itemId = "2";
@@ -198,24 +168,8 @@ describe("Setup Environment", () => {
       renderHelper(history, false, current, itemProvider);
 
       await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
-      expect(mockItemDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
+      expect(mockItemDispatch.mock.calls[0][0].type).toBe(ApiActions.StartGet);
 
-      done();
-    });
-
-    it("renders, adds callback to SuccessList", async (done) => {
-      itemProvider.apiObject.inventory = [];
-      current.itemId = "2";
-      current.testHook = false;
-      renderHelper(history, false, current, itemProvider);
-
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
-      const itemDispatch = mockItemDispatch.mock.calls[0][0].dispatch;
-      act(() => itemDispatch({ type: ApiActions.SuccessList }));
-      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
-      expect(mockItemDispatch.mock.calls[1][0].callback.name).toBe(
-        "bound dispatchAction"
-      );
       done();
     });
   });
@@ -239,13 +193,14 @@ describe("Setup Environment", () => {
         done();
       });
 
-      it("renders, calls items.StartList on first render", async (done) => {
+      it("renders, calls items.StartGet on first render", async (done) => {
         await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
         const call = mockItemDispatch.mock.calls[0][0];
-        propCount(call, 3);
-        expect(call.type).toBe(ApiActions.StartList);
-        expect(call.func).toBe(ApiFunctions.asyncList);
+        propCount(call, 4);
+        expect(call.type).toBe(ApiActions.StartGet);
+        expect(call.func).toBe(ApiFunctions.asyncGet);
         expect(call.dispatch).toBeInstanceOf(Function);
+        expect(call.payload).toStrictEqual({ id: current.itemId });
         done();
       });
 
