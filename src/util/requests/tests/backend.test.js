@@ -15,6 +15,7 @@ let responseData;
 let contentType;
 let sourceData;
 let requestPath = "/somePath";
+let requestType;
 
 const originalEnvironment = process.env.REACT_APP_PANIC_BACKEND;
 const phonyServer = "http://phonyserver";
@@ -23,265 +24,317 @@ describe("test the Backend method", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     process.env.REACT_APP_PANIC_BACKEND = phonyServer;
+    responseData = { data: "Valuable Data" };
+    mockLocalStorage.mockImplementation(() => "MockCSRFtoken");
   });
 
   afterEach(() => {
     process.env.REACT_APP_PANIC_BACKEND = originalEnvironment;
   });
 
-  it("handle a 200 get request as expected, when content type is json, and path is overriden", async (done) => {
-    process.env.REACT_APP_PANIC_BACKEND = "http://mybackendserver";
+  const setResponse = (
+    currentContentType,
+    curentResponseData,
+    currentStatusCode
+  ) => {
+    mockFetch.mockImplementation(() => {
+      return Promise.resolve({
+        headers: { get: () => currentContentType },
+        json: () => Promise.resolve(curentResponseData),
+        text: () => Promise.resolve(curentResponseData),
+        status: currentStatusCode,
+      });
+    });
+  };
 
-    statusCode = 200;
-    responseData = { data: "Valuable Data" };
-    contentType = "application/json";
-    mockLocalStorage.mockImplementation(() => "MockCSRFtoken");
-    mockFetch.mockImplementation(() =>
-      Promise.resolve({
-        headers: { get: () => contentType },
-        json: () => Promise.resolve(responseData),
-        status: statusCode,
-      })
-    );
-
-    const [response, status] = await Backend(
-      "GET",
-      `${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
-    );
-
-    expect(mockFetch).toBeCalledWith(
-      `${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`,
-      {
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "GET",
-      }
-    );
-
-    expect(status).toBe(statusCode);
-    expect(response).toBe(responseData);
-
-    expect(debug).toBeCalledTimes(4);
-    expect(debug).toBeCalledWith(
-      `API GET:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
-    );
-    expect(debug).toBeCalledWith(`API Response Status Code:\n 200`);
-    expect(debug).toBeCalledWith(`API Response Data:\n`);
-    expect(debug).toBeCalledWith(responseData);
-
-    // Safe Method for CSRF no token lookup
-    expect(mockLocalStorage).toBeCalledTimes(0);
-
-    done();
-  });
-
-  it("handle a 200 get request as expected, when content type is json", async (done) => {
-    statusCode = 200;
-    responseData = { data: "Valuable Data" };
-    contentType = "application/json";
-    mockLocalStorage.mockImplementation(() => "MockCSRFtoken");
-    mockFetch.mockImplementation(() =>
-      Promise.resolve({
-        headers: { get: () => contentType },
-        json: () => Promise.resolve(responseData),
-        status: statusCode,
-      })
-    );
-
-    const [response, status] = await Backend("GET", requestPath);
-
-    expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "GET",
+  describe("Given a 200 response by the server", () => {
+    beforeEach(() => {
+      statusCode = 200;
     });
 
-    expect(status).toBe(statusCode);
-    expect(response).toBe(responseData);
+    describe("Given a GET request", () => {
+      beforeEach(() => {
+        requestType = "GET";
+      });
 
-    expect(debug).toBeCalledTimes(4);
-    expect(debug).toBeCalledWith(
-      `API GET:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
-    );
-    expect(debug).toBeCalledWith(`API Response Status Code:\n 200`);
-    expect(debug).toBeCalledWith(`API Response Data:\n`);
-    expect(debug).toBeCalledWith(responseData);
+      it("handles request as expected, when content type is json, and path is overriden", async (done) => {
+        process.env.REACT_APP_PANIC_BACKEND = "http://mybackendserver";
+        setResponse("application/json", responseData, statusCode);
 
-    // Safe Method for CSRF no token lookup
-    expect(mockLocalStorage).toBeCalledTimes(0);
+        const [response, status] = await Backend(
+          requestType,
+          `${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
+        );
 
-    done();
-  });
+        expect(mockFetch).toBeCalledWith(
+          `${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`,
+          {
+            credentials: "include",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            method: requestType,
+          }
+        );
 
-  it("handle a 200 get request as expected, when content type is text", async (done) => {
-    statusCode = 200;
-    responseData = "Text String";
-    contentType = "text/plain";
-    mockLocalStorage.mockImplementation(() => "MockCSRFtoken");
-    mockFetch.mockImplementation(() =>
-      Promise.resolve({
-        headers: { get: () => contentType },
-        text: () => Promise.resolve(responseData),
-        status: statusCode,
-      })
-    );
+        expect(status).toBe(statusCode);
+        expect(response).toBe(responseData);
 
-    const [response, status] = await Backend("GET", requestPath);
+        expect(debug).toBeCalledTimes(4);
+        expect(debug).toBeCalledWith(
+          `API ${requestType}:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
+        );
+        expect(debug).toBeCalledWith(`API Response Status Code:\n 200`);
+        expect(debug).toBeCalledWith(`API Response Data:\n`);
+        expect(debug).toBeCalledWith(responseData);
 
-    expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "GET",
+        // Safe Method for CSRF no token lookup
+        expect(mockLocalStorage).toBeCalledTimes(0);
+
+        done();
+      });
+
+      it("handles request as expected, when content type is json", async (done) => {
+        setResponse("application/json", responseData, statusCode);
+        const [response, status] = await Backend(requestType, requestPath);
+
+        expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: requestType,
+        });
+
+        expect(status).toBe(statusCode);
+        expect(response).toBe(responseData);
+
+        expect(debug).toBeCalledTimes(4);
+        expect(debug).toBeCalledWith(
+          `API ${requestType}:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
+        );
+        expect(debug).toBeCalledWith(`API Response Status Code:\n 200`);
+        expect(debug).toBeCalledWith(`API Response Data:\n`);
+        expect(debug).toBeCalledWith(responseData);
+
+        // Safe Method for CSRF no token lookup
+        expect(mockLocalStorage).toBeCalledTimes(0);
+
+        done();
+      });
+
+      it("handles request as expected, when content type is text", async (done) => {
+        setResponse("text/plain", "Text String", statusCode);
+        const [response, status] = await Backend(requestType, requestPath);
+
+        expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: requestType,
+        });
+
+        expect(status).toBe(statusCode);
+        expect(response).toBe("Text String");
+
+        expect(debug).toBeCalledTimes(4);
+        expect(debug).toBeCalledWith(
+          `API ${requestType}:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
+        );
+        expect(debug).toBeCalledWith(`API Response Status Code:\n 200`);
+        expect(debug).toBeCalledWith(`API Response Data:\n`);
+        expect(debug).toBeCalledWith("Text String");
+
+        // Safe Method for CSRF no token lookup
+        expect(mockLocalStorage).toBeCalledTimes(0);
+
+        done();
+      });
+
+      it("handles request as expected, when content type is null", async (done) => {
+        setResponse(null, "Text String", statusCode);
+        responseData = "Text String";
+
+        const [response, status] = await Backend(requestType, requestPath);
+
+        expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: requestType,
+        });
+
+        expect(status).toBe(statusCode);
+        expect(response).toBe(null);
+
+        expect(debug).toBeCalledTimes(2);
+        expect(debug).toBeCalledWith(
+          `API ${requestType}:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
+        );
+        expect(debug).toBeCalledWith(`API Response Status Code:\n 200`);
+
+        // Safe Method for CSRF no token lookup
+        expect(mockLocalStorage).toBeCalledTimes(0);
+
+        done();
+      });
     });
 
-    expect(status).toBe(statusCode);
-    expect(response).toBe(responseData);
+    describe("Given a POST request", () => {
+      beforeEach(() => {
+        requestType = "POST";
+      });
 
-    expect(debug).toBeCalledTimes(4);
-    expect(debug).toBeCalledWith(
-      `API GET:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
-    );
-    expect(debug).toBeCalledWith(`API Response Status Code:\n 200`);
-    expect(debug).toBeCalledWith(`API Response Data:\n`);
-    expect(debug).toBeCalledWith(responseData);
+      it("handles request as expected", async (done) => {
+        sourceData = { data: "Data to Post" };
+        setResponse("application/json", responseData, statusCode);
 
-    // Safe Method for CSRF no token lookup
-    expect(mockLocalStorage).toBeCalledTimes(0);
+        const [response, status] = await Backend(
+          requestType,
+          requestPath,
+          sourceData
+        );
 
-    done();
+        expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
+          body: JSON.stringify(sourceData),
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "X-CSRFToken": "MockCSRFtoken",
+          },
+          method: requestType,
+        });
+
+        expect(status).toBe(statusCode);
+        expect(response).toBe(responseData);
+
+        expect(debug).toBeCalledTimes(5);
+        expect(debug).toBeCalledWith(
+          `API ${requestType}:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
+        );
+        expect(debug).toBeCalledWith(`Body:\n ${JSON.stringify(sourceData)}`);
+        expect(debug).toBeCalledWith(`API Response Status Code:\n 200`);
+        expect(debug).toBeCalledWith(`API Response Data:\n`);
+        expect(debug).toBeCalledWith(responseData);
+
+        // Safe Method for CSRF no token lookup
+        expect(mockLocalStorage).toBeCalledTimes(1);
+
+        done();
+      });
+    });
   });
 
-  it("handle a 200 get request as expected, when content type is null", async (done) => {
-    statusCode = 200;
-    responseData = "Text String";
-    contentType = null;
-    mockLocalStorage.mockImplementation(() => "MockCSRFtoken");
-    mockFetch.mockImplementation(() =>
-      Promise.resolve({
-        headers: { get: () => contentType },
-        text: () => Promise.resolve(responseData),
-        status: statusCode,
-      })
-    );
-
-    const [response, status] = await Backend("GET", requestPath);
-
-    expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "GET",
+  describe("Given a 400 response by the server", () => {
+    beforeEach(() => {
+      statusCode = 400;
     });
 
-    expect(status).toBe(statusCode);
-    expect(response).toBe(null);
+    describe("Given a POST request", () => {
+      beforeEach(() => {
+        requestType = "POST";
+      });
 
-    expect(debug).toBeCalledTimes(2);
-    expect(debug).toBeCalledWith(
-      `API GET:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
-    );
-    expect(debug).toBeCalledWith(`API Response Status Code:\n 200`);
+      it("handles request as expected", async (done) => {
+        sourceData = { data: "Data to Post" };
+        setResponse("application/json", responseData, statusCode);
 
-    // Safe Method for CSRF no token lookup
-    expect(mockLocalStorage).toBeCalledTimes(0);
+        const [response, status] = await Backend(
+          requestType,
+          requestPath,
+          sourceData
+        );
 
-    done();
+        expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
+          body: JSON.stringify(sourceData),
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "X-CSRFToken": "MockCSRFtoken",
+          },
+          method: requestType,
+        });
+
+        expect(status).toBe(statusCode);
+        expect(response).toBe(responseData);
+
+        expect(debug).toBeCalledTimes(5);
+        expect(debug).toBeCalledWith(
+          `API ${requestType}:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
+        );
+        expect(debug).toBeCalledWith(`Body:\n ${JSON.stringify(sourceData)}`);
+        expect(debug).toBeCalledWith(`API Response Status Code:\n 400`);
+        expect(debug).toBeCalledWith(`API Response Data:\n`);
+        expect(debug).toBeCalledWith(responseData);
+
+        // Safe Method for CSRF no token lookup
+        expect(mockLocalStorage).toBeCalledTimes(1);
+
+        done();
+      });
+    });
   });
 
-  it("handle a 200 post request as expected", async (done) => {
-    statusCode = 200;
-    responseData = { data: "Valuable Data" };
-    contentType = "application/json";
-    sourceData = { data: "Data to Post" };
-    mockLocalStorage.mockImplementation(() => "MockCSRFtoken");
-    mockFetch.mockImplementation(() =>
-      Promise.resolve({
-        headers: { get: () => contentType },
-        json: () => Promise.resolve(responseData),
-        status: statusCode,
-      })
-    );
-
-    const [response, status] = await Backend("POST", requestPath, sourceData);
-
-    expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
-      body: JSON.stringify(sourceData),
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-CSRFToken": "MockCSRFtoken",
-      },
-      method: "POST",
+  describe("Given a 500 response by the server", () => {
+    beforeEach(() => {
+      statusCode = 500;
     });
 
-    expect(status).toBe(statusCode);
-    expect(response).toBe(responseData);
+    describe("Given a POST request", () => {
+      beforeEach(() => {
+        requestType = "POST";
+      });
 
-    expect(debug).toBeCalledTimes(5);
-    expect(debug).toBeCalledWith(
-      `API POST:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
-    );
-    expect(debug).toBeCalledWith(`Body:\n ${JSON.stringify(sourceData)}`);
-    expect(debug).toBeCalledWith(`API Response Status Code:\n 200`);
-    expect(debug).toBeCalledWith(`API Response Data:\n`);
-    expect(debug).toBeCalledWith(responseData);
+      it("handle a post request as expected, when an error occurs", async (done) => {
+        contentType = "application/json";
+        sourceData = { data: "Data to Post" };
+        mockLocalStorage.mockImplementation(() => null);
+        // No json method, throws error
+        mockFetch.mockImplementation(() =>
+          Promise.resolve({
+            headers: { get: () => contentType },
+            status: statusCode,
+          })
+        );
 
-    // Safe Method for CSRF no token lookup
-    expect(mockLocalStorage).toBeCalledTimes(1);
+        const [response, status] = await Backend(
+          requestType,
+          requestPath,
+          sourceData
+        );
 
-    done();
-  });
+        expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
+          body: JSON.stringify(sourceData),
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          method: requestType,
+        });
 
-  it("handle a post request as expected, when an error occurs", async (done) => {
-    statusCode = 200;
-    responseData = { data: "Valuable Data" };
-    contentType = "application/json";
-    sourceData = { data: "Data to Post" };
-    mockLocalStorage.mockImplementation(() => null);
-    // No json method, throws error
-    mockFetch.mockImplementation(() =>
-      Promise.resolve({
-        headers: { get: () => contentType },
-        status: statusCode,
-      })
-    );
+        expect(status).toBe(500);
+        expect(response).toBe(Constants.genericAPIError);
 
-    const [response, status] = await Backend("POST", requestPath, sourceData);
+        expect(debug).toBeCalledTimes(2);
+        expect(debug).toBeCalledWith(
+          `API ${requestType}:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
+        );
+        expect(debug).toBeCalledWith(`Body:\n ${JSON.stringify(sourceData)}`);
 
-    expect(mockFetch).toBeCalledWith(phonyServer + requestPath, {
-      body: JSON.stringify(sourceData),
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "POST",
+        // Safe Method for CSRF no token lookup
+        expect(mockLocalStorage).toBeCalledTimes(1);
+
+        done();
+      });
     });
-
-    expect(status).toBe(500);
-    expect(response).toBe(Constants.genericAPIError);
-
-    expect(debug).toBeCalledTimes(2);
-    expect(debug).toBeCalledWith(
-      `API POST:\n ${process.env.REACT_APP_PANIC_BACKEND}${requestPath}`
-    );
-    expect(debug).toBeCalledWith(`Body:\n ${JSON.stringify(sourceData)}`);
-
-    // Safe Method for CSRF no token lookup
-    expect(mockLocalStorage).toBeCalledTimes(1);
-
-    done();
   });
 });
