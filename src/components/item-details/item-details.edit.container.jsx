@@ -56,10 +56,9 @@ const ItemDetailsEditContainer = ({
   const [performStoreAsync, setPerformStoreAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performTrAsync, setPerformTrAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
 
+  const [duplicate, setDuplicate] = React.useState(false);
   const [transaction, setTransaction] = React.useState(true);
-
   const [calculatedItem, setCalculatedItem] = React.useState(defaultItem);
-
   const [listTrComplete, setTrComplete] = React.useState(testHook);
 
   React.useEffect(() => {
@@ -80,11 +79,13 @@ const ItemDetailsEditContainer = ({
 
   React.useEffect(() => {
     if (!performItemAsync) return;
+    itemDispatch(performItemAsync);
     if (performItemAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
     if (performItemAsync.type === ApiActions.SuccessDel) {
       history.goBack();
     }
-    itemDispatch(performItemAsync);
+    if (performItemAsync.type === ApiActions.DuplicateObject)
+      setDuplicate(true);
     setPerformItemAsync(null);
   }, [performItemAsync]); // eslint-disable-line
 
@@ -196,6 +197,8 @@ const ItemDetailsEditContainer = ({
           handleSave={handleSave}
           handleDelete={handleDelete}
           requestTransactions={handleTransactionRequest}
+          duplicate={duplicate}
+          setDuplicate={setDuplicate}
         />
       </HoldingPattern>
     </ErrorHandler>

@@ -57,6 +57,7 @@ const ItemDetailsCreateContainer = ({
 
   const [transaction, setTransaction] = React.useState(true);
   const [defaults, setDefaults] = React.useState(defaultItem);
+  const [duplicate, setDuplicate] = React.useState(false);
 
   const callBackState = { success: false, complete: false };
   const [receivedShelves, setReceivedShelves] = React.useState(callBackState);
@@ -78,9 +79,11 @@ const ItemDetailsCreateContainer = ({
 
   React.useEffect(() => {
     if (!performItemAsync) return;
+    itemDispatch(performItemAsync);
     if (performItemAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
     if (performItemAsync.type === ApiActions.SuccessAdd) history.goBack();
-    itemDispatch(performItemAsync);
+    if (performItemAsync.type === ApiActions.DuplicateObject)
+      setDuplicate(true);
     setPerformItemAsync(null);
   }, [performItemAsync]); // eslint-disable-line
 
@@ -130,9 +133,9 @@ const ItemDetailsCreateContainer = ({
   };
 
   const clearError = () => {
-    if (item.error) setPerformItemAsync({ type: ApiActions.ClearErrors });
-    if (store.error) setPerformStoreAsync({ type: ApiActions.ClearErrors });
-    if (shelf.error) setPerformShelfAsync({ type: ApiActions.ClearErrors });
+    if (item.fail) setPerformItemAsync({ type: ApiActions.ClearErrors });
+    if (store.fail) setPerformStoreAsync({ type: ApiActions.ClearErrors });
+    if (shelf.fail) setPerformShelfAsync({ type: ApiActions.ClearErrors });
   };
 
   const checkForNonReceivedContent = () => {
@@ -142,7 +145,7 @@ const ItemDetailsCreateContainer = ({
 
   return (
     <ErrorHandler
-      condition={item.error || store.error || shelf.error}
+      condition={item.fail || store.fail || shelf.fail}
       clearError={clearError}
       eventMessage={AnalyticsActions.ApiError}
       messageTranslationKey={"ItemDetails.ApiCommunicationError"}
@@ -166,6 +169,8 @@ const ItemDetailsCreateContainer = ({
               stores={store.inventory}
               shelves={shelf.inventory}
               handleSave={handleSave}
+              duplicate={duplicate}
+              setDuplicate={setDuplicate}
             />
           </Container>
         </ErrorHandler>

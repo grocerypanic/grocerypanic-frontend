@@ -110,13 +110,8 @@ describe("Setup Environment", () => {
   afterEach(cleanup);
 
   describe("outside of an error", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-      const history = createBrowserHistory();
-      history.location.pathname = originalPath;
-      history.goBack = mockGoBack;
-
-      render(
+    const errorFreeRenderHelper = (history, currentProps) => {
+      return render(
         <Router history={history}>
           <HeaderContext.Provider
             value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
@@ -134,7 +129,7 @@ describe("Setup Environment", () => {
                       transaction: false,
                     }}
                   >
-                    <ItemDetailsCreateContainer {...current} />
+                    <ItemDetailsCreateContainer {...currentProps} />
                   </ItemContext.Provider>
                 </ShelfContext.Provider>
               </StoreContext.Provider>
@@ -142,6 +137,14 @@ describe("Setup Environment", () => {
           </HeaderContext.Provider>
         </Router>
       );
+    };
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      const history = createBrowserHistory();
+      history.location.pathname = originalPath;
+      history.goBack = mockGoBack;
+      errorFreeRenderHelper(history, current);
     });
 
     it("renders, update the header with the correct params", () => {
@@ -228,6 +231,30 @@ describe("Setup Environment", () => {
       done();
     });
 
+    it("handles a duplicate object error correctly", async (done) => {
+      expect(ItemDetailsForm).toHaveBeenCalledTimes(3);
+
+      const handleSave = ItemDetailsForm.mock.calls[2][0].handleSave;
+      expect(handleSave).toBeInstanceOf(Function);
+
+      const mockObject = { id: 99, name: "New Item" };
+      act(() => handleSave(mockObject));
+
+      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+      const itemDispatch = mockItemDispatch.mock.calls[0][0].dispatch;
+
+      act(() => itemDispatch({ type: ApiActions.DuplicateObject }));
+
+      await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
+
+      expect(ItemDetailsForm).toHaveBeenCalledTimes(7);
+
+      const call1 = ItemDetailsForm.mock.calls[6][0];
+      expect(call1.duplicate).toBe(true);
+
+      done();
+    });
+
     it("renders, calls shelves.StartList on first render", async (done) => {
       await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
       const call = mockShelfDispatch.mock.calls[0][0];
@@ -275,7 +302,7 @@ describe("Setup Environment", () => {
     it("renders ItemDetails with correct props", async (done) => {
       await waitFor(() => expect(ItemDetailsForm).toHaveBeenCalledTimes(3));
       const call = ItemDetailsForm.mock.calls[1][0];
-      propCount(call, 8);
+      propCount(call, 10);
       expect(call.allItems).toStrictEqual(props.allItems);
       expect(call.item).toStrictEqual({ ...defaultItem, shelf: 1 });
       expect(call.title).toBe(props.title);
@@ -284,6 +311,8 @@ describe("Setup Environment", () => {
       expect(call.stores).toStrictEqual([mockStore]);
       expect(call.shelves).toStrictEqual([mockShelf]);
       expect(call.handleSave).toBeInstanceOf(Function);
+      expect(call.setDuplicate).toBeInstanceOf(Function);
+      expect(call.duplicate).toBe(false);
       done();
     });
 
@@ -452,7 +481,7 @@ describe("Setup Environment", () => {
           apiObject: { ...StoreInitialValue },
         };
         TestContext.apiObject.transaction = false;
-        TestContext.apiObject.error = true;
+        TestContext.apiObject.fail = true;
         renderHelper(TestContext, mockShelfProvider, mockItemProvider, current);
       });
 
@@ -509,7 +538,7 @@ describe("Setup Environment", () => {
           apiObject: { ...ShelfInitialValue },
         };
         TestContext.apiObject.transaction = false;
-        TestContext.apiObject.error = true;
+        TestContext.apiObject.fail = true;
         renderHelper(mockStoreProvider, TestContext, mockItemProvider, current);
       });
 
@@ -557,7 +586,7 @@ describe("Setup Environment", () => {
       });
     });
 
-    describe("during a item api error", () => {
+    describe("during a item api fail", () => {
       beforeEach(() => {
         jest.clearAllMocks();
         current.id = "2";
@@ -566,7 +595,7 @@ describe("Setup Environment", () => {
           apiObject: { ...ItemInitialValue },
         };
         TestContext.apiObject.transaction = false;
-        TestContext.apiObject.error = true;
+        TestContext.apiObject.fail = true;
         renderHelper(
           mockStoreProvider,
           mockShelfProvider,

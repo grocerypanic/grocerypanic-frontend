@@ -99,6 +99,7 @@ describe("Setup Environment", () => {
   afterEach(cleanup);
 
   const validateFunctions = (call) => {
+    expect(call.listFunctions.setDuplicate).toBeInstanceOf(Function);
     expect(call.listFunctions.setSelected).toBeInstanceOf(Function);
     expect(call.listFunctions.setErrorMsg).toBeInstanceOf(Function);
     expect(call.listFunctions.setCreated).toBeInstanceOf(Function);
@@ -107,6 +108,7 @@ describe("Setup Environment", () => {
     expect(call.listFunctions.del).toBeInstanceOf(Function);
     expect(call.listFunctions.setActionMsg).toBeInstanceOf(Function);
 
+    expect(call.listFunctions.setDuplicate.name).toBe("bound dispatchAction");
     expect(call.listFunctions.setErrorMsg.name).toBe("bound dispatchAction");
     expect(call.listFunctions.setSelected.name).toBe("bound dispatchAction");
     expect(call.listFunctions.setCreated.name).toBe("bound dispatchAction");
@@ -147,7 +149,7 @@ describe("Setup Environment", () => {
   };
 
   describe("outside of a transaction", () => {
-    describe("outside of an api error", () => {
+    describe("outside of an api failure", () => {
       describe("no items in the list", () => {
         beforeEach(() => {
           current = { ...apiObjectState, transaction: false, inventory: [] };
@@ -266,7 +268,7 @@ describe("Setup Environment", () => {
           expect(pagination.handlePagination).toBeInstanceOf(Function);
         });
 
-        it("renders, outside of a transaction should call hint with the correct params", () => {
+        it("renders, should call hint with the correct params", () => {
           expect(current.transaction).toBe(false);
 
           expect(Hint).toHaveBeenCalledTimes(1);
@@ -278,20 +280,21 @@ describe("Setup Environment", () => {
           );
         });
 
-        it("renders, outside of a transaction should call the simple list component(s) with the correct params", () => {
+        it("renders, should call the simple list component(s) with the correct params", () => {
           expect(current.transaction).toBe(false);
 
           expect(SimpleListItem).toHaveBeenCalledTimes(3);
 
           const call1 = SimpleListItem.mock.calls[0][0];
           propCount(call1, 5);
-          propCount(call1.listFunctions, 7);
-          propCount(call1.listValues, 4);
+          propCount(call1.listFunctions, 8);
+          propCount(call1.listValues, 5);
 
           expect(call1.item).toBe(mockData[0]);
           expect(call1.allItems).toBe(mockData);
           expect(call1.redirectTag).toBe(mockRedirectTag);
 
+          expect(call1.listValues.duplicate).toBe(false);
           expect(call1.listValues.selected).toBe(null);
           expect(call1.listValues.errorMsg).toBe(null);
           expect(call1.listValues.transaction).toBe(false);
@@ -301,13 +304,14 @@ describe("Setup Environment", () => {
 
           const call2 = SimpleListItem.mock.calls[1][0];
           propCount(call2, 5);
-          propCount(call2.listFunctions, 7);
-          propCount(call2.listValues, 4);
+          propCount(call2.listFunctions, 8);
+          propCount(call2.listValues, 5);
 
           expect(call2.item).toBe(mockData[1]);
           expect(call2.allItems).toBe(mockData);
           expect(call2.redirectTag).toBe(mockRedirectTag);
 
+          expect(call2.listValues.duplicate).toBe(false);
           expect(call2.listValues.selected).toBe(null);
           expect(call2.listValues.errorMsg).toBe(null);
           expect(call2.listValues.transaction).toBe(false);
@@ -317,13 +321,14 @@ describe("Setup Environment", () => {
 
           const call3 = SimpleListItem.mock.calls[2][0];
           propCount(call3, 5);
-          propCount(call3.listFunctions, 7);
-          propCount(call3.listValues, 4);
+          propCount(call3.listFunctions, 8);
+          propCount(call3.listValues, 5);
           expect(call3.redirectTag).toBe(mockRedirectTag);
 
           expect(call3.item).toBe(mockData[2]);
           expect(call3.allItems).toBe(mockData);
 
+          expect(call3.listValues.duplicate).toBe(false);
           expect(call3.listValues.selected).toBe(null);
           expect(call3.listValues.errorMsg).toBe(null);
           expect(call3.listValues.transaction).toBe(false);
@@ -520,6 +525,23 @@ describe("Setup Environment", () => {
           expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
             Strings.SimpleList.ApiCommunicationError
           );
+
+          done();
+        });
+
+        it("handles a duplicate object error correctly", async (done) => {
+          expect(SimpleListItem).toHaveBeenCalledTimes(3);
+
+          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
+          const dispatch = mockDispatch.mock.calls[0][0].dispatch;
+
+          act(() => dispatch({ type: ApiActions.DuplicateObject }));
+          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
+
+          expect(SimpleListItem).toHaveBeenCalledTimes(9);
+
+          const call1 = SimpleListItem.mock.calls[6][0];
+          expect(call1.listValues.duplicate).toBe(true);
 
           done();
         });

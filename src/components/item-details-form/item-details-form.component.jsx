@@ -36,6 +36,8 @@ const ItemDetailsForm = ({
   shelves,
   handleSave,
   handleDelete,
+  duplicate,
+  setDuplicate,
 }) => {
   const { t } = useTranslation();
 
@@ -70,6 +72,15 @@ const ItemDetailsForm = ({
     setShelfState(normalizeName(item.shelf, shelves));
   }, [item, stores, shelves]);
 
+  React.useEffect(() => {
+    if (duplicate) {
+      setErrorMsg(t("SimpleList.ValidationAlreadyExists"));
+      setDuplicate(false);
+      setActionMsg(null);
+      setTimeout(() => setErrorMsg(null), ui.alertTimeout);
+    }
+  }, [duplicate]); // eslint-disable-line
+
   // The data from the api may include a non standard shelf-life option
   // Normalize the shelf options and create a new custom entry if needed
   React.useEffect(() => {
@@ -99,13 +110,6 @@ const ItemDetailsForm = ({
     const derivedShelfLife = normalizeId(shelfLifeState, ShelfLifeConstants);
     if (preferredStoresState.length === 0) {
       setErrorMsg(t("ItemDetails.ErrorUnselectedStore"));
-      return setTimeout(() => setErrorMsg(null), ui.alertTimeout);
-    }
-    const search = allItems.find(
-      (o) => o.id !== item.id && o.name === nameState
-    );
-    if (search) {
-      setErrorMsg(t("ItemDetails.ErrorExistingItem"));
       return setTimeout(() => setErrorMsg(null), ui.alertTimeout);
     }
     const newItem = {
@@ -281,4 +285,6 @@ ItemDetailsForm.propTypes = {
   shelves: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleSave: PropTypes.func.isRequired,
   handleDelete: PropTypes.func,
+  duplicate: PropTypes.bool.isRequired,
+  setDuplicate: PropTypes.func.isRequired,
 };

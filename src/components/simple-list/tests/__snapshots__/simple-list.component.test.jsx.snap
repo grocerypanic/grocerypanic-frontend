@@ -306,7 +306,7 @@ exports[`Setup Environment outside of a transaction during an api error should m
 </div>
 `;
 
-exports[`Setup Environment outside of a transaction outside of an api error no items in the list should match the snapshot on file (styles) 1`] = `
+exports[`Setup Environment outside of a transaction outside of an api failure no items in the list should match the snapshot on file (styles) 1`] = `
 .c6 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -479,7 +479,7 @@ exports[`Setup Environment outside of a transaction outside of an api error no i
 </div>
 `;
 
-exports[`Setup Environment outside of a transaction outside of an api error without paginated results should match the snapshot on file (styles) 1`] = `
+exports[`Setup Environment outside of a transaction outside of an api failure without paginated results should match the snapshot on file (styles) 1`] = `
 .c5 {
   display: -webkit-box;
   display: -webkit-flex;

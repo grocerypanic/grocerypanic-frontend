@@ -87,6 +87,7 @@ export const Strings = {
           "Something went wrong!\nMaybe this doesn't exist?\nOr maybe it already exists?\nGive it another try before giving up.",
         ApiError:
           "Unable to retrieve data from the API!\nDoes this content really exist?\nRetry, or change your query.",
+        ValidationAlreadyExists: "This already exists",
       },
       ItemStats: {
         Title: "Consumption Statistics",

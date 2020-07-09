@@ -59,6 +59,8 @@ const props = {
   handleSave: jest.fn(),
   handleDelete: jest.fn(),
   requestTransactions: jest.fn(),
+  duplicate: false,
+  setDuplicate: jest.fn(),
 };
 
 const renderHelper = (currentProps) => {
@@ -151,7 +153,7 @@ describe("Setup Environment", () => {
 
       expect(ItemDetailsForm).toBeCalledTimes(1);
       const call = ItemDetailsForm.mock.calls[0][0];
-      propCount(call, 9);
+      propCount(call, 11);
 
       expect(call.allItems).toBe(current.allItems);
       expect(call.item).toBe(mockItem);
@@ -162,6 +164,8 @@ describe("Setup Environment", () => {
       expect(call.shelves).toStrictEqual([mockShelf]);
       expect(call.handleSave).toBe(current.handleSave);
       expect(call.handleDelete).toBe(current.handleDelete);
+      expect(call.duplicate).toBe(current.duplicate);
+      expect(call.setDuplicate).toBe(current.setDuplicate);
 
       done();
     });
@@ -237,7 +241,7 @@ describe("Setup Environment", () => {
 
       expect(ItemDetailsForm).toBeCalledTimes(1);
       const call = ItemDetailsForm.mock.calls[0][0];
-      propCount(call, 9);
+      propCount(call, 11);
 
       expect(call.allItems).toBe(current.allItems);
       expect(call.item).toBe(mockItem);
@@ -248,6 +252,8 @@ describe("Setup Environment", () => {
       expect(call.shelves).toStrictEqual([mockShelf]);
       expect(call.handleSave).toBe(current.handleSave);
       expect(call.handleDelete).toBe(current.handleDelete);
+      expect(call.duplicate).toBe(current.duplicate);
+      expect(call.setDuplicate).toBe(current.setDuplicate);
 
       done();
     });

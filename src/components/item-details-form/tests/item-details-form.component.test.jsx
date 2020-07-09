@@ -43,6 +43,7 @@ MultiDropDown.mockImplementation(() => <div>MockDropDown</div>);
 
 const mockHandleSave = jest.fn();
 const mockHandleDelete = jest.fn();
+const mockSetDuplicate = jest.fn();
 
 const mockItem = {
   expired: 0,
@@ -102,6 +103,8 @@ const props = {
   transaction: false,
   handleSave: mockHandleSave,
   handleDelete: mockHandleDelete,
+  duplicate: false,
+  setDuplicate: mockSetDuplicate,
 };
 
 describe("Setup Environment, Render Tests", () => {
@@ -629,25 +632,29 @@ describe("Setup Environment For Action Tests", () => {
         expect(mockHandleSave).toBeCalledTimes(0);
         done();
       });
+    });
 
-      it("does not save a modified name if it already exists", async (done) => {
-        const modified_value = mockItem2.name;
+    describe("when a duplicate item has been created", () => {
+      beforeEach(() => {
+        current.duplicate = true;
+        jest.clearAllMocks();
+        utils = render(<ItemDetailsForm {...current} />);
+      });
 
-        await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
-        const nameInput = FormInput.mock.calls[3][0];
-        act(() => nameInput.handleState(modified_value));
+      it("renders an error message, and then hides it", async (done) => {
+        await waitFor(() => expect(mockSetDuplicate).toBeCalledTimes(1));
 
-        const button = utils.getByTestId("submit");
-        fireEvent.click(button, "click");
         await waitFor(() =>
           expect(
-            utils.getByText(Strings.ItemDetails.ErrorExistingItem)
+            utils.getByText(Strings.ItemDetails.ValidationAlreadyExists)
           ).toBeTruthy()
         );
         await waitFor(() =>
           expect(utils.getByText(current.title)).toBeTruthy()
         );
-        await waitFor(() => expect(mockHandleSave).toBeCalledTimes(0));
+
+        expect(mockSetDuplicate).toBeCalledTimes(1);
+        expect(mockSetDuplicate).toBeCalledWith(false);
 
         done();
       });

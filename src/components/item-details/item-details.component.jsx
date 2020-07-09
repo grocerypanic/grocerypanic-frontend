@@ -111,4 +111,6 @@ ItemDetails.propTypes = {
   requestTransactions: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
+  duplicate: PropTypes.bool.isRequired,
+  setDuplicate: PropTypes.func.isRequired,
 };

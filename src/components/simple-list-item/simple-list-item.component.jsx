@@ -24,14 +24,24 @@ const SimpleListItem = ({
   const {
     add,
     del,
-    setSelected,
-    setErrorMsg,
-    setCreated,
-    setLongPress,
     setActionMsg,
+    setCreated,
+    setDuplicate,
+    setErrorMsg,
+    setLongPress,
+    setSelected,
   } = listFunctions;
 
-  const { selected, errorMsg, transaction, longPress } = listValues;
+  const { duplicate, errorMsg, longPress, selected, transaction } = listValues;
+
+  React.useEffect(() => {
+    if (duplicate) {
+      setErrorMsg(t("ItemDetails.ValidationAlreadyExists"));
+      setDuplicate(false);
+      setActionMsg(null);
+      setTimeout(() => setErrorMsg(null), ui.alertTimeout);
+    }
+  }, [duplicate]); // eslint-disable-line
 
   const handleNavigateToItem = (e) => {
     if (transaction) return;
@@ -70,11 +80,7 @@ const SimpleListItem = ({
       setErrorMsg(t("SimpleList.ValidationFailure"));
       return;
     }
-    const search = allItems.find((instance) => instance.name === value);
-    if (search) {
-      setErrorMsg(t("SimpleList.ValidationAlreadyExists"));
-      return;
-    }
+
     setActionMsg(`${t("SimpleList.CreatedAction")} ${value}`);
     add(value);
     return setTimeout(() => setActionMsg(null), ui.alertTimeout);
@@ -173,6 +179,7 @@ SimpleListItem.propTypes = {
   listFunctions: PropTypes.shape({
     add: PropTypes.func.isRequired,
     del: PropTypes.func.isRequired,
+    setDuplicate: PropTypes.func.isRequired,
     setSelected: PropTypes.func.isRequired,
     setErrorMsg: PropTypes.func.isRequired,
     setCreated: PropTypes.func.isRequired,
@@ -180,6 +187,7 @@ SimpleListItem.propTypes = {
     setActionMsg: PropTypes.func.isRequired,
   }).isRequired,
   listValues: PropTypes.shape({
+    duplicate: PropTypes.bool.isRequired,
     selected: PropTypes.number,
     errorMsg: PropTypes.string,
     transaction: PropTypes.bool.isRequired,

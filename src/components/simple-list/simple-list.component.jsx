@@ -43,6 +43,7 @@ const SimpleList = ({
   const [actionMsg, setActionMsg] = React.useState(null);
   const [selected, setSelected] = React.useState(null);
   const [created, setCreated] = React.useState(null);
+  const [duplicate, setDuplicate] = React.useState(false);
   const [errorMsg, setErrorMsg] = React.useState(null);
   const [longPress, setLongPress] = React.useState(false);
 
@@ -66,8 +67,9 @@ const SimpleList = ({
 
   React.useEffect(() => {
     if (!performAsync) return;
-    if (performAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
     dispatch(performAsync);
+    if (performAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
+    if (performAsync.type === ApiActions.DuplicateObject) setDuplicate(true);
     setPerformAsync(null);
   }, [performAsync]); // eslint-disable-line
 
@@ -137,6 +139,7 @@ const SimpleList = ({
   const listFunctions = {
     add: handleSave,
     del: handleDelete,
+    setDuplicate,
     setSelected,
     setErrorMsg,
     setCreated,
@@ -145,8 +148,9 @@ const SimpleList = ({
   };
 
   const listValues = {
-    selected,
+    duplicate,
     errorMsg,
+    selected,
     transaction: apiObject.transaction,
     longPress,
   };
@@ -167,7 +171,7 @@ const SimpleList = ({
               handlePagination={handlePagination}
             />
             <Paper>
-              {errorMsg && created ? (
+              {errorMsg ? (
                 <ItemizedBanner className="alert alert-danger">
                   {errorMsg}
                 </ItemizedBanner>

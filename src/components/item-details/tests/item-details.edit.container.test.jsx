@@ -260,7 +260,7 @@ describe("Setup Environment", () => {
       it("renders ItemDetails with correct props", async (done) => {
         await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
         const call = ItemDetails.mock.calls[2][0];
-        propCount(call, 13);
+        propCount(call, 15);
         expect(call.allItems).toStrictEqual(props.allItems);
         expect(call.item).toBe(mockItem);
         expect(call.headerTitle).toBe(props.headerTitle);
@@ -274,6 +274,24 @@ describe("Setup Environment", () => {
         expect(call.handleSave).toBeInstanceOf(Function);
         expect(call.handleDelete).toBeInstanceOf(Function);
         expect(call.requestTransactions).toBeInstanceOf(Function);
+        expect(call.setDuplicate).toBeInstanceOf(Function);
+        expect(call.duplicate).toBe(false);
+        done();
+      });
+
+      it("handles a duplicate object error correctly", async (done) => {
+        await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
+        const itemDispatch = mockItemDispatch.mock.calls[0][0].dispatch;
+
+        act(() => itemDispatch({ type: ApiActions.DuplicateObject }));
+
+        await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
+
+        expect(ItemDetails).toHaveBeenCalledTimes(5);
+
+        const call1 = ItemDetails.mock.calls[4][0];
+        expect(call1.duplicate).toBe(true);
+
         done();
       });
 

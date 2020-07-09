@@ -27,6 +27,7 @@ const setErrorMsg = jest.fn();
 const setCreated = jest.fn();
 const setLongPress = jest.fn();
 const setActionMsg = jest.fn();
+const setDuplicate = jest.fn();
 
 // Mock Api Data
 const mockData = [
@@ -43,13 +44,15 @@ let test = {
   listFunctions: {
     add: mockAdd,
     del: mockDelete,
-    setSelected: setSelected,
-    setErrorMsg: setErrorMsg,
-    setCreated: setCreated,
-    setLongPress: setLongPress,
-    setActionMsg: setActionMsg,
+    setDuplicate,
+    setSelected,
+    setErrorMsg,
+    setCreated,
+    setLongPress,
+    setActionMsg,
   },
   listValues: {
+    duplicate: false,
     transaction: false,
     selected: null,
     errorMsg: null,
@@ -342,6 +345,12 @@ describe("Setup Environment", () => {
         });
         afterEach(cleanup);
 
+        it("should not call setErrorMsg or setDuplicate as expected", async (done) => {
+          await waitFor(() => expect(setErrorMsg).toBeCalledTimes(0));
+          await waitFor(() => expect(setDuplicate).toBeCalledTimes(0));
+          done();
+        });
+
         it("handles input as expected", async (done) => {
           const input = utils.queryByTestId("inputElement");
           await userEvent.type(input, "Hello, World!");
@@ -383,20 +392,34 @@ describe("Setup Environment", () => {
           done();
         });
 
-        it("handles submit as expected with existing input", async (done) => {
-          const input = utils.queryByTestId("inputElement");
-          await userEvent.type(input, "Shelf2");
-          const save = utils.queryByTestId("saveButton");
-          fireEvent.click(save);
+        it("should match the snapshot on file (styles)", () => {
+          expect(utils.container.firstChild).toMatchSnapshot();
+        });
+      });
+      describe("when a duplicate item has been created", () => {
+        beforeEach(() => {
+          current.listValues.duplicate = true;
+          jest.clearAllMocks();
+          utils = render(
+            <MemoryRouter>
+              <SimpleListItem {...current} />
+            </MemoryRouter>
+          );
+        });
+
+        it("should call setErrorMsg and setDuplicate as expected", async (done) => {
+          await waitFor(() => expect(setErrorMsg).toBeCalledTimes(1));
+          await waitFor(() => expect(setDuplicate).toBeCalledTimes(1));
+          await waitFor(() => expect(setActionMsg).toBeCalledTimes(1));
+
           expect(setErrorMsg).toBeCalledWith(
             Strings.SimpleList.ValidationAlreadyExists
           );
-          await (() => expect(setActionMsg).toBeCalledTimes(0));
-          done();
-        });
+          expect(setDuplicate).toBeCalledWith(false);
+          await waitFor(() => expect(setErrorMsg).toBeCalledTimes(2));
+          expect(setErrorMsg).toBeCalledWith(null);
 
-        it("should match the snapshot on file (styles)", () => {
-          expect(utils.container.firstChild).toMatchSnapshot();
+          done();
         });
       });
     });
