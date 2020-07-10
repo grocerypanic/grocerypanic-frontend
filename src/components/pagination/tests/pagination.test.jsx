@@ -2,12 +2,14 @@ import React from "react";
 import { render, waitFor, fireEvent } from "@testing-library/react";
 
 import Pagination from "../pagination.component";
+import { rewriteUrlWithPagination } from "../pagination.query.utils";
 
 const mockApiObject = {
   next: null,
   previous: null,
 };
 
+jest.mock("../pagination.query.utils");
 const handlePagination = jest.fn();
 
 describe("inside of a transaction", () => {
@@ -43,6 +45,7 @@ describe("inside of a transaction", () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
+        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
         done();
       });
 
@@ -50,6 +53,7 @@ describe("inside of a transaction", () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
+        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
         done();
       });
     });
@@ -72,6 +76,7 @@ describe("inside of a transaction", () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
+        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
         done();
       });
 
@@ -79,6 +84,7 @@ describe("inside of a transaction", () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
+        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
         done();
       });
     });
@@ -107,6 +113,7 @@ describe("inside of a transaction", () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
+        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
         done();
       });
 
@@ -114,6 +121,7 @@ describe("inside of a transaction", () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
+        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
         done();
       });
     });
@@ -136,6 +144,7 @@ describe("inside of a transaction", () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
+        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
         done();
       });
 
@@ -143,6 +152,7 @@ describe("inside of a transaction", () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
+        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
         done();
       });
     });
@@ -184,6 +194,7 @@ describe("outside of a transaction", () => {
         await waitFor(() =>
           expect(handlePagination).toBeCalledWith("previous")
         );
+        expect(rewriteUrlWithPagination).toBeCalledWith("previous");
         done();
       });
 
@@ -191,6 +202,7 @@ describe("outside of a transaction", () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledWith("next"));
+        expect(rewriteUrlWithPagination).toBeCalledWith("next");
         done();
       });
     });
@@ -215,6 +227,7 @@ describe("outside of a transaction", () => {
         await waitFor(() =>
           expect(handlePagination).toBeCalledWith("previous")
         );
+        expect(rewriteUrlWithPagination).toBeCalledWith("previous");
         done();
       });
 
@@ -222,6 +235,7 @@ describe("outside of a transaction", () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
+        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
         done();
       });
     });
@@ -250,6 +264,7 @@ describe("outside of a transaction", () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
+        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
         done();
       });
 
@@ -257,6 +272,7 @@ describe("outside of a transaction", () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledWith("next"));
+        expect(rewriteUrlWithPagination).toBeCalledWith("next");
         done();
       });
     });
@@ -279,6 +295,7 @@ describe("outside of a transaction", () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
+        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
         done();
       });
 
@@ -286,6 +303,7 @@ describe("outside of a transaction", () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
+        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
         done();
       });
     });

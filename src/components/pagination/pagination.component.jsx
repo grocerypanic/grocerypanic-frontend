@@ -1,5 +1,6 @@
 import React from "react";
 
+import { rewriteUrlWithPagination } from "./pagination.query.utils";
 import { PaginationControl } from "./pagination.styles";
 
 const Pagination = ({ apiObject, handlePagination }) => {
@@ -10,6 +11,7 @@ const Pagination = ({ apiObject, handlePagination }) => {
 
   const paginationWrapper = (direction) => {
     if (!direction || apiObject.transaction) return;
+    rewriteUrlWithPagination(direction);
     handlePagination(direction);
   };
 
