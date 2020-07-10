@@ -102,8 +102,9 @@ const ItemList = ({
 
   const handleCreate = () => {
     if (transactionStatus()) return;
-    // TODO: is it possible to populate the shelf or store automatically based on current route?
-    history.push(Routes.create);
+    history.push(
+      Routes.create + "?" + new URLSearchParams(window.location.search)
+    );
   };
 
   const generateCallback = (itemToRefresh, quantity) => {

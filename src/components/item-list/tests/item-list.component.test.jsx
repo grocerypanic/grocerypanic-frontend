@@ -253,7 +253,7 @@ describe("Setup Environment", () => {
       });
 
       describe("with wait for api not engaged", () => {
-        describe("when called from an url containing a page reference", () => {
+        describe("when called from an url containing a query string with a page reference", () => {
           let page = "2";
           beforeEach(() => {
             delete window.location;
@@ -288,6 +288,61 @@ describe("Setup Environment", () => {
             expect(apiCall.dispatch).toBeInstanceOf(Function);
             expect(apiCall.filter).toBeInstanceOf(URLSearchParams);
             expect(apiCall.page).toBe(page);
+            done();
+          });
+        });
+
+        describe("with called from an url containing some other query string", () => {
+          let qstring;
+          beforeEach(() => {
+            current.inventory = [...mockItems];
+            let history = createBrowserHistory();
+            qstring = { "query string": "parameter&&!" };
+            history.push(
+              Routes.items + "?" + new URLSearchParams(qstring).toString()
+            );
+
+            const itemContext = {
+              apiObject: { ...current },
+              dispatch: mockItemDispatch,
+            };
+            const transactionContext = {
+              apiObject: { ...current },
+              dispatch: mockTransactionDispatch,
+            };
+
+            utils = renderHelper(
+              itemContext,
+              transactionContext,
+              history,
+              false
+            );
+          });
+
+          it("renders, handles a create event with query params passed along", async (done) => {
+            expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+            const { create } = mockHeaderUpdate.mock.calls[0][0];
+            expect(current.transaction).toBeFalsy();
+
+            ItemListRow.mockClear();
+            act(() => {
+              create();
+            });
+
+            await waitFor(() =>
+              expect(window.location.pathname).toBe(Routes.create)
+            );
+
+            // The query string is passed along
+            expect(window.location.search).toBe(
+              "?" + new URLSearchParams(qstring).toString()
+            );
+
+            // The url has changed, so this should get called again
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(2)
+            );
+
             done();
           });
         });
@@ -495,7 +550,7 @@ describe("Setup Environment", () => {
             done();
           });
 
-          it("renders, handles a create event", async (done) => {
+          it("renders, handles a create event as expected", async (done) => {
             expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
             const { create } = mockHeaderUpdate.mock.calls[0][0];
             expect(current.transaction).toBeFalsy();
@@ -508,6 +563,9 @@ describe("Setup Environment", () => {
             await waitFor(() =>
               expect(window.location.pathname).toBe(Routes.create)
             );
+
+            // no query params are passed along
+            expect(window.location.search).toBe("");
 
             // The url has changed, so this should get called again
             await waitFor(() =>
