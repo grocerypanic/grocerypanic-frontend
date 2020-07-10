@@ -2,7 +2,11 @@ import { Paths } from "../../../configuration/backend";
 import { match2xx, match400duplicate } from "../../../util/requests/status";
 import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
-import { authFailure, duplicateObject } from "../api.async.helpers";
+import {
+  authFailure,
+  duplicateObject,
+  asyncDispatch,
+} from "../api.async.helpers";
 
 import { generateConverter } from "../api.util.js";
 import InitialState from "./store.initial";
@@ -16,7 +20,7 @@ export const asyncAdd = async ({ state, action }) => {
   });
   // Status Code is 2xx
   if (match2xx(status)) {
-    return new Promise(function (resolve) {
+    new Promise((resolve) => {
       const newInventory = [...state.inventory];
       newInventory.push(convertDatesToLocal(response));
       dispatch({
@@ -27,15 +31,17 @@ export const asyncAdd = async ({ state, action }) => {
         callback,
       });
     });
+    return;
   }
   // Duplicate Object Errors
   if (match400duplicate(status, response))
     return duplicateObject(dispatch, callback);
   if (status === 401) return authFailure(dispatch, callback);
-  return dispatch({
+  asyncDispatch(dispatch, {
     type: ApiActions.FailureAdd,
     callback,
   });
+  return;
 };
 
 export const asyncDel = async ({ state, action }) => {
@@ -46,7 +52,7 @@ export const asyncDel = async ({ state, action }) => {
   );
   // Status Code is 2xx
   if (match2xx(status)) {
-    return new Promise(function (resolve) {
+    new Promise((resolve) => {
       dispatch({
         type: ApiActions.SuccessDel,
         payload: {
@@ -57,12 +63,14 @@ export const asyncDel = async ({ state, action }) => {
         callback,
       });
     });
+    return;
   }
   if (status === 401) return authFailure(dispatch, callback);
-  return dispatch({
+  asyncDispatch(dispatch, {
     type: ApiActions.FailureDel,
     callback,
   });
+  return;
 };
 
 export const asyncList = async ({ state, action }) => {
@@ -72,10 +80,10 @@ export const asyncList = async ({ state, action }) => {
     action.override ? action.override : Paths.manageStores
   );
   if (match2xx(status)) {
-    const processedResponse = response.results.map((i) =>
-      convertDatesToLocal(i)
-    );
-    return new Promise(function (resolve) {
+    new Promise((resolve) => {
+      const processedResponse = response.results.map((i) =>
+        convertDatesToLocal(i)
+      );
       dispatch({
         type: ApiActions.SuccessList,
         payload: {
@@ -86,12 +94,14 @@ export const asyncList = async ({ state, action }) => {
         callback,
       });
     });
+    return;
   }
   if (status === 401) return authFailure(dispatch, callback);
-  return dispatch({
+  asyncDispatch(dispatch, {
     type: ApiActions.FailureList,
     callback,
   });
+  return;
 };
 
 /* istanbul ignore next */

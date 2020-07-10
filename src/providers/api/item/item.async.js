@@ -2,7 +2,11 @@ import { Paths } from "../../../configuration/backend";
 import { match2xx, match400duplicate } from "../../../util/requests/status";
 import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
-import { authFailure, duplicateObject } from "../api.async.helpers";
+import {
+  authFailure,
+  duplicateObject,
+  asyncDispatch,
+} from "../api.async.helpers";
 import { generateConverter } from "../api.util.js";
 import InitialState from "./item.initial";
 
@@ -17,7 +21,7 @@ export const asyncAdd = async ({ state, action }) => {
   });
   // Status Code is 2xx
   if (match2xx(status)) {
-    return new Promise(function (resolve) {
+    new Promise((resolve) => {
       state.inventory.unshift(convertDatesToLocal(response));
       dispatch({
         type: ApiActions.SuccessAdd,
@@ -27,15 +31,17 @@ export const asyncAdd = async ({ state, action }) => {
         callback,
       });
     });
+    return;
   }
   // Duplicate Object Errors
   if (match400duplicate(status, response))
     return duplicateObject(dispatch, callback);
   if (status === 401) return authFailure(dispatch, callback);
-  return dispatch({
+  asyncDispatch(dispatch, {
     type: ApiActions.FailureAdd,
     callback,
   });
+  return;
 };
 
 export const asyncDel = async ({ state, action }) => {
@@ -46,7 +52,7 @@ export const asyncDel = async ({ state, action }) => {
   );
   // Status Code is 2xx
   if (match2xx(status)) {
-    return new Promise(function (resolve) {
+    new Promise((resolve) => {
       dispatch({
         type: ApiActions.SuccessDel,
         payload: {
@@ -57,12 +63,14 @@ export const asyncDel = async ({ state, action }) => {
         callback,
       });
     });
+    return;
   }
   if (status === 401) return authFailure(dispatch, callback);
-  return dispatch({
+  asyncDispatch(dispatch, {
     type: ApiActions.FailureDel,
     callback,
   });
+  return;
 };
 
 export const asyncGet = async ({ state, action }) => {
@@ -73,29 +81,30 @@ export const asyncGet = async ({ state, action }) => {
   );
   // Status Code is 2xx
   if (match2xx(status)) {
-    // Update the item in state if it exists, otherwise add it as a new item
-    const newInventory = [...state.inventory];
-    const index = newInventory.findIndex(
-      (item) => item.id === action.payload.id
-    );
-    if (index >= 0) newInventory[index] = convertDatesToLocal(response);
-    if (index < 0) newInventory.push(convertDatesToLocal(response));
-    new Promise((resolve) =>
+    new Promise((resolve) => {
+      // Update the item in state if it exists, otherwise add it as a new item
+      const newInventory = [...state.inventory];
+      const index = newInventory.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      if (index >= 0) newInventory[index] = convertDatesToLocal(response);
+      if (index < 0) newInventory.push(convertDatesToLocal(response));
       dispatch({
         type: ApiActions.SuccessGet,
         payload: {
           inventory: newInventory,
         },
         callback,
-      })
-    );
+      });
+    });
     return;
   }
   if (status === 401) return authFailure(dispatch, callback);
-  return dispatch({
+  asyncDispatch(dispatch, {
     type: ApiActions.FailureGet,
     callback,
   });
+  return;
 };
 
 export const asyncList = async ({ state, action }) => {
@@ -117,10 +126,10 @@ export const asyncList = async ({ state, action }) => {
     action.override ? action.override : Paths.manageItems + filterPath
   );
   if (match2xx(status)) {
-    const processedResponse = response.results.map((i) =>
-      convertDatesToLocal(i)
-    );
-    return new Promise(function (resolve) {
+    new Promise((resolve) => {
+      const processedResponse = response.results.map((i) =>
+        convertDatesToLocal(i)
+      );
       dispatch({
         type: ApiActions.SuccessList,
         payload: {
@@ -131,12 +140,14 @@ export const asyncList = async ({ state, action }) => {
         callback,
       });
     });
+    return;
   }
   if (status === 401) return authFailure(dispatch, callback);
-  return dispatch({
+  asyncDispatch(dispatch, {
     type: ApiActions.FailureList,
     callback,
   });
+  return;
 };
 
 export const asyncUpdate = async ({ state, action }) => {
@@ -148,11 +159,11 @@ export const asyncUpdate = async ({ state, action }) => {
   );
   // Status Code is 2xx
   if (match2xx(status)) {
-    const index = state.inventory.findIndex(
-      (item) => item.id === action.payload.id
-    );
-    state.inventory[index] = convertDatesToLocal(response);
-    return new Promise(function (resolve) {
+    return new Promise((resolve) => {
+      const index = state.inventory.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      state.inventory[index] = convertDatesToLocal(response);
       dispatch({
         type: ApiActions.SuccessUpdate,
         payload: {
