@@ -12,11 +12,11 @@ import { ListItem, ListTitle } from "./simple-list-item.styles";
 
 const SimpleListItem = ({
   item,
-  allItems,
   listFunctions,
   listValues,
   history,
   redirectTag,
+  objectClass,
 }) => {
   const { t } = useTranslation();
   const fieldItem = React.createRef();
@@ -46,11 +46,11 @@ const SimpleListItem = ({
   const handleNavigateToItem = (e) => {
     if (transaction) return;
     if (item.id !== selected) return;
-    history.push(
-      `${Routes.items}?${FilterTag}=${encodeURIComponent(
-        item.name
-      )}&${redirectTag}=${item.id}`
-    );
+    const params = {};
+    params[FilterTag] = item.name;
+    params[redirectTag] = item.id;
+    params.class = objectClass;
+    history.push(`${Routes.items}?${new URLSearchParams(params).toString()}`);
   };
 
   const handleLongClick = (e) => {
@@ -175,7 +175,6 @@ export default withRouter(SimpleListItem);
 
 SimpleListItem.propTypes = {
   item: PropTypes.object.isRequired,
-  allItems: PropTypes.arrayOf(PropTypes.object).isRequired,
   listFunctions: PropTypes.shape({
     add: PropTypes.func.isRequired,
     del: PropTypes.func.isRequired,
@@ -195,4 +194,5 @@ SimpleListItem.propTypes = {
   }).isRequired,
   redirectTag: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
+  objectClass: PropTypes.string.isRequired,
 };

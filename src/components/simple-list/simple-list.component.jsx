@@ -190,21 +190,21 @@ const SimpleList = ({
                     return (
                       <SimpleListItem
                         item={item}
-                        allItems={apiObject.inventory}
                         key={item.id}
                         listFunctions={listFunctions}
                         listValues={listValues}
                         redirectTag={redirectTag}
+                        objectClass={apiObject.class}
                       />
                     );
                   })}
                   {created ? (
                     <SimpleListItem
                       item={created}
-                      allItems={apiObject.inventory}
                       listFunctions={listFunctions}
                       listValues={listValues}
                       redirectTag={redirectTag}
+                      objectClass={apiObject.class}
                     />
                   ) : null}
                   {apiObject.inventory.length === 0 && !created ? (

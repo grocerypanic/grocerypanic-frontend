@@ -328,8 +328,8 @@ describe("Setup Environment", () => {
           propCount(call1.listValues, 5);
 
           expect(call1.item).toBe(mockData[0]);
-          expect(call1.allItems).toBe(mockData);
           expect(call1.redirectTag).toBe(mockRedirectTag);
+          expect(call1.objectClass).toBe(apiObjectState.class);
 
           expect(call1.listValues.duplicate).toBe(false);
           expect(call1.listValues.selected).toBe(null);
@@ -345,8 +345,8 @@ describe("Setup Environment", () => {
           propCount(call2.listValues, 5);
 
           expect(call2.item).toBe(mockData[1]);
-          expect(call2.allItems).toBe(mockData);
           expect(call2.redirectTag).toBe(mockRedirectTag);
+          expect(call1.objectClass).toBe(apiObjectState.class);
 
           expect(call2.listValues.duplicate).toBe(false);
           expect(call2.listValues.selected).toBe(null);
@@ -360,10 +360,10 @@ describe("Setup Environment", () => {
           propCount(call3, 5);
           propCount(call3.listFunctions, 8);
           propCount(call3.listValues, 5);
-          expect(call3.redirectTag).toBe(mockRedirectTag);
 
           expect(call3.item).toBe(mockData[2]);
-          expect(call3.allItems).toBe(mockData);
+          expect(call3.redirectTag).toBe(mockRedirectTag);
+          expect(call1.objectClass).toBe(apiObjectState.class);
 
           expect(call3.listValues.duplicate).toBe(false);
           expect(call3.listValues.selected).toBe(null);

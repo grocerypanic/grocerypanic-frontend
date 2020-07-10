@@ -31,9 +31,9 @@ const setDuplicate = jest.fn();
 
 // Mock Api Data
 const mockData = [
-  { id: 1, name: "Shelf1" },
-  { id: 2, name: "Shelf2" },
-  { id: 3, name: "Shelf3" },
+  { id: 1, name: "Shelf 1" },
+  { id: 2, name: "Shelf 2" },
+  { id: 3, name: "Shelf 3" },
 ];
 
 // Test Data Defaults
@@ -59,6 +59,7 @@ let test = {
     longPress: false,
   },
   redirectTag: "redirectTag",
+  objectClass: "shelf",
 };
 
 let utils;
@@ -153,8 +154,12 @@ describe("Setup Environment", () => {
           expect(window.location.pathname).not.toBe(Routes.items);
           fireEvent.click(itemComponent, "click");
           expect(window.location.pathname).toBe(Routes.items);
+          const params = {};
+          params[FilterTag] = current.item.name;
+          params["redirectTag"] = current.item.id;
+          params["class"] = current.objectClass;
           expect(window.location.search).toBe(
-            `?${FilterTag}=${current.item.name}&redirectTag=${current.item.id}`
+            "?" + new URLSearchParams(params).toString()
           );
         });
 
