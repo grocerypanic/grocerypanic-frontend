@@ -29,6 +29,7 @@ import ApiFunctions from "../../../providers/api/api.functions";
 import SimpleListItem from "../../simple-list-item/simple-list-item.component";
 import SimpleList from "../simple-list.component";
 
+import { Constants } from "../../../configuration/backend";
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
 import calculateMaxHeight from "../../../util/height";
@@ -80,6 +81,7 @@ describe("Setup Environment", () => {
   let ApiContext;
   let apiObjectState;
   let current;
+  const originalWindow = window.location;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -94,9 +96,16 @@ describe("Setup Environment", () => {
       apiObject: apiObjectState,
       dispatch: mockDispatch,
     });
+
+    delete window.location;
+    window.location = new URL("https://myserver.com:8080");
   });
 
   afterEach(cleanup);
+
+  afterAll(() => {
+    window.location = originalWindow;
+  });
 
   const validateFunctions = (call) => {
     expect(call.listFunctions.setDuplicate).toBeInstanceOf(Function);
@@ -229,6 +238,33 @@ describe("Setup Environment", () => {
         });
       });
 
+      describe("when called from an url containing a page reference", () => {
+        let page = "2";
+        beforeEach(() => {
+          window.location = new URL(
+            "https://myserver.com:8080?" +
+              Constants.pageLookupParam +
+              "=" +
+              page
+          );
+          current = { ...apiObjectState, transaction: false };
+          utils = renderHelper(current);
+        });
+
+        it("renders, calls StartList on first render, with the page param", async (done) => {
+          expect(current.transaction).toBeFalsy();
+          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
+          const apiCall = mockDispatch.mock.calls[0][0];
+          propCount(apiCall, 5);
+          expect(apiCall.type).toBe(ApiActions.StartList);
+          expect(apiCall.func).toBe(ApiFunctions.asyncList);
+          expect(apiCall.dispatch).toBeInstanceOf(Function);
+          expect(apiCall.callback).toBeInstanceOf(Function);
+          expect(apiCall.page).toBe(page);
+          done();
+        });
+      });
+
       describe("without paginated results", () => {
         beforeEach(() => {
           current = { ...apiObjectState, transaction: false };
@@ -239,11 +275,12 @@ describe("Setup Environment", () => {
           expect(current.transaction).toBeFalsy();
           await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
           const apiCall = mockDispatch.mock.calls[0][0];
-          propCount(apiCall, 4);
+          propCount(apiCall, 5);
           expect(apiCall.type).toBe(ApiActions.StartList);
           expect(apiCall.func).toBe(ApiFunctions.asyncList);
           expect(apiCall.dispatch).toBeInstanceOf(Function);
           expect(apiCall.callback).toBeInstanceOf(Function);
+          expect(apiCall.page).toBe(null);
           done();
         });
 

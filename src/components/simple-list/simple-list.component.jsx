@@ -16,6 +16,8 @@ import Pagination from "../pagination/pagination.component";
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
 import Routes from "../../configuration/routes";
+import { Constants } from "../../configuration/backend";
+
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
 
@@ -74,11 +76,13 @@ const SimpleList = ({
   }, [performAsync]); // eslint-disable-line
 
   React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
     dispatch({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
       dispatch: setPerformAsync,
       callback: setItemsFetched,
+      page: params.get(Constants.pageLookupParam),
     });
   }, []); // eslint-disable-line
 

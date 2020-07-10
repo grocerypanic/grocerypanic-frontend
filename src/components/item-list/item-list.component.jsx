@@ -18,6 +18,7 @@ import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
 import Routes from "../../configuration/routes";
+import { Constants } from "../../configuration/backend";
 
 import preventContext from "../../util/preventDefault";
 import calculateMaxHeight from "../../util/height";
@@ -89,11 +90,13 @@ const ItemList = ({
   // Ensure This Is Recalculated On Every Route Change
   React.useEffect(() => {
     const filter = new URLSearchParams(window.location.search);
+    const page = filter.get(Constants.pageLookupParam);
     itemDispatch({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
       dispatch: setPerformItemAsync,
       filter: filter,
+      page,
     });
   }, [history.location.key]); // eslint-disable-line
 

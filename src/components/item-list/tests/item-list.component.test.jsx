@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  render,
-  cleanup,
-  act,
-  waitFor,
-  fireEvent,
-} from "@testing-library/react";
+import { render, act, waitFor, fireEvent } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
@@ -15,6 +9,7 @@ import { AnalyticsActions } from "../../../providers/analytics/analytics.actions
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import { ItemContext } from "../../../providers/api/item/item.provider";
 import { TransactionContext } from "../../../providers/api/transaction/transaction.provider";
+import { Constants } from "../../../configuration/backend";
 
 import ErrorHandler from "../../error-handler/error-handler.component";
 import Pagination from "../../pagination/pagination.component";
@@ -114,6 +109,7 @@ describe("Setup Environment", () => {
   let mockTitle = "mockTitle";
   let mockHeaderTitle = "mockHeaderTitle";
   let history;
+  const originalWindow = window.location;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -123,7 +119,9 @@ describe("Setup Environment", () => {
     };
   });
 
-  afterEach(cleanup);
+  afterEach(() => {
+    window.location = originalWindow;
+  });
 
   const renderHelper = (
     itemContextValue,
@@ -255,6 +253,45 @@ describe("Setup Environment", () => {
       });
 
       describe("with wait for api not engaged", () => {
+        describe("when called from an url containing a page reference", () => {
+          let page = "2";
+          beforeEach(() => {
+            delete window.location;
+            window.location = new URL("https://myserver.com:8080");
+            window.location = new URL(
+              "https://myserver.com:8080?" +
+                Constants.pageLookupParam +
+                "=" +
+                page
+            );
+            const itemContext = {
+              apiObject: { ...current },
+              dispatch: mockItemDispatch,
+            };
+            const transactionContext = {
+              apiObject: { ...current },
+              dispatch: mockTransactionDispatch,
+            };
+
+            utils = renderHelper(itemContext, transactionContext, history);
+          });
+
+          it("renders, calls StartList on first render, with a page param", async (done) => {
+            expect(current.transaction).toBeFalsy();
+            await waitFor(() =>
+              expect(mockItemDispatch).toHaveBeenCalledTimes(1)
+            );
+            const apiCall = mockItemDispatch.mock.calls[0][0];
+            propCount(apiCall, 5);
+            expect(apiCall.type).toBe(ApiActions.StartList);
+            expect(apiCall.func).toBe(ApiFunctions.asyncList);
+            expect(apiCall.dispatch).toBeInstanceOf(Function);
+            expect(apiCall.filter).toBeInstanceOf(URLSearchParams);
+            expect(apiCall.page).toBe(page);
+            done();
+          });
+        });
+
         describe("with items in the inventory", () => {
           beforeEach(() => {
             current.inventory = [...mockItems];
@@ -430,11 +467,12 @@ describe("Setup Environment", () => {
               expect(mockItemDispatch).toHaveBeenCalledTimes(1)
             );
             const apiCall = mockItemDispatch.mock.calls[0][0];
-            propCount(apiCall, 4);
+            propCount(apiCall, 5);
             expect(apiCall.type).toBe(ApiActions.StartList);
             expect(apiCall.func).toBe(ApiFunctions.asyncList);
             expect(apiCall.dispatch).toBeInstanceOf(Function);
             expect(apiCall.filter).toBeInstanceOf(URLSearchParams);
+            expect(apiCall.page).toBe(null);
             done();
           });
 
@@ -505,11 +543,12 @@ describe("Setup Environment", () => {
             // The new call to the item dispatcher, is to update the items
 
             const apiCall = mockItemDispatch.mock.calls[1][0];
-            propCount(apiCall, 4);
+            propCount(apiCall, 5);
             expect(apiCall.type).toBe(ApiActions.StartList);
             expect(apiCall.func).toBe(ApiFunctions.asyncList);
             expect(apiCall.dispatch).toBeInstanceOf(Function);
             expect(apiCall.filter).toBeInstanceOf(URLSearchParams);
+            expect(apiCall.page).toBe(null);
 
             done();
           });
