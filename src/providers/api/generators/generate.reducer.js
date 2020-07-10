@@ -2,6 +2,7 @@ import ApiActions from "../api.actions";
 
 import withMiddleware from "../../../util/user.middleware";
 import reducerLoggingMiddleware from "../../../util/reducer.logger";
+import withAsyncLogger from "../../../util/async.logger";
 
 const generateReducer = (async, name) => {
   const reducer = (state, action) => {
@@ -17,10 +18,11 @@ const generateReducer = (async, name) => {
           inventory: [...state.inventory],
           transaction: true,
         };
+        const asyncFunc = withAsyncLogger(async[action.func]);
         new Promise(function (resolve) {
           if (action.callback)
             action.callback({ success: false, complete: false });
-          async[action.func]({ state: newState, action });
+          asyncFunc({ state: newState, action });
         });
         return newState;
       case ApiActions.FailureAdd:
