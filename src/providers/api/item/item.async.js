@@ -88,13 +88,15 @@ export const asyncGet = async ({ state, action }) => {
       );
       if (index >= 0) newInventory[index] = convertDatesToLocal(response);
       if (index < 0) newInventory.push(convertDatesToLocal(response));
-      dispatch({
-        type: ApiActions.SuccessGet,
-        payload: {
-          inventory: newInventory,
-        },
-        callback,
-      });
+      new Promise((resolve) =>
+        dispatch({
+          type: ApiActions.SuccessGet,
+          payload: {
+            inventory: newInventory,
+          },
+          callback,
+        })
+      );
     });
     return;
   }

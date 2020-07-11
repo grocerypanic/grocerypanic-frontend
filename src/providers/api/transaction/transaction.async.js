@@ -59,15 +59,17 @@ export const asyncList = async ({ state, action }) => {
       const processedResponse = response.results.map((i) =>
         convertDatesToLocal(i)
       );
-      dispatch({
-        type: ApiActions.SuccessList,
-        payload: {
-          inventory: processedResponse,
-          next: response.next,
-          previous: response.previous,
-        },
-        callback,
-      });
+      new Promise((resolve) =>
+        dispatch({
+          type: ApiActions.SuccessList,
+          payload: {
+            inventory: processedResponse,
+            next: response.next,
+            previous: response.previous,
+          },
+          callback,
+        })
+      );
     });
     return;
   }

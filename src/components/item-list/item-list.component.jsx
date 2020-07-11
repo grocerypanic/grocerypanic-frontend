@@ -110,14 +110,20 @@ const ItemList = ({
   const generateCallback = (itemToRefresh, quantity) => {
     const callback = (state) => {
       if (state.success && state.complete) {
-        setPerformItemAsync({
-          type: ApiActions.StartGet,
-          func: ApiFuctions.asyncGet,
-          dispatch: setPerformItemAsync,
-          payload: {
-            id: itemToRefresh.id,
-          },
-        });
+        const search = item.inventory.findIndex(
+          (o) => o.id === itemToRefresh.id
+        );
+        if (search > -1) item.inventory[search].quantity += quantity;
+        new Promise((resolve) =>
+          setPerformItemAsync({
+            type: ApiActions.StartGet,
+            func: ApiFuctions.asyncGet,
+            dispatch: setPerformItemAsync,
+            payload: {
+              id: itemToRefresh.id,
+            },
+          })
+        );
         if (quantity > 0)
           new Promise((resolve) => event(AnalyticsActions.TransactionRestock));
         if (quantity < 0)
