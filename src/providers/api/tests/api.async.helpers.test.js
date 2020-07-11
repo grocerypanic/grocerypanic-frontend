@@ -47,9 +47,13 @@ describe("Setup Environment", () => {
   });
 });
 
-describe("Check calculateListUrl works as expect", () => {
-  let action = {};
+describe("Check calculateListUrl works as expected", () => {
+  let action;
   let path = "https:/myserver/";
+
+  beforeEach(() => {
+    action = {};
+  });
 
   describe("given an action with no override", () => {
     beforeEach(() => {
@@ -57,10 +61,23 @@ describe("Check calculateListUrl works as expect", () => {
     });
     describe("given an action with a page index", () => {
       beforeEach(() => {
-        action[Constants.pageLookupParam] = 22;
+        action.page = 22;
       });
       it("should return an url with the appropriate query string", () => {
-        expect(calculateListUrl(action, path)).toBe("https:/myserver/?page=22");
+        expect(calculateListUrl(action, path)).toBe(
+          `https:/myserver/?${Constants.pageLookupParam}=22`
+        );
+      });
+    });
+
+    describe("given an action with a pagination override", () => {
+      beforeEach(() => {
+        action.fetchAll = "true";
+      });
+      it("should return an url with the appropriate query string", () => {
+        expect(calculateListUrl(action, path)).toBe(
+          `https:/myserver/?${Constants.pageOverrideParam}=true`
+        );
       });
     });
 
@@ -73,13 +90,23 @@ describe("Check calculateListUrl works as expect", () => {
     });
   });
 
-  describe("given an action with no override", () => {
+  describe("given an action with a override", () => {
     beforeEach(() => {
       action.override = "https:/someotherserver/";
     });
+
+    describe("given an action with a pagination override", () => {
+      beforeEach(() => {
+        action.fetchAll = "true";
+      });
+      it("should return an url with the appropriate query string", () => {
+        expect(calculateListUrl(action, path)).toBe(action.override);
+      });
+    });
+
     describe("given an action with a page index", () => {
       beforeEach(() => {
-        action[Constants.pageLookupParam] = 22;
+        action.page = 22;
       });
       it("should return an the override url", () => {
         expect(calculateListUrl(action, path)).toBe(action.override);

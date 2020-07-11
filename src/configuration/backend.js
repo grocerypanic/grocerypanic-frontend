@@ -19,6 +19,7 @@ export const Constants = {
   AnalyticsCookieName: "PanicDataConsent-" + process.env.NODE_ENV.toUpperCase(),
   duplicateObjectApiError: { non_field_errors: ["Object already exists."] },
   pageLookupParam: "page",
+  pageOverrideParam: "all_results",
 };
 
 export const Providers = {

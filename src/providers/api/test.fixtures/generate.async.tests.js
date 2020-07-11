@@ -221,7 +221,7 @@ export const AsyncTest = (
 
           let params = new URLSearchParams({ page: action.page }).toString();
           if (Object.keys(optionalListParams).length > 0) {
-            if (!params) params = "&";
+            if (params) params += "&";
             params =
               params + new URLSearchParams(optionalListParams).toString();
           }

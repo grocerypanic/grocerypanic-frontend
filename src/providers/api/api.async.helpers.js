@@ -24,36 +24,52 @@ export const calculateListUrl = (action, path, additionalParam = {}) => {
 
   const additionalParamString = new URLSearchParams(additionalParam).toString();
 
-  let filterPath = "";
+  let extraParams = "";
+  let filterParams = "";
+  let url = path;
+  let paginationParams = "";
+  let paginationOverideParams = "";
+  let param = {};
 
   if (action.filter) {
+    param = {};
     for (const filterName of ItemFilters) {
       const filterValue = action.filter.get(filterName);
       if (filterValue) {
-        if (filterPath === "") filterPath += "?";
-        if (filterPath !== "?") filterPath += "&";
-        filterPath += `${filterName}=${filterValue}`;
+        param[filterName] = filterValue;
       }
+      filterParams = new URLSearchParams(param).toString();
     }
   }
 
-  let url = path;
-  if (action[Constants.pageLookupParam]) {
-    const param = {};
-    param[Constants.pageLookupParam] = action[Constants.pageLookupParam];
-    url = url + "?" + new URLSearchParams(param).toString();
+  if (action.page) {
+    param = {};
+    param[Constants.pageLookupParam] = action.page;
+    paginationParams = paginationParams + new URLSearchParams(param).toString();
   }
 
-  if (url.indexOf("?") > -1) {
-    filterPath = filterPath.replace("?", "&");
+  if (action.fetchAll) {
+    param = {};
+    param[Constants.pageOverrideParam] = action.fetchAll;
+    paginationOverideParams =
+      paginationOverideParams + new URLSearchParams(param).toString();
   }
 
   if (additionalParamString) {
-    if (url.indexOf("?") === -1) {
-      url = url + "?";
-    }
-    url = url + additionalParamString;
+    extraParams = additionalParam;
   }
 
-  return url + filterPath;
+  // Assemble URL
+  const assembledParams = [
+    paginationParams,
+    paginationOverideParams,
+    filterParams,
+    extraParams,
+  ]
+    .filter((p) => p !== "")
+    .join("&");
+
+  if (assembledParams) url = url + "?" + assembledParams;
+
+  return url;
 };
