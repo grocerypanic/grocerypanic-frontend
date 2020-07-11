@@ -7,6 +7,7 @@ import {
   duplicateObject,
   asyncDispatch,
   calculateListUrl,
+  retrieveResults,
 } from "../api.async.helpers";
 
 import { generateConverter } from "../api.util.js";
@@ -83,7 +84,7 @@ export const asyncList = async ({ state, action }) => {
   );
   if (match2xx(status)) {
     new Promise((resolve) => {
-      const processedResponse = response.results.map((i) =>
+      const processedResponse = retrieveResults(response).map((i) =>
         convertDatesToLocal(i)
       );
       dispatch({

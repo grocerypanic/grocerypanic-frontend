@@ -73,3 +73,9 @@ export const calculateListUrl = (action, path, additionalParam = {}) => {
 
   return url;
 };
+
+// Retrive Results From API, paginated or not
+export const retrieveResults = (response) => {
+  if (response.results) return response.results;
+  return response;
+};

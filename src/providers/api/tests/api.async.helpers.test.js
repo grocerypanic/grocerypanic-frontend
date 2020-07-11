@@ -4,6 +4,7 @@ import {
   authFailure,
   duplicateObject,
   calculateListUrl,
+  retrieveResults,
 } from "../api.async.helpers";
 import ApiActions from "../api.actions";
 import { Constants } from "../../../configuration/backend";
@@ -117,6 +118,38 @@ describe("Check calculateListUrl works as expected", () => {
       it("should return an the override url", () => {
         expect(calculateListUrl(action, path)).toBe(action.override);
       });
+    });
+  });
+});
+
+describe("Setup to test retrieveResults", () => {
+  let response = {};
+
+  describe("With paginated data", () => {
+    beforeEach(() => {
+      response = [
+        { id: 1, name: "Some Stalker" },
+        { id: 1, name: "Some Other Stalker" },
+      ];
+    });
+    it("should return the data as expected", () => {
+      expect(retrieveResults(response)).toBe(response);
+    });
+  });
+
+  describe("With unpaginated data", () => {
+    beforeEach(() => {
+      response = {
+        next: "next",
+        previous: "previous",
+        results: [
+          { id: 1, name: "Some Stalker" },
+          { id: 1, name: "Some Other Stalker" },
+        ],
+      };
+    });
+    it("should return the data as expected", () => {
+      expect(retrieveResults(response)).toBe(response.results);
     });
   });
 });
