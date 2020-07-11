@@ -30,7 +30,7 @@ jest.mock("../../../configuration/theme", () => {
   return {
     ...jest.requireActual("../../../configuration/theme"),
     ui: {
-      alertTimeout: 10,
+      alertTimeout: 200,
     },
   };
 });
