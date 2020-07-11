@@ -258,11 +258,12 @@ describe("Setup Environment", () => {
     it("renders, calls shelves.StartList on first render", async (done) => {
       await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
       const call = mockShelfDispatch.mock.calls[0][0];
-      propCount(call, 4);
+      propCount(call, 5);
       expect(call.type).toBe(ApiActions.StartList);
       expect(call.func).toBe(ApiFunctions.asyncList);
       expect(call.dispatch).toBeInstanceOf(Function);
       expect(call.callback).toBeInstanceOf(Function);
+      expect(call.fetchAll).toBe(1);
       done();
     });
 
@@ -280,11 +281,12 @@ describe("Setup Environment", () => {
     it("renders, calls stores.StartList on first render", async (done) => {
       await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
       const call = mockStoreDispatch.mock.calls[0][0];
-      propCount(call, 4);
+      propCount(call, 5);
       expect(call.type).toBe(ApiActions.StartList);
       expect(call.func).toBe(ApiFunctions.asyncList);
       expect(call.dispatch).toBeInstanceOf(Function);
       expect(call.callback).toBeInstanceOf(Function);
+      expect(call.fetchAll).toBe(1);
       done();
     });
 

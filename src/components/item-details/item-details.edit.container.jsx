@@ -114,21 +114,28 @@ const ItemDetailsEditContainer = ({
   }, [performTrAsync]); // eslint-disable-line
 
   React.useEffect(() => {
+    // Item
     setPerformItemAsync({
       type: ApiActions.StartGet,
       func: ApiFuctions.asyncGet,
       dispatch: setPerformItemAsync,
       payload: { id: itemId },
     });
+
+    // Store;
     setPerformStoreAsync({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
       dispatch: setPerformStoreAsync,
+      fetchAll: 1,
     });
+
+    // Shelf
     setPerformShelfAsync({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
       dispatch: setPerformShelfAsync,
+      fetchAll: 1,
     });
   }, []); // eslint-disable-line
 

@@ -113,12 +113,14 @@ const ItemDetailsCreateContainer = ({
       func: ApiFuctions.asyncList,
       dispatch: setPerformShelfAsync,
       callback: setReceivedShelves,
+      fetchAll: 1,
     });
     setPerformStoreAsync({
       type: ApiActions.StartList,
       func: ApiFuctions.asyncList,
       dispatch: setPerformStoreAsync,
       callback: setReceivedStores,
+      fetchAll: 1,
     });
   }, []);
 
