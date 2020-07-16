@@ -20,30 +20,30 @@ export const asyncAdd = async ({ state, action }) => {
   const [response, status] = await Request("POST", Paths.manageShelves, {
     name: action.payload.name,
   });
-  // Status Code is 2xx
-  if (match2xx(status)) {
-    new Promise((resolve) => {
-      const newInventory = [...state.inventory];
-      newInventory.push(convertDatesToLocal(response));
+  new Promise((resolve) => {
+    // Status Code is 2xx
+    if (match2xx(status)) {
+      state.inventory.unshift(convertDatesToLocal(response));
       dispatch({
         type: ApiActions.SuccessAdd,
         payload: {
-          inventory: [...newInventory],
+          inventory: state.inventory,
         },
         callback,
       });
+      return;
+    }
+    // Duplicate Object Errors
+    if (match400duplicate(status, response))
+      return duplicateObject(dispatch, callback);
+    if (status === 401) return authFailure(dispatch, callback);
+    throw Error("Unknown Status Code");
+  }).catch((err) => {
+    asyncDispatch(dispatch, {
+      type: ApiActions.FailureAdd,
+      callback,
     });
-    return;
-  }
-  // Duplicate Object Errors
-  if (match400duplicate(status, response))
-    return duplicateObject(dispatch, callback);
-  if (status === 401) return authFailure(dispatch, callback);
-  asyncDispatch(dispatch, {
-    type: ApiActions.FailureAdd,
-    callback,
   });
-  return;
 };
 
 export const asyncDel = async ({ state, action }) => {
@@ -52,9 +52,9 @@ export const asyncDel = async ({ state, action }) => {
     "DELETE",
     Paths.manageShelves + `${action.payload.id}/`
   );
-  // Status Code is 2xx
-  if (match2xx(status)) {
-    new Promise((resolve) => {
+  new Promise((resolve) => {
+    // Status Code is 2xx
+    if (match2xx(status)) {
       dispatch({
         type: ApiActions.SuccessDel,
         payload: {
@@ -64,26 +64,25 @@ export const asyncDel = async ({ state, action }) => {
         },
         callback,
       });
+      return;
+    }
+    if (status === 401) return authFailure(dispatch, callback);
+    throw Error("Unknown Status Code");
+  }).catch((err) => {
+    asyncDispatch(dispatch, {
+      type: ApiActions.FailureDel,
+      callback,
     });
-    return;
-  }
-  if (status === 401) return authFailure(dispatch, callback);
-  asyncDispatch(dispatch, {
-    type: ApiActions.FailureDel,
-    callback,
   });
-  return;
 };
 
 export const asyncList = async ({ state, action }) => {
   const { dispatch, callback } = action;
+  let url = calculateListUrl(action, Paths.manageShelves);
 
-  const [response, status] = await Request(
-    "GET",
-    calculateListUrl(action, Paths.manageShelves)
-  );
-  if (match2xx(status)) {
-    new Promise((resolve) => {
+  const [response, status] = await Request("GET", url);
+  new Promise((resolve) => {
+    if (match2xx(status)) {
       const processedResponse = retrieveResults(response).map((i) =>
         convertDatesToLocal(i)
       );
@@ -96,15 +95,16 @@ export const asyncList = async ({ state, action }) => {
         },
         callback,
       });
+      return;
+    }
+    if (status === 401) return authFailure(dispatch, callback);
+    throw Error("Unknown Status Code");
+  }).catch((err) => {
+    asyncDispatch(dispatch, {
+      type: ApiActions.FailureList,
+      callback,
     });
-    return;
-  }
-  if (status === 401) return authFailure(dispatch, callback);
-  asyncDispatch(dispatch, {
-    type: ApiActions.FailureList,
-    callback,
   });
-  return;
 };
 
 /* istanbul ignore next */

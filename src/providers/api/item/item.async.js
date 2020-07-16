@@ -19,9 +19,9 @@ export const asyncAdd = async ({ state, action }) => {
   const [response, status] = await Request("POST", Paths.manageItems, {
     ...action.payload,
   });
-  // Status Code is 2xx
-  if (match2xx(status)) {
-    new Promise((resolve) => {
+  new Promise((resolve) => {
+    // Status Code is 2xx
+    if (match2xx(status)) {
       state.inventory.unshift(convertDatesToLocal(response));
       dispatch({
         type: ApiActions.SuccessAdd,
@@ -30,18 +30,19 @@ export const asyncAdd = async ({ state, action }) => {
         },
         callback,
       });
+      return;
+    }
+    // Duplicate Object Errors
+    if (match400duplicate(status, response))
+      return duplicateObject(dispatch, callback);
+    if (status === 401) return authFailure(dispatch, callback);
+    throw Error("Unknown Status Code");
+  }).catch((err) => {
+    asyncDispatch(dispatch, {
+      type: ApiActions.FailureAdd,
+      callback,
     });
-    return;
-  }
-  // Duplicate Object Errors
-  if (match400duplicate(status, response))
-    return duplicateObject(dispatch, callback);
-  if (status === 401) return authFailure(dispatch, callback);
-  asyncDispatch(dispatch, {
-    type: ApiActions.FailureAdd,
-    callback,
   });
-  return;
 };
 
 export const asyncDel = async ({ state, action }) => {
@@ -50,9 +51,9 @@ export const asyncDel = async ({ state, action }) => {
     "DELETE",
     Paths.manageItems + `${action.payload.id}/`
   );
-  // Status Code is 2xx
-  if (match2xx(status)) {
-    new Promise((resolve) => {
+  new Promise((resolve) => {
+    // Status Code is 2xx
+    if (match2xx(status)) {
       dispatch({
         type: ApiActions.SuccessDel,
         payload: {
@@ -62,15 +63,16 @@ export const asyncDel = async ({ state, action }) => {
         },
         callback,
       });
+      return;
+    }
+    if (status === 401) return authFailure(dispatch, callback);
+    throw Error("Unknown Status Code");
+  }).catch((err) => {
+    asyncDispatch(dispatch, {
+      type: ApiActions.FailureDel,
+      callback,
     });
-    return;
-  }
-  if (status === 401) return authFailure(dispatch, callback);
-  asyncDispatch(dispatch, {
-    type: ApiActions.FailureDel,
-    callback,
   });
-  return;
 };
 
 export const asyncGet = async ({ state, action }) => {
@@ -79,9 +81,9 @@ export const asyncGet = async ({ state, action }) => {
     "GET",
     Paths.manageItems + `${action.payload.id}/`
   );
-  // Status Code is 2xx
-  if (match2xx(status)) {
-    new Promise((resolve) => {
+  new Promise((resolve) => {
+    // Status Code is 2xx
+    if (match2xx(status)) {
       // Update the item in state if it exists, otherwise add it as a new item
       const newInventory = [...state.inventory];
       const index = newInventory.findIndex(
@@ -89,24 +91,23 @@ export const asyncGet = async ({ state, action }) => {
       );
       if (index >= 0) newInventory[index] = convertDatesToLocal(response);
       if (index < 0) newInventory.push(convertDatesToLocal(response));
-      new Promise((resolve) =>
-        dispatch({
-          type: ApiActions.SuccessGet,
-          payload: {
-            inventory: newInventory,
-          },
-          callback,
-        })
-      );
+      dispatch({
+        type: ApiActions.SuccessGet,
+        payload: {
+          inventory: newInventory,
+        },
+        callback,
+      });
+      return;
+    }
+    if (status === 401) return authFailure(dispatch, callback);
+    throw Error("Unknown Status Code");
+  }).catch((err) => {
+    asyncDispatch(dispatch, {
+      type: ApiActions.FailureGet,
+      callback,
     });
-    return;
-  }
-  if (status === 401) return authFailure(dispatch, callback);
-  asyncDispatch(dispatch, {
-    type: ApiActions.FailureGet,
-    callback,
   });
-  return;
 };
 
 export const asyncList = async ({ state, action }) => {
@@ -114,8 +115,8 @@ export const asyncList = async ({ state, action }) => {
   let url = calculateListUrl(action, Paths.manageItems);
 
   const [response, status] = await Request("GET", url);
-  if (match2xx(status)) {
-    new Promise((resolve) => {
+  new Promise((resolve) => {
+    if (match2xx(status)) {
       const processedResponse = retrieveResults(response).map((i) =>
         convertDatesToLocal(i)
       );
@@ -128,15 +129,16 @@ export const asyncList = async ({ state, action }) => {
         },
         callback,
       });
+      return;
+    }
+    if (status === 401) return authFailure(dispatch, callback);
+    throw Error("Unknown Status Code");
+  }).catch((err) => {
+    asyncDispatch(dispatch, {
+      type: ApiActions.FailureList,
+      callback,
     });
-    return;
-  }
-  if (status === 401) return authFailure(dispatch, callback);
-  asyncDispatch(dispatch, {
-    type: ApiActions.FailureList,
-    callback,
   });
-  return;
 };
 
 export const asyncUpdate = async ({ state, action }) => {
@@ -146,9 +148,9 @@ export const asyncUpdate = async ({ state, action }) => {
     Paths.manageItems + `${action.payload.id}/`,
     { ...action.payload }
   );
-  // Status Code is 2xx
-  if (match2xx(status)) {
-    return new Promise((resolve) => {
+  return new Promise((resolve) => {
+    // Status Code is 2xx
+    if (match2xx(status)) {
       const index = state.inventory.findIndex(
         (item) => item.id === action.payload.id
       );
@@ -160,14 +162,17 @@ export const asyncUpdate = async ({ state, action }) => {
         },
         callback,
       });
+      return;
+    }
+    // Duplicate Object Errors
+    if (match400duplicate(status, response))
+      return duplicateObject(dispatch, callback);
+    if (status === 401) return authFailure(dispatch, callback);
+    throw Error("Unknown Status Code");
+  }).catch((err) => {
+    asyncDispatch(dispatch, {
+      type: ApiActions.FailureUpdate,
+      callback,
     });
-  }
-  // Duplicate Object Errors
-  if (match400duplicate(status, response))
-    return duplicateObject(dispatch, callback);
-  if (status === 401) return authFailure(dispatch, callback);
-  return dispatch({
-    type: ApiActions.FailureUpdate,
-    callback,
   });
 };
