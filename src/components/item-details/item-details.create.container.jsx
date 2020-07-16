@@ -23,6 +23,8 @@ import { StoreContext } from "../../providers/api/store/store.provider";
 
 import { Container } from "../../global-styles/containers";
 
+import { calculateDefaults } from "./item-details.utils.jsx";
+
 export const defaultItem = {
   name: "",
   preferred_stores: [],
@@ -103,9 +105,13 @@ const ItemDetailsCreateContainer = ({
 
   // Set the first shelf by default
   React.useEffect(() => {
-    if (shelf.inventory.length > 0)
-      setDefaults({ ...defaultItem, shelf: shelf.inventory[0].id });
-  }, [shelf]);
+    if (shelf.inventory.length > 0 && store.inventory.length > 0) {
+      const params = new URLSearchParams(window.location.search);
+      setDefaults(
+        calculateDefaults(params, defaultItem, shelf.inventory, store.inventory)
+      );
+    }
+  }, [shelf, store]);
 
   React.useEffect(() => {
     setPerformShelfAsync({
