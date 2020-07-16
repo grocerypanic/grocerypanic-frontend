@@ -17,6 +17,12 @@ export const Strings = {
         Body:
           "Panic was written during the 2020 pandemic with the goal of helping folks organize their grocery shopping.\nI had very little front-end experience before starting this app, so this was an opportunity for me to try something new.  I would not have been able to complete this project without the help I received, despite alot of pressure for me to abandon it half way.  So thanks!",
       },
+      Maintenance: {
+        Title: "Maintenance Underway",
+        HeaderTitle: "Panic Grocery Management",
+        Body:
+          "We're currently restocking our inventory!  Give us a few minutes to straighten things up and we'll be right back.\nSeriously though, we'll make this as short as possible.  Out team will restore service shortly.",
+      },
       SignIn: {
         Title: "Sign In",
         LoginMessageGoogle: "Login With Google",

@@ -7,24 +7,29 @@ import RootProvider from "./providers/root.provider";
 import i18n from "./configuration/localization";
 
 import App from "./pages/app/app";
+import Maintenance from "./pages/maintenance/maintenance.page";
 import * as serviceWorker from "./serviceWorker";
 
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-// TODO: wrap strict mode if a dev only HOC
-
-export const Index = () => (
-  <React.StrictMode>
-    <I18nextProvider i18n={i18n}>
-      <BrowserRouter>
-        <RootProvider>
-          <App />
-        </RootProvider>
-      </BrowserRouter>
-    </I18nextProvider>
-  </React.StrictMode>
-);
+export const Index = () => {
+  return (
+    <React.StrictMode>
+      <I18nextProvider i18n={i18n}>
+        <BrowserRouter>
+          <RootProvider>
+            {process.env.REACT_APP_MAINTENANCE === "true" ? (
+              <Maintenance />
+            ) : (
+              <App />
+            )}
+          </RootProvider>
+        </BrowserRouter>
+      </I18nextProvider>
+    </React.StrictMode>
+  );
+};
 
 ReactDOM.render(<Index />, document.getElementById("root"));
 

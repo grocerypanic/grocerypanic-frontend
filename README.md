@@ -39,6 +39,10 @@ You'll need to install:
 - Set this to the host portion of the panic backend url.
   - ie. localhost
 
+6. REACT_APP_MAINTENANCE
+
+- Set this to the string "true" to activate maintenance mode.
+
 ## Reference for npm commands
 
 ### Standard Commands
