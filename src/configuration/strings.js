@@ -39,7 +39,7 @@ export const Strings = {
         ErrorDialogueTitle: "Error!",
       },
       Copyight: {
-        CopyrightDeclaration: "Created by",
+        CopyrightDeclaration: `Created by${assets.nonBreakingSpace}`,
         CopyrightMessage: "Shared Vision Solutions",
       },
       App: {
