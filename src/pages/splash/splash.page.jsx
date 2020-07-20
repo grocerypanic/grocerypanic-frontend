@@ -25,7 +25,7 @@ const SplashPage = () => {
 
   return (
     <Container tabs={true}>
-      <Carousel data-interval="false">
+      <Carousel interval={null}>
         <Carousel.Item>
           <SplashBox mobile={isMobile()}>
             <div>

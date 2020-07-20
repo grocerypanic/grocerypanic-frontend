@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { navbarSize } from "../../configuration/theme";
 
 export const SplashBox = styled.div`
@@ -7,6 +6,10 @@ export const SplashBox = styled.div`
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0px 0px 3px rgba(0, 0, 0, 1);
   width: 100vw;
   overflow: hidden;
+
+  .carousel-caption {
+    top: 0;
+  }
 
   .img1 {
     object-fit: cover;
