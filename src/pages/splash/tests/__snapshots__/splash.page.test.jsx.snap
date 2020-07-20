@@ -35,6 +35,10 @@ exports[`Check the correct props are passed to  in desktop mode should match the
   overflow: hidden;
 }
 
+.c1 .carousel-caption {
+  top: 0;
+}
+
 .c1 .img1 {
   object-fit: cover;
   -webkit-filter: brightness(25%);
@@ -68,7 +72,6 @@ exports[`Check the correct props are passed to  in desktop mode should match the
   >
     <div
       class="carousel slide"
-      data-interval="false"
     >
       <ol
         class="carousel-indicators"
@@ -218,6 +221,10 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
   overflow: hidden;
 }
 
+.c1 .carousel-caption {
+  top: 0;
+}
+
 .c1 .img1 {
   object-fit: cover;
   object-position: -350px -100px;
@@ -253,7 +260,6 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
   >
     <div
       class="carousel slide"
-      data-interval="false"
     >
       <ol
         class="carousel-indicators"
