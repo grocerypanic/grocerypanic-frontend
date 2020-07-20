@@ -7,6 +7,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import StoreIcon from "@material-ui/icons/Store";
 import KitchenIcon from "@material-ui/icons/Kitchen";
 import FormatListNumbered from "@material-ui/icons/FormatListNumbered";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
 
 import { HeaderContext } from "../../providers/header/header.provider";
 
@@ -64,6 +65,35 @@ const Header = ({ history }) => {
       </NavContainer>
     );
 
+  if (headerSettings.signIn)
+    return (
+      <NavContainer collapseOnSelect variant="dark" fixed="top">
+        <Navbar.Brand>
+          <div className="action">
+            <div className={display(mobile)}>{t("MainTitle")}</div>
+            <div className={display(!mobile)}>{`${t("MainTitle")}: ${t(
+              headerSettings.title
+            )}`}</div>
+          </div>
+        </Navbar.Brand>
+        <Nav className="mr-auto"></Nav>
+        <Nav>
+          <Nav.Item
+            className={"nav-link action" + mobileSpacing(mobile)}
+            onClick={() => navigate(Routes.signin)}
+          >
+            <MenuContainer
+              route={Routes.splash}
+              history={history}
+              data-testid="signIn"
+            >
+              {t("SplashPage.SignIn")} &nbsp; <LockOpenIcon />
+            </MenuContainer>
+          </Nav.Item>
+        </Nav>
+      </NavContainer>
+    );
+
   return (
     <NavContainer collapseOnSelect variant="dark" fixed="top">
       <Navbar.Brand>
@@ -92,10 +122,10 @@ const Header = ({ history }) => {
       <Nav>
         <Nav.Item
           className={"nav-link action" + mobileSpacing(mobile)}
-          onClick={() => navigate(Routes.root)}
+          onClick={() => navigate(Routes.menu)}
         >
           <MenuContainer
-            route={Routes.root}
+            route={Routes.menu}
             history={history}
             data-testid="home-icon"
           >

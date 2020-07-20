@@ -14,6 +14,7 @@ import * as StoreIcon from "@material-ui/icons/Store";
 import * as KitchenIcon from "@material-ui/icons/Kitchen";
 import * as InfoIcon from "@material-ui/icons/Info";
 import * as FormatListNumbered from "@material-ui/icons/FormatListNumbered";
+import * as LockOpenIcon from "@material-ui/icons/LockOpen";
 
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
@@ -55,6 +56,11 @@ jest.mock("@material-ui/icons/FormatListNumbered", () => ({
 FormatListNumbered.default.mockImplementation(() => (
   <div>MockFormatListNumbered</div>
 ));
+jest.mock("@material-ui/icons/LockOpen", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+LockOpenIcon.default.mockImplementation(() => <div>MockLockOpen</div>);
 
 const mockTitle = "A Very Real Title";
 const mockCreate = jest.fn();
@@ -582,7 +588,7 @@ describe("with nav enabled", () => {
         const home = utils.getByTestId("home-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
-          expect(history.location.pathname).toEqual(Routes.root)
+          expect(history.location.pathname).toEqual(Routes.menu)
         );
         done();
       });
@@ -781,7 +787,7 @@ describe("with nav enabled", () => {
         const home = utils.getByTestId("home-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
-          expect(history.location.pathname).toEqual(Routes.root)
+          expect(history.location.pathname).toEqual(Routes.menu)
         );
         done();
       });
@@ -921,6 +927,204 @@ describe("with nav disabled", () => {
         updateHeader: mockHeaderUpdate,
       };
       utils = renderHelper(values, history);
+    });
+
+    it("should not show the create button", () => {
+      expect(utils.queryByTestId("noAddIcon")).toBeFalsy();
+      expect(utils.queryByTestId("AddIcon")).toBeFalsy();
+      expect(AddIcon.default).toHaveBeenCalledTimes(0);
+    });
+
+    it("should render the title correctly in mobile mode", async (done) => {
+      window.innerWidth = 380;
+      fireEvent(window, new Event("resize"));
+      await waitFor(() =>
+        expect(utils.getByText(Strings.MainTitle).className).toBe(
+          "header-visible"
+        )
+      );
+      await waitFor(() =>
+        expect(
+          utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
+        ).toBe("header-hidden")
+      );
+      done();
+    });
+
+    it("should render the title correctly in desktop mode", async (done) => {
+      window.innerWidth = 680;
+      fireEvent(window, new Event("resize"));
+      await waitFor(() =>
+        expect(utils.getByText(Strings.MainTitle).className).toBe(
+          "header-hidden"
+        )
+      );
+      await waitFor(() =>
+        expect(
+          utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
+        ).toBe("header-visible")
+      );
+      done();
+    });
+
+    it("should not call the spinner", () => {
+      expect(bootstrap.Spinner).toHaveBeenCalledTimes(0);
+    });
+
+    it("should not call the nav buttons", () => {
+      expect(FormatListNumbered.default).toHaveBeenCalledTimes(0);
+      expect(InfoIcon.default).toHaveBeenCalledTimes(0);
+      expect(HomeIcon.default).toHaveBeenCalledTimes(0);
+      expect(StoreIcon.default).toHaveBeenCalledTimes(0);
+      expect(KitchenIcon.default).toHaveBeenCalledTimes(0);
+    });
+
+    it("should not navigate to about, when title is clicked", async (done) => {
+      const title = utils.getByText(Strings.MainTitle);
+      fireEvent.click(title, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual("/some/unmatched/path")
+      );
+      done();
+    });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container.firstChild).toMatchSnapshot();
+    });
+  });
+});
+
+describe("with signin enabled", () => {
+  let utils;
+  const history = createBrowserHistory();
+  let signIn = true;
+
+  afterEach(cleanup);
+
+  describe("with a create function", () => {
+    beforeEach(() => {
+      history.location.pathname = "/some/unmatched/path";
+      jest.clearAllMocks();
+      const values = {
+        headerSettings: {
+          title: mockTitle,
+          create: mockCreate,
+          transaction: false,
+          signIn,
+        },
+        updateHeader: mockHeaderUpdate,
+      };
+      utils = renderHelper(values, history);
+    });
+
+    it("should show the signin button", () => {
+      expect(utils.queryByTestId("signIn")).toBeTruthy();
+      expect(LockOpenIcon.default).toHaveBeenCalledTimes(1);
+      expect(utils.getByText(Strings.SplashPage.SignIn));
+    });
+
+    it("should navigate to signin, when signin is clicked", async (done) => {
+      const signin = utils.getByText(Strings.SplashPage.SignIn);
+      fireEvent.click(signin, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual(Routes.signin)
+      );
+      done();
+    });
+
+    it("should not show the create button", () => {
+      expect(utils.queryByTestId("noAddIcon")).toBeFalsy();
+      expect(utils.queryByTestId("AddIcon")).toBeFalsy();
+      expect(AddIcon.default).toHaveBeenCalledTimes(0);
+    });
+
+    it("should render the title correctly in mobile mode", async (done) => {
+      window.innerWidth = 380;
+      fireEvent(window, new Event("resize"));
+      await waitFor(() =>
+        expect(utils.getByText(Strings.MainTitle).className).toBe(
+          "header-visible"
+        )
+      );
+      await waitFor(() =>
+        expect(
+          utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
+        ).toBe("header-hidden")
+      );
+      done();
+    });
+
+    it("should render the title correctly in desktop mode", async (done) => {
+      window.innerWidth = 680;
+      fireEvent(window, new Event("resize"));
+      await waitFor(() =>
+        expect(utils.getByText(Strings.MainTitle).className).toBe(
+          "header-hidden"
+        )
+      );
+      await waitFor(() =>
+        expect(
+          utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
+        ).toBe("header-visible")
+      );
+      done();
+    });
+
+    it("should not call the spinner", () => {
+      expect(bootstrap.Spinner).toHaveBeenCalledTimes(0);
+    });
+
+    it("should not call the nav buttons", () => {
+      expect(FormatListNumbered.default).toHaveBeenCalledTimes(0);
+      expect(InfoIcon.default).toHaveBeenCalledTimes(0);
+      expect(HomeIcon.default).toHaveBeenCalledTimes(0);
+      expect(StoreIcon.default).toHaveBeenCalledTimes(0);
+      expect(KitchenIcon.default).toHaveBeenCalledTimes(0);
+    });
+
+    it("should not navigate to about, when title is clicked", async (done) => {
+      const title = utils.getByText(Strings.MainTitle);
+      fireEvent.click(title, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual("/some/unmatched/path")
+      );
+      done();
+    });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container.firstChild).toMatchSnapshot();
+    });
+  });
+
+  describe("without a create function", () => {
+    beforeEach(() => {
+      history.location.pathname = "/some/unmatched/path";
+      jest.clearAllMocks();
+      const values = {
+        headerSettings: {
+          title: mockTitle,
+          create: null,
+          transaction: false,
+          signIn,
+        },
+        updateHeader: mockHeaderUpdate,
+      };
+      utils = renderHelper(values, history);
+    });
+
+    it("should show the signin button", () => {
+      expect(utils.queryByTestId("signIn")).toBeTruthy();
+      expect(LockOpenIcon.default).toHaveBeenCalledTimes(1);
+      expect(utils.getByText(Strings.SplashPage.SignIn));
+    });
+
+    it("should navigate to signin, when signin is clicked", async (done) => {
+      const signin = utils.getByText(Strings.SplashPage.SignIn);
+      fireEvent.click(signin, "click");
+      await waitFor(() =>
+        expect(history.location.pathname).toEqual(Routes.signin)
+      );
+      done();
     });
 
     it("should not show the create button", () => {

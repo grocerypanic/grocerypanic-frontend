@@ -49,6 +49,7 @@ describe("Check the Inital Provider State", () => {
       create: "placeholder string",
       transaction: true,
       disableNav: false,
+      signIn: false,
     };
 
     act(() => received.updateHeader(attrs));

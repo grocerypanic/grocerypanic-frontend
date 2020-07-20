@@ -4,6 +4,7 @@ const InitialValues = {
     create: null,
     transaction: false,
     disableNav: false,
+    signIn: false,
   },
   updateHeader: null,
 };

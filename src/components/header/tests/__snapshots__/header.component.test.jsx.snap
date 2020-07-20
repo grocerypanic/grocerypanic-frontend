@@ -743,3 +743,135 @@ exports[`with nav enabled outside of a transaction without a create function sho
   </div>
 </nav>
 `;
+
+exports[`with signin enabled with a create function should match the snapshot on file (styles) 1`] = `
+.c0 {
+  background-color: #006600;
+  height: 50px;
+  padding: 2px;
+  padding-left: 10px;
+}
+
+.c0 .action {
+  cursor: pointer;
+}
+
+.c0 .fit {
+  padding-left: 3px !important;
+  padding-right: 3px !important;
+}
+
+.c0 .header-hidden {
+  display: none;
+}
+
+<nav
+  class="c0 navbar navbar-expand navbar-dark fixed-top"
+>
+  <span
+    class="navbar-brand"
+  >
+    <div
+      class="action"
+    >
+      <div
+        class="header-hidden"
+      >
+        Panic
+      </div>
+      <div
+        class="header-visible"
+      >
+        Panic: A Very Real Title
+      </div>
+    </div>
+  </span>
+  <div
+    class="mr-auto navbar-nav"
+  />
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="signIn"
+      >
+        Sign In / Sign Up
+           
+        <div>
+          MockLockOpen
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+`;
+
+exports[`with signin enabled without a create function should match the snapshot on file (styles) 1`] = `
+.c0 {
+  background-color: #006600;
+  height: 50px;
+  padding: 2px;
+  padding-left: 10px;
+}
+
+.c0 .action {
+  cursor: pointer;
+}
+
+.c0 .fit {
+  padding-left: 3px !important;
+  padding-right: 3px !important;
+}
+
+.c0 .header-hidden {
+  display: none;
+}
+
+<nav
+  class="c0 navbar navbar-expand navbar-dark fixed-top"
+>
+  <span
+    class="navbar-brand"
+  >
+    <div
+      class="action"
+    >
+      <div
+        class="header-hidden"
+      >
+        Panic
+      </div>
+      <div
+        class="header-visible"
+      >
+        Panic: A Very Real Title
+      </div>
+    </div>
+  </span>
+  <div
+    class="mr-auto navbar-nav"
+  />
+  <div
+    class="navbar-nav"
+  >
+    <div
+      class="nav-link action nav-item"
+    >
+      <div
+        class=""
+        data-testid="signIn"
+      >
+        Sign In / Sign Up
+           
+        <div>
+          MockLockOpen
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+`;
