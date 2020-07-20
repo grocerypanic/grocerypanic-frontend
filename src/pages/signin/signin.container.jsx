@@ -6,6 +6,7 @@ import ErrorDialogue from "../../components/error-dialogue/error-dialogue.compon
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 import { UserContext } from "../../providers/user/user.provider";
+import { HeaderContext } from "../../providers/header/header.provider";
 
 import {
   triggerLogin,
@@ -16,8 +17,16 @@ import {
 const SignInContainer = () => {
   const { event } = React.useContext(AnalyticsContext);
   const { user, dispatch } = React.useContext(UserContext);
+  const { updateHeader } = React.useContext(HeaderContext);
 
   const [performAsync, setPerformAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
+
+  React.useEffect(() => {
+    updateHeader({
+      title: "MainHeaderTitle",
+      disableNav: true,
+    });
+  }, []); // eslint-disable-line
 
   React.useEffect(() => {
     if (!performAsync) return;

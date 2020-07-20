@@ -1,6 +1,7 @@
 import React from "react";
 
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
+
 import {
   GoogleLoginButton,
   FacebookLoginButton,
@@ -22,7 +23,7 @@ const SignIn = ({ handleSocialLogin, handleSocialLoginError }) => {
     <Container>
       <Paper>
         <LockBox>
-          <LockOutlinedIcon />
+          <LockOpenIcon />
         </LockBox>
         <h1>{t("SignIn.Title")}</h1>
         <ButtonBox>

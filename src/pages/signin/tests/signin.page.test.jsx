@@ -2,7 +2,8 @@ import React from "react";
 import { render, waitFor, cleanup } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
-import * as Icons from "@material-ui/icons/LockOutlined";
+import * as Icons from "@material-ui/icons/LockOpen";
+
 import {
   GoogleLoginButton,
   FacebookLoginButton,
@@ -25,7 +26,7 @@ jest.mock(
     ).providers,
   })
 );
-jest.mock("@material-ui/icons/LockOutlined", () => ({
+jest.mock("@material-ui/icons/LockOpen", () => ({
   __esModule: true,
   default: jest.fn(),
 }));

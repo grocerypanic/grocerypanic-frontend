@@ -1,12 +1,18 @@
 import React from "react";
 import { render, cleanup, waitFor, act } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
+import i18next from "i18next";
 
 import { UserContext } from "../../../providers/user/user.provider";
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
+import { HeaderContext } from "../../../providers/header/header.provider";
 
 import initialState from "../../../providers/user/user.initial";
+import initialHeaderSettings from "../../../providers/header/header.initial";
+
+import Strings from "../../../configuration/strings";
+
 import {
   triggerLogin,
   resetLogin,
@@ -28,6 +34,7 @@ ErrorDialogue.mockImplementation(() => <div>MockError</div>);
 
 SignIn.mockImplementation(() => <div>MockSignin</div>);
 const mockDispatch = jest.fn();
+const mockHeaderUpdate = jest.fn();
 
 const mockAnalyticsContext = {
   initialized: true,
@@ -44,18 +51,36 @@ describe("Setup Environment", () => {
 
   afterEach(cleanup);
 
-  describe("outside of an auth error", () => {
-    beforeEach(() => {
-      currentTest = { ...initialState, error: false };
-      render(
+  const checkHeader = () => {
+    expect(mockHeaderUpdate).toBeCalledWith({
+      title: "MainHeaderTitle",
+      disableNav: true,
+    });
+    expect(i18next.t("MainHeaderTitle")).toBe(Strings.MainHeaderTitle);
+  };
+
+  const renderHelper = (props) => {
+    return render(
+      <HeaderContext.Provider
+        value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
+      >
         <AnalyticsContext.Provider value={mockAnalyticsContext}>
-          <UserContext.Provider
-            value={{ user: currentTest, dispatch: mockDispatch }}
-          >
+          <UserContext.Provider value={{ user: props, dispatch: mockDispatch }}>
             <SignInContainer />
           </UserContext.Provider>
         </AnalyticsContext.Provider>
-      );
+      </HeaderContext.Provider>
+    );
+  };
+
+  describe("outside of an auth error", () => {
+    beforeEach(() => {
+      currentTest = { ...initialState, error: false };
+      renderHelper(currentTest);
+    });
+
+    it("should configure the header properly", () => {
+      checkHeader();
     });
 
     it("should render with the handler functions", async (done) => {
@@ -130,15 +155,11 @@ describe("Setup Environment", () => {
         error: true,
         errorMessage: "ErrorAuthExpired",
       };
-      render(
-        <AnalyticsContext.Provider value={mockAnalyticsContext}>
-          <UserContext.Provider
-            value={{ user: currentTest, dispatch: mockDispatch }}
-          >
-            <SignInContainer />
-          </UserContext.Provider>
-        </AnalyticsContext.Provider>
-      );
+      renderHelper(currentTest);
+    });
+
+    it("should configure the header properly", () => {
+      checkHeader();
     });
 
     it("should handle an error condition as expected", async (done) => {
