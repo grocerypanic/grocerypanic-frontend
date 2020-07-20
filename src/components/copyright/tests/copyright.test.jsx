@@ -31,7 +31,7 @@ describe("Setup Environment", () => {
     const [declaration, link, space, yearEnding] = Array.from(node.childNodes);
     expect(declaration.textContent).toBe(Strings.Copyight.CopyrightDeclaration);
     expect(link.textContent).toBe(`${Strings.Copyight.CopyrightMessage}`);
-    expect(link.getAttribute("href")).toEqual(Routes.root);
+    expect(link.getAttribute("href")).toEqual(Routes.menu);
     expect(space.textContent).toBe(`${Assets.nonBreakingSpace}`);
     expect(yearEnding.textContent).toBe(`${year}.`);
   });

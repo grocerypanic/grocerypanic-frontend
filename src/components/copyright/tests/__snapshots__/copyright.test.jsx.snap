@@ -33,7 +33,7 @@ exports[`Setup Environment should match the snapshot on file (styles) 1`] = `
   Created by 
   <a
     class="c1"
-    href="/"
+    href="/menu"
   >
     Shared Vision Solutions
   </a>

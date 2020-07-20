@@ -12,7 +12,7 @@ const Copyright = () => {
   return (
     <CopyrightBox data-testid="CopyRight">
       {t("Copyight.CopyrightDeclaration")}
-      <StyledLink to={Routes.root}>{t("Copyight.CopyrightMessage")}</StyledLink>
+      <StyledLink to={Routes.menu}>{t("Copyight.CopyrightMessage")}</StyledLink>
       &nbsp;{`${year}.`}
     </CopyrightBox>
   );

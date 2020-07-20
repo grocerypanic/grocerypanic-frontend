@@ -19,6 +19,7 @@ const Items = lazy(() => import("../items/items.page"));
 const Menu = lazy(() => import("../menu/menu.page"));
 const SignIn = lazy(() => import("../signin/signin.container"));
 const Shelves = lazy(() => import("../shelves/shelves.page"));
+const Splash = lazy(() => import("../splash/splash.page"));
 const Stores = lazy(() => import("../stores/stores.page"));
 
 function App() {
@@ -41,7 +42,7 @@ function App() {
             path={Routes.signin}
             component={SignIn}
             attr={"login"}
-            redirect={Routes.root}
+            redirect={Routes.menu}
           />
           <ProtectedRoute
             exact
@@ -92,13 +93,20 @@ function App() {
           />
           <ProtectedRoute
             exact
-            path={Routes.root}
+            path={Routes.menu}
             component={Menu}
             negative
             attr={"login"}
             redirect={Routes.signin}
           />
-          <Route render={() => <Redirect to={Routes.root} />} />
+          <ProtectedRoute
+            exact
+            path={Routes.splash}
+            component={Splash}
+            attr={"login"}
+            redirect={Routes.menu}
+          />
+          <Route render={() => <Redirect to={Routes.menu} />} />
         </Switch>
         <Consent />
       </Suspense>

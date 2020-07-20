@@ -13,6 +13,7 @@ import ItemsPage from "../../items/items.page";
 import CreatePage from "../../create/create.page";
 import DetailsPage from "../../details/details.page";
 import MenuPage from "../../menu/menu.page";
+import SplashPage from "../../splash/splash.page";
 import Header from "../../../components/header/header.component";
 
 import { UserContext } from "../../../providers/user/user.provider";
@@ -32,6 +33,7 @@ jest.mock("../../menu/menu.page");
 jest.mock("../../details/details.page");
 jest.mock("../../create/create.page");
 jest.mock("../../about/about.page");
+jest.mock("../../splash/splash.page");
 jest.mock("../../../components/header/header.component");
 
 About.mockImplementation(() => <div>MockPlaceholderAboutPage</div>);
@@ -43,6 +45,7 @@ DetailsPage.mockImplementation(() => <div>MockPlaceholderDetailsPage</div>);
 MenuPage.mockImplementation(() => <div>MockPlaceholderMenuPage</div>);
 CreatePage.mockImplementation(() => <div>MockPlaceholderCreatePage</div>);
 Header.mockImplementation(() => <div>MockHeader</div>);
+SplashPage.mockImplementation(() => <div>MockSplashPage</div>);
 
 const mockDispatch = jest.fn();
 const mockHeaderUpdate = jest.fn();
@@ -85,14 +88,14 @@ describe("Check Routing", () => {
     expect(i18next.t("MainHeaderTitle")).toBe(Strings.MainHeaderTitle);
   };
 
-  describe("root url", () => {
-    beforeEach(() => (setup.path = Routes.root));
+  describe("menu url", () => {
+    beforeEach(() => (setup.path = Routes.menu));
     describe("active login", () => {
       beforeEach(() => {
         setup.state.login = true;
         utils = renderHelper({ ...setup });
       });
-      it("should render menu on root url", async (done) => {
+      it("should render menu on menu url", async (done) => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(0));
@@ -102,7 +105,8 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
-        expect(window.location.pathname).toBe(Routes.root);
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        expect(window.location.pathname).toBe(Routes.menu);
         done();
       });
       it("should configure the header properly", () => {
@@ -125,6 +129,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
@@ -152,7 +157,8 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
-        await waitFor(() => expect(window.location.pathname).toBe(Routes.root));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(window.location.pathname).toBe(Routes.menu));
         done();
       });
       it("should configure the header properly", () => {
@@ -174,6 +180,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
@@ -201,6 +208,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.stores);
         done();
       });
@@ -225,6 +233,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
@@ -252,6 +261,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.shelves);
         done();
       });
@@ -276,6 +286,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
@@ -303,6 +314,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.items);
         done();
       });
@@ -327,6 +339,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
@@ -354,6 +367,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(1));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.details);
         done();
       });
@@ -378,6 +392,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(1));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
@@ -405,6 +420,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(1));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.create);
         done();
       });
@@ -429,6 +445,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(1));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
         done();
       });
@@ -456,6 +473,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.about);
         done();
       });
@@ -480,7 +498,58 @@ describe("Check Routing", () => {
         await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
+        done();
+      });
+      it("should configure the header properly", () => {
+        checkHeader();
+      });
+    });
+  });
+
+  describe("splash url", () => {
+    beforeEach(() => (setup.path = Routes.splash));
+    describe("active login", () => {
+      beforeEach(() => {
+        setup.state.login = true;
+        utils = renderHelper({ ...setup });
+      });
+      it("should redirect to menu on splash url (from splash page)", async (done) => {
+        expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
+        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
+        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
+        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
+        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
+        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
+        await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        expect(window.location.pathname).toBe(Routes.menu);
+        done();
+      });
+      it("should configure the header properly", () => {
+        checkHeader();
+      });
+    });
+    describe("inactive login", () => {
+      beforeEach(() => {
+        setup.state.login = false;
+        utils = renderHelper({ ...setup });
+      });
+      it("should render splash page on splash url", async (done) => {
+        expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
+        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
+        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
+        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
+        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
+        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
+        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
+        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(1));
+        expect(window.location.pathname).toBe(Routes.splash);
         done();
       });
       it("should configure the header properly", () => {

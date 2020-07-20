@@ -30,7 +30,7 @@ let ErrorProps = {
   clearError: jest.fn(),
   eventMessage: AnalyticsActions.TestAction,
   messageTranslationKey: "Testing.GenericMultiLineTranslationTestString",
-  redirect: Routes.root,
+  redirect: Routes.menu,
 };
 
 const history = createBrowserHistory();
@@ -58,7 +58,7 @@ describe("Setup Environment", () => {
     jest.clearAllMocks();
     testRoute = "/test/route";
     current = { ...ErrorProps };
-    history.push(Routes.root);
+    history.push(Routes.menu);
   });
 
   describe("when given a valid analytics event message", () => {
@@ -110,7 +110,7 @@ describe("Setup Environment", () => {
           expect(history.location.pathname).not.toBe(testRoute)
         );
         await waitFor(() =>
-          expect(history.location.pathname).toBe(Routes.root)
+          expect(history.location.pathname).toBe(Routes.menu)
         );
         done();
       });

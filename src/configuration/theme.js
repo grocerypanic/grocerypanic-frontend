@@ -26,6 +26,7 @@ export const itemAttributes = {
 };
 
 export const headerMobileThreshold = 480;
+export const mobileThreshold = 480;
 
 export const graph = {
   quantityLine: "rgb(2, 117, 216)",

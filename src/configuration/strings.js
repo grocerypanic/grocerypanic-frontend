@@ -15,7 +15,7 @@ export const Strings = {
         Title: "Panic Grocery Management",
         HeaderTitle: "About",
         Body:
-          "Panic was written during the 2020 pandemic with the goal of helping folks organize their grocery shopping.\nI had very little front-end experience before starting this app, so this was an opportunity for me to try something new.  I would not have been able to complete this project without the help I received, despite alot of pressure for me to abandon it half way.  So thanks!",
+          "Panic was written during the 2020 pandemic with the goal of helping folks organize their grocery shopping.\nI had very little front-end experience before starting this app, so this was an opportunity for me to try something new.  I would not have been able to complete this project without the help I received, despite alot of pressure for me to abandon it half way.  So thanks!\nCredit for the splash page images:\n",
       },
       Maintenance: {
         Title: "Maintenance Underway",
@@ -164,6 +164,20 @@ export const Strings = {
       },
       PlaceHolder: {
         PlaceHolderMessage: "I'm only a placeholder.",
+      },
+      SplashPage: {
+        Slide1: {
+          alt: "shopping cart",
+          header: "Take the fear out of pandemic shopping...",
+          text1:
+            "Track how often you actually use kitchen and household items. Make logical choices.",
+        },
+        Slide2: {
+          alt: "long shopping bill",
+          header: "... and give your credit card a break.",
+          text1: "Walk out of the grocery store with what you really need.",
+        },
+        SignIn: "Sign In / Sign Up",
       },
     },
   },

@@ -1,8 +1,10 @@
 const Routes = {
   root: "/",
+  menu: "/menu",
   about: "/about",
   signin: "/signin",
   shelves: "/shelves",
+  splash: "/",
   stores: "/stores",
   items: "/items",
   create: "/create",
