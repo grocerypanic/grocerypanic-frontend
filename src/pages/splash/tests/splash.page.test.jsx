@@ -81,6 +81,10 @@ describe("Check the correct props are passed to ", () => {
       expect(utils.getByAltText(Strings.SplashPage.Slide2.alt)).toBeTruthy();
       done();
     });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container).toMatchSnapshot();
+    });
   });
 
   describe("in desktop mode", () => {
@@ -105,6 +109,10 @@ describe("Check the correct props are passed to ", () => {
       expect(utils.getByText(Strings.SplashPage.Slide2.text1)).toBeTruthy();
       expect(utils.getByAltText(Strings.SplashPage.Slide2.alt)).toBeTruthy();
       done();
+    });
+
+    it("should match the snapshot on file (styles)", () => {
+      expect(utils.container).toMatchSnapshot();
     });
   });
 });

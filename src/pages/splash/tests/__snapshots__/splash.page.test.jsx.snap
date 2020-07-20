@@ -1,0 +1,369 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Check the correct props are passed to  in desktop mode should match the snapshot on file (styles) 1`] = `
+.c0 {
+  margin-top: 50px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.c1 {
+  height: calc(100vh - 50px);
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.8),0px 0px 3px rgba(0,0,0,1);
+  width: 100vw;
+  overflow: hidden;
+}
+
+.c1 .img1 {
+  object-fit: cover;
+  -webkit-filter: brightness(25%);
+  filter: brightness(25%);
+}
+
+.c1 .img2 {
+  object-fit: cover;
+  -webkit-filter: brightness(25%);
+  filter: brightness(25%);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  font-size: 1.5em;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="carousel slide"
+      data-interval="false"
+    >
+      <ol
+        class="carousel-indicators"
+      >
+        <li
+          class="active"
+        />
+        <li />
+      </ol>
+      <div
+        class="carousel-inner"
+      >
+        <div
+          class="active carousel-item"
+        >
+          <div
+            class="c1"
+          >
+            <div>
+              <img
+                alt="shopping cart"
+                class="img1"
+                src="/images/cart.jpg"
+              />
+            </div>
+            <div>
+              <div
+                class="carousel-caption"
+              >
+                <h3>
+                  Take the fear out of pandemic shopping...
+                </h3>
+                <br />
+                <div
+                  class="c2"
+                >
+                  <p>
+                    Track how often you actually use kitchen and household items. Make logical choices.
+                  </p>
+                </div>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="carousel-item"
+        >
+          <div
+            class="c1"
+          >
+            <div>
+              <img
+                alt="long shopping bill"
+                class="img2"
+                src="/images/bill.jpg"
+              />
+            </div>
+            <div>
+              <div
+                class="carousel-caption"
+              >
+                <h3>
+                  ... and give your credit card a break.
+                </h3>
+                <br />
+                <div
+                  class="c2"
+                >
+                  <p>
+                    Walk out of the grocery store with what you really need.
+                  </p>
+                </div>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a
+        class="carousel-control-prev"
+        href="#"
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+          class="carousel-control-prev-icon"
+        />
+        <span
+          class="sr-only"
+        >
+          Previous
+        </span>
+      </a>
+      <a
+        class="carousel-control-next"
+        href="#"
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+          class="carousel-control-next-icon"
+        />
+        <span
+          class="sr-only"
+        >
+          Next
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Check the correct props are passed to  in mobile mode should match the snapshot on file (styles) 1`] = `
+.c0 {
+  margin-top: 50px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.c1 {
+  height: calc(100vh - 50px);
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.8),0px 0px 3px rgba(0,0,0,1);
+  width: 100vw;
+  overflow: hidden;
+}
+
+.c1 .img1 {
+  object-fit: cover;
+  object-position: -350px -100px;
+  -webkit-filter: brightness(25%);
+  filter: brightness(25%);
+}
+
+.c1 .img2 {
+  object-fit: cover;
+  object-position: -350px -250px;
+  -webkit-filter: brightness(25%);
+  filter: brightness(25%);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  font-size: 1em;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="carousel slide"
+      data-interval="false"
+    >
+      <ol
+        class="carousel-indicators"
+      >
+        <li
+          class="active"
+        />
+        <li />
+      </ol>
+      <div
+        class="carousel-inner"
+      >
+        <div
+          class="active carousel-item"
+        >
+          <div
+            class="c1"
+          >
+            <div>
+              <img
+                alt="shopping cart"
+                class="img1"
+                src="/images/cart.jpg"
+              />
+            </div>
+            <div>
+              <div
+                class="carousel-caption"
+              >
+                <h3>
+                  Take the fear out of pandemic shopping...
+                </h3>
+                <br />
+                <div
+                  class="c2"
+                >
+                  <p>
+                    Track how often you actually use kitchen and household items. Make logical choices.
+                  </p>
+                </div>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="carousel-item"
+        >
+          <div
+            class="c1"
+          >
+            <div>
+              <img
+                alt="long shopping bill"
+                class="img2"
+                src="/images/bill.jpg"
+              />
+            </div>
+            <div>
+              <div
+                class="carousel-caption"
+              >
+                <h3>
+                  ... and give your credit card a break.
+                </h3>
+                <br />
+                <div
+                  class="c2"
+                >
+                  <p>
+                    Walk out of the grocery store with what you really need.
+                  </p>
+                </div>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a
+        class="carousel-control-prev"
+        href="#"
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+          class="carousel-control-prev-icon"
+        />
+        <span
+          class="sr-only"
+        >
+          Previous
+        </span>
+      </a>
+      <a
+        class="carousel-control-next"
+        href="#"
+        role="button"
+      >
+        <span
+          aria-hidden="true"
+          class="carousel-control-next-icon"
+        />
+        <span
+          class="sr-only"
+        >
+          Next
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+`;
