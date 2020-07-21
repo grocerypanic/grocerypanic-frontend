@@ -14,6 +14,7 @@ export const SplashBox = styled.div`
   .img1 {
     min-width: 100%;
     min-height: 100%;
+    transform: scale(1.1);
     ${(props) => (props.mobile ? "object-position: -50px -0px;" : null)}
     filter: brightness(25%);
   }
@@ -21,6 +22,7 @@ export const SplashBox = styled.div`
   .img2 {
     min-width: 100%;
     min-height: 100%;
+    transform: scale(1.1);
     ${(props) => (props.mobile ? "object-position: -150px -0px;" : null)}
     filter: brightness(25%);
   }
