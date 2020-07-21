@@ -12,14 +12,18 @@ export const SplashBox = styled.div`
   }
 
   .img1 {
-    object-fit: cover;
-    ${(props) => (props.mobile ? "object-position: -350px -100px;" : null)}
+    min-width: 100%;
+    min-height: 100%;
+    transform: scale(1.1);
+    ${(props) => (props.mobile ? "object-position: -50px -0px;" : null)}
     filter: brightness(25%);
   }
 
   .img2 {
-    object-fit: cover;
-    ${(props) => (props.mobile ? "object-position: -350px -250px;" : null)}
+    min-width: 100%;
+    min-height: 100%;
+    transform: scale(1.1);
+    ${(props) => (props.mobile ? "object-position: -150px -0px;" : null)}
     filter: brightness(25%);
   }
 `;

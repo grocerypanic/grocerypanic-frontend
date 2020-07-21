@@ -46,7 +46,7 @@ exports[`Check the correct props are passed to  in desktop mode should match the
 }
 
 .c1 .img2 {
-  object-fit: cover;
+  object-fit: contain;
   -webkit-filter: brightness(25%);
   filter: brightness(25%);
 }
@@ -88,13 +88,13 @@ exports[`Check the correct props are passed to  in desktop mode should match the
           class="active carousel-item"
         >
           <div
-            class="c1"
+            class="c1 SplashBox"
           >
             <div>
               <img
                 alt="shopping cart"
                 class="img1"
-                src="/images/cart.jpg"
+                src="/images/cart_desktop.jpg"
               />
             </div>
             <div>
@@ -121,13 +121,13 @@ exports[`Check the correct props are passed to  in desktop mode should match the
           class="carousel-item"
         >
           <div
-            class="c1"
+            class="c1 SplashBox"
           >
             <div>
               <img
                 alt="long shopping bill"
                 class="img2"
-                src="/images/bill.jpg"
+                src="/images/bill_desktop.jpg"
               />
             </div>
             <div>
@@ -227,14 +227,14 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
 
 .c1 .img1 {
   object-fit: cover;
-  object-position: -350px -100px;
+  object-position: -50px -0px;
   -webkit-filter: brightness(25%);
   filter: brightness(25%);
 }
 
 .c1 .img2 {
-  object-fit: cover;
-  object-position: -350px -250px;
+  object-fit: contain;
+  object-position: -150px -0px;
   -webkit-filter: brightness(25%);
   filter: brightness(25%);
 }
@@ -276,13 +276,13 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
           class="active carousel-item"
         >
           <div
-            class="c1"
+            class="c1 SplashBox"
           >
             <div>
               <img
                 alt="shopping cart"
                 class="img1"
-                src="/images/cart.jpg"
+                src="/images/cart_mobile.jpg"
               />
             </div>
             <div>
@@ -309,13 +309,13 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
           class="carousel-item"
         >
           <div
-            class="c1"
+            class="c1 SplashBox"
           >
             <div>
               <img
                 alt="long shopping bill"
                 class="img2"
-                src="/images/bill.jpg"
+                src="/images/bill_mobile.jpg"
               />
             </div>
             <div>
