@@ -40,13 +40,21 @@ exports[`Check the correct props are passed to  in desktop mode should match the
 }
 
 .c1 .img1 {
-  object-fit: cover;
+  min-width: 100%;
+  min-height: 100%;
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
   -webkit-filter: brightness(25%);
   filter: brightness(25%);
 }
 
 .c1 .img2 {
-  object-fit: contain;
+  min-width: 100%;
+  min-height: 100%;
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
   -webkit-filter: brightness(25%);
   filter: brightness(25%);
 }
@@ -93,7 +101,7 @@ exports[`Check the correct props are passed to  in desktop mode should match the
             <div>
               <img
                 alt="shopping cart"
-                class="img1"
+                class="img1 image"
                 src="/images/cart_desktop.jpg"
               />
             </div>
@@ -126,7 +134,7 @@ exports[`Check the correct props are passed to  in desktop mode should match the
             <div>
               <img
                 alt="long shopping bill"
-                class="img2"
+                class="img2 image"
                 src="/images/bill_desktop.jpg"
               />
             </div>
@@ -226,14 +234,22 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
 }
 
 .c1 .img1 {
-  object-fit: cover;
+  min-width: 100%;
+  min-height: 100%;
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
   object-position: -50px -0px;
   -webkit-filter: brightness(25%);
   filter: brightness(25%);
 }
 
 .c1 .img2 {
-  object-fit: contain;
+  min-width: 100%;
+  min-height: 100%;
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
   object-position: -150px -0px;
   -webkit-filter: brightness(25%);
   filter: brightness(25%);
@@ -281,7 +297,7 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
             <div>
               <img
                 alt="shopping cart"
-                class="img1"
+                class="img1 image"
                 src="/images/cart_mobile.jpg"
               />
             </div>
@@ -314,7 +330,7 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
             <div>
               <img
                 alt="long shopping bill"
-                class="img2"
+                class="img2 image"
                 src="/images/bill_mobile.jpg"
               />
             </div>
