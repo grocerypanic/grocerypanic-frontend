@@ -27,11 +27,11 @@ const SplashPage = () => {
     <Container tabs={true}>
       <Carousel interval={null}>
         <Carousel.Item>
-          <SplashBox mobile={isMobile()}>
+          <SplashBox className={"SplashBox"} mobile={isMobile()}>
             <div>
               <img
-                className="img1"
-                src={Assets.cart}
+                className="img1 image"
+                src={isMobile() ? Assets.cart_mobile : Assets.cart}
                 alt={t("SplashPage.Slide1.alt")}
               />
             </div>
@@ -48,11 +48,11 @@ const SplashPage = () => {
           </SplashBox>
         </Carousel.Item>
         <Carousel.Item>
-          <SplashBox mobile={isMobile()}>
+          <SplashBox className={"SplashBox"} mobile={isMobile()}>
             <div>
               <img
-                className="img2"
-                src={Assets.bill}
+                className="img2 image"
+                src={isMobile() ? Assets.bill_mobile : Assets.bill}
                 alt={t("SplashPage.Slide2.alt")}
               />
             </div>
