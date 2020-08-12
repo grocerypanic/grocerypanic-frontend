@@ -26,9 +26,8 @@ jobs:
         run: |
           npm run coverage
       - name: Report Job Status
-        if: always()
+        if: ${{ failure() }}
         run: |
-          if [[ $status == "failure" ]]; then curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: build has failed!"}' "${WEBHOOK_URL}"; fi
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: build has failed!"}' "${WEBHOOK_URL}"
         env:
-          status: ${{job.status}}
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
