@@ -14,6 +14,7 @@ const Routes = {
 
 export const External = {
   feedback: "https://www.sharedvisionsolutions.com/#contact",
+  credit: "https://www.sharedvisionsolutions.com/",
 };
 
 export default Routes;

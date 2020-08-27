@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
 import { primary, black } from "../../configuration/theme";
 
@@ -12,7 +11,7 @@ export const CopyrightBox = styled.div`
   color: ${black};
 `;
 
-export const StyledLink = styled(Link)`
+export const StyledLink = styled.a`
   cursor: pointer;
   color: ${primary};
   text-decoration: none;

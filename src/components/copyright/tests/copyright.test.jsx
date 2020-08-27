@@ -1,15 +1,24 @@
 import React from "react";
-import { render, cleanup } from "@testing-library/react";
+import { render, cleanup, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import Copyright from "../copyright.component";
 
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
+
 import Strings from "../../../configuration/strings";
-import Routes from "../../../configuration/routes";
 import Assets from "../../../configuration/assets";
+import { External } from "../../../configuration/routes";
 
 // Freeze Time
 Date.now = jest.fn(() => new Date("2019-06-16T11:01:58.135Z"));
+
+const mockAnalyticsContext = {
+  initialized: true,
+  event: jest.fn(),
+  setup: true,
+};
 
 describe("Setup Environment", () => {
   let utils;
@@ -17,9 +26,11 @@ describe("Setup Environment", () => {
 
   beforeEach(() => {
     utils = render(
-      <MemoryRouter initialEntries={["/anything"]}>
-        <Copyright />
-      </MemoryRouter>
+      <AnalyticsContext.Provider value={mockAnalyticsContext}>
+        <MemoryRouter initialEntries={["/anything"]}>
+          <Copyright />
+        </MemoryRouter>
+      </AnalyticsContext.Provider>
     );
   });
 
@@ -31,9 +42,23 @@ describe("Setup Environment", () => {
     const [declaration, link, space, yearEnding] = Array.from(node.childNodes);
     expect(declaration.textContent).toBe(Strings.Copyight.CopyrightDeclaration);
     expect(link.textContent).toBe(`${Strings.Copyight.CopyrightMessage}`);
-    expect(link.getAttribute("href")).toEqual(Routes.menu);
+    expect(link.getAttribute("href")).toEqual(External.credit);
     expect(space.textContent).toBe(`${Assets.nonBreakingSpace}`);
     expect(yearEnding.textContent).toBe(`${year}.`);
+  });
+
+  it("should render with the correct external link", () => {
+    const node = utils.getByTestId("CopyRightLink");
+    expect(node.getAttribute("href")).toEqual(External.credit);
+  });
+
+  it("should handle a click on the link correctly", async (done) => {
+    const node = utils.getByTestId("CopyRightLink");
+    fireEvent.click(node, "click");
+    expect(mockAnalyticsContext.event).toBeCalledWith(
+      AnalyticsActions.HomePageLink
+    );
+    done();
   });
 
   it("should match the snapshot on file (styles)", () => {
