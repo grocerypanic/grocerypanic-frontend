@@ -15,7 +15,7 @@ export const Strings = {
         Title: "Panic Grocery Management",
         HeaderTitle: "About",
         Body:
-          "Panic was written during the 2020 pandemic with the goal of helping folks organize their grocery shopping.\nI had very little front-end experience before starting this app, so this was an opportunity for me to try something new.  I would not have been able to complete this project without the help I received, despite alot of pressure for me to abandon it half way.  So thanks!\nOpening photos from pixabay.com, thanks and credit goes to:\n- Alexas Fotos\n- stevepb\n\nAdditional thanks to:\n- Linh Ngo (initial designs)\n- Li Karaian (testing, ideation)\n- Adam Wright (helpful input)",
+          "Panic was written during the 2020 pandemic with the goal of helping folks organize their grocery shopping.\nI hadn't written a React application this complex with respect to state before, so this was an opportunity for me to learn something new.  I'm really grateful for the help and direction I recieved so that I could implement this.  Thanks very much.\nOpening photos from pixabay.com, thanks and credit goes to:\n- Alexas Fotos\n- stevepb\n\nAdditional thanks to:\n- Linh Ngo (initial designs)\n- Li Karaian (testing, ideation)\n- Adam Wright (helpful input)",
       },
       Maintenance: {
         Title: "Maintenance Underway",
