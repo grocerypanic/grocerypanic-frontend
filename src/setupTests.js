@@ -26,3 +26,6 @@ global.i18n = i18n;
 global.fail = (message) => {
   throw new Error(message);
 };
+
+// polyfill globalThis for older nodes
+global.globalThis = global;
