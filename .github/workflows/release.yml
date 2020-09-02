@@ -1,0 +1,44 @@
+name: panic_fe-ProductionDeploys
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set TimeZone
+        run: |
+          sudo timedatectl set-timezone "America/Toronto"
+      - name: Install Node Modules
+        run: |
+          npm install
+      - name: Production -- Build 
+        run: |
+          echo "${REACT_ENV}" > .env.production.local
+          npm run build
+        env:
+          REACT_ENV: ${{ secrets.PRODUCTION_REACT_ENV }}
+      - name: Production -- Automated Deploy        
+        uses: w9jds/firebase-action@v1.5.0
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.PRODUCTION_FIREBASE_TOKEN }}
+          PROJECT_ID: ${{ secrets.PRODUCTION_FIREBASE_PROJECT }} 
+      - name: Production -- Report Success
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated production deployment was successful!"}' "${WEBHOOK_URL}"
+        env:
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Production -- Report Failure
+        if: ${{ failure() }}
+        run: |
+          [[ -z ${GIT_DIFF} ]] && curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated production deployment has failed!"}' "${WEBHOOK_URL}"
+        env:
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          GIT_DIFF: ${{ env.GIT_DIFF }}
