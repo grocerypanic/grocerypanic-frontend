@@ -38,6 +38,7 @@ jobs:
           npm run build
         env:
           REACT_ENV: ${{ secrets.STAGE_REACT_ENV }}
+
       - name: Stage -- Automated Deploy        
         if: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
         uses: w9jds/firebase-action@v1.5.0
@@ -60,3 +61,24 @@ jobs:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           REF: ${{ github.ref }}
           EVENT: ${{ github.event_name }}
+
+      - name: Production -- Prepare Release
+        if: contains(github.ref, 'tag')
+        run: |          
+          LAST=$(git tag | sort | tail -n2 | head -n1)
+          echo "::set-env name=LATEST::${LATEST}"
+          CHANGELOG=$(git log --pretty=%s ${LATEST}...HEAD)
+          echo "::set-env name=CHANGELOG::${CHANGELOG}"
+          NEWTAG=${GITHUB_REF#refs/tags/}
+          echo "::set-env name=NEWTAG=${NEWTAG}"
+      - name: Production -- Create Release
+        if: contains(github.ref, 'tag')
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.NEWTAG }}
+          release_name: Release ${{ env.NEWTAG }}
+          body: ${{env.CHANGELOG}}
+          draft: false
+          prerelease: false
