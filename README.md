@@ -65,3 +65,17 @@ You'll need to install:
   - (Auto correct style and linting problems.)
 - `npm cun coverage`
   - (Run jest unittests with coverage report.)
+
+## Releases
+
+- Deployment to stage is fully automated on every commit to develop. 
+
+- Deployment to production is trigged by a release tag.
+
+#### Production Release Tags
+
+- The tag should constitute a 'vD.DD' format where each D creates the version of the release.
+
+- Once the tag is created, a github release draft is created, giving you the opportunity to review the changes before a deploy. 
+
+- Once the release is published, automatic deployment to production is triggered.  This is considered approval of the release.
