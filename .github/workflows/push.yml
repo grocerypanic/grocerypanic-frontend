@@ -35,7 +35,7 @@ jobs:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
       
       - name: Stage -- Build 
-        if: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
+        if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
         run: |
           echo "${REACT_ENV}" > .env.production.local
           npm run build
@@ -43,7 +43,7 @@ jobs:
           REACT_ENV: ${{ secrets.STAGE_REACT_ENV }}
 
       - name: Stage -- Automated Deploy        
-        if: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
+        if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
         uses: w9jds/firebase-action@v1.5.0
         with:
           args: deploy --only hosting
@@ -51,7 +51,7 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.STAGE_FIREBASE_TOKEN }}
           PROJECT_ID: ${{ secrets.STAGE_FIREBASE_PROJECT }}        
       - name: Stage -- Report Success
-        if: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
+        if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated deploy to stage!"}' "${WEBHOOK_URL}"
         env:
@@ -59,7 +59,7 @@ jobs:
       - name: Stage -- Report Failure
         if: ${{ failure() }}
         run: |
-          [[ ${REF} == 'refs/heads/develop' ]] && [[ ${EVENT} == 'push' ]] && curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: stage deploy has failed!"}' "${WEBHOOK_URL}"
+          [[ ${REF} == 'refs/heads/master' ]] && [[ ${EVENT} == 'push' ]] && curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: stage deploy has failed!"}' "${WEBHOOK_URL}"
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           REF: ${{ github.ref }}
