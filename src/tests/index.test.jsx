@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+
 import App from "../pages/app/app.js";
 import MaintenancePage from "../pages/maintenance/maintenance.page";
 import * as serviceWorker from "../serviceWorker";
@@ -16,6 +17,9 @@ jest.mock("../serviceWorker", () => ({
 jest.mock("react-dom", () => ({ render: jest.fn() }));
 jest.mock("../pages/app/app");
 jest.mock("../pages/maintenance/maintenance.page");
+
+delete window.location;
+window.location = { ...window.location, reload: jest.fn() };
 
 App.mockImplementation(() => <div>MockApp</div>);
 MaintenancePage.mockImplementation(() => <div>MockMaintenance</div>);
@@ -59,6 +63,20 @@ describe("Setup Test", () => {
       expect(utils.getByText("MockApp")).toBeTruthy();
       expect(utils.queryByText("MockMaintenance")).toBeFalsy();
       expect(RootProvider).toBeCalledTimes(1);
+    });
+
+    it("updateWorker should reload the page on confirmation", () => {
+      window.confirm = jest.fn(() => true);
+      const { updateWorker } = require("../index.js");
+      updateWorker();
+      expect(window.location.reload).toBeCalledTimes(1);
+    });
+
+    it("updateWorker should not reload the page without confirmation", () => {
+      window.confirm = jest.fn(() => false);
+      const { updateWorker } = require("../index.js");
+      updateWorker();
+      expect(window.location.reload).toBeCalledTimes(0);
     });
   });
 
