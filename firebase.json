@@ -1,7 +1,11 @@
 {
   "hosting": {
     "public": "build",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "**",
@@ -19,20 +23,11 @@
         ]
       },
       {
-        "source": "**/*.html",
+        "source": "**",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "max-age=3600"
-          }
-        ]
-      },
-      {
-        "source": "**/manifest.json",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "max-age=3600"
+            "value": "no-cache, no-store, must-revalidate"
           }
         ]
       },
