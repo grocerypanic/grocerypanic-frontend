@@ -226,7 +226,7 @@ describe("Setup Environment", () => {
           expect(pagination.handlePagination).toBeInstanceOf(Function);
         });
 
-        it("renders, after a successful list fetch, it should call HoldingPattern with the correct params", async (done) => {
+        it("renders, after a successful list fetch, it should call HoldingPattern with the correct params", async () => {
           expect(current.transaction).toBe(false);
 
           await waitFor(() =>
@@ -243,8 +243,6 @@ describe("Setup Environment", () => {
           const holdingPatternCall = HoldingPattern.mock.calls[2][0];
           propCount(holdingPatternCall, 2);
           expect(holdingPatternCall.condition).toBe(false);
-
-          done();
         });
 
         it("should match the snapshot on file (styles)", () => {
@@ -276,7 +274,7 @@ describe("Setup Environment", () => {
             utils = renderHelper(itemContext, transactionContext, history);
           });
 
-          it("renders, calls StartList on first render, with a page param", async (done) => {
+          it("renders, calls StartList on first render, with a page param", async () => {
             expect(current.transaction).toBeFalsy();
             await waitFor(() =>
               expect(mockItemDispatch).toHaveBeenCalledTimes(1)
@@ -288,7 +286,6 @@ describe("Setup Environment", () => {
             expect(apiCall.dispatch).toBeInstanceOf(Function);
             expect(apiCall.filter).toBeInstanceOf(URLSearchParams);
             expect(apiCall.page).toBe(page);
-            done();
           });
         });
 
@@ -319,7 +316,7 @@ describe("Setup Environment", () => {
             );
           });
 
-          it("renders, handles a create event with query params passed along", async (done) => {
+          it("renders, handles a create event with query params passed along", async () => {
             expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
             const { create } = mockHeaderUpdate.mock.calls[0][0];
             expect(current.transaction).toBeFalsy();
@@ -342,8 +339,6 @@ describe("Setup Environment", () => {
             await waitFor(() =>
               expect(mockItemDispatch).toHaveBeenCalledTimes(2)
             );
-
-            done();
           });
         });
 
@@ -370,7 +365,7 @@ describe("Setup Environment", () => {
             );
           });
 
-          it("renders, should call the error handler with the correct params", async (done) => {
+          it("renders, should call the error handler with the correct params", async () => {
             await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
             const call = ErrorHandler.mock.calls[0][0];
             propCount(call, 6);
@@ -384,8 +379,6 @@ describe("Setup Environment", () => {
             expect(i18next.t("ItemList.ApiError")).toBe(
               Strings.ItemList.ApiError
             );
-
-            done();
           });
 
           it("renders, should call header with the correct params", () => {
@@ -409,7 +402,7 @@ describe("Setup Environment", () => {
             expect(pagination.handlePagination).toBeInstanceOf(Function);
           });
 
-          it("renders, should handle a call to handlePagination correctly", async (done) => {
+          it("renders, should handle a call to handlePagination correctly", async () => {
             expect(current.transaction).toBe(false);
             expect(Pagination).toHaveBeenCalledTimes(1);
             const handlePagination =
@@ -427,7 +420,6 @@ describe("Setup Environment", () => {
             expect(apiCall.func).toBe(ApiFunctions.asyncList);
             expect(apiCall.dispatch).toBeInstanceOf(Function);
             expect(apiCall.override).toBe("http://next");
-            done();
           });
 
           it("renders, outside of a transaction should call HoldingPattern with the correct params", () => {
@@ -499,7 +491,7 @@ describe("Setup Environment", () => {
             expect(utils.getByText(mockTitle)).toBeTruthy();
           });
 
-          it("renders, when an error occurs it's rendered", async (done) => {
+          it("renders, when an error occurs it's rendered", async () => {
             expect(ItemListRow).toHaveBeenCalledTimes(3);
 
             const { setErrorMsg } = ItemListRow.mock.calls[0][0].listFunctions;
@@ -512,11 +504,9 @@ describe("Setup Environment", () => {
               expect(utils.queryByText(mockTitle)).not.toBeInTheDocument()
             );
             expect(utils.getByText("Error")).toBeTruthy();
-
-            done();
           });
 
-          it("renders, calls StartList on first render", async (done) => {
+          it("renders, calls StartList on first render", async () => {
             expect(current.transaction).toBeFalsy();
             await waitFor(() =>
               expect(mockItemDispatch).toHaveBeenCalledTimes(1)
@@ -528,10 +518,9 @@ describe("Setup Environment", () => {
             expect(apiCall.dispatch).toBeInstanceOf(Function);
             expect(apiCall.filter).toBeInstanceOf(URLSearchParams);
             expect(apiCall.page).toBe(null);
-            done();
           });
 
-          it("renders, and handles an transaction auth failure condition as expected", async (done) => {
+          it("renders, and handles an transaction auth failure condition as expected", async () => {
             expect(current.transaction).toBeFalsy();
             await waitFor(() =>
               expect(mockItemDispatch).toHaveBeenCalledTimes(1)
@@ -546,11 +535,9 @@ describe("Setup Environment", () => {
             await waitFor(() =>
               expect(mockHandleExpiredAuth).toBeCalledTimes(1)
             );
-
-            done();
           });
 
-          it("renders, handles a create event as expected", async (done) => {
+          it("renders, handles a create event as expected", async () => {
             expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
             const { create } = mockHeaderUpdate.mock.calls[0][0];
             expect(current.transaction).toBeFalsy();
@@ -571,11 +558,9 @@ describe("Setup Environment", () => {
             await waitFor(() =>
               expect(mockItemDispatch).toHaveBeenCalledTimes(2)
             );
-
-            done();
           });
 
-          it("renders, whenever the route changes startlist is triggered again.", async (done) => {
+          it("renders, whenever the route changes startlist is triggered again.", async () => {
             expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
             const { create } = mockHeaderUpdate.mock.calls[0][0];
 
@@ -607,11 +592,9 @@ describe("Setup Environment", () => {
             expect(apiCall.dispatch).toBeInstanceOf(Function);
             expect(apiCall.filter).toBeInstanceOf(URLSearchParams);
             expect(apiCall.page).toBe(null);
-
-            done();
           });
 
-          it("renders, and dispatches the API reducer when handleReStock is called", async (done) => {
+          it("renders, and dispatches the API reducer when handleReStock is called", async () => {
             expect(ItemListRow).toHaveBeenCalledTimes(3);
             const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
             expect(current.transaction).toBeFalsy();
@@ -673,11 +656,9 @@ describe("Setup Environment", () => {
                 AnalyticsActions.TransactionRestock
               )
             );
-
-            done();
           });
 
-          it("renders, and dispatches the API reducer when handleConsume is called", async (done) => {
+          it("renders, and dispatches the API reducer when handleConsume is called", async () => {
             expect(ItemListRow).toHaveBeenCalledTimes(3);
             const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
             expect(current.transaction).toBeFalsy();
@@ -739,11 +720,9 @@ describe("Setup Environment", () => {
                 AnalyticsActions.TransactionConsume
               )
             );
-
-            done();
           });
 
-          it("renders, and dispatches the API reducer when handleConsume is called, handles a failed transaction request as expected", async (done) => {
+          it("renders, and dispatches the API reducer when handleConsume is called, handles a failed transaction request as expected", async () => {
             expect(ItemListRow).toHaveBeenCalledTimes(3);
             const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
             expect(current.transaction).toBeFalsy();
@@ -791,11 +770,9 @@ describe("Setup Environment", () => {
             await waitFor(() =>
               expect(mockItemDispatch).toHaveBeenCalledTimes(1)
             );
-
-            done();
           });
 
-          it("renders, handles edge case where handleConsume is called on non-existent item", async (done) => {
+          it("renders, handles edge case where handleConsume is called on non-existent item", async () => {
             expect(ItemListRow).toHaveBeenCalledTimes(3);
             const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
             expect(current.transaction).toBeFalsy();
@@ -836,11 +813,9 @@ describe("Setup Environment", () => {
             await (() => expect(ItemListRow).toHaveBeenCalledTimes(9));
             const call2 = ItemListRow.mock.calls[6][0];
             expect(call2.item.quantity).toBe(mockItems[0].quantity);
-
-            done();
           });
 
-          it("renders, and handles an transaction auth failure condition as expected", async (done) => {
+          it("renders, and handles an transaction auth failure condition as expected", async () => {
             expect(ItemListRow).toHaveBeenCalledTimes(3);
             const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
             expect(current.transaction).toBeFalsy();
@@ -867,19 +842,16 @@ describe("Setup Environment", () => {
             await waitFor(() =>
               expect(mockHandleExpiredAuth).toBeCalledTimes(1)
             );
-
-            done();
           });
 
           it("should call calculateMaxHeight on render", () => {
             expect(calculateMaxHeight).toBeCalledTimes(1);
           });
 
-          it("a should call calculateMaxHeight again on a window resize", async (done) => {
+          it("a should call calculateMaxHeight again on a window resize", async () => {
             expect(calculateMaxHeight).toBeCalledTimes(1);
             fireEvent(window, new Event("resize"));
             await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-            done();
           });
 
           it("should match the snapshot on file (styles)", () => {
@@ -916,11 +888,10 @@ describe("Setup Environment", () => {
             expect(calculateMaxHeight).toBeCalledTimes(1);
           });
 
-          it("a should call calculateMaxHeight again on a window resize", async (done) => {
+          it("a should call calculateMaxHeight again on a window resize", async () => {
             expect(calculateMaxHeight).toBeCalledTimes(1);
             fireEvent(window, new Event("resize"));
             await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-            done();
           });
 
           it("should match the snapshot on file (styles)", () => {
@@ -979,7 +950,7 @@ describe("Setup Environment", () => {
         expect(holdingPatternCall.condition).toBe(false);
       });
 
-      it("renders, and then when there is an transaction bypasses calls to handleCreate", async (done) => {
+      it("renders, and then when there is an transaction bypasses calls to handleCreate", async () => {
         expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
         const { create } = mockHeaderUpdate.mock.calls[0][0];
         expect(current.transaction).toBeTruthy();
@@ -992,11 +963,9 @@ describe("Setup Environment", () => {
         await waitFor(() =>
           expect(window.location.pathname).toBe(Routes.items)
         );
-
-        done();
       });
 
-      it("renders, and then when there is an transaction bypasses calls to handleConsume", async (done) => {
+      it("renders, and then when there is an transaction bypasses calls to handleConsume", async () => {
         expect(ItemListRow).toHaveBeenCalledTimes(3);
         const { consume } = ItemListRow.mock.calls[0][0].listFunctions;
         expect(current.transaction).toBeTruthy();
@@ -1011,11 +980,9 @@ describe("Setup Environment", () => {
         expect(mockItemDispatch.mock.calls[0][0].type).toBe(
           ApiActions.StartList
         );
-
-        done();
       });
 
-      it("renders, and then when there is an transaction bypasses calls to handleRestock", async (done) => {
+      it("renders, and then when there is an transaction bypasses calls to handleRestock", async () => {
         expect(ItemListRow).toHaveBeenCalledTimes(3);
         const { restock } = ItemListRow.mock.calls[0][0].listFunctions;
         expect(current.transaction).toBeTruthy();
@@ -1031,18 +998,16 @@ describe("Setup Environment", () => {
         expect(mockItemDispatch.mock.calls[0][0].type).toBe(
           ApiActions.StartList
         );
-        done();
       });
 
       it("should call calculateMaxHeight on render", () => {
         expect(calculateMaxHeight).toBeCalledTimes(1);
       });
 
-      it("a should call calculateMaxHeight again on a window resize", async (done) => {
+      it("a should call calculateMaxHeight again on a window resize", async () => {
         expect(calculateMaxHeight).toBeCalledTimes(1);
         fireEvent(window, new Event("resize"));
         await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -1078,7 +1043,7 @@ describe("Setup Environment", () => {
       expect(pagination.handlePagination).toBeInstanceOf(Function);
     });
 
-    it("renders, should call the error handler with the correct params", async (done) => {
+    it("renders, should call the error handler with the correct params", async () => {
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
       const call = ErrorHandler.mock.calls[0][0];
       propCount(call, 6);
@@ -1090,11 +1055,9 @@ describe("Setup Environment", () => {
       expect(call.children).toBeTruthy();
 
       expect(i18next.t("ItemList.ApiError")).toBe(Strings.ItemList.ApiError);
-
-      done();
     });
 
-    it("renders, clear error works as expected", async (done) => {
+    it("renders, clear error works as expected", async () => {
       expect(current.transaction).toBe(false);
 
       expect(ErrorHandler).toHaveBeenCalledTimes(1);
@@ -1104,19 +1067,16 @@ describe("Setup Environment", () => {
       act(() => clearError());
       await waitFor(() => expect(mockItemDispatch).toBeCalledTimes(1));
       expect(mockItemDispatch).toBeCalledWith({ type: ApiActions.ClearErrors });
-
-      done();
     });
 
     it("should call calculateMaxHeight on render", () => {
       expect(calculateMaxHeight).toBeCalledTimes(1);
     });
 
-    it("should call calculateMaxHeight again on a window resize", async (done) => {
+    it("should call calculateMaxHeight again on a window resize", async () => {
       expect(calculateMaxHeight).toBeCalledTimes(1);
       fireEvent(window, new Event("resize"));
       await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-      done();
     });
 
     it("should match the snapshot on file (styles)", () => {

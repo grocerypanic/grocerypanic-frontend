@@ -68,18 +68,16 @@ describe("Check the correct props are passed to ", () => {
       checkHeader();
     });
 
-    it("should render slide 1 as expected", async (done) => {
+    it("should render slide 1 as expected", async () => {
       expect(utils.getByText(Strings.SplashPage.Slide1.header)).toBeTruthy();
       expect(utils.getByText(Strings.SplashPage.Slide1.text1)).toBeTruthy();
       expect(utils.getByAltText(Strings.SplashPage.Slide1.alt)).toBeTruthy();
-      done();
     });
 
-    it("should render slide 2 as expected", async (done) => {
+    it("should render slide 2 as expected", async () => {
       expect(utils.getByText(Strings.SplashPage.Slide2.header)).toBeTruthy();
       expect(utils.getByText(Strings.SplashPage.Slide2.text1)).toBeTruthy();
       expect(utils.getByAltText(Strings.SplashPage.Slide2.alt)).toBeTruthy();
-      done();
     });
 
     it("should match the snapshot on file (styles)", () => {
@@ -97,18 +95,16 @@ describe("Check the correct props are passed to ", () => {
       checkHeader();
     });
 
-    it("should render slide 1 as expected", async (done) => {
+    it("should render slide 1 as expected", async () => {
       expect(utils.getByText(Strings.SplashPage.Slide1.header)).toBeTruthy();
       expect(utils.getByText(Strings.SplashPage.Slide1.text1)).toBeTruthy();
       expect(utils.getByAltText(Strings.SplashPage.Slide1.alt)).toBeTruthy();
-      done();
     });
 
-    it("should render slide 2 as expected", async (done) => {
+    it("should render slide 2 as expected", async () => {
       expect(utils.getByText(Strings.SplashPage.Slide2.header)).toBeTruthy();
       expect(utils.getByText(Strings.SplashPage.Slide2.text1)).toBeTruthy();
       expect(utils.getByAltText(Strings.SplashPage.Slide2.alt)).toBeTruthy();
-      done();
     });
 
     it("should match the snapshot on file (styles)", () => {

@@ -106,7 +106,7 @@ describe("with nav enabled", () => {
         expect(AddIcon.default).toHaveBeenCalledTimes(0);
       });
 
-      it("should render the title correctly in mobile mode", async (done) => {
+      it("should render the title correctly in mobile mode", async () => {
         window.innerWidth = 380;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -119,10 +119,9 @@ describe("with nav enabled", () => {
             utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
           ).toBe("header-hidden")
         );
-        done();
       });
 
-      it("should render the title correctly in desktop mode", async (done) => {
+      it("should render the title correctly in desktop mode", async () => {
         window.innerWidth = 680;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -135,7 +134,6 @@ describe("with nav enabled", () => {
             utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
           ).toBe("header-visible")
         );
-        done();
       });
 
       it("should call the spinner", () => {
@@ -150,7 +148,7 @@ describe("with nav enabled", () => {
         expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
       });
 
-      it("should render the nav buttons correctly in mobile mode", async (done) => {
+      it("should render the nav buttons correctly in mobile mode", async () => {
         window.innerWidth = 380;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -178,10 +176,9 @@ describe("with nav enabled", () => {
             utils.getByTestId("shelves-icon").parentElement.className
           ).toBe("nav-link action fit nav-item")
         );
-        done();
       });
 
-      it("should render the nav buttons correctly in desktop mode", async (done) => {
+      it("should render the nav buttons correctly in desktop mode", async () => {
         window.innerWidth = 680;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -209,61 +206,54 @@ describe("with nav enabled", () => {
             utils.getByTestId("shelves-icon").parentElement.className
           ).toBe("nav-link action nav-item")
         );
-        done();
       });
 
-      it("should not navigate to about, when title is clicked", async (done) => {
+      it("should not navigate to about, when title is clicked", async () => {
         const title = utils.getByText(Strings.MainTitle);
         fireEvent.click(title, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual("/some/unmatched/path")
         );
-        done();
       });
 
-      it("should not navigate to about, when info is clicked", async (done) => {
+      it("should not navigate to about, when info is clicked", async () => {
         const home = utils.getByTestId("info-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual("/some/unmatched/path")
         );
-        done();
       });
 
-      it("should not navigate to home, when home is clicked", async (done) => {
+      it("should not navigate to home, when home is clicked", async () => {
         const home = utils.getByTestId("home-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual("/some/unmatched/path")
         );
-        done();
       });
 
-      it("should not navigate to stores, when stores is clicked", async (done) => {
+      it("should not navigate to stores, when stores is clicked", async () => {
         const home = utils.getByTestId("stores-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual("/some/unmatched/path")
         );
-        done();
       });
 
-      it("should not navigate to shelves, when shelves is clicked", async (done) => {
+      it("should not navigate to shelves, when shelves is clicked", async () => {
         const home = utils.getByTestId("shelves-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual("/some/unmatched/path")
         );
-        done();
       });
 
-      it("should not navigate to items, when the list icon is clicked", async (done) => {
+      it("should not navigate to items, when the list icon is clicked", async () => {
         const inventory = utils.getByTestId("list-icon");
         fireEvent.click(inventory, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual("/some/unmatched/path")
         );
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -310,7 +300,7 @@ describe("with nav enabled", () => {
         expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
       });
 
-      it("should render the nav buttons correctly in mobile mode", async (done) => {
+      it("should render the nav buttons correctly in mobile mode", async () => {
         window.innerWidth = 380;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -338,10 +328,9 @@ describe("with nav enabled", () => {
             utils.getByTestId("shelves-icon").parentElement.className
           ).toBe("nav-link action fit nav-item")
         );
-        done();
       });
 
-      it("should render the nav buttons correctly in desktop mode", async (done) => {
+      it("should render the nav buttons correctly in desktop mode", async () => {
         window.innerWidth = 680;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -369,61 +358,54 @@ describe("with nav enabled", () => {
             utils.getByTestId("shelves-icon").parentElement.className
           ).toBe("nav-link action nav-item")
         );
-        done();
       });
 
-      it("should not navigate to about, when title is clicked", async (done) => {
+      it("should not navigate to about, when title is clicked", async () => {
         const title = utils.getByText(Strings.MainTitle);
         fireEvent.click(title, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual("/some/unmatched/path")
         );
-        done();
       });
 
-      it("should not navigate to about, when info is clicked", async (done) => {
+      it("should not navigate to about, when info is clicked", async () => {
         const home = utils.getByTestId("info-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual("/some/unmatched/path")
         );
-        done();
       });
 
-      it("should not navigate to home, when home is clicked", async (done) => {
+      it("should not navigate to home, when home is clicked", async () => {
         const home = utils.getByTestId("home-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual("/some/unmatched/path")
         );
-        done();
       });
 
-      it("should not navigate to stores, when stores is clicked", async (done) => {
+      it("should not navigate to stores, when stores is clicked", async () => {
         const home = utils.getByTestId("stores-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual("/some/unmatched/path")
         );
-        done();
       });
 
-      it("should not navigate to shelves, when shelves is clicked", async (done) => {
+      it("should not navigate to shelves, when shelves is clicked", async () => {
         const home = utils.getByTestId("shelves-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual("/some/unmatched/path")
         );
-        done();
       });
 
-      it("should not navigate to items, when the list icon is clicked", async (done) => {
+      it("should not navigate to items, when the list icon is clicked", async () => {
         const inventory = utils.getByTestId("list-icon");
         fireEvent.click(inventory, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual("/some/unmatched/path")
         );
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -460,7 +442,7 @@ describe("with nav enabled", () => {
         expect(AddIcon.default).toHaveBeenCalledTimes(1);
       });
 
-      it("should render the title correctly in mobile mode", async (done) => {
+      it("should render the title correctly in mobile mode", async () => {
         window.innerWidth = 380;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -473,10 +455,9 @@ describe("with nav enabled", () => {
             utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
           ).toBe("header-hidden")
         );
-        done();
       });
 
-      it("should render the title correctly in desktop mode", async (done) => {
+      it("should render the title correctly in desktop mode", async () => {
         window.innerWidth = 680;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -489,7 +470,6 @@ describe("with nav enabled", () => {
             utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
           ).toBe("header-visible")
         );
-        done();
       });
 
       it("should not call the spinner", () => {
@@ -504,7 +484,7 @@ describe("with nav enabled", () => {
         expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
       });
 
-      it("should render the nav buttons correctly in mobile mode", async (done) => {
+      it("should render the nav buttons correctly in mobile mode", async () => {
         window.innerWidth = 380;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -532,10 +512,9 @@ describe("with nav enabled", () => {
             utils.getByTestId("shelves-icon").parentElement.className
           ).toBe("nav-link action fit nav-item")
         );
-        done();
       });
 
-      it("should render the nav buttons correctly in desktop mode", async (done) => {
+      it("should render the nav buttons correctly in desktop mode", async () => {
         window.innerWidth = 680;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -563,71 +542,63 @@ describe("with nav enabled", () => {
             utils.getByTestId("shelves-icon").parentElement.className
           ).toBe("nav-link action nav-item")
         );
-        done();
       });
 
-      it("should navigate to about, when title is clicked", async (done) => {
+      it("should navigate to about, when title is clicked", async () => {
         const title = utils.getByText(Strings.MainTitle);
         fireEvent.click(title, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual(Routes.about)
         );
-        done();
       });
 
-      it("should navigate to about, when info is clicked", async (done) => {
+      it("should navigate to about, when info is clicked", async () => {
         const info = utils.getByTestId("info-icon");
         fireEvent.click(info, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual(Routes.about)
         );
-        done();
       });
 
-      it("should navigate to home, when home is clicked", async (done) => {
+      it("should navigate to home, when home is clicked", async () => {
         const home = utils.getByTestId("home-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual(Routes.menu)
         );
-        done();
       });
 
-      it("should navigate to stores, when stores is clicked", async (done) => {
+      it("should navigate to stores, when stores is clicked", async () => {
         const stores = utils.getByTestId("stores-icon");
         fireEvent.click(stores, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual(Routes.stores)
         );
-        done();
       });
 
-      it("should navigate to shelves, when shelves is clicked", async (done) => {
+      it("should navigate to shelves, when shelves is clicked", async () => {
         const shelves = utils.getByTestId("shelves-icon");
         fireEvent.click(shelves, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual(Routes.shelves)
         );
-        done();
       });
 
-      it("should navigate to items, when the list is clicked, and the current url has a search param", async (done) => {
+      it("should navigate to items, when the list is clicked, and the current url has a search param", async () => {
         history.location.search = "?color=blue";
         const inventory = utils.getByTestId("list-icon");
         fireEvent.click(inventory, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual(Routes.items)
         );
-        done();
       });
 
-      it("should not navigate to items, when the list is clicked, and the current url has no search params", async (done) => {
+      it("should not navigate to items, when the list is clicked, and the current url has no search params", async () => {
         history.location.pathname = Routes.items;
         const oldKey = history.location.key;
         const inventory = utils.getByTestId("list-icon");
         fireEvent.click(inventory, "click");
         await waitFor(() => expect(history.location.key).toEqual(oldKey));
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -659,7 +630,7 @@ describe("with nav enabled", () => {
         expect(AddIcon.default).toHaveBeenCalledTimes(1);
       });
 
-      it("should render the title correctly in mobile mode", async (done) => {
+      it("should render the title correctly in mobile mode", async () => {
         window.innerWidth = 380;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -672,10 +643,9 @@ describe("with nav enabled", () => {
             utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
           ).toBe("header-hidden")
         );
-        done();
       });
 
-      it("should render the title correctly in desktop mode", async (done) => {
+      it("should render the title correctly in desktop mode", async () => {
         window.innerWidth = 680;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -688,7 +658,6 @@ describe("with nav enabled", () => {
             utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
           ).toBe("header-visible")
         );
-        done();
       });
 
       it("should not call the spinner", () => {
@@ -703,7 +672,7 @@ describe("with nav enabled", () => {
         expect(KitchenIcon.default).toHaveBeenCalledTimes(1);
       });
 
-      it("should render the nav buttons correctly in mobile mode", async (done) => {
+      it("should render the nav buttons correctly in mobile mode", async () => {
         window.innerWidth = 380;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -731,10 +700,9 @@ describe("with nav enabled", () => {
             utils.getByTestId("shelves-icon").parentElement.className
           ).toBe("nav-link action fit nav-item")
         );
-        done();
       });
 
-      it("should render the nav buttons correctly in desktop mode", async (done) => {
+      it("should render the nav buttons correctly in desktop mode", async () => {
         window.innerWidth = 680;
         fireEvent(window, new Event("resize"));
         await waitFor(() =>
@@ -762,61 +730,54 @@ describe("with nav enabled", () => {
             utils.getByTestId("shelves-icon").parentElement.className
           ).toBe("nav-link action nav-item")
         );
-        done();
       });
 
-      it("should navigate to about, when title is clicked", async (done) => {
+      it("should navigate to about, when title is clicked", async () => {
         const title = utils.getByText(Strings.MainTitle);
         fireEvent.click(title, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual(Routes.about)
         );
-        done();
       });
 
-      it("should navigate to about, when info is clicked", async (done) => {
+      it("should navigate to about, when info is clicked", async () => {
         const info = utils.getByTestId("info-icon");
         fireEvent.click(info, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual(Routes.about)
         );
-        done();
       });
 
-      it("should navigate to home, when home is clicked", async (done) => {
+      it("should navigate to home, when home is clicked", async () => {
         const home = utils.getByTestId("home-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual(Routes.menu)
         );
-        done();
       });
 
-      it("should navigate to stores, when stores is clicked", async (done) => {
+      it("should navigate to stores, when stores is clicked", async () => {
         const home = utils.getByTestId("stores-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual(Routes.stores)
         );
-        done();
       });
 
-      it("should navigate to shelves, when shelves is clicked", async (done) => {
+      it("should navigate to shelves, when shelves is clicked", async () => {
         const home = utils.getByTestId("shelves-icon");
         fireEvent.click(home, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual(Routes.shelves)
         );
-        done();
       });
 
-      it("should navigate to items, when the list is clicked", async (done) => {
+      it("should navigate to items, when the list is clicked", async () => {
         const inventory = utils.getByTestId("list-icon");
         fireEvent.click(inventory, "click");
         await waitFor(() =>
           expect(history.location.pathname).toEqual(Routes.items)
         );
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -855,7 +816,7 @@ describe("with nav disabled", () => {
       expect(AddIcon.default).toHaveBeenCalledTimes(0);
     });
 
-    it("should render the title correctly in mobile mode", async (done) => {
+    it("should render the title correctly in mobile mode", async () => {
       window.innerWidth = 380;
       fireEvent(window, new Event("resize"));
       await waitFor(() =>
@@ -868,10 +829,9 @@ describe("with nav disabled", () => {
           utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
         ).toBe("header-hidden")
       );
-      done();
     });
 
-    it("should render the title correctly in desktop mode", async (done) => {
+    it("should render the title correctly in desktop mode", async () => {
       window.innerWidth = 680;
       fireEvent(window, new Event("resize"));
       await waitFor(() =>
@@ -884,7 +844,6 @@ describe("with nav disabled", () => {
           utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
         ).toBe("header-visible")
       );
-      done();
     });
 
     it("should not call the spinner", () => {
@@ -899,13 +858,12 @@ describe("with nav disabled", () => {
       expect(KitchenIcon.default).toHaveBeenCalledTimes(0);
     });
 
-    it("should not navigate to about, when title is clicked", async (done) => {
+    it("should not navigate to about, when title is clicked", async () => {
       const title = utils.getByText(Strings.MainTitle);
       fireEvent.click(title, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual("/some/unmatched/path")
       );
-      done();
     });
 
     it("should match the snapshot on file (styles)", () => {
@@ -935,7 +893,7 @@ describe("with nav disabled", () => {
       expect(AddIcon.default).toHaveBeenCalledTimes(0);
     });
 
-    it("should render the title correctly in mobile mode", async (done) => {
+    it("should render the title correctly in mobile mode", async () => {
       window.innerWidth = 380;
       fireEvent(window, new Event("resize"));
       await waitFor(() =>
@@ -948,10 +906,9 @@ describe("with nav disabled", () => {
           utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
         ).toBe("header-hidden")
       );
-      done();
     });
 
-    it("should render the title correctly in desktop mode", async (done) => {
+    it("should render the title correctly in desktop mode", async () => {
       window.innerWidth = 680;
       fireEvent(window, new Event("resize"));
       await waitFor(() =>
@@ -964,7 +921,6 @@ describe("with nav disabled", () => {
           utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
         ).toBe("header-visible")
       );
-      done();
     });
 
     it("should not call the spinner", () => {
@@ -979,13 +935,12 @@ describe("with nav disabled", () => {
       expect(KitchenIcon.default).toHaveBeenCalledTimes(0);
     });
 
-    it("should not navigate to about, when title is clicked", async (done) => {
+    it("should not navigate to about, when title is clicked", async () => {
       const title = utils.getByText(Strings.MainTitle);
       fireEvent.click(title, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual("/some/unmatched/path")
       );
-      done();
     });
 
     it("should match the snapshot on file (styles)", () => {
@@ -1023,13 +978,12 @@ describe("with signin enabled", () => {
       expect(utils.getByText(Strings.SplashPage.SignIn));
     });
 
-    it("should navigate to signin, when signin is clicked", async (done) => {
+    it("should navigate to signin, when signin is clicked", async () => {
       const signin = utils.getByText(Strings.SplashPage.SignIn);
       fireEvent.click(signin, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual(Routes.signin)
       );
-      done();
     });
 
     it("should not show the create button", () => {
@@ -1038,7 +992,7 @@ describe("with signin enabled", () => {
       expect(AddIcon.default).toHaveBeenCalledTimes(0);
     });
 
-    it("should render the title correctly in mobile mode", async (done) => {
+    it("should render the title correctly in mobile mode", async () => {
       window.innerWidth = 380;
       fireEvent(window, new Event("resize"));
       await waitFor(() =>
@@ -1051,10 +1005,9 @@ describe("with signin enabled", () => {
           utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
         ).toBe("header-hidden")
       );
-      done();
     });
 
-    it("should render the title correctly in desktop mode", async (done) => {
+    it("should render the title correctly in desktop mode", async () => {
       window.innerWidth = 680;
       fireEvent(window, new Event("resize"));
       await waitFor(() =>
@@ -1067,7 +1020,6 @@ describe("with signin enabled", () => {
           utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
         ).toBe("header-visible")
       );
-      done();
     });
 
     it("should not call the spinner", () => {
@@ -1082,13 +1034,12 @@ describe("with signin enabled", () => {
       expect(KitchenIcon.default).toHaveBeenCalledTimes(0);
     });
 
-    it("should not navigate to about, when title is clicked", async (done) => {
+    it("should not navigate to about, when title is clicked", async () => {
       const title = utils.getByText(Strings.MainTitle);
       fireEvent.click(title, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual("/some/unmatched/path")
       );
-      done();
     });
 
     it("should match the snapshot on file (styles)", () => {
@@ -1118,13 +1069,12 @@ describe("with signin enabled", () => {
       expect(utils.getByText(Strings.SplashPage.SignIn));
     });
 
-    it("should navigate to signin, when signin is clicked", async (done) => {
+    it("should navigate to signin, when signin is clicked", async () => {
       const signin = utils.getByText(Strings.SplashPage.SignIn);
       fireEvent.click(signin, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual(Routes.signin)
       );
-      done();
     });
 
     it("should not show the create button", () => {
@@ -1133,7 +1083,7 @@ describe("with signin enabled", () => {
       expect(AddIcon.default).toHaveBeenCalledTimes(0);
     });
 
-    it("should render the title correctly in mobile mode", async (done) => {
+    it("should render the title correctly in mobile mode", async () => {
       window.innerWidth = 380;
       fireEvent(window, new Event("resize"));
       await waitFor(() =>
@@ -1146,10 +1096,9 @@ describe("with signin enabled", () => {
           utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
         ).toBe("header-hidden")
       );
-      done();
     });
 
-    it("should render the title correctly in desktop mode", async (done) => {
+    it("should render the title correctly in desktop mode", async () => {
       window.innerWidth = 680;
       fireEvent(window, new Event("resize"));
       await waitFor(() =>
@@ -1162,7 +1111,6 @@ describe("with signin enabled", () => {
           utils.getByText(`${Strings.MainTitle}: ${mockTitle}`).className
         ).toBe("header-visible")
       );
-      done();
     });
 
     it("should not call the spinner", () => {
@@ -1177,13 +1125,12 @@ describe("with signin enabled", () => {
       expect(KitchenIcon.default).toHaveBeenCalledTimes(0);
     });
 
-    it("should not navigate to about, when title is clicked", async (done) => {
+    it("should not navigate to about, when title is clicked", async () => {
       const title = utils.getByText(Strings.MainTitle);
       fireEvent.click(title, "click");
       await waitFor(() =>
         expect(history.location.pathname).toEqual("/some/unmatched/path")
       );
-      done();
     });
 
     it("should match the snapshot on file (styles)", () => {

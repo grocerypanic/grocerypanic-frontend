@@ -40,7 +40,7 @@ describe("Check the correct props are passed to simple list", () => {
 
   afterEach(cleanup);
 
-  it("should render the details page correctly", async (done) => {
+  it("should render the details page correctly", async () => {
     await waitFor(() => expect(ItemDetailsCreateContainer).toBeCalledTimes(1));
     const props = ItemDetailsCreateContainer.mock.calls[0][0];
     propCount(props, 5);
@@ -50,11 +50,9 @@ describe("Check the correct props are passed to simple list", () => {
     expect(props.ApiObjectContext).toBe(ItemContext);
     expect(props.handleExpiredAuth).toBeInstanceOf(Function);
     expect(props.helpText).toBe(Strings.CreateItem.HelpText);
-
-    done();
   });
 
-  it("should handle an expired auth as expected", async (done) => {
+  it("should handle an expired auth as expected", async () => {
     await waitFor(() => expect(ItemDetailsCreateContainer).toBeCalledTimes(1));
     const props = ItemDetailsCreateContainer.mock.calls[0][0];
     const handleExpiredAuth = props.handleExpiredAuth;
@@ -66,6 +64,5 @@ describe("Check the correct props are passed to simple list", () => {
       payload: { username: "" },
       type: UserActions.AuthExpired,
     });
-    done();
   });
 });

@@ -95,7 +95,7 @@ describe("Check Routing", () => {
         setup.state.login = true;
         utils = renderHelper({ ...setup });
       });
-      it("should render menu on menu url", async (done) => {
+      it("should render menu on menu url", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(0));
@@ -107,7 +107,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.menu);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -119,7 +118,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should redirect to signin on root url (from menu page)", async (done) => {
+      it("should redirect to signin on root url (from menu page)", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
@@ -131,7 +130,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -147,7 +145,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should render the menu root page", async (done) => {
+      it("should render the menu root page", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(0));
@@ -159,7 +157,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         await waitFor(() => expect(window.location.pathname).toBe(Routes.menu));
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -170,7 +167,7 @@ describe("Check Routing", () => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
-      it("should redirect to signin on invalid url (from menu page)", async (done) => {
+      it("should redirect to signin on invalid url (from menu page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(1));
@@ -182,7 +179,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -198,7 +194,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should render stores on stores url, with login set to true", async (done) => {
+      it("should render stores on stores url, with login set to true", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
@@ -210,7 +206,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.stores);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -223,7 +218,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should redirect to signin on stores url (from stores page)", async (done) => {
+      it("should redirect to signin on stores url (from stores page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
@@ -235,7 +230,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -251,7 +245,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should render shelves on shelves url, with login set to true", async (done) => {
+      it("should render shelves on shelves url, with login set to true", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(1));
@@ -263,7 +257,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.shelves);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -276,7 +269,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should redirect to signin on shelves url (from shelves page)", async (done) => {
+      it("should redirect to signin on shelves url (from shelves page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(1));
@@ -288,7 +281,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -304,7 +296,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should render items on items url, with login set to true", async (done) => {
+      it("should render items on items url, with login set to true", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
@@ -316,7 +308,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.items);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -329,7 +320,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should redirect to signin on items url (from items page)", async (done) => {
+      it("should redirect to signin on items url (from items page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
@@ -341,7 +332,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -357,7 +347,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should render details on details url, with login set to true", async (done) => {
+      it("should render details on details url, with login set to true", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
@@ -369,7 +359,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.details);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -382,7 +371,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should redirect to signin on details url (from details page)", async (done) => {
+      it("should redirect to signin on details url (from details page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
@@ -394,7 +383,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -410,7 +398,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should render create on create url, with login set to true", async (done) => {
+      it("should render create on create url, with login set to true", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
@@ -422,7 +410,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.create);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -435,7 +422,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should redirect to signin on create url (from create page)", async (done) => {
+      it("should redirect to signin on create url (from create page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
@@ -447,7 +434,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -463,7 +449,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should render about on about url, with login set to true", async (done) => {
+      it("should render about on about url, with login set to true", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
         await waitFor(() => expect(About).toBeCalledTimes(1));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
@@ -475,7 +461,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.about);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -488,7 +473,7 @@ describe("Check Routing", () => {
         utils = renderHelper({ ...setup });
       });
 
-      it("should redirect to signin on about url (from about page)", async (done) => {
+      it("should redirect to signin on about url (from about page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(1));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
@@ -500,7 +485,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -515,7 +499,7 @@ describe("Check Routing", () => {
         setup.state.login = true;
         utils = renderHelper({ ...setup });
       });
-      it("should redirect to menu on splash url (from splash page)", async (done) => {
+      it("should redirect to menu on splash url (from splash page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
@@ -527,7 +511,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.menu);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();
@@ -538,7 +521,7 @@ describe("Check Routing", () => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
-      it("should render splash page on splash url", async (done) => {
+      it("should render splash page on splash url", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await waitFor(() => expect(About).toBeCalledTimes(0));
         await waitFor(() => expect(SignIn).toBeCalledTimes(0));
@@ -550,7 +533,6 @@ describe("Check Routing", () => {
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(1));
         expect(window.location.pathname).toBe(Routes.splash);
-        done();
       });
       it("should configure the header properly", () => {
         checkHeader();

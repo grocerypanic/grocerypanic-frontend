@@ -66,7 +66,7 @@ describe("Check asyncList handles filtering results correctly", () => {
     done();
   });
 
-  it("should call the API, and then dispatch correctly when asyncList is called, filter test 1", async (done) => {
+  it("should call the API, and then dispatch correctly when asyncList is called, filter test 1", async () => {
     const filter = new URLSearchParams(mockUrls[0]);
 
     action = {
@@ -102,10 +102,9 @@ describe("Check asyncList handles filtering results correctly", () => {
       },
       callback: mockCallBack,
     });
-    done();
   });
 
-  it("should call the API, and then dispatch correctly when asyncList is called, filter test 2", async (done) => {
+  it("should call the API, and then dispatch correctly when asyncList is called, filter test 2", async () => {
     const filter = new URLSearchParams(mockUrls[1]);
 
     action = {
@@ -141,10 +140,9 @@ describe("Check asyncList handles filtering results correctly", () => {
       },
       callback: mockCallBack,
     });
-    done();
   });
 
-  it("should call the API, and then dispatch correctly when asyncList is called, filter test 3", async (done) => {
+  it("should call the API, and then dispatch correctly when asyncList is called, filter test 3", async () => {
     const filter = new URLSearchParams(mockUrls[2]);
 
     action = {
@@ -184,10 +182,9 @@ describe("Check asyncList handles filtering results correctly", () => {
       },
       callback: mockCallBack,
     });
-    done();
   });
 
-  it("should call the API, and then dispatch correctly when asyncList is called, filter test 4 with page request", async (done) => {
+  it("should call the API, and then dispatch correctly when asyncList is called, filter test 4 with page request", async () => {
     const filter = new URLSearchParams(mockUrls[2]);
     action = {
       payload: { id: mockItem1.id }, // Support Transaction Lookups
@@ -231,6 +228,5 @@ describe("Check asyncList handles filtering results correctly", () => {
       },
       callback: mockCallBack,
     });
-    done();
   });
 });

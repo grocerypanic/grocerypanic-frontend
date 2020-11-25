@@ -22,7 +22,7 @@ describe("Check the correct props are passed to the menu", () => {
 
   afterEach(cleanup);
 
-  it("should render the menu page correctly", async (done) => {
+  it("should render the menu page correctly", async () => {
     await waitFor(() => expect(Menu).toBeCalledTimes(1));
     const props = Menu.mock.calls[0][0];
     propCount(props, 4);
@@ -33,6 +33,5 @@ describe("Check the correct props are passed to the menu", () => {
     expect(props.helpText).toBe(Strings.MainMenu.HelpText);
 
     expect(mockDispatch).toBeCalledTimes(0);
-    done();
   });
 });

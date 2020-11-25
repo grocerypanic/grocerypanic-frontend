@@ -48,7 +48,7 @@ describe("Check Logging Functionality", () => {
     expect(outputData.length).toBe(0);
   });
 
-  it("the logs contain the expected output", async (done) => {
+  it("the logs contain the expected output", async () => {
     process.env.NODE_ENV = "not production";
     delete process.env.JEST_WORKER_ID;
     const state = {};
@@ -74,6 +74,5 @@ describe("Check Logging Functionality", () => {
       ["%c   State:", "color: green; font-weight: bold;", state],
       ["%c   Action:", "color: green; font-weight: bold;", action],
     ]);
-    done();
   });
 });

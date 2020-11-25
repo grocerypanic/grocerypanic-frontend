@@ -135,7 +135,7 @@ describe("Setup Environment, Render Tests", () => {
         );
       });
 
-      it("renders, form inputs as expected, after resolution change", async (done) => {
+      it("renders, form inputs as expected, after resolution change", async () => {
         await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
         const nameInput = FormInput.mock.calls[3][0];
         const qtyInput = FormInput.mock.calls[4][0];
@@ -187,11 +187,9 @@ describe("Setup Environment, Render Tests", () => {
         expect(priceInput.min).toBe(Constants.minimumPrice);
         expect(priceInput.max).toBe(Constants.maximumPrice);
         expect(priceInput.step).toBe("0.01");
-
-        done();
       });
 
-      it("renders, form inputs as expected", async (done) => {
+      it("renders, form inputs as expected", async () => {
         await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
 
         window.innerWidth = 300;
@@ -249,11 +247,9 @@ describe("Setup Environment, Render Tests", () => {
         expect(priceInput.min).toBe(Constants.minimumPrice);
         expect(priceInput.max).toBe(Constants.maximumPrice);
         expect(priceInput.step).toBe("0.01");
-
-        done();
       });
 
-      it("renders, dropdowns as expected", async (done) => {
+      it("renders, dropdowns as expected", async () => {
         await waitFor(() => expect(DropDown).toHaveBeenCalledTimes(4));
         const shelfLife = DropDown.mock.calls[2][0];
         const shelf = DropDown.mock.calls[3][0];
@@ -282,11 +278,9 @@ describe("Setup Environment, Render Tests", () => {
         expect(shelf.labelColumn).toBe("");
         expect(shelf.itemColumn).toBe("col-12");
         expect(shelf.options).toStrictEqual([mockShelf1, mockShelf2]);
-
-        done();
       });
 
-      it("renders, multidropdown as expected", async (done) => {
+      it("renders, multidropdown as expected", async () => {
         await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
 
         const preferredStores = MultiDropDown.mock.calls[1][0];
@@ -303,10 +297,9 @@ describe("Setup Environment, Render Tests", () => {
         expect(preferredStores.labelColumn).toBe("");
         expect(preferredStores.itemColumn).toBe("col-12");
         expect(preferredStores.options).toStrictEqual([mockStore1, mockStore2]);
-        done();
       });
 
-      it("calculates the options for shelf_life correctly", async (done) => {
+      it("calculates the options for shelf_life correctly", async () => {
         await waitFor(() => expect(DropDown).toHaveBeenCalledTimes(4));
         let shelfLife = DropDown.mock.calls[2][0];
 
@@ -314,7 +307,6 @@ describe("Setup Environment, Render Tests", () => {
           ...ShelfLifeConstants,
           { id: mockItem.shelf_life, name: `${mockItem.shelf_life} Days` },
         ]);
-        done();
       });
     });
 
@@ -326,13 +318,12 @@ describe("Setup Environment, Render Tests", () => {
         utils = render(<ItemDetailsForm {...updatedCurrent} />);
       });
 
-      it("calculates the options for shelf_life correctly", async (done) => {
+      it("calculates the options for shelf_life correctly", async () => {
         await waitFor(() => expect(DropDown).toHaveBeenCalledTimes(4));
         let shelfLife = DropDown.mock.calls[2][0];
 
         // No additional shelf_lifes since this is a standard value
         expect(shelfLife.options).toStrictEqual([...ShelfLifeConstants]);
-        done();
       });
     });
   });
@@ -345,10 +336,9 @@ describe("Setup Environment, Render Tests", () => {
       utils = render(<ItemDetailsForm {...updatedProps} />);
     });
 
-    it("does not render the delete button", async (done) => {
+    it("does not render the delete button", async () => {
       await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
       expect(utils.queryByTestId("delete")).toBeFalsy();
-      done();
     });
   });
 });
@@ -370,7 +360,7 @@ describe("Setup Environment For Action Tests", () => {
         jest.clearAllMocks();
         utils = render(<ItemDetailsForm {...current} />);
       });
-      it("saves the default item as expected", async (done) => {
+      it("saves the default item as expected", async () => {
         await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
         Alert.mockClear();
         const button = utils.getByTestId("submit");
@@ -390,10 +380,9 @@ describe("Setup Environment For Action Tests", () => {
           message: Strings.ItemDetails.SaveAction,
         });
         expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
-        done();
       });
 
-      it("saves a modified name as expected", async (done) => {
+      it("saves a modified name as expected", async () => {
         const modified_value = "Real Cheese";
 
         await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
@@ -418,10 +407,9 @@ describe("Setup Environment For Action Tests", () => {
           message: Strings.ItemDetails.SaveAction,
         });
         expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
-        done();
       });
 
-      it("saves a modified quantity as expected", async (done) => {
+      it("saves a modified quantity as expected", async () => {
         const modified_value = 10;
 
         await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
@@ -446,10 +434,9 @@ describe("Setup Environment For Action Tests", () => {
           message: Strings.ItemDetails.SaveAction,
         });
         expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
-        done();
       });
 
-      it("saves a modified price as expected", async (done) => {
+      it("saves a modified price as expected", async () => {
         const modified_value = "26.00";
 
         await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
@@ -474,10 +461,9 @@ describe("Setup Environment For Action Tests", () => {
           message: Strings.ItemDetails.SaveAction,
         });
         expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
-        done();
       });
 
-      it("saves a modified shelflife as expected", async (done) => {
+      it("saves a modified shelflife as expected", async () => {
         const modified_value = "3 Years";
         const end_value = 365 * 3;
 
@@ -503,10 +489,9 @@ describe("Setup Environment For Action Tests", () => {
           message: Strings.ItemDetails.SaveAction,
         });
         expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
-        done();
       });
 
-      it("saves a modified shelf as expected", async (done) => {
+      it("saves a modified shelf as expected", async () => {
         const modified_value = mockShelf2;
 
         await waitFor(() => expect(DropDown).toHaveBeenCalledTimes(4));
@@ -531,10 +516,9 @@ describe("Setup Environment For Action Tests", () => {
           message: Strings.ItemDetails.SaveAction,
         });
         expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
-        done();
       });
 
-      it("saves a modified preferred store as expected", async (done) => {
+      it("saves a modified preferred store as expected", async () => {
         const modified_value = [mockStore1, mockStore2];
 
         await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
@@ -559,10 +543,9 @@ describe("Setup Environment For Action Tests", () => {
           message: Strings.ItemDetails.SaveAction,
         });
         expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
-        done();
       });
 
-      it("handles delete as expected", async (done) => {
+      it("handles delete as expected", async () => {
         await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
         Alert.mockClear();
         const button = utils.getByTestId("delete");
@@ -572,7 +555,6 @@ describe("Setup Environment For Action Tests", () => {
         expect(Alert.mock.calls[0][0]).toStrictEqual({
           message: Strings.ItemDetails.DeleteAction,
         });
-        done();
       });
     });
 
@@ -583,7 +565,7 @@ describe("Setup Environment For Action Tests", () => {
       });
       afterEach(cleanup);
 
-      it("does not save an invalid shelflife, will revert to the original value", async (done) => {
+      it("does not save an invalid shelflife, will revert to the original value", async () => {
         const modified_value = "Not A Valid ShelfLife";
 
         await waitFor(() => expect(DropDown).toHaveBeenCalledTimes(4));
@@ -608,11 +590,9 @@ describe("Setup Environment For Action Tests", () => {
           message: Strings.ItemDetails.SaveAction,
         });
         expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
-        done();
-        done();
       });
 
-      it("renders an error if the preferred_store is not selected", async (done) => {
+      it("renders an error if the preferred_store is not selected", async () => {
         const modified_value = [];
 
         await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
@@ -630,7 +610,6 @@ describe("Setup Environment For Action Tests", () => {
           expect(utils.getByText(current.title)).toBeTruthy()
         );
         expect(mockHandleSave).toBeCalledTimes(0);
-        done();
       });
     });
 
@@ -641,7 +620,7 @@ describe("Setup Environment For Action Tests", () => {
         utils = render(<ItemDetailsForm {...current} />);
       });
 
-      it("renders an error message, and then hides it", async (done) => {
+      it("renders an error message, and then hides it", async () => {
         await waitFor(() => expect(mockSetDuplicate).toBeCalledTimes(1));
 
         await waitFor(() =>
@@ -655,8 +634,6 @@ describe("Setup Environment For Action Tests", () => {
 
         expect(mockSetDuplicate).toBeCalledTimes(1);
         expect(mockSetDuplicate).toBeCalledWith(false);
-
-        done();
       });
     });
   });
@@ -669,24 +646,22 @@ describe("Setup Environment For Action Tests", () => {
     });
     afterEach(cleanup);
 
-    it("handles delete as expected, by doing nothing", async (done) => {
+    it("handles delete as expected, by doing nothing", async () => {
       await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
       Alert.mockClear();
       const button = utils.getByTestId("delete");
       fireEvent.click(button, "click");
       await waitFor(() => expect(mockHandleDelete).toBeCalledTimes(0));
       await waitFor(() => expect(Alert).toBeCalledTimes(0));
-      done();
     });
 
-    it("handles save as expected, by doing nothing", async (done) => {
+    it("handles save as expected, by doing nothing", async () => {
       await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
       Alert.mockClear();
       const button = utils.getByTestId("submit");
       fireEvent.click(button, "click");
       await waitFor(() => expect(mockHandleSave).toBeCalledTimes(0));
       await waitFor(() => expect(Alert).toBeCalledTimes(0));
-      done();
     });
   });
 });

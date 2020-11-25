@@ -157,7 +157,7 @@ describe("Setup Environment", () => {
       });
     });
 
-    it("renders, bypasses ErrorHandler1 as expected", async (done) => {
+    it("renders, bypasses ErrorHandler1 as expected", async () => {
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[2][0];
       propCount(call, 6);
@@ -173,19 +173,16 @@ describe("Setup Environment", () => {
       expect(i18Next.t("ItemDetails.ApiCommunicationError")).toBe(
         Strings.ItemDetails.ApiCommunicationError
       );
-
-      done();
     });
 
-    it("renders, bypasses HoldingPattern as expected", async (done) => {
+    it("renders, bypasses HoldingPattern as expected", async () => {
       await waitFor(() => expect(HoldingPattern).toHaveBeenCalledTimes(3));
       const call = HoldingPattern.mock.calls[0][0];
       propCount(call, 2);
       expect(call.condition).toBe(true);
-      done();
     });
 
-    it("renders, bypasses ErrorHandler2 as expected", async (done) => {
+    it("renders, bypasses ErrorHandler2 as expected", async () => {
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[5][0];
       propCount(call, 6);
@@ -201,18 +198,15 @@ describe("Setup Environment", () => {
       expect(i18Next.t("ItemDetails.NeedShelvesAndStores")).toBe(
         Strings.ItemDetails.NeedShelvesAndStores
       );
-
-      done();
     });
 
-    it("renders, the ErrorHandler2 clearErrors function is a no op", async (done) => {
+    it("renders, the ErrorHandler2 clearErrors function is a no op", async () => {
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[5][0];
       call.clearError();
-      done();
     });
 
-    it("renders, calls item auth failure as expected", async (done) => {
+    it("renders, calls item auth failure as expected", async () => {
       await waitFor(() => expect(ItemDetailsForm).toHaveBeenCalledTimes(3));
       const handleSave = ItemDetailsForm.mock.calls[2][0].handleSave;
       expect(handleSave).toBeInstanceOf(Function);
@@ -227,11 +221,9 @@ describe("Setup Environment", () => {
 
       act(() => itemDispatch({ type: ApiActions.FailureAuth }));
       await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
-
-      done();
     });
 
-    it("handles a duplicate object error correctly", async (done) => {
+    it("handles a duplicate object error correctly", async () => {
       expect(ItemDetailsForm).toHaveBeenCalledTimes(3);
 
       const handleSave = ItemDetailsForm.mock.calls[2][0].handleSave;
@@ -251,11 +243,9 @@ describe("Setup Environment", () => {
 
       const call1 = ItemDetailsForm.mock.calls[6][0];
       expect(call1.duplicate).toBe(true);
-
-      done();
     });
 
-    it("renders, calls shelves.StartList on first render", async (done) => {
+    it("renders, calls shelves.StartList on first render", async () => {
       await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
       const call = mockShelfDispatch.mock.calls[0][0];
       propCount(call, 5);
@@ -264,21 +254,18 @@ describe("Setup Environment", () => {
       expect(call.dispatch).toBeInstanceOf(Function);
       expect(call.callback).toBeInstanceOf(Function);
       expect(call.fetchAll).toBe(1);
-      done();
     });
 
-    it("renders, calls shelves auth failure as expected", async (done) => {
+    it("renders, calls shelves auth failure as expected", async () => {
       await waitFor(() => expect(mockShelfDispatch).toHaveBeenCalledTimes(1));
       const shelfDispatch = mockShelfDispatch.mock.calls[0][0].dispatch;
 
       expect(mockHandleExpiredAuth).toBeCalledTimes(0);
       act(() => shelfDispatch({ type: ApiActions.FailureAuth }));
       await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
-
-      done();
     });
 
-    it("renders, calls stores.StartList on first render", async (done) => {
+    it("renders, calls stores.StartList on first render", async () => {
       await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
       const call = mockStoreDispatch.mock.calls[0][0];
       propCount(call, 5);
@@ -287,21 +274,18 @@ describe("Setup Environment", () => {
       expect(call.dispatch).toBeInstanceOf(Function);
       expect(call.callback).toBeInstanceOf(Function);
       expect(call.fetchAll).toBe(1);
-      done();
     });
 
-    it("renders, calls stores auth failure as expected", async (done) => {
+    it("renders, calls stores auth failure as expected", async () => {
       await waitFor(() => expect(mockStoreDispatch).toHaveBeenCalledTimes(1));
       const storeDispatch = mockStoreDispatch.mock.calls[0][0].dispatch;
 
       expect(mockHandleExpiredAuth).toBeCalledTimes(0);
       act(() => storeDispatch({ type: ApiActions.FailureAuth }));
       await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
-
-      done();
     });
 
-    it("renders ItemDetails with correct props", async (done) => {
+    it("renders ItemDetails with correct props", async () => {
       await waitFor(() => expect(ItemDetailsForm).toHaveBeenCalledTimes(3));
       const call = ItemDetailsForm.mock.calls[1][0];
       propCount(call, 10);
@@ -315,10 +299,9 @@ describe("Setup Environment", () => {
       expect(call.handleSave).toBeInstanceOf(Function);
       expect(call.setDuplicate).toBeInstanceOf(Function);
       expect(call.duplicate).toBe(false);
-      done();
     });
 
-    it("handles a call to handleSave as expected", async (done) => {
+    it("handles a call to handleSave as expected", async () => {
       await waitFor(() => expect(ItemDetailsForm).toHaveBeenCalledTimes(3));
 
       const mockObject = { id: 99, name: "New Item" };
@@ -339,11 +322,9 @@ describe("Setup Environment", () => {
       expect(mockAnalyticsContext.event).toBeCalledWith(
         AnalyticsActions.ItemCreated
       );
-
-      done();
     });
 
-    it("handles a successful save as expected", async (done) => {
+    it("handles a successful save as expected", async () => {
       await waitFor(() => expect(ItemDetailsForm).toHaveBeenCalledTimes(3));
 
       const mockObject = { id: 99 };
@@ -358,8 +339,6 @@ describe("Setup Environment", () => {
       // After save goes back to the previous page
       act(() => dispatch({ type: ApiActions.SuccessAdd }));
       await waitFor(() => expect(mockGoBack).toBeCalledTimes(1));
-
-      done();
     });
   });
 
@@ -403,40 +382,36 @@ describe("Setup Environment", () => {
         </Router>
       );
 
-    it("should render false on empty shelves and empty stores", async (done) => {
+    it("should render false on empty shelves and empty stores", async () => {
       renderHelper(testStore, testShelf);
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[5][0];
       expect(call.condition).toBe(false);
-      done();
     });
 
-    it("should render false on some shelves and empty stores", async (done) => {
+    it("should render false on some shelves and empty stores", async () => {
       testShelf.apiObject.inventory = [mockShelf];
       renderHelper(testStore, testShelf);
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[5][0];
       expect(call.condition).toBe(false);
-      done();
     });
 
-    it("should render false on empty shelves and some stores", async (done) => {
+    it("should render false on empty shelves and some stores", async () => {
       testStore.apiObject.inventory = [mockStore];
       renderHelper(testStore, testShelf);
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[5][0];
       expect(call.condition).toBe(false);
-      done();
     });
 
-    it("should render true on empty shelves and empty stores", async (done) => {
+    it("should render true on empty shelves and empty stores", async () => {
       testStore.apiObject.inventory = [mockStore];
       testShelf.apiObject.inventory = [mockShelf];
       renderHelper(testStore, testShelf);
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
       const call = ErrorHandler.mock.calls[5][0];
       expect(call.condition).toBe(false);
-      done();
     });
   });
 
@@ -516,7 +491,7 @@ describe("Setup Environment", () => {
         );
       });
 
-      it("renders, clear error works as expected", async (done) => {
+      it("renders, clear error works as expected", async () => {
         expect(ErrorHandler).toHaveBeenCalledTimes(6); // Three rerenders for API data
         const clearError = ErrorHandler.mock.calls[0][0].clearError;
         jest.clearAllMocks();
@@ -526,8 +501,6 @@ describe("Setup Environment", () => {
         expect(mockStoreDispatch).toBeCalledWith({
           type: ApiActions.ClearErrors,
         });
-
-        done();
       });
     });
 
@@ -573,7 +546,7 @@ describe("Setup Environment", () => {
         );
       });
 
-      it("renders, clear error works as expected", async (done) => {
+      it("renders, clear error works as expected", async () => {
         expect(ErrorHandler).toHaveBeenCalledTimes(6); // Three rerenders for API data
         const clearError = ErrorHandler.mock.calls[0][0].clearError;
         jest.clearAllMocks();
@@ -583,8 +556,6 @@ describe("Setup Environment", () => {
         expect(mockShelfDispatch).toBeCalledWith({
           type: ApiActions.ClearErrors,
         });
-
-        done();
       });
     });
 
@@ -635,7 +606,7 @@ describe("Setup Environment", () => {
         );
       });
 
-      it("renders, clear error works as expected", async (done) => {
+      it("renders, clear error works as expected", async () => {
         expect(ErrorHandler).toHaveBeenCalledTimes(6); // Three rerenders for API data
         const clearError = ErrorHandler.mock.calls[0][0].clearError;
         jest.clearAllMocks();
@@ -645,8 +616,6 @@ describe("Setup Environment", () => {
         expect(mockItemDispatch).toBeCalledWith({
           type: ApiActions.ClearErrors,
         });
-
-        done();
       });
     });
   });

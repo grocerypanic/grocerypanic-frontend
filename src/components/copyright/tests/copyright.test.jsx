@@ -52,7 +52,7 @@ describe("Setup Environment", () => {
     expect(node.getAttribute("href")).toEqual(External.credit);
   });
 
-  it("should handle a click on the link correctly", async (done) => {
+  it("should handle a click on the link correctly", (done) => {
     const node = utils.getByTestId("CopyRightLink");
     fireEvent.click(node, "click");
     expect(mockAnalyticsContext.event).toBeCalledWith(

@@ -77,11 +77,10 @@ describe("Setup Environment", () => {
       expect(calculateMaxHeight).toBeCalledTimes(1);
     });
 
-    it("renders, should call calculateMaxHeight on a resize event", async (done) => {
+    it("renders, should call calculateMaxHeight on a resize event", async () => {
       expect(calculateMaxHeight).toBeCalledTimes(1);
       fireEvent(window, new Event("resize"));
       await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-      done();
     });
 
     it("should match the snapshot on file (styles)", () => {

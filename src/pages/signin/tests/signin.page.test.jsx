@@ -59,14 +59,13 @@ describe("Setup Environment", () => {
 
   afterEach(cleanup);
 
-  it("should render all the subcomponents as expected", async (done) => {
+  it("should render all the subcomponents as expected", async () => {
     await waitFor(() => expect(Icons.default).toBeCalledTimes(1));
     expect(SocialLoginController).toBeCalledTimes(2);
     expect(Copyright).toBeCalledTimes(1);
-    done();
   });
 
-  it("should render the google social login component with correct props", async (done) => {
+  it("should render the google social login component with correct props", async () => {
     await waitFor(() => expect(SocialLoginController).toBeCalledTimes(2));
 
     // Google Button
@@ -78,10 +77,9 @@ describe("Setup Environment", () => {
     expect(call1.provider).toBe(Providers.google);
     expect(call1.onLoginSuccess).toBe(handleSocialLogin);
     expect(call1.onLoginFailure).toBe(handleSocialLoginError);
-    done();
   });
 
-  it("should render the facebook social login component with correct props", async (done) => {
+  it("should render the facebook social login component with correct props", async () => {
     await waitFor(() => expect(SocialLoginController).toBeCalledTimes(2));
 
     // Facebook Button
@@ -93,7 +91,6 @@ describe("Setup Environment", () => {
     expect(call2.provider).toBe(Providers.facebook);
     expect(call2.onLoginSuccess).toBe(handleSocialLogin);
     expect(call2.onLoginFailure).toBe(handleSocialLoginError);
-    done();
   });
 
   it("should match the snapshot on file (styles)", () => {

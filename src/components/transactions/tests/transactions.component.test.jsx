@@ -126,7 +126,7 @@ describe("Setup Environment", () => {
         expect(utils.getByTestId("avgMonth").textContent).toBe("6.8");
       });
 
-      it("should call the holding pattern with expected arguments", async (done) => {
+      it("should call the holding pattern with expected arguments", async () => {
         await waitFor(() => expect(HoldingPattern).toBeCalledTimes(1));
         const call = HoldingPattern.mock.calls[0][0];
         propCount(call, 7);
@@ -137,12 +137,10 @@ describe("Setup Environment", () => {
         expect(call.scale).toBe(1);
         expect(call.divHeight).toBe(20);
         expect(call.children).toBeTruthy();
-        done();
       });
 
-      it("should render the graph", async (done) => {
+      it("should render the graph", async () => {
         await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -157,7 +155,7 @@ describe("Setup Environment", () => {
         utils = renderHelper(current);
       });
 
-      it("should call the holding pattern with expected arguments", async (done) => {
+      it("should call the holding pattern with expected arguments", async () => {
         await waitFor(() => expect(HoldingPattern).toBeCalledTimes(1));
         const call = HoldingPattern.mock.calls[0][0];
         propCount(call, 7);
@@ -168,7 +166,6 @@ describe("Setup Environment", () => {
         expect(call.scale).toBe(1);
         expect(call.divHeight).toBe(20);
         expect(call.children).toBeTruthy();
-        done();
       });
 
       it("should display the insufficient data warning", () => {
@@ -194,7 +191,7 @@ describe("Setup Environment", () => {
         expect(utils.getByText(Strings.ItemStats.RecommendExpiredItems));
       });
 
-      it("should call the holding pattern with expected arguments", async (done) => {
+      it("should call the holding pattern with expected arguments", async () => {
         await waitFor(() => expect(HoldingPattern).toBeCalledTimes(1));
         const call = HoldingPattern.mock.calls[0][0];
         propCount(call, 7);
@@ -205,12 +202,10 @@ describe("Setup Environment", () => {
         expect(call.scale).toBe(1);
         expect(call.divHeight).toBe(20);
         expect(call.children).toBeTruthy();
-        done();
       });
 
-      it("should render the graph", async (done) => {
+      it("should render the graph", async () => {
         await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -231,7 +226,7 @@ describe("Setup Environment", () => {
         ).toBeTruthy();
       });
 
-      it("should call the holding pattern with expected arguments", async (done) => {
+      it("should call the holding pattern with expected arguments", async () => {
         await waitFor(() => expect(HoldingPattern).toBeCalledTimes(1));
         const call = HoldingPattern.mock.calls[0][0];
         propCount(call, 7);
@@ -242,12 +237,10 @@ describe("Setup Environment", () => {
         expect(call.scale).toBe(1);
         expect(call.divHeight).toBe(20);
         expect(call.children).toBeTruthy();
-        done();
       });
 
-      it("should render the graph", async (done) => {
+      it("should render the graph", async () => {
         await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -272,7 +265,7 @@ describe("Setup Environment", () => {
         ).toBeFalsy();
       });
 
-      it("should call the holding pattern with expected arguments", async (done) => {
+      it("should call the holding pattern with expected arguments", async () => {
         await waitFor(() => expect(HoldingPattern).toBeCalledTimes(1));
         const call = HoldingPattern.mock.calls[0][0];
         propCount(call, 7);
@@ -283,12 +276,10 @@ describe("Setup Environment", () => {
         expect(call.scale).toBe(1);
         expect(call.divHeight).toBe(20);
         expect(call.children).toBeTruthy();
-        done();
       });
 
-      it("should render the graph", async (done) => {
+      it("should render the graph", async () => {
         await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -309,7 +300,7 @@ describe("Setup Environment", () => {
         utils = renderHelper(current);
       });
 
-      it("should call the holding pattern with expected arguments", async (done) => {
+      it("should call the holding pattern with expected arguments", async () => {
         await waitFor(() => expect(HoldingPattern).toBeCalledTimes(1));
         const call = HoldingPattern.mock.calls[0][0];
         propCount(call, 7);
@@ -320,12 +311,10 @@ describe("Setup Environment", () => {
         expect(call.scale).toBe(graph.holdingPatternScale);
         expect(call.divHeight).toBe(graph.holdingPatternDivHeight);
         expect(call.children).toBeTruthy();
-        done();
       });
 
-      it("should not render the graph", async (done) => {
+      it("should not render the graph", async () => {
         expect(global.Chart).toBeCalledTimes(0);
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {

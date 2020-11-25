@@ -15,7 +15,7 @@ describe("test the RefreshCSRF method", () => {
     jest.clearAllMocks();
   });
 
-  it("should call the refresh end point as expected and store the token", async (done) => {
+  it("should call the refresh end point as expected and store the token", async () => {
     Backend.mockImplementation(() => [
       {
         token: mockToken,
@@ -32,10 +32,9 @@ describe("test the RefreshCSRF method", () => {
       Constants.csrfLocalStorage,
       mockToken
     );
-    done();
   });
 
-  it("should call the refresh end point as expected, if the call fails it should not store the token", async (done) => {
+  it("should call the refresh end point as expected, if the call fails it should not store the token", async () => {
     Backend.mockImplementation(() => [
       {
         token: mockToken,
@@ -48,6 +47,5 @@ describe("test the RefreshCSRF method", () => {
     await waitFor(() => expect(Backend).toBeCalledTimes(1));
     expect(Backend).toBeCalledWith("GET", Paths.refreshCSRF);
     expect(mockLocalStorage).toBeCalledTimes(0);
-    done();
   });
 });

@@ -36,7 +36,7 @@ describe("Check the correct props are passed to simple list", () => {
 
   afterEach(cleanup);
 
-  it("should render the root page correctly", async (done) => {
+  it("should render the root page correctly", async () => {
     await waitFor(() => expect(ItemList).toBeCalledTimes(1));
     const props = ItemList.mock.calls[0][0];
     propCount(props, 6);
@@ -49,10 +49,9 @@ describe("Check the correct props are passed to simple list", () => {
     expect(props.placeHolderMessage).toBe(
       Strings.InventoryPage.PlaceHolderMessage
     );
-    done();
   });
 
-  it("should handle an expired auth as expected", async (done) => {
+  it("should handle an expired auth as expected", async () => {
     await waitFor(() => expect(ItemList).toBeCalledTimes(1));
     const props = ItemList.mock.calls[0][0];
     const handleExpiredAuth = props.handleExpiredAuth;
@@ -64,6 +63,5 @@ describe("Check the correct props are passed to simple list", () => {
       payload: { username: "" },
       type: UserActions.AuthExpired,
     });
-    done();
   });
 });

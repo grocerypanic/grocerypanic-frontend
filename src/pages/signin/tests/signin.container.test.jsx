@@ -83,14 +83,13 @@ describe("Setup Environment", () => {
       checkHeader();
     });
 
-    it("should render with the handler functions", async (done) => {
+    it("should render with the handler functions", async () => {
       await waitFor(() => expect(SignIn).toBeCalledTimes(1));
       const call1 = SignIn.mock.calls[0][0];
       expect(call1.handleSocialLogin).toBeInstanceOf(Function);
-      done();
     });
 
-    it("should export a function handleSocialLogin, that works as expected", async (done) => {
+    it("should export a function handleSocialLogin, that works as expected", async () => {
       await waitFor(() => expect(SignIn).toBeCalledTimes(1));
       await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(0));
       const call1 = SignIn.mock.calls[0][0];
@@ -109,11 +108,9 @@ describe("Setup Environment", () => {
       expect(mockAnalyticsContext.event).toBeCalledWith(
         AnalyticsActions.LoginSuccess
       );
-
-      done();
     });
 
-    it("should export a function handleSocialLoginError, that works as expected", async (done) => {
+    it("should export a function handleSocialLoginError, that works as expected", async () => {
       await waitFor(() => expect(SignIn).toBeCalledTimes(1));
       await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(0));
       const call1 = SignIn.mock.calls[0][0];
@@ -126,10 +123,9 @@ describe("Setup Environment", () => {
 
       const errorCall = loginError.mock.calls[0];
       expect(errorCall[0]).toBeInstanceOf(Function);
-      done();
     });
 
-    it("should use state to indirectly call dispatch", async (done) => {
+    it("should use state to indirectly call dispatch", async () => {
       await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(0));
       await waitFor(() => expect(SignIn).toBeCalledTimes(1));
 
@@ -143,8 +139,6 @@ describe("Setup Environment", () => {
       act(() => modifyState("Fake Async Action"));
       await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
       expect(mockDispatch).toBeCalledWith("Fake Async Action");
-
-      done();
     });
   });
 
@@ -162,7 +156,7 @@ describe("Setup Environment", () => {
       checkHeader();
     });
 
-    it("should handle an error condition as expected", async (done) => {
+    it("should handle an error condition as expected", async () => {
       await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(1));
       await waitFor(() => expect(SignIn).toBeCalledTimes(0));
       const call1 = ErrorDialogue.mock.calls[0][0];
@@ -171,10 +165,9 @@ describe("Setup Environment", () => {
       expect(call1.eventError).toBe(AnalyticsActions.LoginError);
       expect(call1.clearError).toBeInstanceOf(Function);
       expect(call1.messageTranslationKey).toBe(currentTest.errorMessage);
-      done();
     });
 
-    it("should export a function clearError, that works as expected on an error", async (done) => {
+    it("should export a function clearError, that works as expected on an error", async () => {
       await waitFor(() => expect(ErrorDialogue).toBeCalledTimes(1));
       await waitFor(() => expect(SignIn).toBeCalledTimes(0));
       const call1 = ErrorDialogue.mock.calls[0][0];
@@ -182,7 +175,6 @@ describe("Setup Environment", () => {
       call1.clearError("mockResponse");
       const resetCall = resetLogin.mock.calls[0];
       expect(resetCall[0]).toBeInstanceOf(Function);
-      done();
     });
   });
 });

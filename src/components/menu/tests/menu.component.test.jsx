@@ -86,7 +86,7 @@ describe("Setup environment", () => {
     expect(calculateMaxHeight).toBeCalledTimes(1);
   });
 
-  it("clicking on option1, should change the page accordingly", async (done) => {
+  it("clicking on option1, should change the page accordingly", async () => {
     expect(MenuItem).toBeCalledTimes(1);
     const choose = MenuItem.mock.calls[0][0].choose;
     const newPath = "/a/new/path";
@@ -96,15 +96,12 @@ describe("Setup environment", () => {
     act(() => choose(newPath));
 
     await waitFor(() => expect(history.location.pathname).toBe(newPath));
-
-    done();
   });
 
-  it("a should call calculateMaxHeight again on a window resize", async (done) => {
+  it("a should call calculateMaxHeight again on a window resize", async () => {
     expect(calculateMaxHeight).toBeCalledTimes(1);
     fireEvent(window, new Event("resize"));
     await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-    done();
   });
 
   it("should match the snapshot on file (styles)", () => {

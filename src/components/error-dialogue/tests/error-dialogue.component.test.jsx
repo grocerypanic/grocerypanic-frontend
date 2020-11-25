@@ -101,7 +101,7 @@ describe("Setup Environment", () => {
         expect(mockEvent).toHaveBeenCalledWith(AnalyticsActions.TestAction);
       });
 
-      it("should handle the confirmation button as expected, route goes back", async (done) => {
+      it("should handle the confirmation button as expected, route goes back", async () => {
         const button = utils.getByTestId("ErrorConfirmation");
         expect(ErrorProps.clearError).toHaveBeenCalledTimes(0);
         fireEvent.click(button);
@@ -112,7 +112,6 @@ describe("Setup Environment", () => {
         await waitFor(() =>
           expect(history.location.pathname).toBe(Routes.menu)
         );
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -151,13 +150,12 @@ describe("Setup Environment", () => {
         expect(utils.getByTestId("ErrorConfirmation")).toBeTruthy();
       });
 
-      it("should handle the confirmation button as expected, route goes back", async (done) => {
+      it("should handle the confirmation button as expected, route goes back", async () => {
         const button = utils.getByTestId("ErrorConfirmation");
         expect(ErrorProps.clearError).toHaveBeenCalledTimes(0);
         fireEvent.click(button);
         expect(ErrorProps.clearError).toHaveBeenCalledTimes(1);
         await waitFor(() => expect(history.location.pathname).toBe(testRoute));
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -196,7 +194,7 @@ describe("Setup Environment", () => {
         expect(utils.getByTestId("ErrorConfirmation")).toBeTruthy();
       });
 
-      it("should handle the confirmation button as expected, route goes back", async (done) => {
+      it("should handle the confirmation button as expected, route goes back", async () => {
         const button = utils.getByTestId("ErrorConfirmation");
         expect(ErrorProps.clearError).toHaveBeenCalledTimes(0);
         fireEvent.click(button);
@@ -204,7 +202,6 @@ describe("Setup Environment", () => {
         await waitFor(() =>
           expect(history.location.pathname).toBe(current.redirect)
         );
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {

@@ -58,7 +58,7 @@ describe("Manage Environment", () => {
         renderHelper(history);
       });
 
-      it("should not initialize ReactGA", async (done) => {
+      it("should not initialize ReactGA", async () => {
         expect(Object.keys(received).length).toBe(3);
         expect(received.event).toBeInstanceOf(Function);
         expect(received.setup).toBeInstanceOf(Function);
@@ -66,10 +66,9 @@ describe("Manage Environment", () => {
 
         act(() => received.setup());
         await waitFor(() => expect(received.initialized).toBeFalsy());
-        done();
       });
 
-      it("should not post events", async (done) => {
+      it("should not post events", async () => {
         expect(Object.keys(received).length).toBe(3);
         expect(received.event).toBeInstanceOf(Function);
         expect(received.setup).toBeInstanceOf(Function);
@@ -80,7 +79,6 @@ describe("Manage Environment", () => {
 
         act(() => received.event("FAKE_EVENT"));
         await waitFor(() => expect(ReactGA.event).toHaveBeenCalledTimes(0));
-        done();
       });
     });
 
@@ -90,7 +88,7 @@ describe("Manage Environment", () => {
         renderHelper(history);
       });
 
-      it("should initialize ReactGA, in debug mode", async (done) => {
+      it("should initialize ReactGA, in debug mode", async () => {
         expect(Object.keys(received).length).toBe(3);
         expect(received.event).toBeInstanceOf(Function);
         expect(received.setup).toBeInstanceOf(Function);
@@ -103,10 +101,9 @@ describe("Manage Environment", () => {
           process.env.REACT_APP_UA_CODE,
           { debug: true }
         );
-        done();
       });
 
-      it("should post events, after setup", async (done) => {
+      it("should post events, after setup", async () => {
         expect(Object.keys(received).length).toBe(3);
         expect(received.event).toBeInstanceOf(Function);
         expect(received.setup).toBeInstanceOf(Function);
@@ -118,10 +115,9 @@ describe("Manage Environment", () => {
         act(() => received.event("FAKE_EVENT"));
         await waitFor(() => expect(ReactGA.event).toHaveBeenCalledTimes(1));
         expect(ReactGA.event).toHaveBeenCalledWith("FAKE_EVENT");
-        done();
       });
 
-      it("should track route changes", async (done) => {
+      it("should track route changes", async () => {
         expect(Object.keys(received).length).toBe(3);
         expect(received.event).toBeInstanceOf(Function);
         expect(received.setup).toBeInstanceOf(Function);
@@ -134,7 +130,6 @@ describe("Manage Environment", () => {
         expect(ReactGA.set).toHaveBeenCalledWith({ page: "/" });
         expect(ReactGA.pageview).toHaveBeenCalledTimes(1);
         expect(ReactGA.pageview).toHaveBeenCalledWith("/");
-        done();
       });
     });
   });
@@ -150,7 +145,7 @@ describe("Manage Environment", () => {
         renderHelper(history);
       });
 
-      it("should not initialize ReactGA", async (done) => {
+      it("should not initialize ReactGA", async () => {
         expect(Object.keys(received).length).toBe(3);
         expect(received.event).toBeInstanceOf(Function);
         expect(received.setup).toBeInstanceOf(Function);
@@ -159,10 +154,9 @@ describe("Manage Environment", () => {
         act(() => received.setup());
         await waitFor(() => expect(received.initialized).toBeFalsy());
         expect(ReactGA.initialize).toHaveBeenCalledTimes(0);
-        done();
       });
 
-      it("should not post events, even after setup attempt", async (done) => {
+      it("should not post events, even after setup attempt", async () => {
         expect(Object.keys(received).length).toBe(3);
         expect(received.event).toBeInstanceOf(Function);
         expect(received.setup).toBeInstanceOf(Function);
@@ -173,7 +167,6 @@ describe("Manage Environment", () => {
 
         act(() => received.event("FAKE_EVENT"));
         await waitFor(() => expect(ReactGA.event).toHaveBeenCalledTimes(0));
-        done();
       });
     });
 
@@ -183,7 +176,7 @@ describe("Manage Environment", () => {
         renderHelper(history);
       });
 
-      it("should initialize ReactGA, in debug mode", async (done) => {
+      it("should initialize ReactGA, in debug mode", async () => {
         expect(Object.keys(received).length).toBe(3);
         expect(received.event).toBeInstanceOf(Function);
         expect(received.setup).toBeInstanceOf(Function);
@@ -196,10 +189,9 @@ describe("Manage Environment", () => {
           process.env.REACT_APP_UA_CODE,
           { debug: false }
         );
-        done();
       });
 
-      it("should post events", async (done) => {
+      it("should post events", async () => {
         expect(Object.keys(received).length).toBe(3);
         expect(received.event).toBeInstanceOf(Function);
         expect(received.setup).toBeInstanceOf(Function);
@@ -211,10 +203,9 @@ describe("Manage Environment", () => {
         act(() => received.event("FAKE_EVENT"));
         await waitFor(() => expect(ReactGA.event).toHaveBeenCalledTimes(1));
         expect(ReactGA.event).toHaveBeenCalledWith("FAKE_EVENT");
-        done();
       });
 
-      it("should track route changes", async (done) => {
+      it("should track route changes", async () => {
         expect(Object.keys(received).length).toBe(3);
         expect(received.event).toBeInstanceOf(Function);
         expect(received.setup).toBeInstanceOf(Function);
@@ -227,7 +218,6 @@ describe("Manage Environment", () => {
         expect(ReactGA.set).toHaveBeenCalledWith({ page: "/" });
         expect(ReactGA.pageview).toHaveBeenCalledTimes(1);
         expect(ReactGA.pageview).toHaveBeenCalledWith("/");
-        done();
       });
     });
   });

@@ -37,47 +37,49 @@ describe("Setup Environment", () => {
 
   afterEach(cleanup);
 
-  it("should handle short presses correctly", async (done) => {
+  it("should handle short presses correctly", async () => {
     expect(currentTest.id).toBe(1);
     const testdiv = utils.getByTestId("TestDiv");
     fireEvent.mouseDown(testdiv, "click");
     fireEvent.mouseUp(testdiv, "click");
     await waitFor(() => expect(mockShortCallback).toBeCalledTimes(1));
     expect(mockLongCallBack).toBeCalledTimes(0);
-    done();
   });
 
-  it("should handle long presses correctly", async (done) => {
+  it("should handle long presses correctly", (done) => {
     expect(currentTest.id).toBe(2);
     const testdiv = utils.getByTestId("TestDiv");
     fireEvent.mouseDown(testdiv, "click");
-    setTimeout(() => fireEvent.mouseUp(testdiv, "click"), 500);
-    await waitFor(() => expect(mockLongCallBack).toBeCalledTimes(1));
-    expect(mockShortCallback).toBeCalledTimes(1);
-    done();
+    setTimeout(async () => {
+      fireEvent.mouseUp(testdiv, "click");
+      await waitFor(() => expect(mockLongCallBack).toBeCalledTimes(1));
+      expect(mockShortCallback).toBeCalledTimes(1);
+      done();
+    }, 500);
   });
 
-  it("should handle long touches correctly", async (done) => {
+  it("should handle long touches correctly", async () => {
     expect(currentTest.id).toBe(3);
     const testdiv = utils.getByTestId("TestDiv");
     fireEvent.touchStart(testdiv, "click");
     setTimeout(() => fireEvent.touchEnd(testdiv, "click"), 500);
     await waitFor(() => expect(mockLongCallBack).toBeCalledTimes(1));
     expect(mockShortCallback).toBeCalledTimes(1);
-    done();
   });
 
-  it("should handle mouseleave correctly", async (done) => {
+  it("should handle mouseleave correctly", (done) => {
     expect(currentTest.id).toBe(4);
     const testdiv = utils.getByTestId("TestDiv");
     fireEvent.mouseDown(testdiv, "click");
-    setTimeout(() => fireEvent.mouseLeave(testdiv, "click"), 500);
-    await waitFor(() => expect(mockLongCallBack).toBeCalledTimes(1));
-    expect(mockShortCallback).toBeCalledTimes(1);
-    done();
+    setTimeout(async () => {
+      await waitFor(() => expect(mockLongCallBack).toBeCalledTimes(1));
+      expect(mockShortCallback).toBeCalledTimes(1);
+      fireEvent.mouseLeave(testdiv, "click");
+      done();
+    }, 500);
   });
 
-  it("should handle default arguments events", async (done) => {
+  it("should handle default arguments events", (done) => {
     expect(currentTest.id).toBe(5);
     const testdiv = utils.getByTestId("TestDiv");
     fireEvent.mouseDown(testdiv, "click");

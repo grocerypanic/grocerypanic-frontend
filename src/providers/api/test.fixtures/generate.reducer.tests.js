@@ -28,7 +28,7 @@ export const ReducerTest = (
       expect(received).toBe(InitialState);
     });
 
-    it("handles StartAdd correctly", async (done) => {
+    it("handles StartAdd correctly", async () => {
       const ExpectedState = {
         ...InitialState,
         transaction: true,
@@ -52,10 +52,9 @@ export const ReducerTest = (
         },
       ]);
       expect(mockCallBack).toBeCalledTimes(0);
-      done();
     });
 
-    it("handles StartDel correctly", async (done) => {
+    it("handles StartDel correctly", async () => {
       const mockPayload = [{ ...mockObject }];
       const stateWithPayload = {
         ...InitialState,
@@ -83,10 +82,9 @@ export const ReducerTest = (
         },
       ]);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
-      done();
     });
 
-    it("handles StartGet correctly", async (done) => {
+    it("handles StartGet correctly", async () => {
       const ExpectedState = {
         ...InitialState,
         transaction: true,
@@ -110,10 +108,9 @@ export const ReducerTest = (
         },
       ]);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
-      done();
     });
 
-    it("handles StartList correctly", async (done) => {
+    it("handles StartList correctly", async () => {
       const ExpectedState = {
         ...InitialState,
         transaction: true,
@@ -137,10 +134,9 @@ export const ReducerTest = (
         },
       ]);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
-      done();
     });
 
-    it("handles StartUpdate correctly", async (done) => {
+    it("handles StartUpdate correctly", async () => {
       const ExpectedState = {
         ...InitialState,
         transaction: true,
@@ -164,7 +160,6 @@ export const ReducerTest = (
         },
       ]);
       expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
-      done();
     });
 
     it("handles SuccessAdd correctly", () => {

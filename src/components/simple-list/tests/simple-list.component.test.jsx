@@ -193,27 +193,25 @@ describe("Setup Environment", () => {
           expect(pagination.handlePagination).toBeInstanceOf(Function);
         });
 
-        it("renders, and skips the holding pattern to trigger the spinner", async (done) => {
+        it("renders, and skips the holding pattern to trigger the spinner", async () => {
           expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
           expect(HoldingPattern).toHaveBeenCalledTimes(1);
           const holdingPatternCall = HoldingPattern.mock.calls[0][0];
           propCount(holdingPatternCall, 2);
           expect(holdingPatternCall.condition).toBe(false);
-          done();
         });
 
         it("should call calculateMaxHeight on render", () => {
           expect(calculateMaxHeight).toBeCalledTimes(1);
         });
 
-        it("a should call calculateMaxHeight again on a window resize", async (done) => {
+        it("a should call calculateMaxHeight again on a window resize", async () => {
           expect(calculateMaxHeight).toBeCalledTimes(1);
           fireEvent(window, new Event("resize"));
           await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-          done();
         });
 
-        it("renders, should call the error handler with the correct params", async (done) => {
+        it("renders, should call the error handler with the correct params", async () => {
           await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
           const call = ErrorHandler.mock.calls[0][0];
           propCount(call, 6);
@@ -229,8 +227,6 @@ describe("Setup Environment", () => {
           expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
             Strings.SimpleList.ApiCommunicationError
           );
-
-          done();
         });
 
         it("should match the snapshot on file (styles)", () => {
@@ -251,7 +247,7 @@ describe("Setup Environment", () => {
           utils = renderHelper(current);
         });
 
-        it("renders, calls StartList on first render, with the page param", async (done) => {
+        it("renders, calls StartList on first render, with the page param", async () => {
           expect(current.transaction).toBeFalsy();
           await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
           const apiCall = mockDispatch.mock.calls[0][0];
@@ -261,7 +257,6 @@ describe("Setup Environment", () => {
           expect(apiCall.dispatch).toBeInstanceOf(Function);
           expect(apiCall.callback).toBeInstanceOf(Function);
           expect(apiCall.page).toBe(page);
-          done();
         });
       });
 
@@ -271,7 +266,7 @@ describe("Setup Environment", () => {
           utils = renderHelper(current);
         });
 
-        it("renders, calls StartList on first render", async (done) => {
+        it("renders, calls StartList on first render", async () => {
           expect(current.transaction).toBeFalsy();
           await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
           const apiCall = mockDispatch.mock.calls[0][0];
@@ -281,7 +276,6 @@ describe("Setup Environment", () => {
           expect(apiCall.dispatch).toBeInstanceOf(Function);
           expect(apiCall.callback).toBeInstanceOf(Function);
           expect(apiCall.page).toBe(null);
-          done();
         });
 
         it("renders, should call header with the correct params", () => {
@@ -381,7 +375,7 @@ describe("Setup Environment", () => {
           expect(errorMsg).toBeNull();
         });
 
-        it("renders, when an error occurs during a create, it's rendered", async (done) => {
+        it("renders, when an error occurs during a create, it's rendered", async () => {
           expect(SimpleListItem).toHaveBeenCalledTimes(3);
 
           const {
@@ -401,11 +395,9 @@ describe("Setup Environment", () => {
 
           // An Extra Simple List Item should now be rendered for the created item
           expect(SimpleListItem).toHaveBeenCalledTimes(4);
-
-          done();
         });
 
-        it("renders, when handleCreate is called, it creates a new object", async (done) => {
+        it("renders, when handleCreate is called, it creates a new object", async () => {
           expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
           const { create } = mockHeaderUpdate.mock.calls[0][0];
           expect(current.transaction).toBeFalsy();
@@ -420,10 +412,9 @@ describe("Setup Environment", () => {
           const { selected } = SimpleListItem.mock.calls[3][0].listValues;
           expect(item).toStrictEqual({ id: -1, name: "" });
           expect(selected).toBe(-1);
-          done();
         });
 
-        it("renders, and dispatches the API reducer when handleSave is called", async (done) => {
+        it("renders, and dispatches the API reducer when handleSave is called", async () => {
           expect(SimpleListItem).toHaveBeenCalledTimes(3);
           const { add } = SimpleListItem.mock.calls[0][0].listFunctions;
           expect(current.transaction).toBeFalsy();
@@ -445,11 +436,9 @@ describe("Setup Environment", () => {
           expect(mockAnalyticsContext.event).toBeCalledWith(
             IndexedAnalyticsActions.shelf.create
           );
-
-          done();
         });
 
-        it("renders, and dispatches the API reducer when handleSave is called", async (done) => {
+        it("renders, and dispatches the API reducer when handleSave is called", async () => {
           expect(SimpleListItem).toHaveBeenCalledTimes(3);
           const { add } = SimpleListItem.mock.calls[0][0].listFunctions;
           expect(current.transaction).toBeFalsy();
@@ -471,11 +460,9 @@ describe("Setup Environment", () => {
           expect(mockAnalyticsContext.event).toBeCalledWith(
             IndexedAnalyticsActions.shelf.create
           );
-
-          done();
         });
 
-        it("renders, and dispatches the API reducer when handleDelete is called", async (done) => {
+        it("renders, and dispatches the API reducer when handleDelete is called", async () => {
           expect(SimpleListItem).toHaveBeenCalledTimes(3);
           const { del } = SimpleListItem.mock.calls[0][0].listFunctions;
           expect(current.transaction).toBeFalsy();
@@ -497,11 +484,9 @@ describe("Setup Environment", () => {
           expect(mockAnalyticsContext.event).toBeCalledWith(
             IndexedAnalyticsActions.shelf.delete
           );
-
-          done();
         });
 
-        it("renders, and handles an auth failure condition as expected", async (done) => {
+        it("renders, and handles an auth failure condition as expected", async () => {
           expect(SimpleListItem).toHaveBeenCalledTimes(3);
           const { del } = SimpleListItem.mock.calls[0][0].listFunctions;
           expect(current.transaction).toBeFalsy();
@@ -523,30 +508,26 @@ describe("Setup Environment", () => {
           await waitFor(() =>
             expect(mockHandleExpiredAuth).toHaveBeenCalledTimes(1)
           );
-
-          done();
         });
 
-        it("renders, and skips the holding pattern to trigger the spinner", async (done) => {
+        it("renders, and skips the holding pattern to trigger the spinner", async () => {
           expect(HoldingPattern).toHaveBeenCalledTimes(1);
           const holdingPatternCall = HoldingPattern.mock.calls[0][0];
           propCount(holdingPatternCall, 2);
           expect(holdingPatternCall.condition).toBe(false);
-          done();
         });
 
         it("should call calculateMaxHeight on render", () => {
           expect(calculateMaxHeight).toBeCalledTimes(1);
         });
 
-        it("a should call calculateMaxHeight again on a window resize", async (done) => {
+        it("a should call calculateMaxHeight again on a window resize", async () => {
           expect(calculateMaxHeight).toBeCalledTimes(1);
           fireEvent(window, new Event("resize"));
           await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-          done();
         });
 
-        it("renders, should call the error handler with the correct params", async (done) => {
+        it("renders, should call the error handler with the correct params", async () => {
           await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
           const call = ErrorHandler.mock.calls[0][0];
           propCount(call, 6);
@@ -562,11 +543,9 @@ describe("Setup Environment", () => {
           expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
             Strings.SimpleList.ApiCommunicationError
           );
-
-          done();
         });
 
-        it("handles a duplicate object error correctly", async (done) => {
+        it("handles a duplicate object error correctly", async () => {
           expect(SimpleListItem).toHaveBeenCalledTimes(3);
 
           await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
@@ -579,8 +558,6 @@ describe("Setup Environment", () => {
 
           const call1 = SimpleListItem.mock.calls[6][0];
           expect(call1.listValues.duplicate).toBe(true);
-
-          done();
         });
 
         it("should match the snapshot on file (styles)", () => {
@@ -606,7 +583,7 @@ describe("Setup Environment", () => {
           expect(pagination.handlePagination).toBeInstanceOf(Function);
         });
 
-        it("renders, should handle a call to handlePagination correctly", async (done) => {
+        it("renders, should handle a call to handlePagination correctly", async () => {
           expect(current.transaction).toBe(false);
           expect(Pagination).toHaveBeenCalledTimes(1);
           const handlePagination = Pagination.mock.calls[0][0].handlePagination;
@@ -622,7 +599,6 @@ describe("Setup Environment", () => {
           expect(apiCall.dispatch).toBeInstanceOf(Function);
           expect(apiCall.callback).toBeInstanceOf(Function);
           expect(apiCall.override).toBe("http://next");
-          done();
         });
       });
     });
@@ -632,7 +608,7 @@ describe("Setup Environment", () => {
         current = { ...apiObjectState, transaction: false, fail: true };
         utils = renderHelper(current);
       });
-      it("renders, should call the error handler with the correct params", async (done) => {
+      it("renders, should call the error handler with the correct params", async () => {
         await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
         const call = ErrorHandler.mock.calls[0][0];
         propCount(call, 6);
@@ -648,17 +624,14 @@ describe("Setup Environment", () => {
         expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
           Strings.SimpleList.ApiCommunicationError
         );
-
-        done();
       });
 
-      it("renders, handles a call to clear errors as expected", async (done) => {
+      it("renders, handles a call to clear errors as expected", async () => {
         await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
         const call = ErrorHandler.mock.calls[0][0];
         act(() => call.clearError());
         await waitFor(() => expect(mockDispatch).toBeCalledTimes(2));
         expect(mockDispatch.mock.calls[1][0].type).toBe(ApiActions.ClearErrors);
-        done();
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -673,7 +646,7 @@ describe("Setup Environment", () => {
       utils = renderHelper(current);
     });
 
-    it("renders, should call the error handler with the correct params", async (done) => {
+    it("renders, should call the error handler with the correct params", async () => {
       await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
       const call = ErrorHandler.mock.calls[0][0];
       propCount(call, 6);
@@ -689,8 +662,6 @@ describe("Setup Environment", () => {
       expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
         Strings.SimpleList.ApiCommunicationError
       );
-
-      done();
     });
 
     it("renders, should call pagination with the correct params", () => {
@@ -703,7 +674,7 @@ describe("Setup Environment", () => {
       expect(pagination.handlePagination).toBeInstanceOf(Function);
     });
 
-    it("renders, and then when there is an transaction bypasses calls to handleCreate", async (done) => {
+    it("renders, and then when there is an transaction bypasses calls to handleCreate", async () => {
       expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
       const { create } = mockHeaderUpdate.mock.calls[0][0];
       expect(current.transaction).toBeTruthy();
@@ -714,10 +685,9 @@ describe("Setup Environment", () => {
       });
 
       expect(SimpleListItem).toHaveBeenCalledTimes(0);
-      done();
     });
 
-    it("renders, and then when there is an transaction bypasses calls to handleSave", async (done) => {
+    it("renders, and then when there is an transaction bypasses calls to handleSave", async () => {
       expect(SimpleListItem).toHaveBeenCalledTimes(3);
       const { add } = SimpleListItem.mock.calls[0][0].listFunctions;
       expect(current.transaction).toBeTruthy();
@@ -731,10 +701,9 @@ describe("Setup Environment", () => {
       // MockDispatch only has a call for the initial item listing, not for the add
       expect(mockDispatch).toHaveBeenCalledTimes(1);
       expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
-      done();
     });
 
-    it("renders, and then when there is an transaction bypasses calls to handleDelete", async (done) => {
+    it("renders, and then when there is an transaction bypasses calls to handleDelete", async () => {
       expect(SimpleListItem).toHaveBeenCalledTimes(3);
       const { del } = SimpleListItem.mock.calls[0][0].listFunctions;
       expect(current.transaction).toBeTruthy();
@@ -747,8 +716,6 @@ describe("Setup Environment", () => {
       expect(SimpleListItem).toHaveBeenCalledTimes(0);
       expect(mockDispatch).toHaveBeenCalledTimes(1);
       expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
-
-      done();
     });
 
     it("renders, should call header with the correct params", () => {
@@ -760,23 +727,21 @@ describe("Setup Environment", () => {
       expect(headerCall.disableNav).toBe(false);
     });
 
-    it("renders, and skips the holding pattern to trigger the spinner", async (done) => {
+    it("renders, and skips the holding pattern to trigger the spinner", async () => {
       expect(HoldingPattern).toHaveBeenCalledTimes(1);
       const holdingPatternCall = HoldingPattern.mock.calls[0][0];
       propCount(holdingPatternCall, 2);
       expect(holdingPatternCall.condition).toBe(false);
-      done();
     });
 
     it("should call calculateMaxHeight on render", () => {
       expect(calculateMaxHeight).toBeCalledTimes(1);
     });
 
-    it("a should call calculateMaxHeight again on a window resize", async (done) => {
+    it("a should call calculateMaxHeight again on a window resize", async () => {
       expect(calculateMaxHeight).toBeCalledTimes(1);
       fireEvent(window, new Event("resize"));
       await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-      done();
     });
 
     it("should match the snapshot on file (styles)", () => {
@@ -824,23 +789,21 @@ describe("Setup Environment", () => {
       expect(headerCall.disableNav).toBe(false);
     });
 
-    it("renders, and loads the holding pattern to trigger the spinner", async (done) => {
+    it("renders, and loads the holding pattern to trigger the spinner", async () => {
       expect(HoldingPattern).toHaveBeenCalledTimes(1);
       const holdingPatternCall = HoldingPattern.mock.calls[0][0];
       propCount(holdingPatternCall, 2);
       expect(holdingPatternCall.condition).toBe(true);
-      done();
     });
 
     it("should call calculateMaxHeight on render", () => {
       expect(calculateMaxHeight).toBeCalledTimes(1);
     });
 
-    it("a should call calculateMaxHeight again on a window resize", async (done) => {
+    it("a should call calculateMaxHeight again on a window resize", async () => {
       expect(calculateMaxHeight).toBeCalledTimes(1);
       fireEvent(window, new Event("resize"));
       await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-      done();
     });
 
     it("should match the snapshot on file (styles)", () => {

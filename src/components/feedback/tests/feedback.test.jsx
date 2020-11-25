@@ -41,7 +41,7 @@ describe("Setup Environment", () => {
     expect(text3.textContent).toBe(Strings.FeedBack.Request3);
   });
 
-  it("should handle a click on the link correctly", async (done) => {
+  it("should handle a click on the link correctly", (done) => {
     const node = utils.getByTestId("FeedBackLink");
     const [, link] = Array.from(node.childNodes);
     fireEvent.click(link, "click");

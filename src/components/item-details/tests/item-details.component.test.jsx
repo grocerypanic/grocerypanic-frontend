@@ -115,7 +115,7 @@ describe("Setup Environment", () => {
       expect(utils.getByText(Strings.ItemDetails.Tabs.Edit)).toBeTruthy();
     });
 
-    it("renders, should should show the stats content as expected, and fetch transactions", async (done) => {
+    it("renders, should should show the stats content as expected, and fetch transactions", async () => {
       expect(current.transaction).toBe(false);
       const tab1 = utils.getByText(Strings.ItemDetails.Tabs.Stats);
       const tab2 = utils.getByText(Strings.ItemDetails.Tabs.Edit);
@@ -129,11 +129,9 @@ describe("Setup Environment", () => {
 
       expect(TransactionsOverview).toBeCalledTimes(2);
       expect(tab2.className.search("active")).toBeLessThan(0);
-
-      done();
     });
 
-    it("renders, should should show the edit content as expected", async (done) => {
+    it("renders, should should show the edit content as expected", async () => {
       expect(current.transaction).toBe(false);
       const tab1 = utils.getByText(Strings.ItemDetails.Tabs.Stats);
       const tab2 = utils.getByText(Strings.ItemDetails.Tabs.Edit);
@@ -144,11 +142,9 @@ describe("Setup Environment", () => {
 
       expect(TransactionsOverview).toBeCalledTimes(1);
       expect(tab1.className.search("active")).toBeLessThan(0);
-
-      done();
     });
 
-    it("renders, should call ItemDetailsForm as expected", async (done) => {
+    it("renders, should call ItemDetailsForm as expected", async () => {
       expect(current.transaction).toBe(false);
 
       expect(ItemDetailsForm).toBeCalledTimes(1);
@@ -166,11 +162,9 @@ describe("Setup Environment", () => {
       expect(call.handleDelete).toBe(current.handleDelete);
       expect(call.duplicate).toBe(current.duplicate);
       expect(call.setDuplicate).toBe(current.setDuplicate);
-
-      done();
     });
 
-    it("renders, should call TransactionsOverview as expected", async (done) => {
+    it("renders, should call TransactionsOverview as expected", async () => {
       expect(current.transaction).toBe(false);
 
       expect(TransactionsOverview).toBeCalledTimes(1);
@@ -180,8 +174,6 @@ describe("Setup Environment", () => {
       expect(call.ready).toBe(false);
       expect(call.item).toBe(mockItem);
       expect(call.tr).toStrictEqual(mockTransactions);
-
-      done();
     });
   });
 
@@ -205,7 +197,7 @@ describe("Setup Environment", () => {
       });
     });
 
-    it("renders, should still navigate to the stats page", async (done) => {
+    it("renders, should still navigate to the stats page", async () => {
       expect(current.transaction).toBe(true);
       const tab1 = utils.getByText(Strings.ItemDetails.Tabs.Stats);
       const tab2 = utils.getByText(Strings.ItemDetails.Tabs.Edit);
@@ -216,11 +208,9 @@ describe("Setup Environment", () => {
 
       expect(TransactionsOverview).toBeCalledTimes(2);
       expect(tab2.className.search("active")).toBeLessThan(0);
-
-      done();
     });
 
-    it("should respond to a screen orientation change by flipping back to the edit tab", async (done) => {
+    it("should respond to a screen orientation change by flipping back to the edit tab", async () => {
       expect(current.transaction).toBe(true);
       const tab1 = utils.getByText(Strings.ItemDetails.Tabs.Stats);
       const tab2 = utils.getByText(Strings.ItemDetails.Tabs.Edit);
@@ -232,11 +222,9 @@ describe("Setup Environment", () => {
 
       expect(ItemDetailsForm).toBeCalledTimes(1);
       expect(tab1.className.search("active")).toBeLessThan(0);
-
-      done();
     });
 
-    it("renders, should call ItemDetailsForm as expected", async (done) => {
+    it("renders, should call ItemDetailsForm as expected", async () => {
       expect(current.transaction).toBe(true);
 
       expect(ItemDetailsForm).toBeCalledTimes(1);
@@ -254,11 +242,9 @@ describe("Setup Environment", () => {
       expect(call.handleDelete).toBe(current.handleDelete);
       expect(call.duplicate).toBe(current.duplicate);
       expect(call.setDuplicate).toBe(current.setDuplicate);
-
-      done();
     });
 
-    it("renders, should call TransactionsOverview as expected", async (done) => {
+    it("renders, should call TransactionsOverview as expected", async () => {
       expect(current.transaction).toBe(true);
 
       expect(TransactionsOverview).toBeCalledTimes(1);
@@ -268,8 +254,6 @@ describe("Setup Environment", () => {
       expect(call.ready).toBe(false);
       expect(call.item).toBe(mockItem);
       expect(call.tr).toStrictEqual(mockTransactions);
-
-      done();
     });
   });
 });

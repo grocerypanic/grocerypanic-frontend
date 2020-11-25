@@ -44,7 +44,7 @@ describe("Check the correct props are passed to ", () => {
     expect(i18next.t("MainHeaderTitle")).toBe(Strings.MainHeaderTitle);
   };
 
-  it("should render the details page correctly", async (done) => {
+  it("should render the details page correctly", async () => {
     await waitFor(() => expect(Dialogue).toBeCalledTimes(1));
     const props = Dialogue.mock.calls[0][0];
     propCount(props, 4);
@@ -53,16 +53,12 @@ describe("Check the correct props are passed to ", () => {
     expect(props.headerTitle).toBe(Strings.Maintenance.HeaderTitle);
     expect(props.body).toBe(Strings.Maintenance.Body);
     expect(props.Footer).toBeInstanceOf(Function);
-
-    done();
   });
 
-  it("the footer should return an empty div", async (done) => {
+  it("the footer should return an empty div", async () => {
     await waitFor(() => expect(Dialogue).toBeCalledTimes(1));
     const footer = Dialogue.mock.calls[0][0].Footer;
     expect(footer()).toStrictEqual(<div></div>);
-
-    done();
   });
 
   it("should configure the header properly", () => {

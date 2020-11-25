@@ -97,19 +97,17 @@ describe("Setup Environment", () => {
           expect(utils.queryByTestId("saveButton")).toBeFalsy();
         });
 
-        it("handles a short click on items as expected", async (done) => {
+        it("handles a short click on items as expected", async () => {
           const itemComponent = utils.queryByTestId("listElement");
           fireEvent.mouseDown(itemComponent, "click");
           fireEvent.mouseUp(itemComponent, "click");
           await waitFor(() => expect(setCreated).toBeCalledWith(false));
           expect(setSelected).toBeCalledWith(current.item.id);
-          done();
         });
 
-        it("handles a click on item names as expected (by doing nothing)", async (done) => {
+        it("handles a click on item names as expected (by doing nothing)", async () => {
           const itemComponent = utils.getByTestId("ListTitle");
           fireEvent.click(itemComponent, "click");
-          done();
         });
 
         it("should match the snapshot on file (styles)", () => {
@@ -131,22 +129,26 @@ describe("Setup Environment", () => {
         });
         afterEach(cleanup);
 
-        it("handles a short click on items as expected", async (done) => {
+        it("handles a short click on items as expected", (done) => {
           const itemComponent = utils.queryByTestId("listElement");
           fireEvent.mouseDown(itemComponent, "click");
           fireEvent.mouseUp(itemComponent, "click");
-          setTimeout(() => fireEvent.mouseUp(itemComponent, "click"), 500);
-          await waitFor(() => expect(setCreated).toBeCalledTimes(0));
-          expect(setSelected).toBeCalledWith(current.item.id);
+          setTimeout(async () => {
+            fireEvent.mouseUp(itemComponent, "click");
+            await waitFor(() => expect(setCreated).toBeCalledTimes(0));
+            expect(setSelected).toBeCalledWith(current.item.id);
+          }, 500);
           done();
         });
 
-        it("handles a long click on items as expected", async (done) => {
+        it("handles a long click on items as expected", (done) => {
           const itemComponent = utils.queryByTestId("listElement");
           fireEvent.mouseDown(itemComponent, "click");
-          setTimeout(() => fireEvent.mouseUp(itemComponent, "click"), 500);
-          await waitFor(() => expect(setLongPress).toBeCalledTimes(1));
-          done();
+          setTimeout(async () => {
+            fireEvent.mouseUp(itemComponent, "click");
+            await waitFor(() => expect(setLongPress).toBeCalledTimes(1));
+            done();
+          }, 500);
         });
 
         it("handles a click on item names as expected (navigate)", () => {
@@ -200,7 +202,7 @@ describe("Setup Environment", () => {
           expect(utils.queryByTestId("saveButton")).toBeFalsy();
         });
 
-        it("calls handleDelete when delete is pressed", async (done) => {
+        it("calls handleDelete when delete is pressed", async () => {
           const deleteButton = utils.queryByTestId("deleteButton");
           fireEvent.click(deleteButton, "click");
           expect(setSelected).toBeCalledWith(null);
@@ -209,7 +211,6 @@ describe("Setup Environment", () => {
           expect(setActionMsg).toBeCalledWith(
             `${Strings.SimpleList.DeletedAction} ${current.item.name}`
           );
-          done();
         });
 
         it("handles a click on item names as expected (by doing nothing)", () => {
@@ -325,11 +326,10 @@ describe("Setup Environment", () => {
           expect(setErrorMsg).toBeCalledTimes(0);
         });
 
-        it("handles input as expected", async (done) => {
+        it("handles input as expected", async () => {
           const input = utils.queryByTestId("inputElement");
           await userEvent.type(input, "Hello, World!");
           expect(setErrorMsg).toBeCalledWith(null);
-          done();
         });
 
         it("should match the snapshot on file (styles)", () => {
@@ -350,29 +350,26 @@ describe("Setup Environment", () => {
         });
         afterEach(cleanup);
 
-        it("should not call setErrorMsg or setDuplicate as expected", async (done) => {
+        it("should not call setErrorMsg or setDuplicate as expected", async () => {
           await waitFor(() => expect(setErrorMsg).toBeCalledTimes(0));
           await waitFor(() => expect(setDuplicate).toBeCalledTimes(0));
-          done();
         });
 
-        it("handles input as expected", async (done) => {
+        it("handles input as expected", async () => {
           const input = utils.queryByTestId("inputElement");
           await userEvent.type(input, "Hello, World!");
           expect(setErrorMsg).toBeCalledTimes(0);
-          done();
         });
 
-        it("handles submit without doing anything", async (done) => {
+        it("handles submit without doing anything", async () => {
           const input = utils.queryByTestId("inputElement");
           await userEvent.type(input, "Hello, World!");
           fireEvent.submit(input);
           expect(setErrorMsg).toBeCalledTimes(0);
           await (() => expect(setActionMsg).toBeCalledTimes(0));
-          done();
         });
 
-        it("handles saveButton click as expected", async (done) => {
+        it("handles saveButton click as expected", async () => {
           const input = utils.queryByTestId("inputElement");
           const save = utils.queryByTestId("saveButton");
           await userEvent.type(input, "Hello, World!");
@@ -382,10 +379,9 @@ describe("Setup Environment", () => {
           expect(setActionMsg).toBeCalledWith(
             `${Strings.SimpleList.CreatedAction} Hello, World!`
           );
-          done();
         });
 
-        it("handles submit as expected with invalid input", async (done) => {
+        it("handles submit as expected with invalid input", async () => {
           const input = utils.queryByTestId("inputElement");
           await userEvent.type(input, "a");
           const save = utils.queryByTestId("saveButton");
@@ -394,7 +390,6 @@ describe("Setup Environment", () => {
             Strings.SimpleList.ValidationFailure
           );
           await (() => expect(setActionMsg).toBeCalledTimes(0));
-          done();
         });
 
         it("should match the snapshot on file (styles)", () => {
@@ -412,7 +407,7 @@ describe("Setup Environment", () => {
           );
         });
 
-        it("should call setErrorMsg and setDuplicate as expected", async (done) => {
+        it("should call setErrorMsg and setDuplicate as expected", async () => {
           await waitFor(() => expect(setErrorMsg).toBeCalledTimes(1));
           await waitFor(() => expect(setDuplicate).toBeCalledTimes(1));
           await waitFor(() => expect(setActionMsg).toBeCalledTimes(1));
@@ -423,8 +418,6 @@ describe("Setup Environment", () => {
           expect(setDuplicate).toBeCalledWith(false);
           await waitFor(() => expect(setErrorMsg).toBeCalledTimes(2));
           expect(setErrorMsg).toBeCalledWith(null);
-
-          done();
         });
       });
     });
@@ -459,7 +452,7 @@ describe("Setup Environment", () => {
         expect(setSelected).toBeCalledTimes(0);
       });
 
-      it("handles a long click on items as expected", async (done) => {
+      it("handles a long click on items as expected", (done) => {
         const itemComponent = utils.queryByTestId("listElement");
         fireEvent.mouseDown(itemComponent, "click");
         setTimeout(() => {

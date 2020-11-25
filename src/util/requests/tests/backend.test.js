@@ -57,7 +57,7 @@ describe("test the Backend method", () => {
         requestType = "GET";
       });
 
-      it("handles request as expected, when content type is json, and path is overriden", async (done) => {
+      it("handles request as expected, when content type is json, and path is overriden", async () => {
         process.env.REACT_APP_PANIC_BACKEND = "http://mybackendserver";
         setResponse("application/json", responseData, statusCode);
 
@@ -91,11 +91,9 @@ describe("test the Backend method", () => {
 
         // Safe Method for CSRF no token lookup
         expect(mockLocalStorage).toBeCalledTimes(0);
-
-        done();
       });
 
-      it("handles request as expected, when content type is json", async (done) => {
+      it("handles request as expected, when content type is json", async () => {
         setResponse("application/json", responseData, statusCode);
         const [response, status] = await Backend(requestType, requestPath);
 
@@ -121,11 +119,9 @@ describe("test the Backend method", () => {
 
         // Safe Method for CSRF no token lookup
         expect(mockLocalStorage).toBeCalledTimes(0);
-
-        done();
       });
 
-      it("handles request as expected, when content type is text", async (done) => {
+      it("handles request as expected, when content type is text", async () => {
         setResponse("text/plain", "Text String", statusCode);
         const [response, status] = await Backend(requestType, requestPath);
 
@@ -151,11 +147,9 @@ describe("test the Backend method", () => {
 
         // Safe Method for CSRF no token lookup
         expect(mockLocalStorage).toBeCalledTimes(0);
-
-        done();
       });
 
-      it("handles request as expected, when content type is null", async (done) => {
+      it("handles request as expected, when content type is null", async () => {
         setResponse(null, "Text String", statusCode);
         responseData = "Text String";
 
@@ -181,8 +175,6 @@ describe("test the Backend method", () => {
 
         // Safe Method for CSRF no token lookup
         expect(mockLocalStorage).toBeCalledTimes(0);
-
-        done();
       });
     });
 
@@ -191,7 +183,7 @@ describe("test the Backend method", () => {
         requestType = "POST";
       });
 
-      it("handles request as expected", async (done) => {
+      it("handles request as expected", async () => {
         sourceData = { data: "Data to Post" };
         setResponse("application/json", responseData, statusCode);
 
@@ -226,8 +218,6 @@ describe("test the Backend method", () => {
 
         // Safe Method for CSRF no token lookup
         expect(mockLocalStorage).toBeCalledTimes(1);
-
-        done();
       });
     });
   });
@@ -242,7 +232,7 @@ describe("test the Backend method", () => {
         requestType = "POST";
       });
 
-      it("handles request as expected", async (done) => {
+      it("handles request as expected", async () => {
         sourceData = { data: "Data to Post" };
         setResponse("application/json", responseData, statusCode);
 
@@ -277,8 +267,6 @@ describe("test the Backend method", () => {
 
         // Safe Method for CSRF no token lookup
         expect(mockLocalStorage).toBeCalledTimes(1);
-
-        done();
       });
     });
   });
@@ -293,7 +281,7 @@ describe("test the Backend method", () => {
         requestType = "POST";
       });
 
-      it("handle a post request as expected, when an error occurs", async (done) => {
+      it("handle a post request as expected, when an error occurs", async () => {
         contentType = "application/json";
         sourceData = { data: "Data to Post" };
         mockLocalStorage.mockImplementation(() => null);
@@ -332,8 +320,6 @@ describe("test the Backend method", () => {
 
         // Safe Method for CSRF no token lookup
         expect(mockLocalStorage).toBeCalledTimes(1);
-
-        done();
       });
     });
   });

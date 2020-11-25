@@ -197,7 +197,7 @@ describe("Setup Environment", () => {
         expect(utils.queryByTestId("consume")).toBeTruthy();
       });
 
-      it("handles a click on item names as expected", async (done) => {
+      it("handles a click on item names as expected", async () => {
         const itemComponent = utils.queryByTestId("listTitle");
         expect(current.history.push).toBeCalledTimes(0);
         fireEvent.click(itemComponent, "click");
@@ -205,7 +205,6 @@ describe("Setup Environment", () => {
         expect(current.history.push).toBeCalledWith(
           "/details/" + current.item.id
         );
-        done();
       });
 
       it("Renders the quantity as expected", () => {
@@ -218,7 +217,7 @@ describe("Setup Environment", () => {
         expect(node.textContent).toBe(current.item.expired.toString());
       });
 
-      it("Renders the restock control as expected", async (done) => {
+      it("Renders the restock control as expected", async () => {
         expect(Dropdown).toBeCalledTimes(2);
         const call = Dropdown.mock.calls[0][0];
         const restock = call.onSelect;
@@ -231,11 +230,9 @@ describe("Setup Environment", () => {
 
         expect(mockReStock).toBeCalledTimes(1);
         expect(mockReStock).toBeCalledWith(current.item, 1);
-
-        done();
       });
 
-      it("Renders the consume control as expected", async (done) => {
+      it("Renders the consume control as expected", async () => {
         expect(Dropdown).toBeCalledTimes(2);
         const call = Dropdown.mock.calls[1][0];
         const consume = call.onSelect;
@@ -248,10 +245,9 @@ describe("Setup Environment", () => {
 
         expect(mockConsume).toBeCalledTimes(1);
         expect(mockConsume).toBeCalledWith(current.item, 1);
-        done();
       });
 
-      it("Renders the consume control as expected when an illegal value is used", async (done) => {
+      it("Renders the consume control as expected when an illegal value is used", async () => {
         expect(Dropdown).toBeCalledTimes(2);
         const call = Dropdown.mock.calls[1][0];
         const consume = call.onSelect;
@@ -263,8 +259,6 @@ describe("Setup Environment", () => {
           Strings.InventoryPage.ErrorInsufficientInventory
         );
         expect(mockSetErrorMsg).toBeCalledWith(null);
-
-        done();
       });
 
       it("Renders the restock toggle as expected", () => {
@@ -407,12 +401,11 @@ describe("Setup Environment", () => {
       expect(DropdownMenu).toBeCalledTimes(0);
     });
 
-    it("handles a click on items as expected, by doing nothing", async (done) => {
+    it("handles a click on items as expected, by doing nothing", async () => {
       const itemComponent = utils.queryByTestId("listTitle");
       expect(current.history.push).toBeCalledTimes(0);
       fireEvent.click(itemComponent, "click");
       expect(current.history.push).toBeCalledTimes(0);
-      done();
     });
 
     it("should match the snapshot on file (styles)", () => {

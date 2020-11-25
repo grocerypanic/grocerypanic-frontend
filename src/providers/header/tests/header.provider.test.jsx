@@ -28,7 +28,7 @@ describe("Check the Inital Provider State", () => {
     expect(received.updateHeader).toBeInstanceOf(Function);
   });
 
-  it("the update function should work as expected when given properties", async (done) => {
+  it("the update function should work as expected when given properties", async () => {
     let received = {};
     render(
       <HeaderProvider>
@@ -55,6 +55,5 @@ describe("Check the Inital Provider State", () => {
     act(() => received.updateHeader(attrs));
 
     await waitFor(() => expect(received.headerSettings).toStrictEqual(attrs));
-    done();
   });
 });

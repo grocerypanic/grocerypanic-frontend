@@ -41,20 +41,18 @@ describe("inside of a transaction", () => {
         expect(next.parentElement.className).toBe("page-item disabled");
       });
 
-      it("should handle a click on previous as expected, by not actioning it", async (done) => {
+      it("should handle a click on previous as expected, by not actioning it", async () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
         expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-        done();
       });
 
-      it("should handle a click on next as expected, by not actioning it", async (done) => {
+      it("should handle a click on next as expected, by not actioning it", async () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
         expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-        done();
       });
     });
 
@@ -72,20 +70,18 @@ describe("inside of a transaction", () => {
         expect(next.parentElement.className).toBe("page-item disabled");
       });
 
-      it("should handle a click on previous as expected, by not actioning it", async (done) => {
+      it("should handle a click on previous as expected, by not actioning it", async () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
         expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-        done();
       });
 
-      it("should handle a click on next as expected, by not actioning it", async (done) => {
+      it("should handle a click on next as expected, by not actioning it", async () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
         expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-        done();
       });
     });
   });
@@ -109,20 +105,18 @@ describe("inside of a transaction", () => {
         expect(next.parentElement.className).toBe("page-item disabled");
       });
 
-      it("should handle a click on previous as expected, by not actioning it", async (done) => {
+      it("should handle a click on previous as expected, by not actioning it", async () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
         expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-        done();
       });
 
-      it("should handle a click on next as expected, by not actioning it", async (done) => {
+      it("should handle a click on next as expected, by not actioning it", async () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
         expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-        done();
       });
     });
 
@@ -140,20 +134,18 @@ describe("inside of a transaction", () => {
         expect(next.parentElement.className).toBe("page-item disabled");
       });
 
-      it("should handle a click on previous as expected, by not actioning it", async (done) => {
+      it("should handle a click on previous as expected, by not actioning it", async () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
         expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-        done();
       });
 
-      it("should handle a click on next as expected, by not actioning it", async (done) => {
+      it("should handle a click on next as expected, by not actioning it", async () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
         expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-        done();
       });
     });
   });
@@ -188,22 +180,20 @@ describe("outside of a transaction", () => {
         expect(next.parentElement.className).toBe("page-item ");
       });
 
-      it("should handle a click on previous as expected", async (done) => {
+      it("should handle a click on previous as expected", async () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() =>
           expect(handlePagination).toBeCalledWith("previous")
         );
         expect(rewriteUrlWithPagination).toBeCalledWith("previous");
-        done();
       });
 
-      it("should handle a click on next as expected", async (done) => {
+      it("should handle a click on next as expected", async () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledWith("next"));
         expect(rewriteUrlWithPagination).toBeCalledWith("next");
-        done();
       });
     });
 
@@ -221,22 +211,20 @@ describe("outside of a transaction", () => {
         expect(next.parentElement.className).toBe("page-item disabled");
       });
 
-      it("should handle a click on previous as expected", async (done) => {
+      it("should handle a click on previous as expected", async () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() =>
           expect(handlePagination).toBeCalledWith("previous")
         );
         expect(rewriteUrlWithPagination).toBeCalledWith("previous");
-        done();
       });
 
-      it("should handle a click on next as expected, by not actioning it", async (done) => {
+      it("should handle a click on next as expected, by not actioning it", async () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
         expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-        done();
       });
     });
   });
@@ -260,20 +248,18 @@ describe("outside of a transaction", () => {
         expect(next.parentElement.className).toBe("page-item ");
       });
 
-      it("should handle a click on previous as expected, by not actioning it", async (done) => {
+      it("should handle a click on previous as expected, by not actioning it", async () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
         expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-        done();
       });
 
-      it("should handle a click on next as expected", async (done) => {
+      it("should handle a click on next as expected", async () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledWith("next"));
         expect(rewriteUrlWithPagination).toBeCalledWith("next");
-        done();
       });
     });
 
@@ -291,20 +277,18 @@ describe("outside of a transaction", () => {
         expect(next.parentElement.className).toBe("page-item disabled");
       });
 
-      it("should handle a click on previous as expected, by not actioning it", async (done) => {
+      it("should handle a click on previous as expected, by not actioning it", async () => {
         const node = utils.getByTestId("previous");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
         expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-        done();
       });
 
-      it("should handle a click on next as expected, by not actioning it", async (done) => {
+      it("should handle a click on next as expected, by not actioning it", async () => {
         const node = utils.getByTestId("next");
         fireEvent.click(node);
         await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
         expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-        done();
       });
     });
   });

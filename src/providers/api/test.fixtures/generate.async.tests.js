@@ -56,7 +56,7 @@ export const AsyncTest = (
       });
 
       if (implemented.includes(ApiFunctions.asyncAdd)) {
-        it("should call the API, and then dispatch correctly when asyncAdd is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncAdd is called", async () => {
           action = {
             payload: { name: mockObject.name },
             dispatch: mockDispatch,
@@ -80,12 +80,11 @@ export const AsyncTest = (
             },
             callback: undefined,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncDel)) {
-        it("should call the API, and then dispatch correctly when asyncDel is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncDel is called", async () => {
           action = {
             payload: { ...mockObject },
             dispatch: mockDispatch,
@@ -111,12 +110,11 @@ export const AsyncTest = (
             },
             callback: mockCallBack,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncList)) {
-        it("should call the API, and then dispatch correctly when asyncList is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncList is called", async () => {
           action = {
             payload: { id: mockObject.id }, // Support Transaction Lookups
             dispatch: mockDispatch,
@@ -154,10 +152,9 @@ export const AsyncTest = (
             },
             callback: mockCallBack,
           });
-          done();
         });
 
-        it("should call the API, and then dispatch correctly when asyncList is called with a override argument", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncList is called with a override argument", async () => {
           action = {
             payload: { id: mockObject.id }, // Support Transaction Lookups
             dispatch: mockDispatch,
@@ -193,10 +190,9 @@ export const AsyncTest = (
             },
             callback: mockCallBack,
           });
-          done();
         });
 
-        it("should call the API, and then dispatch correctly when asyncList is called with a page request", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncList is called with a page request", async () => {
           action = {
             payload: { id: mockObject.id }, // Support Transaction Lookups
             dispatch: mockDispatch,
@@ -237,12 +233,11 @@ export const AsyncTest = (
             },
             callback: mockCallBack,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncGet)) {
-        it("should call the API, and then dispatch correctly when asyncGet is called, item already in state", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncGet is called, item already in state", async () => {
           const oldObjectState = {
             ...mockObject,
             name: "This name needs to be updated.",
@@ -276,10 +271,9 @@ export const AsyncTest = (
             },
             callback: mockCallBack,
           });
-          done();
         });
 
-        it("should call the API, and then dispatch correctly when asyncGet is called, item not in existing state", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncGet is called, item not in existing state", async () => {
           // mockobject2 is in state, fetching mockobject
 
           action = {
@@ -307,12 +301,11 @@ export const AsyncTest = (
             },
             callback: mockCallBack,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncUpdate)) {
-        it("should call the API, and then dispatch correctly when asyncUpdate is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncUpdate is called", async () => {
           action = {
             payload: { ...mockObject, name: "updated name goes here" },
             dispatch: mockDispatch,
@@ -345,7 +338,6 @@ export const AsyncTest = (
             },
             callback: mockCallBack,
           });
-          done();
         });
       }
     });
@@ -360,7 +352,7 @@ export const AsyncTest = (
       });
 
       if (implemented.includes(ApiFunctions.asyncAdd)) {
-        it("should call the API, and then dispatch correctly when asyncAdd is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncAdd is called", async () => {
           action = {
             payload: { name: mockObject.name },
             dispatch: mockDispatch,
@@ -382,12 +374,11 @@ export const AsyncTest = (
             type: ApiActions.FailureAdd,
             callback: mockCallBack,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncDel)) {
-        it("should call the API, and then dispatch correctly when asyncDel is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncDel is called", async () => {
           action = {
             payload: { ...mockObject },
             dispatch: mockDispatch,
@@ -410,12 +401,11 @@ export const AsyncTest = (
             type: ApiActions.FailureDel,
             callback: mockCallBack,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncList)) {
-        it("should call the API, and then dispatch correctly when asyncList is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncList is called", async () => {
           action = {
             payload: { ...mockObject },
             dispatch: mockDispatch,
@@ -441,12 +431,11 @@ export const AsyncTest = (
             type: ApiActions.FailureList,
             callback: mockCallBack,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncGet)) {
-        it("should call the API, and then dispatch correctly when asyncGet is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncGet is called", async () => {
           action = {
             payload: { id: mockObject.id },
             dispatch: mockDispatch,
@@ -469,12 +458,11 @@ export const AsyncTest = (
             type: ApiActions.FailureGet,
             callback: mockCallBack,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncUpdate)) {
-        it("should call the API, and then dispatch correctly when asyncUpdate is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncUpdate is called", async () => {
           action = {
             payload: { ...mockObject },
             dispatch: mockDispatch,
@@ -498,7 +486,6 @@ export const AsyncTest = (
             type: ApiActions.FailureUpdate,
             callback: mockCallBack,
           });
-          done();
         });
       }
     });
@@ -513,7 +500,7 @@ export const AsyncTest = (
       });
 
       if (implemented.includes(ApiFunctions.asyncAdd)) {
-        it("should call the API, and then dispatch correctly when asyncAdd is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncAdd is called", async () => {
           action = {
             payload: { name: mockObject.name },
             dispatch: mockDispatch,
@@ -535,12 +522,11 @@ export const AsyncTest = (
             type: ApiActions.FailureAuth,
             callback: mockCallBack,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncDel)) {
-        it("should call the API, and then dispatch correctly when asyncDel is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncDel is called", async () => {
           action = {
             payload: { name: mockObject.name },
             dispatch: mockDispatch,
@@ -563,12 +549,11 @@ export const AsyncTest = (
             type: ApiActions.FailureAuth,
             callback: mockCallBack,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncList)) {
-        it("should call the API, and then dispatch correctly when asyncList is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncList is called", async () => {
           action = {
             payload: { ...mockObject },
             dispatch: mockDispatch,
@@ -594,12 +579,11 @@ export const AsyncTest = (
             type: ApiActions.FailureAuth,
             callback: mockCallBack,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncGet)) {
-        it("should call the API, and then dispatch correctly when asyncGet is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncGet is called", async () => {
           action = {
             payload: { name: mockObject.name },
             dispatch: mockDispatch,
@@ -622,12 +606,11 @@ export const AsyncTest = (
             type: ApiActions.FailureAuth,
             callback: mockCallBack,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncUpdate)) {
-        it("should call the API, and then dispatch correctly when asyncUpdate is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncUpdate is called", async () => {
           action = {
             payload: { ...mockObject },
             dispatch: mockDispatch,
@@ -651,7 +634,6 @@ export const AsyncTest = (
             type: ApiActions.FailureAuth,
             callback: mockCallBack,
           });
-          done();
         });
       }
     });
@@ -669,7 +651,7 @@ export const AsyncTest = (
       });
 
       if (implemented.includes(ApiFunctions.asyncAdd)) {
-        it("should call the API, and then dispatch correctly when asyncAdd is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncAdd is called", async () => {
           action = {
             payload: { name: mockObject.name },
             dispatch: mockDispatch,
@@ -690,10 +672,9 @@ export const AsyncTest = (
             type: ApiActions.DuplicateObject,
             callback: mockCallBack,
           });
-          done();
         });
 
-        it("should call the API, and then dispatch correctly when asyncAdd is called, no callback", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncAdd is called, no callback", async () => {
           action = {
             payload: { name: mockObject.name },
             dispatch: mockDispatch,
@@ -713,12 +694,11 @@ export const AsyncTest = (
             type: ApiActions.DuplicateObject,
             callback: undefined,
           });
-          done();
         });
       }
 
       if (implemented.includes(ApiFunctions.asyncUpdate)) {
-        it("should call the API, and then dispatch correctly when asyncUpdate is called", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncUpdate is called", async () => {
           action = {
             payload: { ...mockObject },
             dispatch: mockDispatch,
@@ -742,9 +722,8 @@ export const AsyncTest = (
             type: ApiActions.DuplicateObject,
             callback: mockCallBack,
           });
-          done();
         });
-        it("should call the API, and then dispatch correctly when asyncUpdate is called, no callback", async (done) => {
+        it("should call the API, and then dispatch correctly when asyncUpdate is called, no callback", async () => {
           action = {
             payload: { ...mockObject },
             dispatch: mockDispatch,
@@ -768,7 +747,6 @@ export const AsyncTest = (
             type: ApiActions.DuplicateObject,
             callback: mockCallBack,
           });
-          done();
         });
       }
     });

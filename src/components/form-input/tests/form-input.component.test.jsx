@@ -31,7 +31,7 @@ describe("Setup Environment, all fields populated", () => {
 
   afterEach(cleanup);
 
-  it("should render and handle input as expected", async (done) => {
+  it("should render and handle input as expected", async () => {
     expect(currentTest).toBe(1);
     expect(utils.getByText("Some Label")).toBeTruthy();
     expect(utils.getByText("Some Detail")).toBeTruthy();
@@ -45,8 +45,6 @@ describe("Setup Environment, all fields populated", () => {
 
     expect(setErrorMsg).toBeCalledWith(null);
     expect(handleState).toBeCalledWith("some text");
-
-    done();
   });
 });
 
@@ -64,7 +62,7 @@ describe("Setup Environment, no label or details", () => {
 
   afterEach(cleanup);
 
-  it("should render and handle input as expected", async (done) => {
+  it("should render and handle input as expected", async () => {
     expect(currentTest).toBe(1);
     expect(utils.queryByText("Some Label")).toBeFalsy();
     expect(utils.queryByText("Some Detail")).toBeFalsy();
@@ -78,7 +76,5 @@ describe("Setup Environment, no label or details", () => {
 
     expect(setErrorMsg).toBeCalledWith(null);
     expect(handleState).toBeCalledWith("some text");
-
-    done();
   });
 });

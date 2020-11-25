@@ -22,7 +22,7 @@ describe("Check the correct props are passed to ", () => {
 
   afterEach(cleanup);
 
-  it("should render the details page correctly", async (done) => {
+  it("should render the details page correctly", async () => {
     await waitFor(() => expect(Dialogue).toBeCalledTimes(1));
     const props = Dialogue.mock.calls[0][0];
     propCount(props, 4);
@@ -31,7 +31,5 @@ describe("Check the correct props are passed to ", () => {
     expect(props.headerTitle).toBe(Strings.AboutPage.HeaderTitle);
     expect(props.body).toBe(Strings.AboutPage.Body);
     expect(props.Footer).toBe(FeedBack);
-
-    done();
   });
 });

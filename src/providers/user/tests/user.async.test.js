@@ -69,7 +69,7 @@ describe("Setup for Testing asyncLogin", () => {
     Request.mockReturnValue([mockData.response, mockData.status]);
   });
 
-  it("should fail immediately if the provider is not supported", async (done) => {
+  it("should fail immediately if the provider is not supported", async () => {
     asyncLogin({
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
@@ -82,10 +82,9 @@ describe("Setup for Testing asyncLogin", () => {
         username: "",
       },
     });
-    done();
   });
 
-  it("should post google login data to the api, and then dispatch accordingly on success", async (done) => {
+  it("should post google login data to the api, and then dispatch accordingly on success", async () => {
     asyncLogin({
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
@@ -103,10 +102,9 @@ describe("Setup for Testing asyncLogin", () => {
         email: mockData._profile.email,
       },
     });
-    done();
   });
 
-  it("should post google login data to the api, and then dispatch accordingly on failures", async (done) => {
+  it("should post google login data to the api, and then dispatch accordingly on failures", async () => {
     asyncLogin({
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
@@ -122,10 +120,9 @@ describe("Setup for Testing asyncLogin", () => {
         username: mockData._profile.name,
       },
     });
-    done();
   });
 
-  it("should post facebook login data to the api, and then dispatch accordingly on success", async (done) => {
+  it("should post facebook login data to the api, and then dispatch accordingly on success", async () => {
     asyncLogin({
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
@@ -143,10 +140,9 @@ describe("Setup for Testing asyncLogin", () => {
         email: mockData._profile.email,
       },
     });
-    done();
   });
 
-  it("should post facebook login data to the api, and then dispatch accordingly on failures", async (done) => {
+  it("should post facebook login data to the api, and then dispatch accordingly on failures", async () => {
     asyncLogin({
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
@@ -162,10 +158,9 @@ describe("Setup for Testing asyncLogin", () => {
         username: mockData._profile.name,
       },
     });
-    done();
   });
 
-  it("should post google login data to the api, and then dispatch accordingly on the duplicate account case", async (done) => {
+  it("should post google login data to the api, and then dispatch accordingly on the duplicate account case", async () => {
     asyncLogin({
       state: "MockState",
       action: { payload: mockData, dispatch: mockDispatch },
@@ -178,7 +173,6 @@ describe("Setup for Testing asyncLogin", () => {
     expect(mockDispatch).toBeCalledWith({
       type: UserActions.DuplicateAccount,
     });
-    done();
   });
 });
 

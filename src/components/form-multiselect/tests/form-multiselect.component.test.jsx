@@ -35,7 +35,7 @@ describe("Setup Environment, all fields populated", () => {
 
   afterEach(cleanup);
 
-  it("should render and handle a new selection as expected", async (done) => {
+  it("should render and handle a new selection as expected", async () => {
     expect(currentTest).toBe(1);
     expect(utils.getByText("Some Label")).toBeTruthy();
     expect(utils.getByText("Some Detail")).toBeTruthy();
@@ -53,11 +53,9 @@ describe("Setup Environment, all fields populated", () => {
 
     expect(setErrorMsg).toBeCalledWith(null);
     expect(handleState).toBeCalledWith([option2, option1]);
-
-    done();
   });
 
-  it("should render and handle a removal as expected", async (done) => {
+  it("should render and handle a removal as expected", async () => {
     expect(currentTest).toBe(2);
     expect(utils.getByText("Some Label")).toBeTruthy();
     expect(utils.getByText("Some Detail")).toBeTruthy();
@@ -71,11 +69,9 @@ describe("Setup Environment, all fields populated", () => {
 
     expect(setErrorMsg).toBeCalledWith(null);
     expect(handleState).toBeCalledWith([]);
-
-    done();
   });
 
-  it("should render and handle a clear as expected", async (done) => {
+  it("should render and handle a clear as expected", async () => {
     expect(currentTest).toBe(3);
     expect(utils.getByText("Some Label")).toBeTruthy();
     expect(utils.getByText("Some Detail")).toBeTruthy();
@@ -89,8 +85,6 @@ describe("Setup Environment, all fields populated", () => {
 
     expect(setErrorMsg).toBeCalledWith(null);
     expect(handleState).toBeCalledWith([]);
-
-    done();
   });
 });
 
@@ -108,7 +102,7 @@ describe("Setup Environment, no label or details", () => {
 
   afterEach(cleanup);
 
-  it("should render as expected", async (done) => {
+  it("should render as expected", async () => {
     expect(currentTest).toBe(1);
     expect(utils.queryByText("Some Label")).toBeFalsy();
     expect(utils.queryByText("Some Detail")).toBeFalsy();
@@ -116,7 +110,5 @@ describe("Setup Environment, no label or details", () => {
     expect(
       utils.container.querySelector(".list__dropdown-indicator")
     ).toBeTruthy();
-
-    done();
   });
 });

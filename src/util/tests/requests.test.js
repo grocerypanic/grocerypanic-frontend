@@ -14,7 +14,7 @@ describe("test the Request method", () => {
     jest.clearAllMocks();
   });
 
-  it("should call refresh csrf on a csrf error as expected", async (done) => {
+  it("should call refresh csrf on a csrf error as expected", async () => {
     Backend.mockImplementation(() => [
       { error: Constants.csrfErrorMessage },
       403,
@@ -25,25 +25,22 @@ describe("test the Request method", () => {
 
     await waitFor(() => expect(RefreshCSRF).toBeCalledTimes(1));
     expect(Backend).toBeCalledTimes(2);
-    done();
   });
 
-  it("should not call refresh as expected", async (done) => {
+  it("should not call refresh as expected", async () => {
     Backend.mockImplementation(() => [{ data: "valuable data" }, 200]);
     const data = { datavalue: 1 };
     Request("POST", "/some/path", data);
 
     await waitFor(() => expect(RefreshCSRF).toBeCalledTimes(0));
     expect(Backend).toBeCalledTimes(1);
-    done();
   });
 
-  it("should not call refresh as expected, get method", async (done) => {
+  it("should not call refresh as expected, get method", async () => {
     Backend.mockImplementation(() => [{ data: "valuable data" }, 200]);
     Request("GET", "/some/path");
 
     await waitFor(() => expect(RefreshCSRF).toBeCalledTimes(0));
     expect(Backend).toBeCalledTimes(1);
-    done();
   });
 });
