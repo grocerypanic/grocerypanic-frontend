@@ -4,6 +4,7 @@ on:
   push:
   schedule:
     - cron: "0 6 * * 1"
+  workflow_dispatch:
 
 jobs:
   push:
@@ -69,18 +70,18 @@ jobs:
         if: contains(github.ref, '/tags/v') == true
         run: |
           GIT_DIFF=$(git diff origin/master)
-          echo "::set-env name=GIT_DIFF::${GIT_DIFF}"
+          echo "GIT_DIFF=${GIT_DIFF}" >> $GITHUB_ENV
       - name: Production -- Ignore Non-Release Tags and Branches
         if: contains(github.ref, '/tags/v') != true
         run: |
           GIT_DIFF="not a release"
-          echo "::set-env name=GIT_DIFF::${GIT_DIFF}"
+          echo "GIT_DIFF=${GIT_DIFF}" >> $GITHUB_ENV
 
       - name: Production -- Prepare Release Content
         if: env.GIT_DIFF == ''
         run: |
           NEWTAG=${GITHUB_REF#refs/tags/}
-          echo "::set-env name=NEWTAG::${NEWTAG}"
+          echo "NEWTAG=${NEWTAG}" >> $GITHUB_ENV
       - name: Production -- Generate Changelog
         if: env.GIT_DIFF == ''
         uses: scottbrenner/generate-changelog-action@master
