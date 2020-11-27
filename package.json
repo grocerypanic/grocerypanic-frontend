@@ -33,7 +33,12 @@
     "react-social-login": "^3.4.7",
     "react-social-login-buttons": "^3.1.0",
     "styled-components": "^5.1.0",
-    "use-persisted-reducer": "^2.1.0"
+    "use-persisted-reducer": "^2.1.0",
+    "workbox-core": "^5.1.4",
+    "workbox-expiration": "^5.1.4",
+    "workbox-precaching": "^5.1.4",
+    "workbox-routing": "^5.1.4",
+    "workbox-strategies": "^5.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -53,6 +58,7 @@
     ],
     "coveragePathIgnorePatterns": [
       "src/serviceWorker.js",
+      "src/service-worker.js",
       "src/setupTests.js",
       "src/configuration/*",
       "src/test.fixtures/*",

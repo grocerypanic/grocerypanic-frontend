@@ -38,14 +38,14 @@ ReactDOM.render(<Index />, document.getElementById("root"));
 // Learn more about service workers: https://bit.ly/CRA-PWA
 
 export const performUpdate = (registration) => {
-  const confirmation = window.confirm(
-    "New version available!  Ready to update?"
-  );
-  if (!confirmation) return;
   if (registration && registration.waiting) {
+    const confirmation = window.confirm(
+      "New version available!  Ready to update?"
+    );
+    if (!confirmation) return;
     registration.waiting.postMessage({ type: "SKIP_WAITING" });
+    window.location.reload();
   }
-  window.location.reload();
 };
 
 serviceWorker.register({
