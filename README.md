@@ -1,14 +1,14 @@
 # panic-fe
 
-### Master (Production)
+### Master (Staging Environment)
 [![panic_fe-Automation](https://github.com/niall-byrne/panic-fe/workflows/panic_fe-Automation/badge.svg?branch=master)](https://github.com/niall-byrne/panic-fe/actions)
 
-[Production Deploy](https://grocerypanic.com)
-
-### Develop (Staging)
-[![panic_fe-Automation](https://github.com/niall-byrne/panic-fe/workflows/panic_fe-Automation/badge.svg?branch=develop)](https://github.com/niall-byrne/panic-fe/actions)
-
 [Staging Deploy](https://demo.grocerypanic.com)
+
+### Production (Production Environment)
+[![panic_fe-Automation](https://github.com/niall-byrne/panic-fe/workflows/panic_fe-Automation/badge.svg?branch=production)](https://github.com/niall-byrne/panic-fe/actions)
+
+[Production Deploy](https://grocerypanic.com)
 
 - [Screen Shot 1](./demo/Screen1.png)
 - [Screen Shot 2](./demo/Screen2.png)
