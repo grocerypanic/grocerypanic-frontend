@@ -30,11 +30,11 @@ export const Providers = {
 export const Paths = {
   googleLogin: "/api/v1/auth/social/google/",
   facebookLogin: "/api/v1/auth/social/facebook/",
-  manageShelves: "/api/v1/shelf/",
-  manageStores: "/api/v1/store/",
-  manageItems: "/api/v1/item/",
+  manageShelves: "/api/v1/shelves/",
+  manageStores: "/api/v1/stores/",
+  manageItems: "/api/v1/items/",
   refreshCSRF: "/api/v1/auth/csrf/",
-  manageTransactions: "/api/v1/transaction/",
+  manageTransactions: "/api/v1/transactions/",
 };
 
 const month = 30;
