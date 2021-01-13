@@ -9,6 +9,11 @@ on:
 jobs:
   push:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
     steps:
       - uses: actions/checkout@v2
         with:
