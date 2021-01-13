@@ -32,7 +32,7 @@
     "react-scripts": "^4.0.0",
     "react-select": "^3.1.0",
     "react-social-login": "^3.4.7",
-    "react-social-login-buttons": "^3.1.0",
+    "react-social-login-buttons": "3.1.0",
     "styled-components": "^5.1.0",
     "use-persisted-reducer": "^2.1.0",
     "workbox-core": "^5.1.4",
