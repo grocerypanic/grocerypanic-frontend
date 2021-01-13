@@ -1,3 +1,4 @@
+import Chart from "chart.js";
 import React from "react";
 import Table from "react-bootstrap/Table";
 import { useTranslation } from "react-i18next";
@@ -46,7 +47,7 @@ const TransactionsReview = ({ item, ready, tr }) => {
 
     const ctx = document.getElementById("consumptionChart").getContext("2d");
     ctx.clearRect(0, 0, ctx.width, ctx.height);
-    ActivityChart = new global.Chart(ctx, {
+    ActivityChart = new Chart(ctx, {
       type: "line",
       data: {
         labels,

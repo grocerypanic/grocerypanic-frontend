@@ -1,3 +1,5 @@
+import Chart from "chart.js";
+
 import React from "react";
 import "jest-canvas-mock";
 import { render, cleanup, waitFor } from "@testing-library/react";
@@ -15,8 +17,8 @@ import { generateConverter } from "../../../providers/api/api.util";
 import { graph } from "../../../configuration/theme";
 import { propCount } from "../../../test.fixtures/objectComparison";
 
-global.Chart = jest.fn();
-global.Chart.mockImplementation(() => {
+jest.mock("chart.js");
+Chart.mockImplementation(() => {
   return {
     render: jest.fn(),
     destroy: jest.fn(),
@@ -140,7 +142,7 @@ describe("Setup Environment", () => {
       });
 
       it("should render the graph", async () => {
-        await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
+        await waitFor(() => expect(Chart).toBeCalledTimes(1));
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -172,7 +174,7 @@ describe("Setup Environment", () => {
         expect(
           utils.queryByText(`${Strings.ItemStats.NotEnoughData}`)
         ).toBeTruthy();
-        expect(global.Chart).toBeCalledTimes(0);
+        expect(Chart).toBeCalledTimes(0);
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -205,7 +207,7 @@ describe("Setup Environment", () => {
       });
 
       it("should render the graph", async () => {
-        await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
+        await waitFor(() => expect(Chart).toBeCalledTimes(1));
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -240,7 +242,7 @@ describe("Setup Environment", () => {
       });
 
       it("should render the graph", async () => {
-        await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
+        await waitFor(() => expect(Chart).toBeCalledTimes(1));
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -279,7 +281,7 @@ describe("Setup Environment", () => {
       });
 
       it("should render the graph", async () => {
-        await waitFor(() => expect(global.Chart).toBeCalledTimes(1));
+        await waitFor(() => expect(Chart).toBeCalledTimes(1));
       });
 
       it("should match the snapshot on file (styles)", () => {
@@ -314,7 +316,7 @@ describe("Setup Environment", () => {
       });
 
       it("should not render the graph", async () => {
-        expect(global.Chart).toBeCalledTimes(0);
+        expect(Chart).toBeCalledTimes(0);
       });
 
       it("should match the snapshot on file (styles)", () => {
