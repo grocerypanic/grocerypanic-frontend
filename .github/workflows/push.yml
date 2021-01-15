@@ -88,7 +88,7 @@ jobs:
           echo "NEWTAG=${NEWTAG}" >> $GITHUB_ENV
       - name: Production -- Generate Changelog
         if: env.GIT_DIFF == ''
-        uses: scottbrenner/generate-changelog-action@master
+        uses: scottbrenner/generate-changelog-action@1.0.3
         id: Changelog
         env:
           REPO: ${{ github.repository }}
@@ -102,6 +102,10 @@ jobs:
           release_name: Release ${{ env.NEWTAG }}
           body: |
             ${{ steps.Changelog.outputs.changelog }}
+            ## Deployment Checklist          
+            - [ ] Ensure minimum API version is noted
+            - [ ] Perform basic QA tests (register, add store, add shelf, add items)
+            - [ ] Visual inspection of recent activity charts in stage
           draft: true
           prerelease: false
 
