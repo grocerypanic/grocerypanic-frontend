@@ -61,12 +61,13 @@ const generateChartOptions = (item) => {
         {
           ticks: {
             maxTicksLimit: 9,
+            precision: 0,
           },
         },
       ],
     },
     title: {
-      text: item.name + " (recent activity)",
+      text: item.name + " (past 2 weeks)",
       display: true,
     },
     legend: {
