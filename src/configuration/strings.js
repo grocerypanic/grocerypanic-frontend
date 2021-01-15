@@ -107,7 +107,7 @@ export const Strings = {
         ConsumptionAvgWeek: "avg. per week",
         ConsumptionAvgMonth: "avg. per month",
         NotEnoughData: "Not Enough Data",
-        GraphChangEvent: "Change Event",
+        GraphChangeEvent: "Change",
         GraphQuantity: "Quantity",
       },
       ItemList: {

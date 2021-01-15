@@ -1,4 +1,3 @@
-import Chart from "chart.js";
 import React from "react";
 import Table from "react-bootstrap/Table";
 import { useTranslation } from "react-i18next";
@@ -15,7 +14,7 @@ import {
   averageMonthlyConsumption,
 } from "../../util/consumption";
 
-import { Constants } from "../../configuration/backend";
+import { renderChart } from "./transaction.chart";
 import { graph } from "../../configuration/theme";
 
 import { Paper } from "../../global-styles/containers";
@@ -24,79 +23,12 @@ import { Outline, InnerBox, PlaceHolder } from "./transactions.styles";
 
 const TransactionsReview = ({ item, ready, tr }) => {
   const { t } = useTranslation();
+
   let ActivityChart;
-
-  const renderGraph = () => {
-    const labels = tr.map((o) => "").slice(Constants.maximumTransactions * -1);
-    let accumulate = item.quantity;
-
-    const calculateQuantity = () => {
-      const quantity = tr
-        .map((o) => {
-          accumulate -= o.quantity;
-          return accumulate;
-        })
-        .reverse();
-      quantity.shift();
-      quantity.push(item.quantity);
-      return quantity;
-    };
-
-    /* istanbul ignore next */
-    const nullFunction = () => null;
-
-    const ctx = document.getElementById("consumptionChart").getContext("2d");
-    ctx.clearRect(0, 0, ctx.width, ctx.height);
-    ActivityChart = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels,
-        datasets: [
-          {
-            label: t("ItemStats.GraphChangEvent"),
-            borderColor: graph.changeLine,
-            data: tr
-              .map((o, index) => {
-                return { y: o.quantity, x: index };
-              })
-              .slice(Constants.maximumTransactions * -1)
-              .reverse(),
-          },
-          {
-            label: t("ItemStats.GraphQuantity"),
-            borderColor: graph.quantityLine,
-            data: calculateQuantity().slice(Constants.maximumTransactions * -1),
-          },
-        ],
-      },
-      options: {
-        title: {
-          text: item.name,
-          display: true,
-        },
-        legend: {
-          display: false,
-          generateLabels: nullFunction,
-        },
-        layout: {
-          padding: {
-            left: 0,
-            right: 5,
-            top: graph.topPadding,
-            bottom: 0,
-          },
-          margin: 0,
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-      },
-    });
-    ActivityChart.render();
-  };
 
   React.useEffect(() => {
     if (tr.length < 2 || !ready) return;
-    renderGraph();
+    ActivityChart = renderChart(t, tr, item); // eslint-disable-line
     return () => {
       ActivityChart.destroy();
     };

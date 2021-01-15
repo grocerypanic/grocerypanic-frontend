@@ -15,7 +15,7 @@ export const Constants = {
   defaultShelfLife: 7,
   minimumPrice: 0,
   maximumPrice: 9999,
-  maximumTransactions: 50,
+  maximumTransactionHistory: 14,
   AnalyticsCookieName: "PanicDataConsent-" + process.env.NODE_ENV.toUpperCase(),
   duplicateObjectApiError: { non_field_errors: ["Object already exists."] },
   pageLookupParam: "page",
