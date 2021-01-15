@@ -57,11 +57,10 @@ export const generateChartData = (transactions, item) => {
 const generateChartOptions = (item) => {
   return {
     scales: {
-      xAxes: [
+      yAxes: [
         {
-          scaleLabel: {
-            display: true,
-            labelString: "Number of Days Ago",
+          ticks: {
+            maxTicksLimit: 9,
           },
         },
       ],

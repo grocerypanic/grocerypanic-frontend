@@ -31,7 +31,7 @@ export const mobileThreshold = 480;
 export const graph = {
   quantityLine: "rgb(2, 117, 216)",
   changeLine: "rgb(92, 184, 92)",
-  topPadding: 10,
+  topPadding: -12,
   holdingPatternHeight: "134px",
   chartContainerHeight: "150px",
   holdingPatternColor: "secondary",
