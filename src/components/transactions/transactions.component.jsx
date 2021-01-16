@@ -27,7 +27,7 @@ const TransactionsReview = ({ item, ready, tr }) => {
   let ActivityChart;
 
   React.useEffect(() => {
-    if (tr.length < 2 || !ready) return;
+    if (tr.length < 1 || !ready) return;
     ActivityChart = renderChart(t, tr, item); // eslint-disable-line
     return () => {
       ActivityChart.destroy();
@@ -72,7 +72,7 @@ const TransactionsReview = ({ item, ready, tr }) => {
               scale={graph.holdingPatternScale}
               divHeight={graph.holdingPatternDivHeight}
             >
-              {tr.length > 1 ? (
+              {tr.length > 0 ? (
                 <div className="chartBox">
                   <canvas id="consumptionChart"></canvas>
                 </div>
