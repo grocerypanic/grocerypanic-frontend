@@ -6,11 +6,18 @@ import { graph } from "../../configuration/theme";
 
 export const renderChart = (translateFn, transactions, item) => {
   const [quantities, changes] = generateChartData(transactions, item);
+  const labels = [translateFn("ItemStats.GraphNow")];
+  const dayMarker = translateFn("ItemStats.GraphDayShortForm");
+
+  [...Array(Constants.maximumTransactionHistory).keys()].forEach((index) => {
+    const key = index * -1 - 1;
+    labels.push(`${key}${dayMarker}`);
+  });
 
   const ActivityChart = new Chart(generateCtx(), {
     type: "line",
     data: {
-      labels: [...Array(Constants.maximumTransactionHistory + 1).keys()],
+      labels,
       datasets: [
         {
           label: translateFn("ItemStats.GraphChangeEvent"),
@@ -28,7 +35,7 @@ export const renderChart = (translateFn, transactions, item) => {
         },
       ],
     },
-    options: generateChartOptions(item),
+    options: generateChartOptions(item, translateFn),
   });
   ActivityChart.render();
   return ActivityChart;
@@ -54,7 +61,7 @@ export const generateChartData = (transactions, item) => {
   return [quantities, changes];
 };
 
-const generateChartOptions = (item) => {
+const generateChartOptions = (item, translateFn) => {
   return {
     scales: {
       yAxes: [
@@ -67,7 +74,7 @@ const generateChartOptions = (item) => {
       ],
     },
     title: {
-      text: item.name + " (past 2 weeks)",
+      text: item.name + ` (${translateFn("ItemStats.GraphSubTitle")})`,
       display: true,
     },
     legend: {

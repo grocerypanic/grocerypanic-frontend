@@ -109,6 +109,9 @@ export const Strings = {
         NotEnoughData: "Not Enough Data",
         GraphChangeEvent: "Change",
         GraphQuantity: "Quantity",
+        GraphSubTitle: "past 2 weeks",
+        GraphDayShortForm: "d",
+        GraphNow: "",
       },
       ItemList: {
         ApiError:
