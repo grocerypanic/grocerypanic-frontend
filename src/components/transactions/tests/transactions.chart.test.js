@@ -5,7 +5,11 @@ import { Constants } from "../../../configuration/backend";
 
 import moment from "moment";
 
-import { renderChart, generateChartData } from "../transaction.chart";
+import {
+  renderChart,
+  generateChartData,
+  nullFunction,
+} from "../transaction.chart";
 
 describe("Test renderGraph", () => {
   const stubbedTranslateFunction = () => {};
@@ -28,13 +32,15 @@ describe("Test renderGraph", () => {
 });
 
 describe("Test generateChartData", () => {
+  const utc = moment.utc;
+
   const stubbedTransactions = [
-    { id: 3, datetime: moment().add(-1, "days"), quantity: 1, item: 1 },
-    { id: 4, datetime: moment().add(-1, "days"), quantity: 1, item: 1 },
-    { id: 5, datetime: moment().add(-6, "days"), quantity: 2, item: 1 },
-    { id: 6, datetime: moment().add(-6, "days"), quantity: 2, item: 1 },
-    { id: 7, datetime: moment().add(-7, "days"), quantity: -2, item: 1 },
-    { id: 22, datetime: moment().add(-22, "days"), quantity: -22, item: 1 },
+    { id: 3, datetime: utc().add(-1, "days"), quantity: 1, item: 1 },
+    { id: 4, datetime: utc().add(-1, "days"), quantity: 1, item: 1 },
+    { id: 5, datetime: utc().add(-6, "days"), quantity: 2, item: 1 },
+    { id: 6, datetime: utc().add(-6, "days"), quantity: 2, item: 1 },
+    { id: 7, datetime: utc().add(-7, "days"), quantity: -2, item: 1 },
+    { id: 22, datetime: utc().add(-22, "days"), quantity: -22, item: 1 },
   ];
   const stubbedItem = { id: 1, name: "Some Item", quantity: 200 };
 
@@ -82,5 +88,11 @@ describe("Test generateChartData", () => {
       expect(quantity).toBe(next_quantity);
       last_quantity = next_quantity;
     });
+  });
+});
+
+describe("Test the label blanking nullFunction", () => {
+  it("should return null", () => {
+    expect(nullFunction()).toBeNull();
   });
 });

@@ -49,7 +49,7 @@ export const generateChartData = (transactions, item) => {
   [...Array(Constants.maximumTransactionHistory + 1).keys()].forEach((i) => {
     let total_change = 0;
     transactions.forEach((transaction) => {
-      if (timedelta(transaction.datetime) === i) {
+      if (daysAgo(transaction.datetime) === i) {
         total_change += transaction.quantity;
       }
     });
@@ -101,9 +101,8 @@ const generateCtx = () => {
   return ctx;
 };
 
-const timedelta = (timestamp) => {
-  return timestamp.diff(moment(), "days") * -1;
+const daysAgo = (timestamp) => {
+  return timestamp.startOf("day").diff(moment(), "days") * -1;
 };
 
-/* istanbul ignore next */
-const nullFunction = () => null;
+export const nullFunction = () => null;
