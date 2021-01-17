@@ -9,11 +9,8 @@ import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 import TransactionsReview from "../transactions.component";
 
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-import InitialState from "../../../providers/api/transaction/transaction.initial";
-import ItemInitialState from "../../../providers/api/item/item.initial";
 
 import Strings from "../../../configuration/strings";
-import { generateConverter } from "../../../providers/api/generators/generate.converter";
 import { graph } from "../../../configuration/theme";
 import { propCount } from "../../../test.fixtures/objectComparison";
 

@@ -64,8 +64,7 @@ describe("Check generateConverter works as expected", () => {
 
     it("should convert transaction date when given a string as input", () => {
       const testDate = "2020-01-01";
-      const expected = moment.utc(testDate)
-        .local()
+      const expected = moment.utc(testDate).local();
 
       const testObject = { ...mockTransaction, datetime: testDate };
       const converted = convertDatesToLocal(testObject);
