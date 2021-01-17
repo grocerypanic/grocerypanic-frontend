@@ -1,3 +1,5 @@
+import moment from "moment";
+
 import {
   consumedWithinLastWeek,
   consumedWithinLastMonth,
@@ -5,28 +7,23 @@ import {
   averageMonthlyConsumption,
 } from "../consumption";
 
-import InitialState from "../../providers/api/transaction/transaction.initial";
-import { generateConverter } from "../../providers/api/generators/generate.converter";
-
 // Freeze Time
 Date.now = jest.fn(() => new Date("2020-06-16T11:01:58.135Z"));
 
-const convertDatesToLocal = generateConverter(InitialState.class);
-
 const mockTransactions = [
-  { id: 0, item: 1, datetime: "2019-09-14", quantity: -5 },
-  { id: 1, item: 1, datetime: "2019-09-15", quantity: -5 },
-  { id: 2, item: 1, datetime: "2019-10-15", quantity: 5 },
-  { id: 3, item: 1, datetime: "2019-11-15", quantity: -5 },
-  { id: 4, item: 1, datetime: "2019-12-15", quantity: 5 },
-  { id: 5, item: 1, datetime: "2020-01-15", quantity: -5 },
-  { id: 6, item: 1, datetime: "2020-01-16", quantity: -5 },
-  { id: 7, item: 1, datetime: "2020-02-15", quantity: 5 },
-  { id: 8, item: 1, datetime: "2020-03-15", quantity: 5 },
-  { id: 9, item: 1, datetime: "2020-06-05", quantity: -1 },
-  { id: 10, item: 1, datetime: "2020-06-10", quantity: -3 },
-  { id: 11, item: 1, datetime: "2020-06-15", quantity: -3 },
-].map((o) => convertDatesToLocal(o));
+  { id: 0, item: 1, datetime: moment("2019-09-14").utc(), quantity: -5 },
+  { id: 1, item: 1, datetime: moment("2019-09-15").utc(), quantity: -5 },
+  { id: 2, item: 1, datetime: moment("2019-10-15").utc(), quantity: 5 },
+  { id: 3, item: 1, datetime: moment("2019-11-15").utc(), quantity: -5 },
+  { id: 4, item: 1, datetime: moment("2019-12-15").utc(), quantity: 5 },
+  { id: 5, item: 1, datetime: moment("2020-01-15").utc(), quantity: -5 },
+  { id: 6, item: 1, datetime: moment("2020-01-16").utc(), quantity: -5 },
+  { id: 7, item: 1, datetime: moment("2020-02-15").utc(), quantity: 5 },
+  { id: 8, item: 1, datetime: moment("2020-03-15").utc(), quantity: 5 },
+  { id: 9, item: 1, datetime: moment("2020-06-05").utc(), quantity: -1 },
+  { id: 10, item: 1, datetime: moment("2020-06-10").utc(), quantity: -3 },
+  { id: 11, item: 1, datetime: moment("2020-06-16").utc(), quantity: -3 },
+];
 
 const consumption_by_week = {
   20203: -10,

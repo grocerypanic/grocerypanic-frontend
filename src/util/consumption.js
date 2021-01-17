@@ -26,6 +26,7 @@ export const averageWeeklyConsumption = (transaction_values) => {
       results[header] = o.quantity;
     }
   });
+
   if (Object.values(results).length === 0) return 0;
   const sum = Object.values(results).reduce((a, b) => a + b, 0);
   const avg = Math.abs(sum / Object.values(results).length).toFixed(1);

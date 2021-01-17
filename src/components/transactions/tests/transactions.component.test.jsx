@@ -35,35 +35,32 @@ const OriginalDate = Date.now;
 const mockDate = () =>
   (Date.now = jest.fn(() => new Date("2020-06-16T11:01:58.135Z")));
 
-const convertDatesToLocal = generateConverter(InitialState.class);
-const convertItemDatesToLocal = generateConverter(ItemInitialState.class);
-
-const mockItem = convertItemDatesToLocal({
+const mockItem = {
   expired: 0,
   id: 1,
   name: "Vegan Cheese",
-  next_expiry_date: "2020-06-18",
+  next_expiry_date: moment("2020-06-18").utc(),
   next_expiry_quantity: 1,
   preferred_stores: [1],
   price: "4.00",
   quantity: 1,
   shelf: 2,
   shelf_life: 5,
-});
+};
 
 const mockTransactions = [
-  { id: 1, item: 1, datetime: "2019-09-15", quantity: -5 },
-  { id: 2, item: 1, datetime: "2019-10-15", quantity: 5 },
-  { id: 3, item: 1, datetime: "2019-11-15", quantity: -5 },
-  { id: 4, item: 1, datetime: "2019-12-15", quantity: 5 },
-  { id: 5, item: 1, datetime: "2020-01-15", quantity: -5 },
-  { id: 6, item: 1, datetime: "2020-01-16", quantity: -5 },
-  { id: 7, item: 1, datetime: "2020-02-15", quantity: 5 },
-  { id: 8, item: 1, datetime: "2020-03-15", quantity: 5 },
-  { id: 9, item: 1, datetime: "2020-06-05", quantity: -1 },
-  { id: 10, item: 1, datetime: "2020-06-10", quantity: -3 },
-  { id: 11, item: 1, datetime: "2020-06-15", quantity: -3 },
-].map((o) => convertDatesToLocal(o));
+  { id: 1, item: 1, datetime: moment("2019-09-15").utc(), quantity: -5 },
+  { id: 2, item: 1, datetime: moment("2019-10-15").utc(), quantity: 5 },
+  { id: 3, item: 1, datetime: moment("2019-11-15").utc(), quantity: -5 },
+  { id: 4, item: 1, datetime: moment("2019-12-15").utc(), quantity: 5 },
+  { id: 5, item: 1, datetime: moment("2020-01-15").utc(), quantity: -5 },
+  { id: 6, item: 1, datetime: moment("2020-01-16").utc(), quantity: -5 },
+  { id: 7, item: 1, datetime: moment("2020-02-15").utc(), quantity: 5 },
+  { id: 8, item: 1, datetime: moment("2020-03-15").utc(), quantity: 5 },
+  { id: 9, item: 1, datetime: moment("2020-06-05").utc(), quantity: -1 },
+  { id: 10, item: 1, datetime: moment("2020-06-10").utc(), quantity: -3 },
+  { id: 11, item: 1, datetime: moment("2020-06-16").utc(), quantity: -3 },
+];
 
 describe("Setup Environment", () => {
   let utils;
@@ -76,6 +73,10 @@ describe("Setup Environment", () => {
       ready: false,
       tr: [...mockTransactions],
     };
+  });
+
+  afterEach(() => {
+    Date.now = OriginalDate;
   });
 
   const renderHelper = (config) => {
@@ -252,10 +253,9 @@ describe("Setup Environment", () => {
 
     describe("with no items expirying soon in inventory, but an old next_expiry_date set", () => {
       beforeEach(() => {
-        Date.now = OriginalDate;
+        jest.clearAllMocks();
         current.item.next_expiry_date = moment("2019-06-16");
         current.next_expiry_quantity = 0;
-        mockDate();
         utils = renderHelper(current);
       });
 
