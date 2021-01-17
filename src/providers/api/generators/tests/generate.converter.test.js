@@ -64,12 +64,13 @@ describe("Check generateConverter works as expected", () => {
 
     it("should convert transaction date when given a string as input", () => {
       const testDate = "2020-01-01";
-      const testDateAsDate = moment.utc(testDate);
+      const expected = moment.utc(testDate)
+        .local()
 
       const testObject = { ...mockTransaction, datetime: testDate };
       const converted = convertDatesToLocal(testObject);
 
-      expect(testDateAsDate).toStrictEqual(converted.datetime);
+      expect(expected).toStrictEqual(converted.datetime);
     });
 
     it("should return an untouched item expiry when given a moment object as input", () => {

@@ -1,32 +1,33 @@
 import moment from "moment";
 
-export const DATEFIELDS = {
+export const DATE_OBJECT_FIELD_TYPES = {
   item: "next_expiry_date",
   transaction: "datetime",
 };
 
-export const generateConverter = (objectClass) => {
-  let field = DATEFIELDS[objectClass];
-  const convertToMoment = (object) => {
-    let converted_value;
-    switch (field) {
-      case "next_expiry_date":
-        if (typeof object[field] === "object") return object;
-        converted_value = moment.utc(object[field]).unix();
-        converted_value = moment
-          .unix(converted_value)
-          .add(moment().utcOffset(), "minutes")
-          .set({ hour: 23, minute: 59, second: 59, millisecond: 999 });
-        object[field] = converted_value;
-        return object;
-      case "datetime":
-        if (typeof object[field] === "object") return object;
-        converted_value = moment.utc(object[field]);
-        object[field] = converted_value;
-        return object;
-      default:
-        return object;
+const DATE_OBJECT_TIME_OF_DAY = {
+  item: { hour: 23, minute: 59, second: 59, millisecond: 999 },
+}
+
+const utc2Local = (datetimeObjec) => {
+  return moment
+  .utc(datetimeObjec)
+  .local()
+}
+
+export const generateConverter = (dateObjectField) => {
+  let field = DATE_OBJECT_FIELD_TYPES[dateObjectField];
+  const convertToMoment = (originalDateObject) => {
+    if (Object.values(DATE_OBJECT_FIELD_TYPES).includes(field)) {  
+      if (!(originalDateObject[field] instanceof moment)) {
+        let convertedDateTime = utc2Local(originalDateObject[field])
+        if (Object.keys(DATE_OBJECT_TIME_OF_DAY).includes(dateObjectField)) {
+          convertedDateTime = convertedDateTime.set(DATE_OBJECT_TIME_OF_DAY[dateObjectField])
+        }
+        originalDateObject[field] = convertedDateTime;
+      }
     }
+    return originalDateObject;
   };
   return convertToMoment;
 };
