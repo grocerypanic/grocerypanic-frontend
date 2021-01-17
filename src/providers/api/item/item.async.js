@@ -9,7 +9,7 @@ import {
   calculateListUrl,
   retrieveResults,
 } from "../api.async.helpers";
-import { generateConverter } from "../api.util.js";
+import { generateConverter } from "../generators/generate.converter";
 import InitialState from "./item.initial";
 
 const convertDatesToLocal = generateConverter(InitialState.class);

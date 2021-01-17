@@ -13,7 +13,7 @@ import InitialState from "../../../providers/api/transaction/transaction.initial
 import ItemInitialState from "../../../providers/api/item/item.initial";
 
 import Strings from "../../../configuration/strings";
-import { generateConverter } from "../../../providers/api/api.util";
+import { generateConverter } from "../../../providers/api/generators/generate.converter";
 import { graph } from "../../../configuration/theme";
 import { propCount } from "../../../test.fixtures/objectComparison";
 

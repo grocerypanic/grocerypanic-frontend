@@ -6,7 +6,7 @@ import {
 } from "../consumption";
 
 import InitialState from "../../providers/api/transaction/transaction.initial";
-import { generateConverter } from "../../providers/api/api.util";
+import { generateConverter } from "../../providers/api/generators/generate.converter";
 
 // Freeze Time
 Date.now = jest.fn(() => new Date("2020-06-16T11:01:58.135Z"));

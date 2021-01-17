@@ -1,7 +1,7 @@
 import { waitFor } from "@testing-library/react";
 
 import ApiActions from "../../api.actions";
-import { generateConverter } from "../../api.util.js";
+import { generateConverter } from "../../generators/generate.converter";
 
 import Request from "../../../../util/requests";
 import initialState from "../item.initial";

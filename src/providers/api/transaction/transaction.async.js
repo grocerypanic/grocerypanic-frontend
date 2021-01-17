@@ -10,7 +10,7 @@ import {
   retrieveResults,
 } from "../api.async.helpers";
 
-import { generateConverter } from "../api.util.js";
+import { generateConverter } from "../generators/generate.converter";
 import InitialState from "./transaction.initial";
 
 const convertDatesToLocal = generateConverter(InitialState.class);

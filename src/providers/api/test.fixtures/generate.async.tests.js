@@ -3,7 +3,7 @@ import { waitFor } from "@testing-library/react";
 import ApiActions from "../api.actions";
 import ApiFunctions from "../api.functions";
 
-import { generateConverter } from "../api.util";
+import { generateConverter } from "../generators/generate.converter";
 import { Constants } from "../../../configuration/backend";
 
 import Request from "../../../util/requests";
