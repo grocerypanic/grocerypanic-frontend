@@ -85,8 +85,8 @@ export const Strings = {
           Edit: "Edit",
           Stats: "Stats",
         },
-        GraphChangeEvent: "Change Event",
-        GraphQuantity: "Quantity",
+        GraphChangeEvent: "+/-",
+        GraphQuantity: "Inventory",
         NeedShelvesAndStores:
           "Create some shelves and stores first!\nYour items need to have stores you prefer\n to shop at, and a place to be kept at home.",
         ApiCommunicationError:
@@ -121,7 +121,7 @@ export const Strings = {
         Title: "Inventory (All)",
         HeaderTitle: "Inventory",
         HelpText:
-          "Click and hold the item's name for details.\nUse the create button (upper right) to add new items.\nIncrese or decrease quantity with the buttons.",
+          "Click and hold the item's name for details.\nUse the create button (upper right) to add new items.\nIncrease or decrease quantity with the buttons.",
         Save: "save",
         Delete: "delete",
         PlaceHolderMessage: "You have no items yet.",
