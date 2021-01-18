@@ -31,6 +31,11 @@ jobs:
       - name: Unit Tests and Coverage
         run: |
           npm run coverage
+      - name: Report Job Status (Success)
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: build has succeeded!"}' "${WEBHOOK_URL}"
+        env:
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
       - name: Report Job Status
         if: failure()
         run: |
