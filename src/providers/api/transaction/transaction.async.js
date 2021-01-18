@@ -13,6 +13,8 @@ import {
 import { generateConverter } from "../generators/generate.converter";
 import InitialState from "./transaction.initial";
 
+import { Constants } from "../../../configuration/backend";
+
 const convertDatesToLocal = generateConverter(InitialState.class);
 
 export const asyncAdd = async ({ state, action }) => {
@@ -50,7 +52,10 @@ export const asyncAdd = async ({ state, action }) => {
 
 export const asyncList = async ({ state, action }) => {
   const { dispatch, callback } = action;
-  const param = new URLSearchParams({ item: action.payload.id }).toString();
+  const param = new URLSearchParams({
+    item: action.payload.id,
+    history: Constants.retrievedTransactionHistory,
+  }).toString();
 
   let url;
   url = calculateListUrl(action, Paths.manageTransactions, param);

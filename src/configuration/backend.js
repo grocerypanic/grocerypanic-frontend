@@ -20,6 +20,7 @@ export const Constants = {
   duplicateObjectApiError: { non_field_errors: ["Object already exists."] },
   pageLookupParam: "page",
   pageOverrideParam: "all_results",
+  retrievedTransactionHistory: 62,
 };
 
 export const Providers = {
