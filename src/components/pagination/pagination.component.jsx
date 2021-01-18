@@ -1,11 +1,11 @@
 import React from "react";
 
 import { rewriteUrlWithPagination } from "./pagination.query.utils";
-import { PaginationControl } from "./pagination.styles";
+import { PaginationControl, Spacer } from "./pagination.styles";
 
 const Pagination = ({ apiObject, handlePagination }) => {
-  const isDisabled = (condition) => {
-    if (condition !== null && !apiObject.transaction) return "";
+  const isDisabled = (paginationLink) => {
+    if (paginationLink !== null && !apiObject.transaction) return "";
     return "disabled";
   };
 
@@ -16,6 +16,13 @@ const Pagination = ({ apiObject, handlePagination }) => {
   };
 
   // TODO: add a router to this component, and push state to add a page offset query string
+
+  if (
+    isDisabled(apiObject.previous) !== "" &&
+    isDisabled(apiObject.next) !== ""
+  ) {
+    return <Spacer data-testid="spacer" />;
+  }
 
   return (
     <PaginationControl>

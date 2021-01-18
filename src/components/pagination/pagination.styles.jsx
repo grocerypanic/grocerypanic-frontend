@@ -14,3 +14,7 @@ export const PaginationControl = styled.div`
     padding-right: 5px;
   }
 `;
+
+export const Spacer = styled.div`
+  padding-top: 26px;
+`;

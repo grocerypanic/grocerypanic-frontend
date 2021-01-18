@@ -33,26 +33,14 @@ describe("inside of a transaction", () => {
         utils = render(<Pagination {...mockState} />);
       });
 
-      it("should render with the expected controls and state", () => {
-        const previous = utils.getByTestId("previous");
-        const next = utils.getByTestId("next");
+      it("should render the spacer, not the controls", () => {
+        const previous = utils.queryByTestId("previous");
+        const next = utils.queryByTestId("next");
+        const spacer = utils.getByTestId("spacer");
 
-        expect(previous.parentElement.className).toBe("page-item disabled");
-        expect(next.parentElement.className).toBe("page-item disabled");
-      });
-
-      it("should handle a click on previous as expected, by not actioning it", async () => {
-        const node = utils.getByTestId("previous");
-        fireEvent.click(node);
-        await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
-        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-      });
-
-      it("should handle a click on next as expected, by not actioning it", async () => {
-        const node = utils.getByTestId("next");
-        fireEvent.click(node);
-        await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
-        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
+        expect(previous).toBeFalsy();
+        expect(next).toBeFalsy();
+        expect(spacer).toBeTruthy();
       });
     });
 
@@ -62,26 +50,14 @@ describe("inside of a transaction", () => {
         utils = render(<Pagination {...mockState} />);
       });
 
-      it("should render with the expected controls and state", () => {
-        const previous = utils.getByTestId("previous");
-        const next = utils.getByTestId("next");
+      it("should render the spacer, not the controls", () => {
+        const previous = utils.queryByTestId("previous");
+        const next = utils.queryByTestId("next");
+        const spacer = utils.getByTestId("spacer");
 
-        expect(previous.parentElement.className).toBe("page-item disabled");
-        expect(next.parentElement.className).toBe("page-item disabled");
-      });
-
-      it("should handle a click on previous as expected, by not actioning it", async () => {
-        const node = utils.getByTestId("previous");
-        fireEvent.click(node);
-        await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
-        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-      });
-
-      it("should handle a click on next as expected, by not actioning it", async () => {
-        const node = utils.getByTestId("next");
-        fireEvent.click(node);
-        await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
-        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
+        expect(previous).toBeFalsy();
+        expect(next).toBeFalsy();
+        expect(spacer).toBeTruthy();
       });
     });
   });
@@ -97,26 +73,14 @@ describe("inside of a transaction", () => {
         utils = render(<Pagination {...mockState} />);
       });
 
-      it("should render with the expected controls and state", () => {
-        const previous = utils.getByTestId("previous");
-        const next = utils.getByTestId("next");
+      it("should render the spacer, not the controls", () => {
+        const previous = utils.queryByTestId("previous");
+        const next = utils.queryByTestId("next");
+        const spacer = utils.getByTestId("spacer");
 
-        expect(previous.parentElement.className).toBe("page-item disabled");
-        expect(next.parentElement.className).toBe("page-item disabled");
-      });
-
-      it("should handle a click on previous as expected, by not actioning it", async () => {
-        const node = utils.getByTestId("previous");
-        fireEvent.click(node);
-        await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
-        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-      });
-
-      it("should handle a click on next as expected, by not actioning it", async () => {
-        const node = utils.getByTestId("next");
-        fireEvent.click(node);
-        await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
-        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
+        expect(previous).toBeFalsy();
+        expect(next).toBeFalsy();
+        expect(spacer).toBeTruthy();
       });
     });
 
@@ -126,26 +90,14 @@ describe("inside of a transaction", () => {
         utils = render(<Pagination {...mockState} />);
       });
 
-      it("should render with the expected controls and state", () => {
-        const previous = utils.getByTestId("previous");
-        const next = utils.getByTestId("next");
+      it("should render the spacer, not the controls", () => {
+        const previous = utils.queryByTestId("previous");
+        const next = utils.queryByTestId("next");
+        const spacer = utils.getByTestId("spacer");
 
-        expect(previous.parentElement.className).toBe("page-item disabled");
-        expect(next.parentElement.className).toBe("page-item disabled");
-      });
-
-      it("should handle a click on previous as expected, by not actioning it", async () => {
-        const node = utils.getByTestId("previous");
-        fireEvent.click(node);
-        await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
-        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-      });
-
-      it("should handle a click on next as expected, by not actioning it", async () => {
-        const node = utils.getByTestId("next");
-        fireEvent.click(node);
-        await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
-        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
+        expect(previous).toBeFalsy();
+        expect(next).toBeFalsy();
+        expect(spacer).toBeTruthy();
       });
     });
   });
@@ -269,26 +221,14 @@ describe("outside of a transaction", () => {
         utils = render(<Pagination {...mockState} />);
       });
 
-      it("should render with the expected controls and state", () => {
-        const previous = utils.getByTestId("previous");
-        const next = utils.getByTestId("next");
+      it("should render the spacer, not the controls", () => {
+        const previous = utils.queryByTestId("previous");
+        const next = utils.queryByTestId("next");
+        const spacer = utils.getByTestId("spacer");
 
-        expect(previous.parentElement.className).toBe("page-item disabled");
-        expect(next.parentElement.className).toBe("page-item disabled");
-      });
-
-      it("should handle a click on previous as expected, by not actioning it", async () => {
-        const node = utils.getByTestId("previous");
-        fireEvent.click(node);
-        await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
-        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
-      });
-
-      it("should handle a click on next as expected, by not actioning it", async () => {
-        const node = utils.getByTestId("next");
-        fireEvent.click(node);
-        await waitFor(() => expect(handlePagination).toBeCalledTimes(0));
-        expect(rewriteUrlWithPagination).toBeCalledTimes(0);
+        expect(previous).toBeFalsy();
+        expect(next).toBeFalsy();
+        expect(spacer).toBeTruthy();
       });
     });
   });
