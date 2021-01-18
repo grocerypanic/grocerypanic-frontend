@@ -40,12 +40,7 @@ You'll need to install:
 - Set this to a valid root url of the panic backend.
   - ie. `http://localhost:8080`
 
-5. REACT_APP_PANIC_BACKEND_HOST
-
-- Set this to the host portion of the panic backend url.
-  - ie. localhost
-
-6. REACT_APP_MAINTENANCE
+5. REACT_APP_MAINTENANCE
 
 - Set this to the string "true" to activate maintenance mode.
 
