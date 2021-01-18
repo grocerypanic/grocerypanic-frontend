@@ -18,7 +18,7 @@ import GeneratePopOver from "../popover/popover.component";
 import { ui } from "../../configuration/theme";
 import { Control, Digit, Symbol, Row, ListTitle } from "./item-list-row.styles";
 
-import { nextWeek, expired } from "../../util/datetime";
+import { within7Days, expired } from "../../util/datetime";
 
 const ItemListRow = ({
   item,
@@ -74,7 +74,7 @@ const ItemListRow = ({
 
   const getExpiryClass = () => {
     if (item.quantity === 0) return "text-danger";
-    if (nextWeek(item.next_expiry_date)) return "text-warning";
+    if (within7Days(item.next_expiry_date)) return "text-warning";
     if (expired(item.next_expiry_date)) return "text-danger";
     return "text-success";
   };

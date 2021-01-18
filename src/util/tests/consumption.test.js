@@ -1,10 +1,10 @@
 import moment from "moment";
 
 import {
-  consumedWithinLastWeek,
-  consumedWithinLastMonth,
-  averageWeeklyConsumption,
-  averageMonthlyConsumption,
+  consumedWithinThisWeek,
+  consumedWithinThisMonth,
+  consumedInLastWeek,
+  consumedInLastMonth,
 } from "../consumption";
 
 // Freeze Time
@@ -19,45 +19,27 @@ const mockTransactions = [
   { id: 5, item: 1, datetime: moment("2020-01-15").utc(), quantity: -5 },
   { id: 6, item: 1, datetime: moment("2020-01-16").utc(), quantity: -5 },
   { id: 7, item: 1, datetime: moment("2020-02-15").utc(), quantity: 5 },
-  { id: 8, item: 1, datetime: moment("2020-03-15").utc(), quantity: 5 },
+  { id: 8, item: 1, datetime: moment("2020-05-15").utc(), quantity: -5 },
   { id: 9, item: 1, datetime: moment("2020-06-05").utc(), quantity: -1 },
   { id: 10, item: 1, datetime: moment("2020-06-10").utc(), quantity: -3 },
   { id: 11, item: 1, datetime: moment("2020-06-16").utc(), quantity: -3 },
 ];
 
-const consumption_by_week = {
-  20203: -10,
-  201937: -10,
-  201946: -5,
-  202023: -1,
-  202024: -3,
-  202025: -3,
-};
-
-const consumption_by_month = {
-  20198: -10,
-  20200: -10,
-  20205: -7,
-  201910: -5,
-};
-
-const arrSum = (arr) => arr.reduce((a, b) => a + b, 0);
-
-describe("Setup consumedWithinLastWeek", () => {
-  it("should parse the list of transactions, and return the total consumed in the last week", () => {
-    expect(consumedWithinLastWeek(mockTransactions)).toBe(
-      Math.abs(mockTransactions[10].quantity + mockTransactions[11].quantity)
+describe("Setup consumedWithinThisWeek", () => {
+  it("should parse the list of transactions, and return the total consumed in this current week", () => {
+    expect(consumedWithinThisWeek(mockTransactions)).toBe(
+      Math.abs(mockTransactions[11].quantity)
     );
   });
 
   it("should parse an empty list of transactions and return 0", () => {
-    expect(consumedWithinLastWeek([])).toBe(0);
+    expect(consumedWithinThisWeek([])).toBe(0);
   });
 });
 
-describe("Setup consumedWithinLastMonth", () => {
-  it("should parse the list of transactions, and return the total consumed in the last month", () => {
-    expect(consumedWithinLastMonth(mockTransactions)).toBe(
+describe("Setup consumedWithinThisMonth", () => {
+  it("should parse the list of transactions, and return the total consumed in this current month", () => {
+    expect(consumedWithinThisMonth(mockTransactions)).toBe(
       Math.abs(
         mockTransactions[9].quantity +
           mockTransactions[10].quantity +
@@ -67,36 +49,30 @@ describe("Setup consumedWithinLastMonth", () => {
   });
 
   it("should parse an empty list of transactions and return 0", () => {
-    expect(consumedWithinLastMonth([])).toBe(0);
+    expect(consumedInLastMonth([])).toBe(0);
   });
 });
 
-describe("Setup averageWeeklyConsumption", () => {
-  it("should parse the list of transactions, and return the average consumed in the last week", () => {
-    expect(averageWeeklyConsumption(mockTransactions)).toBe(
-      Math.abs(
-        arrSum(Object.values(consumption_by_week)) /
-          Object.keys(consumption_by_week).length
-      ).toFixed(1)
+describe("Setup consumedWithinLastWeek", () => {
+  it("should parse the list of transactions, and return the total consumed in the last week", () => {
+    expect(consumedInLastWeek(mockTransactions)).toBe(
+      Math.abs(mockTransactions[10].quantity + mockTransactions[9].quantity)
     );
   });
 
   it("should parse an empty list of transactions and return 0", () => {
-    expect(averageWeeklyConsumption([])).toBe(0);
+    expect(consumedInLastWeek([])).toBe(0);
   });
 });
 
-describe("Setup averageMonthlyConsumption", () => {
-  it("should parse the list of transactions, and return the average consumed in the last month", () => {
-    expect(averageMonthlyConsumption(mockTransactions)).toBe(
-      Math.abs(
-        arrSum(Object.values(consumption_by_month)) /
-          Object.keys(consumption_by_month).length
-      ).toFixed(1)
+describe("Setup consumedWithinLastMonth", () => {
+  it("should parse the list of transactions, and return the total consumed in the last month", () => {
+    expect(consumedInLastMonth(mockTransactions)).toBe(
+      Math.abs(mockTransactions[7].quantity)
     );
   });
 
   it("should parse an empty list of transactions and return 0", () => {
-    expect(averageMonthlyConsumption([])).toBe(0);
+    expect(consumedInLastMonth([])).toBe(0);
   });
 });

@@ -46,6 +46,7 @@ const mockItem = {
 };
 
 const mockTransactions = [
+  { id: 0, item: 1, datetime: moment("2019-09-14").utc(), quantity: -5 },
   { id: 1, item: 1, datetime: moment("2019-09-15").utc(), quantity: -5 },
   { id: 2, item: 1, datetime: moment("2019-10-15").utc(), quantity: 5 },
   { id: 3, item: 1, datetime: moment("2019-11-15").utc(), quantity: -5 },
@@ -53,7 +54,7 @@ const mockTransactions = [
   { id: 5, item: 1, datetime: moment("2020-01-15").utc(), quantity: -5 },
   { id: 6, item: 1, datetime: moment("2020-01-16").utc(), quantity: -5 },
   { id: 7, item: 1, datetime: moment("2020-02-15").utc(), quantity: 5 },
-  { id: 8, item: 1, datetime: moment("2020-03-15").utc(), quantity: 5 },
+  { id: 8, item: 1, datetime: moment("2020-05-15").utc(), quantity: -5 },
   { id: 9, item: 1, datetime: moment("2020-06-05").utc(), quantity: -1 },
   { id: 10, item: 1, datetime: moment("2020-06-10").utc(), quantity: -3 },
   { id: 11, item: 1, datetime: moment("2020-06-16").utc(), quantity: -3 },
@@ -102,28 +103,28 @@ describe("Setup Environment", () => {
         expect(
           utils.queryByText(`${Strings.ItemStats.ConsumptionConsumedLastWeek}`)
         ).toBeTruthy();
-        expect(utils.getByTestId("lastWeek").textContent).toBe("6");
+        expect(utils.getByTestId("lastWeek").textContent).toBe("4");
       });
 
       it("should display monthly consumption data", () => {
         expect(
           utils.queryByText(`${Strings.ItemStats.ConsumptionConsumedLastMonth}`)
         ).toBeTruthy();
-        expect(utils.getByTestId("lastMonth").textContent).toBe("7");
+        expect(utils.getByTestId("lastMonth").textContent).toBe("5");
       });
 
       it("should display weekly consumption data", () => {
         expect(
-          utils.queryByText(`${Strings.ItemStats.ConsumptionAvgWeek}`)
+          utils.queryByText(`${Strings.ItemStats.ConsumptionConsumedThisWeek}`)
         ).toBeTruthy();
-        expect(utils.getByTestId("avgWeek").textContent).toBe("4.5");
+        expect(utils.getByTestId("thisWeek").textContent).toBe("3");
       });
 
       it("should display weekly consumption data", () => {
         expect(
-          utils.queryByText(`${Strings.ItemStats.ConsumptionAvgMonth}`)
+          utils.queryByText(`${Strings.ItemStats.ConsumptionConsumedThisMonth}`)
         ).toBeTruthy();
-        expect(utils.getByTestId("avgMonth").textContent).toBe("6.8");
+        expect(utils.getByTestId("thisMonth").textContent).toBe("7");
       });
 
       it("should call the holding pattern with expected arguments", async () => {

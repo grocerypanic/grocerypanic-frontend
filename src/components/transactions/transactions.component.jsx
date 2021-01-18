@@ -6,12 +6,12 @@ import PropTypes from "prop-types";
 
 import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
-import { nextWeek } from "../../util/datetime";
+import { within7Days } from "../../util/datetime";
 import {
-  consumedWithinLastWeek,
-  consumedWithinLastMonth,
-  averageWeeklyConsumption,
-  averageMonthlyConsumption,
+  consumedWithinThisWeek,
+  consumedWithinThisMonth,
+  consumedInLastWeek,
+  consumedInLastMonth,
 } from "../../util/consumption";
 
 import { renderChart } from "./transaction.chart";
@@ -55,7 +55,7 @@ const TransactionsReview = ({ item, ready, tr }) => {
             {t("ItemStats.RecommendExpiredItems")}
           </Banner>
         ) : null}
-        {nextWeek(item.next_expiry_date) && item.next_expiry_quantity > 0 ? (
+        {within7Days(item.next_expiry_date) && item.next_expiry_quantity > 0 ? (
           <Banner className="alert alert-warning mb-2">
             {`${item.next_expiry_quantity} ${t(
               "ItemStats.RecommendExpiringSoon"
@@ -91,22 +91,20 @@ const TransactionsReview = ({ item, ready, tr }) => {
                   <td>{item.quantity}</td>
                 </tr>
                 <tr>
+                  <td>{t("ItemStats.ConsumptionConsumedThisWeek")}</td>
+                  <td data-testid="thisWeek">{consumedWithinThisWeek(tr)}</td>
+                </tr>
+                <tr>
                   <td>{t("ItemStats.ConsumptionConsumedLastWeek")}</td>
-                  <td data-testid="lastWeek">{consumedWithinLastWeek(tr)}</td>
+                  <td data-testid="lastWeek">{consumedInLastWeek(tr)}</td>
+                </tr>
+                <tr>
+                  <td>{t("ItemStats.ConsumptionConsumedThisMonth")}</td>
+                  <td data-testid="thisMonth">{consumedWithinThisMonth(tr)}</td>
                 </tr>
                 <tr>
                   <td>{t("ItemStats.ConsumptionConsumedLastMonth")}</td>
-                  <td data-testid="lastMonth">{consumedWithinLastMonth(tr)}</td>
-                </tr>
-                <tr>
-                  <td>{t("ItemStats.ConsumptionAvgWeek")}</td>
-                  <td data-testid="avgWeek">{averageWeeklyConsumption(tr)}</td>
-                </tr>
-                <tr>
-                  <td>{t("ItemStats.ConsumptionAvgMonth")}</td>
-                  <td data-testid="avgMonth">
-                    {averageMonthlyConsumption(tr)}
-                  </td>
+                  <td data-testid="lastMonth">{consumedInLastMonth(tr)}</td>
                 </tr>
               </tbody>
             </Table>

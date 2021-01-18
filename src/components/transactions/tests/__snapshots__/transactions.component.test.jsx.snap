@@ -118,42 +118,42 @@ exports[`Setup Environment after transactions are fetched with expired items in 
             </tr>
             <tr>
               <td>
-                last week
+                used this week
               </td>
               <td
-                data-testid="lastWeek"
+                data-testid="thisWeek"
               >
-                6
+                3
               </td>
             </tr>
             <tr>
               <td>
-                last month
+                used last week
               </td>
               <td
-                data-testid="lastMonth"
+                data-testid="lastWeek"
+              >
+                4
+              </td>
+            </tr>
+            <tr>
+              <td>
+                used this month
+              </td>
+              <td
+                data-testid="thisMonth"
               >
                 7
               </td>
             </tr>
             <tr>
               <td>
-                avg. per week
+                used last month
               </td>
               <td
-                data-testid="avgWeek"
+                data-testid="lastMonth"
               >
-                4.5
-              </td>
-            </tr>
-            <tr>
-              <td>
-                avg. per month
-              </td>
-              <td
-                data-testid="avgMonth"
-              >
-                6.8
+                5
               </td>
             </tr>
           </tbody>
@@ -277,42 +277,42 @@ exports[`Setup Environment after transactions are fetched with items expirying s
             </tr>
             <tr>
               <td>
-                last week
+                used this week
               </td>
               <td
-                data-testid="lastWeek"
+                data-testid="thisWeek"
               >
-                6
+                3
               </td>
             </tr>
             <tr>
               <td>
-                last month
+                used last week
               </td>
               <td
-                data-testid="lastMonth"
+                data-testid="lastWeek"
+              >
+                4
+              </td>
+            </tr>
+            <tr>
+              <td>
+                used this month
+              </td>
+              <td
+                data-testid="thisMonth"
               >
                 7
               </td>
             </tr>
             <tr>
               <td>
-                avg. per week
+                used last month
               </td>
               <td
-                data-testid="avgWeek"
+                data-testid="lastMonth"
               >
-                4.5
-              </td>
-            </tr>
-            <tr>
-              <td>
-                avg. per month
-              </td>
-              <td
-                data-testid="avgMonth"
-              >
-                6.8
+                5
               </td>
             </tr>
           </tbody>
@@ -436,42 +436,42 @@ exports[`Setup Environment after transactions are fetched with items in the inve
             </tr>
             <tr>
               <td>
-                last week
+                used this week
               </td>
               <td
-                data-testid="lastWeek"
+                data-testid="thisWeek"
               >
-                6
+                3
               </td>
             </tr>
             <tr>
               <td>
-                last month
+                used last week
               </td>
               <td
-                data-testid="lastMonth"
+                data-testid="lastWeek"
+              >
+                4
+              </td>
+            </tr>
+            <tr>
+              <td>
+                used this month
+              </td>
+              <td
+                data-testid="thisMonth"
               >
                 7
               </td>
             </tr>
             <tr>
               <td>
-                avg. per week
+                used last month
               </td>
               <td
-                data-testid="avgWeek"
+                data-testid="lastMonth"
               >
-                4.5
-              </td>
-            </tr>
-            <tr>
-              <td>
-                avg. per month
-              </td>
-              <td
-                data-testid="avgMonth"
-              >
-                6.8
+                5
               </td>
             </tr>
           </tbody>
@@ -595,42 +595,42 @@ exports[`Setup Environment after transactions are fetched with no items expiryin
             </tr>
             <tr>
               <td>
-                last week
+                used this week
               </td>
               <td
-                data-testid="lastWeek"
+                data-testid="thisWeek"
               >
-                6
+                3
               </td>
             </tr>
             <tr>
               <td>
-                last month
+                used last week
               </td>
               <td
-                data-testid="lastMonth"
+                data-testid="lastWeek"
+              >
+                4
+              </td>
+            </tr>
+            <tr>
+              <td>
+                used this month
+              </td>
+              <td
+                data-testid="thisMonth"
               >
                 7
               </td>
             </tr>
             <tr>
               <td>
-                avg. per week
+                used last month
               </td>
               <td
-                data-testid="avgWeek"
+                data-testid="lastMonth"
               >
-                4.5
-              </td>
-            </tr>
-            <tr>
-              <td>
-                avg. per month
-              </td>
-              <td
-                data-testid="avgMonth"
-              >
-                6.8
+                5
               </td>
             </tr>
           </tbody>
@@ -770,7 +770,17 @@ exports[`Setup Environment after transactions are fetched with no transactions s
             </tr>
             <tr>
               <td>
-                last week
+                used this week
+              </td>
+              <td
+                data-testid="thisWeek"
+              >
+                0
+              </td>
+            </tr>
+            <tr>
+              <td>
+                used last week
               </td>
               <td
                 data-testid="lastWeek"
@@ -780,30 +790,20 @@ exports[`Setup Environment after transactions are fetched with no transactions s
             </tr>
             <tr>
               <td>
-                last month
+                used this month
+              </td>
+              <td
+                data-testid="thisMonth"
+              >
+                0
+              </td>
+            </tr>
+            <tr>
+              <td>
+                used last month
               </td>
               <td
                 data-testid="lastMonth"
-              >
-                0
-              </td>
-            </tr>
-            <tr>
-              <td>
-                avg. per week
-              </td>
-              <td
-                data-testid="avgWeek"
-              >
-                0
-              </td>
-            </tr>
-            <tr>
-              <td>
-                avg. per month
-              </td>
-              <td
-                data-testid="avgMonth"
               >
                 0
               </td>
@@ -929,42 +929,42 @@ exports[`Setup Environment before transactions are fetched with items in the inv
             </tr>
             <tr>
               <td>
-                last week
+                used this week
               </td>
               <td
-                data-testid="lastWeek"
+                data-testid="thisWeek"
               >
-                6
+                3
               </td>
             </tr>
             <tr>
               <td>
-                last month
+                used last week
               </td>
               <td
-                data-testid="lastMonth"
+                data-testid="lastWeek"
+              >
+                4
+              </td>
+            </tr>
+            <tr>
+              <td>
+                used this month
+              </td>
+              <td
+                data-testid="thisMonth"
               >
                 7
               </td>
             </tr>
             <tr>
               <td>
-                avg. per week
+                used last month
               </td>
               <td
-                data-testid="avgWeek"
+                data-testid="lastMonth"
               >
-                4.5
-              </td>
-            </tr>
-            <tr>
-              <td>
-                avg. per month
-              </td>
-              <td
-                data-testid="avgMonth"
-              >
-                6.8
+                5
               </td>
             </tr>
           </tbody>
