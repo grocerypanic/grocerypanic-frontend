@@ -2,6 +2,7 @@ const Routes = {
   root: "/",
   menu: "/menu",
   about: "/about",
+  privacy: "/privacy",
   signin: "/signin",
   shelves: "/shelves",
   splash: "/",

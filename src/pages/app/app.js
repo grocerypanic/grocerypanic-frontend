@@ -17,6 +17,7 @@ const Create = lazy(() => import("../create/create.page"));
 const Details = lazy(() => import("../details/details.page"));
 const Items = lazy(() => import("../items/items.page"));
 const Menu = lazy(() => import("../menu/menu.page"));
+const Privacy = lazy(() => import("../privacy/privacy.page"));
 const SignIn = lazy(() => import("../signin/signin.container"));
 const Shelves = lazy(() => import("../shelves/shelves.page"));
 const Splash = lazy(() => import("../splash/splash.page"));
@@ -106,6 +107,7 @@ function App() {
             attr={"login"}
             redirect={Routes.menu}
           />
+          <Route exact path={Routes.privacy} component={Privacy} />
           <Route render={() => <Redirect to={Routes.menu} />} />
         </Switch>
         <Consent />

@@ -7,6 +7,7 @@ import i18next from "i18next";
 import App from "../app.js";
 import SignIn from "../../signin/signin.container";
 import About from "../../about/about.page";
+import PrivacyPage from "../../privacy/privacy.page";
 import ShelvesPage from "../../shelves/shelves.page";
 import StoresPage from "../../stores/stores.page";
 import ItemsPage from "../../items/items.page";
@@ -26,6 +27,7 @@ import Strings from "../../../configuration/strings";
 jest.mock("../../../providers/analytics/analytics.provider");
 
 jest.mock("../../signin/signin.container");
+jest.mock("../../privacy/privacy.page");
 jest.mock("../../shelves/shelves.page");
 jest.mock("../../stores/stores.page");
 jest.mock("../../items/items.page");
@@ -38,6 +40,7 @@ jest.mock("../../../components/header/header.component");
 
 About.mockImplementation(() => <div>MockPlaceholderAboutPage</div>);
 SignIn.mockImplementation(() => <div>MockPlaceholderSignin</div>);
+PrivacyPage.mockImplementation(() => <div>MockPlaceholderPrivacyPage</div>);
 ShelvesPage.mockImplementation(() => <div>MockPlaceholderShelvesPage</div>);
 StoresPage.mockImplementation(() => <div>MockPlaceholderStoresPage</div>);
 ItemsPage.mockImplementation(() => <div>MockPlaceholderItemsPage</div>);
@@ -106,6 +109,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.menu);
       });
       it("should configure the header properly", () => {
@@ -129,6 +133,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -156,6 +161,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         await waitFor(() => expect(window.location.pathname).toBe(Routes.menu));
       });
       it("should configure the header properly", () => {
@@ -178,6 +184,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -205,6 +212,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.stores);
       });
       it("should configure the header properly", () => {
@@ -229,6 +237,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -256,6 +265,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.shelves);
       });
       it("should configure the header properly", () => {
@@ -280,6 +290,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -307,6 +318,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.items);
       });
       it("should configure the header properly", () => {
@@ -331,6 +343,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -358,6 +371,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.details);
       });
       it("should configure the header properly", () => {
@@ -382,6 +396,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -409,6 +424,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(1));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.create);
       });
       it("should configure the header properly", () => {
@@ -433,6 +449,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(1));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -460,6 +477,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.about);
       });
       it("should configure the header properly", () => {
@@ -484,6 +502,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -510,6 +529,7 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.menu);
       });
       it("should configure the header properly", () => {
@@ -532,7 +552,58 @@ describe("Check Routing", () => {
         await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
         await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
         await waitFor(() => expect(SplashPage).toBeCalledTimes(1));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
         expect(window.location.pathname).toBe(Routes.splash);
+      });
+      it("should configure the header properly", () => {
+        checkHeader();
+      });
+    });
+  });
+
+  describe("privacy url", () => {
+    beforeEach(() => (setup.path = Routes.privacy));
+    describe("active login", () => {
+      beforeEach(() => {
+        setup.state.login = false;
+        utils = renderHelper({ ...setup });
+      });
+      it("should render the privacy policy page", async () => {
+        expect(utils.queryByTestId("HoldingPattern")).toBeTruthy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
+        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
+        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
+        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
+        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
+        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
+        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(1));
+        expect(window.location.pathname).toBe(Routes.privacy);
+      });
+      it("should configure the header properly", () => {
+        checkHeader();
+      });
+    });
+    describe("inactive login", () => {
+      beforeEach(() => {
+        setup.state.login = false;
+        utils = renderHelper({ ...setup });
+      });
+      it("should render the privacy policy page", async () => {
+        expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
+        await waitFor(() => expect(About).toBeCalledTimes(0));
+        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
+        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
+        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
+        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
+        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
+        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
+        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
+        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
+        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(1));
+        expect(window.location.pathname).toBe(Routes.privacy);
       });
       it("should configure the header properly", () => {
         checkHeader();
