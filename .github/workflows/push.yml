@@ -5,6 +5,11 @@ on:
   schedule:
     - cron: "0 6 * * 1"
   workflow_dispatch:
+    inputs:
+        MAINTENANCE:
+          description: 'Enable Maintenance Mode'
+          required: true
+          default: 'false'
 
 jobs:
   push:
@@ -42,31 +47,44 @@ jobs:
           curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: build has failed!"}' "${WEBHOOK_URL}"
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-      
-      - name: Stage -- Build 
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+
+      - name: Stage -- Configure Build 
+        if: github.ref == 'refs/heads/master'
         run: |
           echo "${REACT_ENV}" > .env.production.local
-          npm run build
         env:
           REACT_ENV: ${{ secrets.STAGE_REACT_ENV }}
-
-      - name: Stage -- Automated Deploy        
+      - name: Stage -- Toggle Maintenance Mode on Manual Dispatch
+        if: github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch'
+        run: |
+          echo "REACT_APP_MAINTENANCE=\"${MAINTENANCE}\"" >> .env.production.local
+        env:
+          MAINTENANCE: ${{ github.event.inputs.MAINTENANCE }}
+      - name: Stage -- Shut off Maintenance Mode on Automated Push
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: |
+          echo "REACT_APP_MAINTENANCE=\"false\"" >> .env.production.local
+      - name: Stage -- Build 
+        if: github.ref == 'refs/heads/master'
+        run: |
+          npm run build
+      - name: Stage Maintenance -- Automated Deploy        
+        if: github.ref == 'refs/heads/master'
         uses: w9jds/firebase-action@v1.5.0
         with:
           args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.STAGE_FIREBASE_TOKEN }}
           PROJECT_ID: ${{ secrets.STAGE_FIREBASE_PROJECT }}        
+
       - name: Stage -- Report Success
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/master'
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated deploy to stage!"}' "${WEBHOOK_URL}"
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
       - name: Stage -- Report Failure
-        if: failure() == true && github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: failure() == true && github.ref == 'refs/heads/master'
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: stage deploy has failed!"}' "${WEBHOOK_URL}"
         env:

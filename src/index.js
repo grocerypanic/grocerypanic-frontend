@@ -48,6 +48,10 @@ export const performUpdate = (registration) => {
   }
 };
 
-serviceWorker.register({
-  onUpdate: (registration) => performUpdate(registration),
-});
+if (process.env.REACT_APP_MAINTENANCE === "true") {
+  serviceWorker.unregister();
+} else {
+  serviceWorker.register({
+    onUpdate: (registration) => performUpdate(registration),
+  });
+}
