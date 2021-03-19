@@ -3,23 +3,57 @@ name: panic_fe-ProductionDeploys
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      MAINTENANCE:
+        description: 'Enable Maintenance Mode'
+        required: true
+        default: 'false'
+      TAG:
+        description: 'Tag to Deploy'
+        required: true
+        default: ''
+
 
 jobs:
   release:
     runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
+    steps:      
+      - name: Code Checkout (Dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@v2         
         with:
           fetch-depth: 0
+          ref: ${{ github.event.inputs.TAG  }}
+      - name: Code Checkout (Release Approval)
+        if: github.event_name != 'workflow_dispatch'
+        uses: actions/checkout@v2         
+        with:
+          fetch-depth: 0
+
       - name: Install Node Modules
         run: |
           npm install
-      - name: Production -- Build 
+      
+      - name: Production -- Configure Build 
         run: |
           echo "${REACT_ENV}" > .env.production.local
-          npm run build
         env:
           REACT_ENV: ${{ secrets.PRODUCTION_REACT_ENV }}
+      - name: Production -- Toggle Maintenance Mode (Dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "REACT_APP_MAINTENANCE=\"${MAINTENANCE}\"" >> .env.production.local
+        env:
+          MAINTENANCE: ${{ github.event.inputs.MAINTENANCE }}
+      - name: Production -- Shut off Maintenance Mode (Release Approval)
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          echo "REACT_APP_MAINTENANCE=\"false\"" >> .env.production.local
+      - name: Production -- Build 
+        run: |
+          npm run build
+
       - name: Production -- Automated Deploy        
         uses: w9jds/firebase-action@v1.5.0
         with:
@@ -27,15 +61,15 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.PRODUCTION_FIREBASE_TOKEN }}
           PROJECT_ID: ${{ secrets.PRODUCTION_FIREBASE_PROJECT }} 
+      
       - name: Production -- Report Success
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated production deployment was successful!"}' "${WEBHOOK_URL}"
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
       - name: Production -- Report Failure
-        if: ${{ failure() }}
+        if: failure()
         run: |
-          [[ -z ${GIT_DIFF} ]] && curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated production deployment has failed!"}' "${WEBHOOK_URL}"
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated production deployment has failed!"}' "${WEBHOOK_URL}"
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-          GIT_DIFF: ${{ env.GIT_DIFF }}

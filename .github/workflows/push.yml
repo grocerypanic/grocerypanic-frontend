@@ -5,6 +5,11 @@ on:
   schedule:
     - cron: "0 6 * * 1"
   workflow_dispatch:
+    inputs:
+        MAINTENANCE:
+          description: 'Enable Maintenance Mode'
+          required: true
+          default: 'false'
 
 jobs:
   push:
@@ -42,63 +47,62 @@ jobs:
           curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: build has failed!"}' "${WEBHOOK_URL}"
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-      
-      - name: Stage -- Build 
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+
+      - name: Stage -- Configure Build 
+        if: github.ref == 'refs/heads/master'
         run: |
           echo "${REACT_ENV}" > .env.production.local
-          npm run build
         env:
           REACT_ENV: ${{ secrets.STAGE_REACT_ENV }}
-
-      - name: Stage -- Automated Deploy        
+      - name: Stage -- Toggle Maintenance Mode on Manual Dispatch
+        if: github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch'
+        run: |
+          echo "REACT_APP_MAINTENANCE=\"${MAINTENANCE}\"" >> .env.production.local
+        env:
+          MAINTENANCE: ${{ github.event.inputs.MAINTENANCE }}
+      - name: Stage -- Shut off Maintenance Mode on Automated Push
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: |
+          echo "REACT_APP_MAINTENANCE=\"false\"" >> .env.production.local
+      - name: Stage -- Build 
+        if: github.ref == 'refs/heads/master'
+        run: |
+          npm run build
+      - name: Stage Maintenance -- Automated Deploy        
+        if: github.ref == 'refs/heads/master'
         uses: w9jds/firebase-action@v1.5.0
         with:
           args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.STAGE_FIREBASE_TOKEN }}
           PROJECT_ID: ${{ secrets.STAGE_FIREBASE_PROJECT }}        
+
       - name: Stage -- Report Success
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/master'
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated deploy to stage!"}' "${WEBHOOK_URL}"
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
       - name: Stage -- Report Failure
-        if: failure() == true && github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: failure() && github.ref == 'refs/heads/master'
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: stage deploy has failed!"}' "${WEBHOOK_URL}"
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-      
-      - name: Production -- Detect A Release Tag
-        if: contains(github.ref, '/tags/v') == true
-        run: |
-          git diff origin/production
-          GIT_DIFF=$(git diff origin/production)
-          echo 'GIT_DIFF<<EOF' >> $GITHUB_ENV
-          echo "${GIT_DIFF}" >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV   
-      - name: Production -- Ignore Non-Release Tags and Branches
-        if: contains(github.ref, '/tags/v') != true
-        run: |
-          GIT_DIFF="not a release"
-          echo "GIT_DIFF=${GIT_DIFF}" >> $GITHUB_ENV
-
+   
       - name: Production -- Prepare Release Content
-        if: env.GIT_DIFF == ''
+        if: contains(github.ref, '/tags/v')
         run: |
           NEWTAG=${GITHUB_REF#refs/tags/}
           echo "NEWTAG=${NEWTAG}" >> $GITHUB_ENV
       - name: Production -- Generate Changelog
-        if: env.GIT_DIFF == ''
+        if: contains(github.ref, '/tags/v')
         uses: scottbrenner/generate-changelog-action@1.0.3
         id: Changelog
         env:
           REPO: ${{ github.repository }}
       - name: Production -- Create Release
-        if: env.GIT_DIFF == ''
+        if: contains(github.ref, '/tags/v')
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -113,29 +117,29 @@ jobs:
             - [ ] Perform basic QA tests (register, add store, add shelf, add items)
             - [ ] Perform basic QA on Mobile (same tasks)
             - [ ] Visual inspection of recent activity charts in stage
-          draft: true
+          draft: 'true'
           prerelease: false
 
       - name: Production -- Checkout Production Branch
-        if: env.GIT_DIFF == ''
+        if: contains(github.ref, '/tags/v')
         run: |
           git checkout origin/production
       - name: Production -- Ensure Build Succeeds
-        if: env.GIT_DIFF == ''
+        if: contains(github.ref, '/tags/v')
         run: |
           echo "${REACT_ENV}" > .env.production.local
           npm run build
         env:
           REACT_ENV: ${{ secrets.PRODUCTION_REACT_ENV }}
       - name: Production -- Report Success
-        if: env.GIT_DIFF == ''
+        if: contains(github.ref, '/tags/v')
         run: |
           curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"panic_fe: automated release has been created for ${TAG}: https://github.com/niall-byrne/panic-fe/releases\"}" "${WEBHOOK_URL}"
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           TAG: ${{ env.NEWTAG }}
       - name: Production -- Report Failure
-        if: failure() == 'true' && env.GIT_DIFF == ''
+        if: failure() && contains(github.ref, '/tags/v')
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated production release has failed!"}' "${WEBHOOK_URL}"
         env:
