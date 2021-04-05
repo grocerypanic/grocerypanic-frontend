@@ -5,6 +5,7 @@ import * as AsyncFn from "../item.async";
 
 import { AsyncTest } from "../../test.fixtures/generate.async.tests";
 import ApiFunctions from "../../api.functions";
+import { generateConverter } from "../../generators/generate.converter";
 
 jest.mock("../../../../util/requests");
 
@@ -16,4 +17,10 @@ const implemented = [
   ApiFunctions.asyncUpdate,
 ];
 
-AsyncTest(Paths.manageItems, InitialState, AsyncFn, implemented);
+AsyncTest(
+  Paths.manageItems,
+  InitialState,
+  AsyncFn,
+  generateConverter(InitialState.class),
+  implemented
+);

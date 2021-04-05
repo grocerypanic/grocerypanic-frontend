@@ -5,6 +5,7 @@ import React from "react";
 import AnalyticsProvider from "./analytics/analytics.provider";
 import HeaderProvider from "./header/header.provider";
 
+import ActivityProvider from "./api/activity/activity.provider";
 import ItemProvider from "./api/item/item.provider";
 import ShelfProvider from "./api/shelf/shelf.provider";
 import StoreProvider from "./api/store/store.provider";
@@ -20,7 +21,9 @@ const RootProvider = ({ children }) => {
           <ItemProvider>
             <ShelfProvider>
               <StoreProvider>
-                <TransactionProvider>{children}</TransactionProvider>
+                <ActivityProvider>
+                  <TransactionProvider>{children}</TransactionProvider>
+                </ActivityProvider>
               </StoreProvider>
             </ShelfProvider>
           </ItemProvider>
