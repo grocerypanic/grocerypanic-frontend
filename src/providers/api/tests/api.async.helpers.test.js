@@ -15,6 +15,7 @@ describe("Setup Environment", () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
+
   describe("test authFailure", () => {
     it("should dispatch with the provided arguments", async () => {
       authFailure(mockDispatch, "mockCallback");
@@ -80,10 +81,17 @@ describe("Check calculateListUrl works as expected", () => {
     });
 
     describe("given an action without a page index", () => {
-      let action = {};
-      let path = "https:/myserver/";
       it("should return an url without a query string", () => {
         expect(calculateListUrl(action, path)).toBe(path);
+      });
+    });
+
+    describe("given an action with additional parameters", () => {
+      it("should return an url without a query string", () => {
+        const parameter = new URLSearchParams({ test: 1 });
+        expect(calculateListUrl(action, path, parameter)).toBe(
+          path + "?test=1"
+        );
       });
     });
   });
@@ -97,7 +105,7 @@ describe("Check calculateListUrl works as expected", () => {
       beforeEach(() => {
         action.fetchAll = "true";
       });
-      it("should return an url with the appropriate query string", () => {
+      it("should return the override url", () => {
         expect(calculateListUrl(action, path)).toBe(action.override);
       });
     });
@@ -106,14 +114,21 @@ describe("Check calculateListUrl works as expected", () => {
       beforeEach(() => {
         action.page = 22;
       });
-      it("should return an the override url", () => {
+      it("should return the override url", () => {
         expect(calculateListUrl(action, path)).toBe(action.override);
       });
     });
 
     describe("given an action without a page index", () => {
-      it("should return an the override url", () => {
+      it("should return the override url", () => {
         expect(calculateListUrl(action, path)).toBe(action.override);
+      });
+    });
+
+    describe("given an action with additional parameters", () => {
+      it("should return the override url", () => {
+        const parameter = new URLSearchParams({ test: 1 });
+        expect(calculateListUrl(action, path, parameter)).toBe(action.override);
       });
     });
   });
