@@ -67,6 +67,22 @@ export const Strings = {
         HelpText:
           "Fill out the values, click the save button to finalize.\nDon't modify quantity here.",
       },
+      ItemActivity: {
+        Title: "Item Activity Report",
+        HeaderTitle: "Item Details",
+        RecommendExpiredItems: "Expired Items Warning",
+        RecommendExpiringSoon: "Item(s) Expiring Soon",
+        ConsumptionCurrentInventory: "current inventory",
+        ConsumptionConsumedAvgWeek: "avg used per week",
+        ConsumptionConsumedAvgMonth: "avg used per month",
+        ConsumptionConsumedThisWeek: "used this week",
+        ConsumptionConsumedThisMonth: "used this month",
+        GraphChangeEvent: "+/-",
+        GraphQuantity: "Inventory",
+        GraphSubTitle: "past 2 weeks",
+        GraphDayShortForm: "d",
+        GraphNow: "TDY",
+      },
       ItemDetails: {
         Title: "Edit Item Details",
         HeaderTitle: "Item Details",
