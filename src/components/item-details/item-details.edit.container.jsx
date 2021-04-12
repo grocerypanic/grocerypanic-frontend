@@ -13,7 +13,7 @@ import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 import { ItemContext } from "../../providers/api/item/item.provider";
 import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
 import { StoreContext } from "../../providers/api/store/store.provider";
-import { TransactionContext } from "../../providers/api/transaction/transaction.provider";
+import { ActivityContext } from "../../providers/api/activity/activity.provider";
 
 import ApiActions from "../../providers/api/api.actions";
 import ApiFuctions from "../../providers/api/api.functions";
@@ -46,33 +46,32 @@ const ItemDetailsEditContainer = ({
   const { apiObject: store, dispatch: storeDispatch } = React.useContext(
     StoreContext
   );
-  const { apiObject: tr, dispatch: trDispatch } = React.useContext(
-    TransactionContext
+  const { apiObject: activity, dispatch: activityDispatch } = React.useContext(
+    ActivityContext
   );
   const { event } = React.useContext(AnalyticsContext);
 
   const [performItemAsync, setPerformItemAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performShelfAsync, setPerformShelfAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
   const [performStoreAsync, setPerformStoreAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
-  const [performTrAsync, setPerformTrAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
+  const [performActivityAsync, setPerformActivityAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
 
   const [duplicate, setDuplicate] = React.useState(false);
   const [transaction, setTransaction] = React.useState(true);
   const [calculatedItem, setCalculatedItem] = React.useState(defaultItem);
-  const [listTrComplete, setTrComplete] = React.useState(testHook);
+  const [listActivityComplete, setActivityComplete] = React.useState(testHook);
 
   React.useEffect(() => {
-    // Detect Transactions on Any API Plane (except transactions, which is handled at a lower layer)
     setTransaction(
       item.transaction ||
         shelf.transaction ||
         store.transaction ||
-        tr.transaction
+        activity.transaction
     );
-  }, [item, store, shelf, tr]);
+  }, [item, store, shelf, activity]);
 
   React.useEffect(() => {
-    if (item.error) return;
+    if (item.fail) return;
     const search = item.inventory.find((i) => i.id === parseInt(itemId));
     if (search) return setCalculatedItem(search);
   }, [item]); // eslint-disable-line
@@ -106,12 +105,14 @@ const ItemDetailsEditContainer = ({
   }, [performStoreAsync]); // eslint-disable-line
 
   React.useEffect(() => {
-    if (!performTrAsync) return;
-    if (performTrAsync.type === ApiActions.FailureAuth) handleExpiredAuth();
-    if (performTrAsync.type === ApiActions.SuccessList) setTrComplete(true);
-    trDispatch(performTrAsync);
-    setPerformTrAsync(null);
-  }, [performTrAsync]); // eslint-disable-line
+    if (!performActivityAsync) return;
+    if (performActivityAsync.type === ApiActions.FailureAuth)
+      handleExpiredAuth();
+    if (performActivityAsync.type === ApiActions.SuccessGet)
+      setActivityComplete(true);
+    activityDispatch(performActivityAsync);
+    setPerformActivityAsync(null);
+  }, [performActivityAsync]); // eslint-disable-line
 
   React.useEffect(() => {
     // Item
@@ -139,12 +140,12 @@ const ItemDetailsEditContainer = ({
     });
   }, []); // eslint-disable-line
 
-  const handleTransactionRequest = () => {
-    if (listTrComplete) return;
-    setPerformTrAsync({
-      type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
-      dispatch: setPerformTrAsync,
+  const handleActivityReportRequest = () => {
+    if (listActivityComplete) return;
+    setPerformActivityAsync({
+      type: ApiActions.StartGet,
+      func: ApiFuctions.asyncGet,
+      dispatch: setPerformActivityAsync,
       payload: { id: parseInt(itemId) },
     });
   };
@@ -175,15 +176,16 @@ const ItemDetailsEditContainer = ({
   };
 
   const clearError = () => {
-    if (item.error) setPerformItemAsync({ type: ApiActions.ClearErrors });
-    if (store.error) setPerformStoreAsync({ type: ApiActions.ClearErrors });
-    if (shelf.error) setPerformShelfAsync({ type: ApiActions.ClearErrors });
-    if (tr.error) setPerformTrAsync({ type: ApiActions.ClearErrors });
+    if (item.fail) setPerformItemAsync({ type: ApiActions.ClearErrors });
+    if (store.fail) setPerformStoreAsync({ type: ApiActions.ClearErrors });
+    if (shelf.fail) setPerformShelfAsync({ type: ApiActions.ClearErrors });
+    if (activity.fail)
+      setPerformActivityAsync({ type: ApiActions.ClearErrors });
   };
 
   return (
     <ErrorHandler
-      condition={item.error || store.error || shelf.error || tr.error}
+      condition={item.fail || store.fail || shelf.fail || activity.fail}
       clearError={clearError}
       eventMessage={AnalyticsActions.ApiError}
       messageTranslationKey={"ItemDetails.ApiError"}
@@ -199,11 +201,11 @@ const ItemDetailsEditContainer = ({
           transaction={transaction}
           stores={store.inventory}
           shelves={shelf.inventory}
-          tr={tr.inventory}
-          trStatus={listTrComplete}
+          activity={activity.inventory}
+          activityStatus={activity.transaction}
           handleSave={handleSave}
           handleDelete={handleDelete}
-          requestTransactions={handleTransactionRequest}
+          requestActivityReport={handleActivityReportRequest}
           duplicate={duplicate}
           setDuplicate={setDuplicate}
         />

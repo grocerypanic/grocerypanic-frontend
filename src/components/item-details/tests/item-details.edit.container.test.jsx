@@ -13,14 +13,14 @@ import ItemDetailsEditContainer from "../item-details.edit.container";
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import { ItemContext } from "../../../providers/api/item/item.provider";
-import { TransactionContext } from "../../../providers/api/transaction/transaction.provider";
+import { ActivityContext } from "../../../providers/api/activity/activity.provider";
 import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
 import { StoreContext } from "../../../providers/api/store/store.provider";
 
 import ItemInitialValue from "../../../providers/api/item/item.initial";
 import ShelfInitialValue from "../../../providers/api/shelf/shelf.initial";
 import StoreInitialValue from "../../../providers/api/store/store.initial";
-import TransactionInitialValue from "../../../providers/api/transaction/transaction.initial";
+import ActivityInitialValue from "../../../providers/api/activity/activity.initial";
 
 import ApiActions from "../../../providers/api/api.actions";
 import ApiFunctions from "../../../providers/api/api.functions";
@@ -39,7 +39,7 @@ HoldingPattern.mockImplementation(({ children }) => children);
 const mockItemDispatch = jest.fn();
 const mockStoreDispatch = jest.fn();
 const mockShelfDispatch = jest.fn();
-const mockTransactionDispatch = jest.fn();
+const mockActivityDispatch = jest.fn();
 const mockHandleExpiredAuth = jest.fn();
 const mockGoBack = jest.fn();
 
@@ -66,10 +66,76 @@ const mockStore = {
   name: "No Frills",
 };
 
-const mockTransactions = [
-  { id: 1, item: 1, date: "2019-09-15", quantity: 5 },
-  { id: 2, item: 1, date: "2019-10-15", quantity: 5 },
-];
+const mockActivityReport = {
+  id: 1,
+  activity_first: "2020-03-01",
+  usage_total: 1,
+  usage_avg_week: 0.17,
+  usage_avg_month: 0.5,
+  recent_activity: {
+    user_timezone: "UTC",
+    usage_current_week: 0,
+    usage_current_month: 0,
+    activity_last_two_weeks: [
+      {
+        date: "2020-06-18",
+        change: 0,
+      },
+      {
+        date: "2020-06-17",
+        change: 0,
+      },
+      {
+        date: "2020-06-16",
+        change: 0,
+      },
+      {
+        date: "2020-06-15",
+        change: 0,
+      },
+      {
+        date: "2020-06-14",
+        change: 0,
+      },
+      {
+        date: "2020-06-13",
+        change: 0,
+      },
+      {
+        date: "2020-06-12",
+        change: 0,
+      },
+      {
+        date: "2021-06-11",
+        change: 0,
+      },
+      {
+        date: "2021-06-10",
+        change: 0,
+      },
+      {
+        date: "2021-06-09",
+        change: 0,
+      },
+      {
+        date: "2020-06-08",
+        change: 0,
+      },
+      {
+        date: "2020-06-07",
+        change: 0,
+      },
+      {
+        date: "2020-06-06",
+        change: 0,
+      },
+      {
+        date: "2020-06-05",
+        change: 0,
+      },
+    ],
+  },
+};
 
 const mockItemProvider = {
   dispatch: mockItemDispatch,
@@ -86,9 +152,9 @@ const mockShelfProvider = {
   apiObject: { ...ShelfInitialValue, inventory: [mockShelf] },
 };
 
-const mockTransactionProvider = {
-  dispatch: mockTransactionDispatch,
-  apiObject: { ...TransactionInitialValue, inventory: [] },
+const mockActivityProvider = {
+  dispatch: mockActivityDispatch,
+  apiObject: { ...ActivityInitialValue, inventory: [] },
 };
 
 const props = {
@@ -122,7 +188,7 @@ describe("Setup Environment", () => {
     currentTransaction,
     currentProps,
     itemContext = { ...mockItemProvider },
-    trContext = { ...mockTransactionProvider },
+    activityContext = { ...mockActivityProvider },
     command = render
   ) => {
     itemContext.transaction = currentTransaction;
@@ -136,9 +202,9 @@ describe("Setup Environment", () => {
               value={{ ...mockShelfProvider, transaction: currentTransaction }}
             >
               <ItemContext.Provider value={{ ...itemContext }}>
-                <TransactionContext.Provider value={{ ...trContext }}>
+                <ActivityContext.Provider value={{ ...activityContext }}>
                   <ItemDetailsEditContainer {...currentProps} />
-                </TransactionContext.Provider>
+                </ActivityContext.Provider>
               </ItemContext.Provider>
             </ShelfContext.Provider>
           </StoreContext.Provider>
@@ -173,7 +239,7 @@ describe("Setup Environment", () => {
   });
 
   describe("outside of an api error, outside of a transaction", () => {
-    describe("with no transaction fetched", () => {
+    describe("with no activityReport fetched", () => {
       beforeEach(() => {
         jest.clearAllMocks();
         const history = createBrowserHistory();
@@ -257,13 +323,13 @@ describe("Setup Environment", () => {
         expect(call.title).toBe(props.title);
         expect(call.helpText).toBe(props.helpText);
         expect(call.transaction).toBe(false);
-        expect(call.tr).toStrictEqual([]);
-        expect(call.trStatus).toBe(false);
+        expect(call.activity).toStrictEqual([]);
+        expect(call.activityStatus).toBe(false);
         expect(call.stores).toStrictEqual([mockStore]);
         expect(call.shelves).toStrictEqual([mockShelf]);
         expect(call.handleSave).toBeInstanceOf(Function);
         expect(call.handleDelete).toBeInstanceOf(Function);
-        expect(call.requestTransactions).toBeInstanceOf(Function);
+        expect(call.requestActivityReport).toBeInstanceOf(Function);
         expect(call.setDuplicate).toBeInstanceOf(Function);
         expect(call.duplicate).toBe(false);
       });
@@ -375,84 +441,78 @@ describe("Setup Environment", () => {
         expect(mockGoBack).toBeCalledTimes(1);
       });
 
-      it("handles a call to handleTransactionRequest as expected", async () => {
+      it("handles a call to requestActivityReport as expected", async () => {
         await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
 
-        const handleTr = ItemDetails.mock.calls[1][0].requestTransactions;
-        expect(handleTr).toBeInstanceOf(Function);
-        act(() => handleTr());
+        const handler = ItemDetails.mock.calls[1][0].requestActivityReport;
+        expect(handler).toBeInstanceOf(Function);
+        act(() => handler());
 
         await waitFor(() =>
-          expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+          expect(mockActivityDispatch).toHaveBeenCalledTimes(1)
         );
-        const trCall = mockTransactionDispatch.mock.calls[0][0];
-        propCount(trCall, 4);
+        const call = mockActivityDispatch.mock.calls[0][0];
+        propCount(call, 4);
 
-        expect(trCall.type).toBe(ApiActions.StartList);
-        expect(trCall.func).toBe(ApiFunctions.asyncList);
-        expect(trCall.dispatch.name).toBe("bound dispatchAction");
-        expect(trCall.payload).toStrictEqual({ id: mockItem.id });
+        expect(call.type).toBe(ApiActions.StartGet);
+        expect(call.func).toBe(ApiFunctions.asyncGet);
+        expect(call.dispatch.name).toBe("bound dispatchAction");
+        expect(call.payload).toStrictEqual({ id: mockItem.id });
       });
 
-      it("handles a success call on transactions list as expected", async () => {
+      it("handles a success call on activity get as expected", async () => {
         await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
 
-        const handleTr = ItemDetails.mock.calls[1][0].requestTransactions;
-        expect(handleTr).toBeInstanceOf(Function);
-        act(() => handleTr());
+        const handler = ItemDetails.mock.calls[1][0].requestActivityReport;
+        expect(handler).toBeInstanceOf(Function);
+        act(() => handler());
 
         await waitFor(() =>
-          expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+          expect(mockActivityDispatch).toHaveBeenCalledTimes(1)
         );
-        const trCall = mockTransactionDispatch.mock.calls[0][0];
+        const call = mockActivityDispatch.mock.calls[0][0];
 
-        act(() => trCall.dispatch({ type: ApiActions.SuccessList }));
+        act(() => call.dispatch({ type: ApiActions.SuccessGet }));
         await waitFor(() =>
-          expect(mockTransactionDispatch).toHaveBeenCalledTimes(2)
+          expect(mockActivityDispatch).toHaveBeenCalledTimes(2)
         );
 
-        act(() => handleTr());
-
-        // I'm having trouble syncronizing the internal state
-        // this should not actually fire
-
-        // As a workaround, I've used the testhook input to flip the state
-        // manually and prove out the handler is not called incorrectly
+        act(() => handler());
 
         await waitFor(() =>
-          expect(mockTransactionDispatch).toHaveBeenCalledTimes(3)
+          expect(mockActivityDispatch).toHaveBeenCalledTimes(3)
         );
       });
 
-      it("renders, calls transaction auth failure as expected", async () => {
+      it("renders, calls activity auth failure as expected", async () => {
         await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
 
-        const handleTr = ItemDetails.mock.calls[1][0].requestTransactions;
-        expect(handleTr).toBeInstanceOf(Function);
-        act(() => handleTr());
+        const handler = ItemDetails.mock.calls[1][0].requestActivityReport;
+        expect(handler).toBeInstanceOf(Function);
+        act(() => handler());
 
         await waitFor(() =>
-          expect(mockTransactionDispatch).toHaveBeenCalledTimes(1)
+          expect(mockActivityDispatch).toHaveBeenCalledTimes(1)
         );
-        const trDispatch = mockTransactionDispatch.mock.calls[0][0].dispatch;
+        const dispatch = mockActivityDispatch.mock.calls[0][0].dispatch;
 
         await expect(mockHandleExpiredAuth).toBeCalledTimes(0);
-        act(() => trDispatch({ type: ApiActions.FailureAuth }));
+        act(() => dispatch({ type: ApiActions.FailureAuth }));
         await expect(mockHandleExpiredAuth).toBeCalledTimes(1);
       });
     });
 
-    describe("with transaction fetched", () => {
+    describe("with activityReport fetched", () => {
       beforeEach(() => {
         jest.clearAllMocks();
         const history = createBrowserHistory();
         history.location.pathname = originalPath;
         history.goBack = mockGoBack;
-        const mockPopulatedTransactionProvider = {
-          dispatch: mockTransactionDispatch,
+        const mockPopulatedActivityProvider = {
+          dispatch: mockActivityDispatch,
           apiObject: {
-            ...TransactionInitialValue,
-            inventory: [...mockTransactions],
+            ...ActivityInitialValue,
+            inventory: [{ ...mockActivityReport }],
           },
         };
 
@@ -464,20 +524,20 @@ describe("Setup Environment", () => {
           false,
           current,
           { ...mockItemProvider },
-          mockPopulatedTransactionProvider
+          mockPopulatedActivityProvider
         );
       });
 
-      it("handles a call to handleTransactionRequest as expected, without refetching data", async () => {
+      it("handles a call to requestActivityReport as expected, without refetching data", async () => {
         await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
 
-        const handleTr = ItemDetails.mock.calls[1][0].requestTransactions;
-        expect(handleTr).toBeInstanceOf(Function);
-        act(() => handleTr());
+        const handler = ItemDetails.mock.calls[1][0].requestActivityReport;
+        expect(handler).toBeInstanceOf(Function);
+        act(() => handler());
 
         // Should Not Request Transactions
         await waitFor(() =>
-          expect(mockTransactionDispatch).toHaveBeenCalledTimes(0)
+          expect(mockActivityDispatch).toHaveBeenCalledTimes(0)
         );
       });
     });
@@ -488,7 +548,7 @@ describe("Setup Environment", () => {
       storeContext,
       shelfContext,
       itemContext,
-      transactionContext,
+      activityContext,
       currentProps
     ) =>
       render(
@@ -506,11 +566,11 @@ describe("Setup Environment", () => {
                     transaction: false,
                   }}
                 >
-                  <TransactionContext.Provider
-                    value={{ ...transactionContext, transaction: false }}
+                  <ActivityContext.Provider
+                    value={{ ...activityContext, transaction: false }}
                   >
                     <ItemDetailsEditContainer {...currentProps} />
-                  </TransactionContext.Provider>
+                  </ActivityContext.Provider>
                 </ItemContext.Provider>
               </ShelfContext.Provider>
             </StoreContext.Provider>
@@ -527,12 +587,12 @@ describe("Setup Environment", () => {
           apiObject: { ...StoreInitialValue },
         };
         TestContext.apiObject.transaction = false;
-        TestContext.apiObject.error = true;
+        TestContext.apiObject.fail = true;
         renderHelper(
           TestContext,
           mockShelfProvider,
           mockItemProvider,
-          mockTransactionProvider,
+          mockActivityProvider,
           current
         );
       });
@@ -575,12 +635,12 @@ describe("Setup Environment", () => {
           apiObject: { ...ShelfInitialValue },
         };
         TestContext.apiObject.transaction = false;
-        TestContext.apiObject.error = true;
+        TestContext.apiObject.fail = true;
         renderHelper(
           mockStoreProvider,
           TestContext,
           mockItemProvider,
-          mockTransactionProvider,
+          mockActivityProvider,
           current
         );
       });
@@ -623,12 +683,12 @@ describe("Setup Environment", () => {
           apiObject: { ...ItemInitialValue },
         };
         TestContext.apiObject.transaction = false;
-        TestContext.apiObject.error = true;
+        TestContext.apiObject.fail = true;
         renderHelper(
           mockStoreProvider,
           mockShelfProvider,
           TestContext,
-          mockTransactionProvider,
+          mockActivityProvider,
           current
         );
       });
@@ -662,16 +722,16 @@ describe("Setup Environment", () => {
       });
     });
 
-    describe("during a transaction api error", () => {
+    describe("during a activity api error", () => {
       beforeEach(() => {
         jest.clearAllMocks();
         current.id = "2";
         const TestContext = {
-          ...mockTransactionProvider,
-          apiObject: { ...TransactionInitialValue },
+          ...mockActivityProvider,
+          apiObject: { ...ActivityInitialValue },
         };
         TestContext.apiObject.transaction = false;
-        TestContext.apiObject.error = true;
+        TestContext.apiObject.fail = true;
         renderHelper(
           mockStoreProvider,
           mockShelfProvider,
@@ -703,8 +763,8 @@ describe("Setup Environment", () => {
         jest.clearAllMocks();
 
         act(() => clearError());
-        await waitFor(() => expect(mockTransactionDispatch).toBeCalledTimes(1));
-        expect(mockTransactionDispatch).toBeCalledWith({
+        await waitFor(() => expect(mockActivityDispatch).toBeCalledTimes(1));
+        expect(mockActivityDispatch).toBeCalledWith({
           type: ApiActions.ClearErrors,
         });
       });

@@ -5,7 +5,7 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 
 import ItemDetailsForm from "../item-details-form/item-details-form.component";
-import TransactionsReview from "../transactions/transactions.component";
+import ActivityReport, { nullReport } from "../activity/activity.component";
 import { HeaderContext } from "../../providers/header/header.provider";
 
 import { Container } from "../../global-styles/containers";
@@ -14,19 +14,20 @@ import { TabBox } from "./item-details.styles";
 const ItemDetails = ({
   headerTitle,
   transaction,
-  tr,
-  trStatus,
-  requestTransactions,
+  activity,
+  activityStatus,
+  requestActivityReport,
   ...OtherFormProps
 }) => {
   const [tab, setTab] = useState("edit");
   const { t } = useTranslation();
   const [tabWidth, setTabWidth] = useState(200);
   const { updateHeader } = React.useContext(HeaderContext);
+  const [report, setReport] = React.useState(nullReport);
 
   const changeTab = (key) => {
     setTab(key);
-    if (key === "stats") requestTransactions();
+    if (key === "stats") requestActivityReport();
   };
 
   const editTab = () => {
@@ -34,9 +35,7 @@ const ItemDetails = ({
   };
 
   const recalculateWidth = () =>
-    !setTimeout(() => {
-      setTabWidth(document.querySelector(".TabBox").clientWidth);
-    }, 1);
+    setTabWidth(document.querySelector(".TabBox").clientWidth);
 
   React.useLayoutEffect(() => {
     recalculateWidth();
@@ -60,6 +59,15 @@ const ItemDetails = ({
     });
   }, [transaction]); // eslint-disable-line
 
+  React.useEffect(() => {
+    if (activity.length > 0) {
+      const fetched_report = activity.find(
+        (o) => o.id === OtherFormProps.item.id
+      );
+      if (fetched_report) setReport(fetched_report);
+    }
+  }, [activity, OtherFormProps.item]);
+
   return (
     <>
       <Container tabs={true}>
@@ -80,10 +88,9 @@ const ItemDetails = ({
               </Tab>
               <Tab eventKey="stats" title={t("ItemDetails.Tabs.Stats")}>
                 <div style={{ width: tabWidth }}>
-                  <TransactionsReview
+                  <ActivityReport
                     item={OtherFormProps.item}
-                    tr={tr}
-                    ready={trStatus}
+                    activity_report={report}
                   />
                 </div>
               </Tab>
@@ -104,11 +111,11 @@ ItemDetails.propTypes = {
   title: PropTypes.string.isRequired,
   helpText: PropTypes.string.isRequired,
   transaction: PropTypes.bool.isRequired,
-  tr: PropTypes.arrayOf(PropTypes.object).isRequired,
-  trStatus: PropTypes.bool.isRequired,
+  activity: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activityStatus: PropTypes.bool.isRequired,
   stores: PropTypes.arrayOf(PropTypes.object).isRequired,
   shelves: PropTypes.arrayOf(PropTypes.object).isRequired,
-  requestTransactions: PropTypes.func.isRequired,
+  requestActivityReport: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   duplicate: PropTypes.bool.isRequired,
