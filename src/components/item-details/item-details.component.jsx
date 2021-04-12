@@ -77,6 +77,7 @@ const ItemDetails = ({
               id="item-details-tabs"
               activeKey={tab}
               onSelect={(k) => changeTab(k)}
+              transition={false}
             >
               <Tab eventKey="edit" title={t("ItemDetails.Tabs.Edit")}>
                 <div className="selection">

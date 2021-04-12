@@ -7,6 +7,7 @@ const GeneratePopOver = ({ translate, children, title, message }) => (
   <OverlayTrigger
     trigger={["hover", "focus"]}
     placement="auto"
+    transition={false}
     overlay={
       <Popover id="popover-basic">
         <Popover.Title as="h3">{translate(title)}</Popover.Title>
