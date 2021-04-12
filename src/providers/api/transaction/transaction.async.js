@@ -6,14 +6,10 @@ import {
   authFailure,
   duplicateObject,
   asyncDispatch,
-  calculateListUrl,
-  retrieveResults,
 } from "../api.async.helpers";
 
 import { generateConverter } from "../generators/generate.converter";
 import InitialState from "./transaction.initial";
-
-import { Constants } from "../../../configuration/backend";
 
 const convertDatesToLocal = generateConverter(InitialState.class);
 
@@ -50,42 +46,8 @@ export const asyncAdd = async ({ state, action }) => {
   });
 };
 
-export const asyncList = async ({ state, action }) => {
-  const { dispatch, callback } = action;
-  const param = new URLSearchParams({
-    item: action.payload.id,
-    history: Constants.retrievedTransactionHistory,
-  }).toString();
-
-  let url;
-  url = calculateListUrl(action, Paths.manageTransactions, param);
-
-  const [response, status] = await Request("GET", url);
-  new Promise((resolve) => {
-    if (match2xx(status)) {
-      const processedResponse = retrieveResults(response).map((i) =>
-        convertDatesToLocal(i)
-      );
-      dispatch({
-        type: ApiActions.SuccessList,
-        payload: {
-          inventory: processedResponse,
-          next: response.next,
-          previous: response.previous,
-        },
-        callback,
-      });
-      return;
-    }
-    if (status === 401) return authFailure(dispatch, callback);
-    throw Error("Unknown Status Code");
-  }).catch((err) => {
-    asyncDispatch(dispatch, {
-      type: ApiActions.FailureList,
-      callback,
-    });
-  });
-};
+/* istanbul ignore next */
+export const asyncList = async ({ state, action }) => "Not Implemented";
 
 /* istanbul ignore next */
 export const asyncDel = ({ state, action }) => "Not Implemented";

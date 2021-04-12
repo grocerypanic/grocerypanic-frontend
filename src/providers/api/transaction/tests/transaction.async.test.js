@@ -11,7 +11,7 @@ import { generateConverter } from "../../generators/generate.converter";
 
 jest.mock("../../../../util/requests");
 
-const implemented = [ApiFunctions.asyncAdd, ApiFunctions.asyncList];
+const implemented = [ApiFunctions.asyncAdd];
 
 AsyncTest(
   Paths.manageTransactions,
