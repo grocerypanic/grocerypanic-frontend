@@ -9,13 +9,13 @@ const mockRegistration = {
 describe("test performUpdate", () => {
   let performUpdateFn;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     document.body.innerHTML = "";
     const div = document.createElement("div");
     div.id = "root";
     document.body.appendChild(div);
 
-    act(() => {
+    await act(async () => {
       let { performUpdate } = require("../index.js");
       performUpdateFn = performUpdate;
     });
