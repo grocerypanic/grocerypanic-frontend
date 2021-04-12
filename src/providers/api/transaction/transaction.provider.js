@@ -5,12 +5,12 @@ import InitialState from "./transaction.initial";
 export const TransactionContext = createContext({ ...InitialState });
 
 const TransactionProvider = ({ children }) => {
-  const [shelves, dispatch] = useReducer(TransactionReducer, InitialState);
+  const [transactions, dispatch] = useReducer(TransactionReducer, InitialState);
 
   return (
     <TransactionContext.Provider
       value={{
-        apiObject: shelves,
+        apiObject: transactions,
         dispatch,
       }}
     >

@@ -17,7 +17,7 @@ import MenuPage from "../../menu/menu.page";
 import SplashPage from "../../splash/splash.page";
 import Header from "../../../components/header/header.component";
 
-import { UserContext } from "../../../providers/user/user.provider";
+import { SocialContext } from "../../../providers/social/social.provider";
 import { HeaderContext } from "../../../providers/header/header.provider";
 import initialHeaderSettings from "../../../providers/header/header.initial";
 
@@ -71,13 +71,13 @@ describe("Check Routing", () => {
       <HeaderContext.Provider
         value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
       >
-        <UserContext.Provider
-          value={{ user: currentTest.state, dispatch: mockDispatch }}
+        <SocialContext.Provider
+          value={{ socialLogin: currentTest.state, dispatch: mockDispatch }}
         >
           <Router history={history}>
             <App />
           </Router>
-        </UserContext.Provider>
+        </SocialContext.Provider>
       </HeaderContext.Provider>
     );
   };

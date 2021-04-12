@@ -1,4 +1,4 @@
-const UserActions = {
+const SocialActions = {
   ToggleLogin: "ToggleLogin",
   StartFetchUser: "StartFetchUser",
   SuccessFetchUser: "SuccessFetchUser",
@@ -8,4 +8,4 @@ const UserActions = {
   DuplicateAccount: "DuplicateAccount",
 };
 
-export default UserActions;
+export default SocialActions;

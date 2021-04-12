@@ -1,4 +1,4 @@
-import withMiddleware from "../user.middleware";
+import withMiddleware from "../middleware";
 
 const callStack = [];
 

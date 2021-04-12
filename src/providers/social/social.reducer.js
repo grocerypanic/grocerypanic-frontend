@@ -1,10 +1,10 @@
-import UserActions from "./user.actions";
-import withMiddleware from "../../util/user.middleware";
+import SocialActions from "./social.actions";
+import withMiddleware from "../../util/middleware";
 import reducerLoggingMiddleware from "../../util/reducer.logger";
 
 const userReducer = (state, action) => {
   switch (action.type) {
-    case UserActions.ResetUser:
+    case SocialActions.ResetUser:
       return {
         ...state,
         username: "",
@@ -13,7 +13,7 @@ const userReducer = (state, action) => {
         errorMessage: null,
         login: false,
       };
-    case UserActions.StartFetchUser:
+    case SocialActions.StartFetchUser:
       new Promise(function (resolve) {
         action.func({ state, action });
       });
@@ -21,12 +21,12 @@ const userReducer = (state, action) => {
         ...state,
         login: false,
       };
-    case UserActions.ToggleLogin:
+    case SocialActions.ToggleLogin:
       return {
         ...state,
         login: !state.login,
       };
-    case UserActions.FailureFetchUser:
+    case SocialActions.FailureFetchUser:
       return {
         ...state,
         username: action.payload.username,
@@ -36,7 +36,7 @@ const userReducer = (state, action) => {
         errorMessage: "SignIn.ErrorLoginFailure", // Strings Key
         login: false,
       };
-    case UserActions.AuthExpired:
+    case SocialActions.AuthExpired:
       return {
         ...state,
         username: action.payload.username,
@@ -46,7 +46,7 @@ const userReducer = (state, action) => {
         errorMessage: "SignIn.ErrorAuthExpired", // Strings Key
         login: false,
       };
-    case UserActions.DuplicateAccount:
+    case SocialActions.DuplicateAccount:
       return {
         ...state,
         username: "",
@@ -56,7 +56,7 @@ const userReducer = (state, action) => {
         errorMessage: "SignIn.ErrorDuplicateAccount", // Strings Key
         login: false,
       };
-    case UserActions.SuccessFetchUser:
+    case SocialActions.SuccessFetchUser:
       return {
         ...state,
         error: false,

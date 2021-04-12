@@ -5,12 +5,12 @@ import InitialState from "./item.initial";
 export const ItemContext = createContext({ ...InitialState });
 
 const ItemProvider = ({ children }) => {
-  const [shelves, dispatch] = useReducer(ItemReducer, InitialState);
+  const [items, dispatch] = useReducer(ItemReducer, InitialState);
 
   return (
     <ItemContext.Provider
       value={{
-        apiObject: shelves,
+        apiObject: items,
         dispatch,
       }}
     >

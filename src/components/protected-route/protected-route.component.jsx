@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { Route } from "react-router-dom";
-import { UserContext } from "../../providers/user/user.provider";
+import { SocialContext } from "../../providers/social/social.provider";
 
 const ProtectedRoute = ({
   negative,
@@ -12,20 +12,20 @@ const ProtectedRoute = ({
   history,
   ...otherProps
 }) => {
-  const { user } = React.useContext(UserContext);
+  const { socialLogin } = React.useContext(SocialContext);
 
   const handleRedirect = () => {
-    if (negative && !user[attr]) {
+    if (negative && !socialLogin[attr]) {
       history.push(redirect);
     }
-    if (!negative && user[attr]) {
+    if (!negative && socialLogin[attr]) {
       history.push(redirect);
     }
   };
 
   React.useEffect(() => {
     handleRedirect();
-  }, [user]); // eslint-disable-line
+  }, [socialLogin]); // eslint-disable-line
 
   React.useEffect(() => {
     handleRedirect();

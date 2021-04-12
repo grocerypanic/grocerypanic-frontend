@@ -1,8 +1,8 @@
 import React from "react";
 import { render, cleanup } from "@testing-library/react";
-import UserProvider, { UserContext } from "../user.provider";
+import SocialProvider, { SocialContext } from "../social.provider";
 
-import InitialState from "../user.initial";
+import InitialState from "../social.initial";
 
 describe("Check the Inital Provider State", () => {
   afterEach(cleanup);
@@ -10,8 +10,8 @@ describe("Check the Inital Provider State", () => {
   it("should have the expected default values", () => {
     let received = {};
     render(
-      <UserProvider>
-        <UserContext.Consumer>
+      <SocialProvider>
+        <SocialContext.Consumer>
           {(state) => (
             <div>
               {Object.keys(state).forEach(function (key) {
@@ -19,11 +19,11 @@ describe("Check the Inital Provider State", () => {
               })}
             </div>
           )}
-        </UserContext.Consumer>
-      </UserProvider>
+        </SocialContext.Consumer>
+      </SocialProvider>
     );
     expect(Object.keys(received).length).toBe(2);
     expect(received.dispatch).toBeInstanceOf(Function);
-    expect(received.user).toBe(InitialState);
+    expect(received.socialLogin).toBe(InitialState);
   });
 });

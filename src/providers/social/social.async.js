@@ -2,7 +2,7 @@ import { Paths, Providers } from "../../configuration/backend";
 import { match2xx } from "../../util/requests/status";
 import Request from "../../util/requests";
 import { Constants } from "../../configuration/backend";
-import UserActions from "./user.actions";
+import SocialActions from "./social.actions";
 
 export const asyncLogin = async ({ state, action }) => {
   const { payload, dispatch } = action;
@@ -36,7 +36,7 @@ export const asyncLogin = async ({ state, action }) => {
   ) {
     return new Promise(function (resolve) {
       dispatch({
-        type: UserActions.DuplicateAccount,
+        type: SocialActions.DuplicateAccount,
       });
     });
   }
@@ -44,7 +44,7 @@ export const asyncLogin = async ({ state, action }) => {
   if (match2xx(status)) {
     return new Promise(function (resolve) {
       dispatch({
-        type: UserActions.SuccessFetchUser,
+        type: SocialActions.SuccessFetchUser,
         payload: {
           username: payload._profile.name,
           avatar: payload._profile.profilePicURL,
@@ -60,7 +60,7 @@ export const asyncLogin = async ({ state, action }) => {
 export const triggerLogin = async (dispatch, response) => {
   if (Object.keys(Providers).includes(response._provider)) {
     await dispatch({
-      type: UserActions.StartFetchUser,
+      type: SocialActions.StartFetchUser,
       payload: response,
       func: asyncLogin,
       dispatch: dispatch,
@@ -70,13 +70,13 @@ export const triggerLogin = async (dispatch, response) => {
 
 export const resetLogin = async (dispatch) => {
   dispatch({
-    type: UserActions.ResetUser,
+    type: SocialActions.ResetUser,
   });
 };
 
 export const loginError = async (dispatch, username = "") => {
   dispatch({
-    type: UserActions.FailureFetchUser,
+    type: SocialActions.FailureFetchUser,
     payload: {
       username,
     },
@@ -85,7 +85,7 @@ export const loginError = async (dispatch, username = "") => {
 
 export const authExpired = async (dispatch) => {
   dispatch({
-    type: UserActions.AuthExpired,
+    type: SocialActions.AuthExpired,
     payload: {
       username: "",
     },

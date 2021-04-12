@@ -5,18 +5,18 @@ import ErrorDialogue from "../../components/error-dialogue/error-dialogue.compon
 
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-import { UserContext } from "../../providers/user/user.provider";
+import { SocialContext } from "../../providers/social/social.provider";
 import { HeaderContext } from "../../providers/header/header.provider";
 
 import {
   triggerLogin,
   resetLogin,
   loginError,
-} from "../../providers/user/user.async";
+} from "../../providers/social/social.async";
 
 const SignInContainer = () => {
   const { event } = React.useContext(AnalyticsContext);
-  const { user, dispatch } = React.useContext(UserContext);
+  const { socialLogin, dispatch } = React.useContext(SocialContext);
   const { updateHeader } = React.useContext(HeaderContext);
 
   const [performAsync, setPerformAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
@@ -49,11 +49,11 @@ const SignInContainer = () => {
 
   return (
     <div>
-      {user.error ? (
+      {socialLogin.error ? (
         <ErrorDialogue
           eventError={AnalyticsActions.LoginError}
           clearError={clearLogin}
-          messageTranslationKey={user.errorMessage}
+          messageTranslationKey={socialLogin.errorMessage}
         />
       ) : (
         <SignIn

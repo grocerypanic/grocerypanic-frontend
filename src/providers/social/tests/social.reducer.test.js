@@ -1,7 +1,7 @@
-import UserReducer from "../user.reducer";
-import UserActions from "../user.actions";
+import SocialReducer from "../social.reducer";
+import SocialActions from "../social.actions";
 
-import InitialState from "../user.initial";
+import InitialState from "../social.initial";
 
 describe("Check The Reducer Functionality", () => {
   let received;
@@ -10,19 +10,19 @@ describe("Check The Reducer Functionality", () => {
   });
 
   it("should have the expected default values", () => {
-    const received = UserReducer(InitialState, { type: "NoAction" });
+    const received = SocialReducer(InitialState, { type: "NoAction" });
     expect(received).toBe(InitialState);
   });
 
   it("handles ToggleLogin correctly", () => {
     // toggle on
-    received = UserReducer(InitialState, {
-      type: UserActions.ToggleLogin,
+    received = SocialReducer(InitialState, {
+      type: SocialActions.ToggleLogin,
     });
     expect(received.login).toBe(true);
     // toggle off
-    received = UserReducer(received, {
-      type: UserActions.ToggleLogin,
+    received = SocialReducer(received, {
+      type: SocialActions.ToggleLogin,
     });
     expect(received.login).toBe(false);
   });
@@ -36,12 +36,12 @@ describe("Check The Reducer Functionality", () => {
     mockAsync.mockReturnValue("ReturnValue");
     const mockPayload = { mock: "data" };
     const action = {
-      type: UserActions.StartFetchUser,
+      type: SocialActions.StartFetchUser,
       func: mockAsync,
       payload: mockPayload,
-      dispatch: UserReducer,
+      dispatch: SocialReducer,
     };
-    const received = UserReducer(InitialState, action);
+    const received = SocialReducer(InitialState, action);
     expect(received).toEqual(ModifiedInitialState);
     expect(mockAsync.mock.calls.length).toBe(1);
     expect(mockAsync.mock.calls[0]).toEqual([
@@ -58,8 +58,8 @@ describe("Check The Reducer Functionality", () => {
       email: "some@email",
       avatar: "some://url",
     };
-    const received = UserReducer(InitialState, {
-      type: UserActions.SuccessFetchUser,
+    const received = SocialReducer(InitialState, {
+      type: SocialActions.SuccessFetchUser,
       payload,
     });
     expect(received.avatar).toBe("some://url");
@@ -76,8 +76,8 @@ describe("Check The Reducer Functionality", () => {
       avatar: "some://url",
       errorMessage: null,
     };
-    const received = UserReducer(InitialState, {
-      type: UserActions.FailureFetchUser,
+    const received = SocialReducer(InitialState, {
+      type: SocialActions.FailureFetchUser,
       payload,
     });
     expect(received.avatar).toBe("");
@@ -97,8 +97,8 @@ describe("Check The Reducer Functionality", () => {
       error: true,
       errorMessage: "Error",
     };
-    const received = UserReducer(InitialState, {
-      type: UserActions.ResetUser,
+    const received = SocialReducer(InitialState, {
+      type: SocialActions.ResetUser,
       payload,
     });
     expect(received.avatar).toBe("");
@@ -118,8 +118,8 @@ describe("Check The Reducer Functionality", () => {
       error: false,
       errorMessage: null,
     };
-    const received = UserReducer(InitialState, {
-      type: UserActions.AuthExpired,
+    const received = SocialReducer(InitialState, {
+      type: SocialActions.AuthExpired,
       payload,
     });
     expect(received.avatar).toBe("");
@@ -139,8 +139,8 @@ describe("Check The Reducer Functionality", () => {
       error: false,
       errorMessage: null,
     };
-    const received = UserReducer(InitialState, {
-      type: UserActions.DuplicateAccount,
+    const received = SocialReducer(InitialState, {
+      type: SocialActions.DuplicateAccount,
       payload,
     });
     expect(received.avatar).toBe("");

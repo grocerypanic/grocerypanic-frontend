@@ -5,12 +5,12 @@ import InitialState from "./store.initial";
 export const StoreContext = createContext({ ...InitialState });
 
 const StoreProvider = ({ children }) => {
-  const [shelves, dispatch] = useReducer(StoreReducer, InitialState);
+  const [stores, dispatch] = useReducer(StoreReducer, InitialState);
 
   return (
     <StoreContext.Provider
       value={{
-        apiObject: shelves,
+        apiObject: stores,
         dispatch,
       }}
     >

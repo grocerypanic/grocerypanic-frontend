@@ -3,12 +3,12 @@ import { render, cleanup, waitFor, act } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 import i18next from "i18next";
 
-import { UserContext } from "../../../providers/user/user.provider";
+import { SocialContext } from "../../../providers/social/social.provider";
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import { HeaderContext } from "../../../providers/header/header.provider";
 
-import initialState from "../../../providers/user/user.initial";
+import initialState from "../../../providers/social/social.initial";
 import initialHeaderSettings from "../../../providers/header/header.initial";
 
 import Strings from "../../../configuration/strings";
@@ -17,7 +17,7 @@ import {
   triggerLogin,
   resetLogin,
   loginError,
-} from "../../../providers/user/user.async";
+} from "../../../providers/social/social.async";
 
 import SignInContainer from "../signin.container";
 import SignIn from "../signin.page";
@@ -25,7 +25,7 @@ import ErrorDialogue from "../../../components/error-dialogue/error-dialogue.com
 
 jest.mock("../signin.page");
 
-jest.mock("../../../providers/user/user.async");
+jest.mock("../../../providers/social/social.async");
 triggerLogin.mockImplementation(() => <div>MockTrigger</div>);
 resetLogin.mockImplementation(() => <div>MockReset</div>);
 
@@ -65,9 +65,11 @@ describe("Setup Environment", () => {
         value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
       >
         <AnalyticsContext.Provider value={mockAnalyticsContext}>
-          <UserContext.Provider value={{ user: props, dispatch: mockDispatch }}>
+          <SocialContext.Provider
+            value={{ socialLogin: props, dispatch: mockDispatch }}
+          >
             <SignInContainer />
-          </UserContext.Provider>
+          </SocialContext.Provider>
         </AnalyticsContext.Provider>
       </HeaderContext.Provider>
     );

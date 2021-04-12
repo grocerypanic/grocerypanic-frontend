@@ -11,11 +11,11 @@ import ShelfProvider from "./api/shelf/shelf.provider";
 import StoreProvider from "./api/store/store.provider";
 import TransactionProvider from "./api/transaction/transaction.provider";
 
-import UserProvider from "./user/user.provider";
+import SocialProvider from "./social/social.provider";
 
 const RootProvider = ({ children }) => {
   return (
-    <UserProvider>
+    <SocialProvider>
       <HeaderProvider>
         <AnalyticsProvider>
           <ItemProvider>
@@ -29,7 +29,7 @@ const RootProvider = ({ children }) => {
           </ItemProvider>
         </AnalyticsProvider>
       </HeaderProvider>
-    </UserProvider>
+    </SocialProvider>
   );
 };
 

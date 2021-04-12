@@ -8,9 +8,9 @@ import ItemList from "../../../components/item-list/item-list.component";
 
 import { ItemContext } from "../../../providers/api/item/item.provider";
 
-import { UserContext } from "../../../providers/user/user.provider";
-import initialState from "../../../providers/user/user.initial";
-import UserActions from "../../../providers/user/user.actions";
+import { SocialContext } from "../../../providers/social/social.provider";
+import initialState from "../../../providers/social/social.initial";
+import SocialActions from "../../../providers/social/social.actions";
 
 import Strings from "../../../configuration/strings";
 
@@ -24,13 +24,13 @@ describe("Check the correct props are passed to simple list", () => {
     jest.clearAllMocks();
 
     render(
-      <UserContext.Provider
-        value={{ user: initialState, dispatch: mockDispatch }}
+      <SocialContext.Provider
+        value={{ socialLogin: initialState, dispatch: mockDispatch }}
       >
         <ItemContext.Provider>
           <ItemPage />
         </ItemContext.Provider>
-      </UserContext.Provider>
+      </SocialContext.Provider>
     );
   });
 
@@ -61,7 +61,7 @@ describe("Check the correct props are passed to simple list", () => {
     await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     expect(mockDispatch).toBeCalledWith({
       payload: { username: "" },
-      type: UserActions.AuthExpired,
+      type: SocialActions.AuthExpired,
     });
   });
 });

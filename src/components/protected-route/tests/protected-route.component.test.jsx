@@ -10,8 +10,8 @@ import MockComponent, {
   MockComponentContents,
 } from "../../../test.fixtures/mockComponent";
 
-import { UserContext } from "../../../providers/user/user.provider";
-import initialState from "../../../providers/user/user.initial";
+import { SocialContext } from "../../../providers/social/social.provider";
+import initialState from "../../../providers/social/social.initial";
 
 import Routes from "../../../configuration/routes";
 
@@ -36,11 +36,13 @@ let currentTest = {
 
 const RenderFunction = ({ state, history, ...otherProps }) => {
   return (
-    <UserContext.Provider value={{ user: state, dispatch: mockDispatch }}>
+    <SocialContext.Provider
+      value={{ socialLogin: state, dispatch: mockDispatch }}
+    >
       <Router history={history}>
         <ProtectedRoute {...otherProps} />
       </Router>
-    </UserContext.Provider>
+    </SocialContext.Provider>
   );
 };
 

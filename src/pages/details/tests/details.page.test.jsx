@@ -8,9 +8,9 @@ import ItemDetailsEditContainer from "../../../components/item-details/item-deta
 
 import { ItemContext } from "../../../providers/api/item/item.provider";
 
-import { UserContext } from "../../../providers/user/user.provider";
-import initialState from "../../../providers/user/user.initial";
-import UserActions from "../../../providers/user/user.actions";
+import { SocialContext } from "../../../providers/social/social.provider";
+import initialState from "../../../providers/social/social.initial";
+import SocialActions from "../../../providers/social/social.actions";
 
 import Strings from "../../../configuration/strings";
 import Routes from "../../../configuration/routes";
@@ -26,15 +26,15 @@ describe("Check the correct props are passed to simple list", () => {
     jest.clearAllMocks();
 
     render(
-      <UserContext.Provider
-        value={{ user: initialState, dispatch: mockDispatch }}
+      <SocialContext.Provider
+        value={{ socialLogin: initialState, dispatch: mockDispatch }}
       >
         <MemoryRouter initialEntries={[Routes.details.replace(":id", ItemId)]}>
           <ItemContext.Provider>
             <Route path={Routes.details} component={ItemDetailsPage} />
           </ItemContext.Provider>
         </MemoryRouter>
-      </UserContext.Provider>
+      </SocialContext.Provider>
     );
   });
 
@@ -63,7 +63,7 @@ describe("Check the correct props are passed to simple list", () => {
     await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     expect(mockDispatch).toBeCalledWith({
       payload: { username: "" },
-      type: UserActions.AuthExpired,
+      type: SocialActions.AuthExpired,
     });
   });
 });

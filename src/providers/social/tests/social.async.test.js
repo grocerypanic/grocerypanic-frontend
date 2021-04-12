@@ -5,8 +5,8 @@ import {
   asyncLogin,
   loginError,
   authExpired,
-} from "../user.async";
-import UserActions from "../user.actions";
+} from "../social.async";
+import SocialActions from "../social.actions";
 
 import { Providers, Paths, Constants } from "../../../configuration/backend";
 
@@ -77,7 +77,7 @@ describe("Setup for Testing asyncLogin", () => {
     expect(Request).toBeCalledTimes(0);
     await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     expect(mockDispatch).toBeCalledWith({
-      type: UserActions.FailureFetchUser,
+      type: SocialActions.FailureFetchUser,
       payload: {
         username: "",
       },
@@ -95,7 +95,7 @@ describe("Setup for Testing asyncLogin", () => {
     });
     await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     expect(mockDispatch).toBeCalledWith({
-      type: UserActions.SuccessFetchUser,
+      type: SocialActions.SuccessFetchUser,
       payload: {
         username: mockData._profile.name,
         avatar: mockData._profile.profilePicURL,
@@ -115,7 +115,7 @@ describe("Setup for Testing asyncLogin", () => {
     });
     await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     expect(mockDispatch).toBeCalledWith({
-      type: UserActions.FailureFetchUser,
+      type: SocialActions.FailureFetchUser,
       payload: {
         username: mockData._profile.name,
       },
@@ -133,7 +133,7 @@ describe("Setup for Testing asyncLogin", () => {
     });
     await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     expect(mockDispatch).toBeCalledWith({
-      type: UserActions.SuccessFetchUser,
+      type: SocialActions.SuccessFetchUser,
       payload: {
         username: mockData._profile.name,
         avatar: mockData._profile.profilePicURL,
@@ -153,7 +153,7 @@ describe("Setup for Testing asyncLogin", () => {
     });
     await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     expect(mockDispatch).toBeCalledWith({
-      type: UserActions.FailureFetchUser,
+      type: SocialActions.FailureFetchUser,
       payload: {
         username: mockData._profile.name,
       },
@@ -171,7 +171,7 @@ describe("Setup for Testing asyncLogin", () => {
     });
     await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     expect(mockDispatch).toBeCalledWith({
-      type: UserActions.DuplicateAccount,
+      type: SocialActions.DuplicateAccount,
     });
   });
 });
@@ -192,7 +192,7 @@ describe("Setup for Testing triggerLogin", () => {
   it("should dispatch the correct action to the user reducer", () => {
     triggerLogin(mockDispatch, mockData);
     expect(mockDispatch).toBeCalledWith({
-      type: UserActions.StartFetchUser,
+      type: SocialActions.StartFetchUser,
       payload: mockData,
       func: asyncLogin,
       dispatch: mockDispatch,
@@ -207,7 +207,7 @@ describe("Setup for Testing resetLogin", () => {
   it("should dispatch the correct action to the user reducer", () => {
     resetLogin(mockDispatch);
     expect(mockDispatch).toBeCalledWith({
-      type: UserActions.ResetUser,
+      type: SocialActions.ResetUser,
     });
   });
 });
@@ -219,7 +219,7 @@ describe("Setup for Testing loginError", () => {
   it("should dispatch the correct action to the user reducer", () => {
     loginError(mockDispatch);
     expect(mockDispatch).toBeCalledWith({
-      type: UserActions.FailureFetchUser,
+      type: SocialActions.FailureFetchUser,
       payload: { username: "" },
     });
   });
@@ -232,7 +232,7 @@ describe("Setup for Testing authExpired", () => {
   it("should dispatch the correct action to the user reducer", () => {
     authExpired(mockDispatch);
     expect(mockDispatch).toBeCalledWith({
-      type: UserActions.AuthExpired,
+      type: SocialActions.AuthExpired,
       payload: { username: "" },
     });
   });

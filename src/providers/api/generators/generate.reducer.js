@@ -1,6 +1,6 @@
 import ApiActions from "../api.actions";
 
-import withMiddleware from "../../../util/user.middleware";
+import withMiddleware from "../../../util/middleware";
 import reducerLoggingMiddleware from "../../../util/reducer.logger";
 import withAsyncLogger from "../../../util/async.logger";
 
