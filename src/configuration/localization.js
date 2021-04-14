@@ -18,7 +18,7 @@ const i18nConfig = {
     formatSeparator: ",",
   },
   react: {
-    wait: true,
+    useSuspense: true,
   },
 };
 

@@ -19,6 +19,9 @@ i18n.use(initReactI18next).init({
     escapeValue: false,
   },
   resources: { ...Strings },
+  react: {
+    useSuspense: true,
+  },
 });
 
 global.i18n = i18n;
