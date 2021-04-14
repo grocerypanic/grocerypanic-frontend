@@ -17,7 +17,8 @@ export const AsyncTest = (
   asyncFn,
   converterFn,
   implemented, // List of implemented api functions
-  optionalListParams = {}
+  optionalListParams = {},
+  getMethodRequiresNoId = false
 ) => {
   const mockDispatch = jest.fn();
   const mockCallBack = jest.fn();
@@ -257,10 +258,15 @@ export const AsyncTest = (
 
           asyncFn.asyncGet({ state: State2, action });
 
-          expect(Request).toBeCalledWith(
-            "GET",
-            apiEndpoint + `${mockObject.id}/`
-          );
+          if (!getMethodRequiresNoId)
+            expect(Request).toBeCalledWith(
+              "GET",
+              apiEndpoint + `${mockObject.id}/`
+            );
+
+          if (getMethodRequiresNoId)
+            expect(Request).toBeCalledWith("GET", apiEndpoint);
+
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           newState = newState.map((i) => converterFn(i));
 
@@ -289,18 +295,34 @@ export const AsyncTest = (
 
           asyncFn.asyncGet({ state: State2, action });
 
-          expect(Request).toBeCalledWith(
-            "GET",
-            apiEndpoint + `${mockObject.id}/`
-          );
+          if (!getMethodRequiresNoId)
+            expect(Request).toBeCalledWith(
+              "GET",
+              apiEndpoint + `${mockObject.id}/`
+            );
+
+          if (getMethodRequiresNoId)
+            expect(Request).toBeCalledWith("GET", apiEndpoint);
+
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
-          expect(mockDispatch).toBeCalledWith({
-            type: ApiActions.SuccessGet,
-            payload: {
-              inventory: [...State2.inventory, converterFn(mockObject)],
-            },
-            callback: mockCallBack,
-          });
+
+          if (!getMethodRequiresNoId) {
+            expect(mockDispatch).toBeCalledWith({
+              type: ApiActions.SuccessGet,
+              payload: {
+                inventory: [...State2.inventory, converterFn(mockObject)],
+              },
+              callback: mockCallBack,
+            });
+          } else {
+            expect(mockDispatch).toBeCalledWith({
+              type: ApiActions.SuccessGet,
+              payload: {
+                inventory: [converterFn(mockObject)],
+              },
+              callback: mockCallBack,
+            });
+          }
         });
       }
 
@@ -447,10 +469,15 @@ export const AsyncTest = (
 
           asyncFn.asyncGet({ state: State2, action });
 
-          expect(Request).toBeCalledWith(
-            "GET",
-            apiEndpoint + `${action.payload.id}/`
-          );
+          if (!getMethodRequiresNoId)
+            expect(Request).toBeCalledWith(
+              "GET",
+              apiEndpoint + `${mockObject.id}/`
+            );
+
+          if (getMethodRequiresNoId)
+            expect(Request).toBeCalledWith("GET", apiEndpoint);
+
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.FailureGet,
@@ -595,10 +622,15 @@ export const AsyncTest = (
 
           asyncFn.asyncGet({ state: State2, action });
 
-          expect(Request).toBeCalledWith(
-            "GET",
-            apiEndpoint + `${action.payload.id}/`
-          );
+          if (!getMethodRequiresNoId)
+            expect(Request).toBeCalledWith(
+              "GET",
+              apiEndpoint + `${action.payload.id}/`
+            );
+
+          if (getMethodRequiresNoId)
+            expect(Request).toBeCalledWith("GET", apiEndpoint);
+
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.FailureAuth,

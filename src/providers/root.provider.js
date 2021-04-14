@@ -10,6 +10,7 @@ import ItemProvider from "./api/item/item.provider";
 import ShelfProvider from "./api/shelf/shelf.provider";
 import StoreProvider from "./api/store/store.provider";
 import TransactionProvider from "./api/transaction/transaction.provider";
+import UserProvider from "./api/user/user.provider";
 
 import SocialProvider from "./social/social.provider";
 
@@ -22,7 +23,9 @@ const RootProvider = ({ children }) => {
             <ShelfProvider>
               <StoreProvider>
                 <ActivityProvider>
-                  <TransactionProvider>{children}</TransactionProvider>
+                  <TransactionProvider>
+                    <UserProvider>{children}</UserProvider>
+                  </TransactionProvider>
                 </ActivityProvider>
               </StoreProvider>
             </ShelfProvider>

@@ -11,6 +11,7 @@ import ItemProvider from "../api/item/item.provider";
 import ShelfProvider from "../api/shelf/shelf.provider";
 import StoreProvider from "../api/store/store.provider";
 import TransactionProvider from "../api/transaction/transaction.provider";
+import UserProvider from "../api/user/user.provider";
 
 import SocialProvider from "../social/social.provider";
 
@@ -22,15 +23,17 @@ jest.mock("../api/shelf/shelf.provider");
 jest.mock("../api/store/store.provider");
 jest.mock("../api/transaction/transaction.provider");
 jest.mock("../social/social.provider");
+jest.mock("../api/user/user.provider");
 
 ActivityProvider.mockImplementation(({ children }) => children);
 AnalyticsProvider.mockImplementation(({ children }) => children);
 HeaderProvider.mockImplementation(({ children }) => children);
 ItemProvider.mockImplementation(({ children }) => children);
 ShelfProvider.mockImplementation(({ children }) => children);
+SocialProvider.mockImplementation(({ children }) => children);
 StoreProvider.mockImplementation(({ children }) => children);
 TransactionProvider.mockImplementation(({ children }) => children);
-SocialProvider.mockImplementation(({ children }) => children);
+UserProvider.mockImplementation(({ children }) => children);
 
 let utils;
 
@@ -54,6 +57,7 @@ it("should render with the correct message", () => {
   expect(StoreProvider).toHaveBeenCalledTimes(1);
   expect(TransactionProvider).toHaveBeenCalledTimes(1);
   expect(SocialProvider).toHaveBeenCalledTimes(1);
+  expect(UserProvider).toHaveBeenCalledTimes(1);
 
   expect(utils.findByText("Missing Ingredients")).toBeTruthy();
 });
