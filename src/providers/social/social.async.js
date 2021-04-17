@@ -57,17 +57,6 @@ export const asyncLogin = async ({ state, action }) => {
   return loginError(dispatch, payload._profile.name);
 };
 
-export const triggerLogin = async (dispatch, response) => {
-  if (Object.keys(Providers).includes(response._provider)) {
-    await dispatch({
-      type: SocialActions.StartFetchUser,
-      payload: response,
-      func: asyncLogin,
-      dispatch: dispatch,
-    });
-  }
-};
-
 export const resetLogin = async (dispatch) => {
   dispatch({
     type: SocialActions.ResetUser,

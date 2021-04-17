@@ -5,7 +5,7 @@ import createPersistedReducer from "use-persisted-reducer";
 
 export const SocialContext = createContext({ ...InitialState });
 
-const usePersistedReducer = createPersistedReducer("user-state");
+const usePersistedReducer = createPersistedReducer("user-login");
 
 const SocialProvider = ({ children }) => {
   const [socialLogin, dispatch] = usePersistedReducer(

@@ -1,6 +1,5 @@
 import { waitFor } from "@testing-library/react";
 import {
-  triggerLogin,
   resetLogin,
   asyncLogin,
   loginError,
@@ -172,30 +171,6 @@ describe("Setup for Testing asyncLogin", () => {
     await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
     expect(mockDispatch).toBeCalledWith({
       type: SocialActions.DuplicateAccount,
-    });
-  });
-});
-
-let responses = [{ _provider: "Invalid" }, { _provider: Providers.google }];
-
-describe("Setup for Testing triggerLogin", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    mockData = responses.shift();
-  });
-
-  it("should skip all login activity if the provider is not supported", () => {
-    triggerLogin(mockDispatch, mockData);
-    expect(mockDispatch).toBeCalledTimes(0);
-  });
-
-  it("should dispatch the correct action to the user reducer", () => {
-    triggerLogin(mockDispatch, mockData);
-    expect(mockDispatch).toBeCalledWith({
-      type: SocialActions.StartFetchUser,
-      payload: mockData,
-      func: asyncLogin,
-      dispatch: mockDispatch,
     });
   });
 });

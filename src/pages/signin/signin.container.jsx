@@ -2,26 +2,24 @@ import React from "react";
 
 import SignIn from "./signin.page";
 import ErrorDialogue from "../../components/error-dialogue/error-dialogue.component";
+import HoldingPattern from "../../components/holding-pattern/holding-pattern.component";
 
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-import { SocialContext } from "../../providers/social/social.provider";
 import { HeaderContext } from "../../providers/header/header.provider";
-
-import {
-  triggerLogin,
-  resetLogin,
-  loginError,
-} from "../../providers/social/social.async";
+import useProfile from "../../providers/api/user/user.hook";
+import useSocialLogin from "../../providers/social/social.hook";
 
 const SignInContainer = () => {
   const { event } = React.useContext(AnalyticsContext);
-  const { socialLogin, dispatch } = React.useContext(SocialContext);
+  const { profile } = useProfile();
+  const { social } = useSocialLogin();
+  const [inProgress, setInProgress] = React.useState(false);
+
   const { updateHeader } = React.useContext(HeaderContext);
 
-  const [performAsync, setPerformAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
-
   React.useEffect(() => {
+    setInProgress(false);
     updateHeader({
       title: "MainHeaderTitle",
       disableNav: true,
@@ -29,37 +27,43 @@ const SignInContainer = () => {
   }, []); // eslint-disable-line
 
   React.useEffect(() => {
-    if (!performAsync) return;
-    dispatch(performAsync);
-    setPerformAsync(null);
-  }, [performAsync]); // eslint-disable-line
+    if (social.socialLogin.login) {
+      profile.getProfile();
+      setInProgress(false);
+    }
+  }, [social.socialLogin.login]); // eslint-disable-line
 
   const handleSocialLogin = (response) => {
     event(AnalyticsActions.LoginSuccess);
-    triggerLogin(setPerformAsync, response);
+    setInProgress(true);
+    social.login(response);
   };
 
   const handleSocialLoginError = () => {
-    loginError(setPerformAsync);
+    setInProgress(false);
+    social.error();
   };
 
   const clearLogin = () => {
-    resetLogin(setPerformAsync);
+    setInProgress(false);
+    social.reset();
   };
 
   return (
     <div>
-      {socialLogin.error ? (
+      {social.socialLogin.error ? (
         <ErrorDialogue
           eventError={AnalyticsActions.LoginError}
           clearError={clearLogin}
-          messageTranslationKey={socialLogin.errorMessage}
+          messageTranslationKey={social.socialLogin.errorMessage}
         />
       ) : (
-        <SignIn
-          handleSocialLogin={handleSocialLogin}
-          handleSocialLoginError={handleSocialLoginError}
-        />
+        <HoldingPattern condition={inProgress || profile.user.transaction}>
+          <SignIn
+            handleSocialLogin={handleSocialLogin}
+            handleSocialLoginError={handleSocialLoginError}
+          />
+        </HoldingPattern>
       )}
     </div>
   );

@@ -6,6 +6,7 @@ import useProfile from "../user.hook";
 import InitialState from "../user.initial";
 
 import { UserContext } from "../user.provider";
+import ApiFunctions from "../../api.functions";
 
 const dispatchMock = jest.fn();
 const providerWrapper = ({ state, ...props }) => {
@@ -34,7 +35,7 @@ describe("test useProfile default initial state", () => {
   });
 
   it("should have the correct Initial State", () => {
-    expect(hook.current.user).toStrictEqual(InitialState);
+    expect(hook.current.profile.user).toStrictEqual(InitialState);
   });
 });
 
@@ -47,9 +48,12 @@ describe("test getProfile", () => {
   });
 
   it("should dispatch to get the user's profile", () => {
-    act(() => hook.current.getProfile());
+    act(() => hook.current.profile.getProfile());
     expect(dispatchMock).toBeCalledTimes(1);
-    expect(dispatchMock).toBeCalledWith({ type: ApiActions.StartGet });
+    const call = dispatchMock.mock.calls[0][0];
+    expect(call.type).toBe(ApiActions.StartGet);
+    expect(call.func).toBe(ApiFunctions.asyncGet);
+    expect(call.dispatch).toBe(dispatchMock);
   });
 });
 
@@ -63,11 +67,12 @@ describe("test updateProfile", () => {
 
   it("should dispatch to update the user's profile", () => {
     const mockProfile = { id: 2, username: "Niall" };
-    act(() => hook.current.updateProfile(mockProfile));
+    act(() => hook.current.profile.updateProfile(mockProfile));
     expect(dispatchMock).toBeCalledTimes(1);
-    expect(dispatchMock).toBeCalledWith({
-      type: ApiActions.StartUpdate,
-      action: { payload: mockProfile },
-    });
+    const call = dispatchMock.mock.calls[0][0];
+    expect(call.type).toBe(ApiActions.StartUpdate);
+    expect(call.func).toBe(ApiFunctions.asyncUpdate);
+    expect(call.dispatch).toBe(dispatchMock);
+    expect(call.action).toStrictEqual({ payload: mockProfile });
   });
 });

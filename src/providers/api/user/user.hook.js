@@ -1,21 +1,35 @@
 import { useContext } from "react";
 import { UserContext } from "./user.provider";
 import ApiActions from "../api.actions";
+import ApiFunctions from "../api.functions";
 
 const useProfile = () => {
   const { apiObject, dispatch } = useContext(UserContext);
 
-  const getProfile = () => dispatch({ type: ApiActions.StartGet });
+  const getProfile = () => {
+    dispatch({
+      type: ApiActions.StartGet,
+      func: ApiFunctions.asyncGet,
+      dispatch: dispatch,
+    });
+  };
+
   const updateProfile = (profileData) =>
     dispatch({
       type: ApiActions.StartUpdate,
-      action: { payload: profileData },
+      func: ApiFunctions.asyncUpdate,
+      dispatch: dispatch,
+      action: {
+        payload: profileData,
+      },
     });
 
   return {
-    user: apiObject,
-    getProfile,
-    updateProfile,
+    profile: {
+      user: apiObject,
+      getProfile,
+      updateProfile,
+    },
   };
 };
 
