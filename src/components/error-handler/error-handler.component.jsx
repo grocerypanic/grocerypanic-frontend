@@ -14,5 +14,5 @@ ErrorHandler.propTypes = {
   clearError: PropTypes.func.isRequired,
   eventMessage: PropTypes.object,
   messageTranslationKey: PropTypes.string.isRequired,
-  redirect: PropTypes.string.isRequired,
+  redirect: PropTypes.string,
 };

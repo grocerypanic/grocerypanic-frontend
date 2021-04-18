@@ -48,12 +48,27 @@ describe("Setup Environment", () => {
   describe("When condition is true", () => {
     beforeEach(() => {
       current.condition = true;
-      utils = renderHelper(current);
+    });
+    describe("When given a redirect", () => {
+      beforeEach(() => {
+        utils = renderHelper(current);
+      });
+      it("should render the error dialogue", () => {
+        expect(utils.queryByText(mockContent)).toBeFalsy();
+        expect(ErrorDialogue).toBeCalledTimes(1);
+      });
     });
 
-    it("should render the spinner instead", () => {
-      expect(utils.queryByText(mockContent)).toBeFalsy();
-      expect(ErrorDialogue).toBeCalledTimes(1);
+    describe("When no redirect is supplied", () => {
+      beforeEach(() => {
+        delete current.redirect;
+        utils = renderHelper(current);
+      });
+
+      it("hould render the error dialogue", () => {
+        expect(utils.queryByText(mockContent)).toBeFalsy();
+        expect(ErrorDialogue).toBeCalledTimes(1);
+      });
     });
   });
 });
