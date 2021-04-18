@@ -12,7 +12,6 @@ const generateReducer = (async, name) => {
       case ApiActions.StartGet:
       case ApiActions.StartList:
       case ApiActions.StartUpdate:
-        // Triggers API Function, starts transaction
         const newState = {
           ...state,
           inventory: [...state.inventory],
@@ -30,7 +29,6 @@ const generateReducer = (async, name) => {
       case ApiActions.FailureGet:
       case ApiActions.FailureList:
       case ApiActions.FailureUpdate:
-        // Must return an error message to inform user
         if (action.callback)
           new Promise(function (resolve) {
             action.callback({ success: false, complete: true });
@@ -40,7 +38,7 @@ const generateReducer = (async, name) => {
           inventory: [...state.inventory],
           fail: true,
           transaction: false,
-          ...action.payload,
+          errorMessage: action.type,
         };
       case ApiActions.SuccessAdd:
       case ApiActions.SuccessDel:
@@ -73,7 +71,6 @@ const generateReducer = (async, name) => {
           fail: false,
         };
       case ApiActions.FailureAuth:
-        // Clears out any error message, let's higher order components handle relogin
         if (action.callback)
           new Promise(function (resolve) {
             action.callback({ success: false, complete: false });
@@ -82,11 +79,10 @@ const generateReducer = (async, name) => {
           ...state,
           inventory: [...state.inventory],
           transaction: false,
-          errorMessage: null,
+          errorMessage: action.type,
           fail: false,
         };
       case ApiActions.DuplicateObject:
-        // Specific Response When A Duplicate Object Error is Raised By The API
         if (action.callback)
           new Promise(function (resolve) {
             action.callback({ success: false, complete: false });
@@ -95,7 +91,7 @@ const generateReducer = (async, name) => {
           ...state,
           inventory: [...state.inventory],
           transaction: false,
-          errorMessage: null,
+          errorMessage: action.type,
           fail: false,
         };
       default:

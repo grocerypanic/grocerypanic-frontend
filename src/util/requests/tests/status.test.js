@@ -32,9 +32,32 @@ describe("setup the environment for testing match2xx", () => {
 describe("setup the environment for testing match400duplicate", () => {
   let statusCode;
   let apiResponse;
-  describe("given a duplicate error from the api", () => {
+  describe("given a duplicate error list from the api", () => {
     beforeEach(() => {
-      apiResponse = Constants.duplicateObjectApiError;
+      apiResponse = { error: [Constants.duplicateObjectApiErrors[0]] };
+    });
+    describe("given a 400 status code", () => {
+      beforeEach(() => {
+        statusCode = 400;
+      });
+      it("should match this condition and return true", () => {
+        expect(match400duplicate(statusCode, apiResponse)).toBe(true);
+      });
+    });
+
+    describe("given a 200 status code", () => {
+      beforeEach(() => {
+        statusCode = 200;
+      });
+      it("should not match this condition and return false", () => {
+        expect(match400duplicate(statusCode, apiResponse)).toBe(false);
+      });
+    });
+  });
+
+  describe("given a duplicate error message from the api", () => {
+    beforeEach(() => {
+      apiResponse = { error: Constants.duplicateObjectApiErrors[0] };
     });
     describe("given a 400 status code", () => {
       beforeEach(() => {

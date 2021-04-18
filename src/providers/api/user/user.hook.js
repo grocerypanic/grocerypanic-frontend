@@ -19,14 +19,15 @@ const useProfile = () => {
       type: ApiActions.StartUpdate,
       func: ApiFunctions.asyncUpdate,
       dispatch: dispatch,
-      action: {
-        payload: profileData,
-      },
+      payload: profileData,
     });
+
+  const clearErrors = () => dispatch({ type: ApiActions.ClearErrors });
 
   return {
     profile: {
       user: apiObject,
+      clearErrors,
       getProfile,
       updateProfile,
     },

@@ -17,7 +17,7 @@ export const Constants = {
   maximumPrice: 9999,
   maximumTransactionHistory: 14,
   AnalyticsCookieName: "PanicDataConsent-" + process.env.NODE_ENV.toUpperCase(),
-  duplicateObjectApiError: { non_field_errors: ["Object already exists."] },
+  duplicateObjectApiErrors: ["This value needs to be unique per user."],
   pageLookupParam: "page",
   pageOverrideParam: "all_results",
   retrievedTransactionHistory: 62,

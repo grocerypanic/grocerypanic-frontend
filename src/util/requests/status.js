@@ -6,10 +6,11 @@ export const match2xx = (statusCode) => {
 
 export const match400duplicate = (statusCode, apiResponse) => {
   if (statusCode !== 400) return false;
-  if (
-    JSON.stringify(apiResponse) !==
-    JSON.stringify(Constants.duplicateObjectApiError)
-  )
-    return false;
-  return true;
+  for (const duplicateError of Constants.duplicateObjectApiErrors) {
+    for (const apiErrors of Object.values(apiResponse)) {
+      if (apiErrors === duplicateError) return true;
+      if (apiErrors.includes(duplicateError)) return true;
+    }
+  }
+  return false;
 };

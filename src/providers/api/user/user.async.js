@@ -44,11 +44,9 @@ export const asyncGet = async ({ state, action }) => {
 
 export const asyncUpdate = async ({ state, action }) => {
   const { dispatch, callback } = action;
-  const [response, status] = await Request(
-    "PUT",
-    Paths.manageUsers + `${action.payload.id}/`,
-    { ...action.payload }
-  );
+  const [response, status] = await Request("PUT", Paths.manageUsers, {
+    ...action.payload,
+  });
   return new Promise((resolve) => {
     if (match2xx(status)) {
       const index = state.inventory.findIndex(

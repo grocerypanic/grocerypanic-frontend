@@ -5,6 +5,7 @@ const mockHook = {
     user: { ...InitialState },
     getProfile: jest.fn(),
     updateProfile: jest.fn(),
+    clearErrors: jest.fn(),
   },
 };
 

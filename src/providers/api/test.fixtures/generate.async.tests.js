@@ -18,7 +18,7 @@ export const AsyncTest = (
   converterFn,
   implemented, // List of implemented api functions
   optionalListParams = {},
-  getMethodRequiresNoId = false
+  requiresNoId = false
 ) => {
   const mockDispatch = jest.fn();
   const mockCallBack = jest.fn();
@@ -258,14 +258,13 @@ export const AsyncTest = (
 
           asyncFn.asyncGet({ state: State2, action });
 
-          if (!getMethodRequiresNoId)
+          if (!requiresNoId)
             expect(Request).toBeCalledWith(
               "GET",
               apiEndpoint + `${mockObject.id}/`
             );
 
-          if (getMethodRequiresNoId)
-            expect(Request).toBeCalledWith("GET", apiEndpoint);
+          if (requiresNoId) expect(Request).toBeCalledWith("GET", apiEndpoint);
 
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           newState = newState.map((i) => converterFn(i));
@@ -295,18 +294,17 @@ export const AsyncTest = (
 
           asyncFn.asyncGet({ state: State2, action });
 
-          if (!getMethodRequiresNoId)
+          if (!requiresNoId)
             expect(Request).toBeCalledWith(
               "GET",
               apiEndpoint + `${mockObject.id}/`
             );
 
-          if (getMethodRequiresNoId)
-            expect(Request).toBeCalledWith("GET", apiEndpoint);
+          if (requiresNoId) expect(Request).toBeCalledWith("GET", apiEndpoint);
 
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
 
-          if (!getMethodRequiresNoId) {
+          if (!requiresNoId) {
             expect(mockDispatch).toBeCalledWith({
               type: ApiActions.SuccessGet,
               payload: {
@@ -343,13 +341,20 @@ export const AsyncTest = (
 
           asyncFn.asyncUpdate({ state: State2, action });
 
-          expect(Request).toBeCalledWith(
-            "PUT",
-            apiEndpoint + `${mockObject.id}/`,
-            {
+          if (!requiresNoId)
+            expect(Request).toBeCalledWith(
+              "PUT",
+              apiEndpoint + `${mockObject.id}/`,
+              {
+                ...action.payload,
+              }
+            );
+
+          if (requiresNoId)
+            expect(Request).toBeCalledWith("PUT", apiEndpoint, {
               ...action.payload,
-            }
-          );
+            });
+
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.SuccessUpdate,
@@ -469,14 +474,12 @@ export const AsyncTest = (
 
           asyncFn.asyncGet({ state: State2, action });
 
-          if (!getMethodRequiresNoId)
+          if (!requiresNoId)
             expect(Request).toBeCalledWith(
               "GET",
               apiEndpoint + `${mockObject.id}/`
             );
-
-          if (getMethodRequiresNoId)
-            expect(Request).toBeCalledWith("GET", apiEndpoint);
+          if (requiresNoId) expect(Request).toBeCalledWith("GET", apiEndpoint);
 
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
@@ -501,11 +504,18 @@ export const AsyncTest = (
 
           asyncFn.asyncUpdate({ state: State2, action });
 
-          expect(Request).toBeCalledWith(
-            "PUT",
-            apiEndpoint + `${action.payload.id}/`,
-            { ...mockObject }
-          );
+          if (!requiresNoId)
+            expect(Request).toBeCalledWith(
+              "PUT",
+              apiEndpoint + `${action.payload.id}/`,
+              { ...mockObject }
+            );
+
+          if (requiresNoId)
+            expect(Request).toBeCalledWith("PUT", apiEndpoint, {
+              ...action.payload,
+            });
+
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.FailureUpdate,
@@ -622,14 +632,13 @@ export const AsyncTest = (
 
           asyncFn.asyncGet({ state: State2, action });
 
-          if (!getMethodRequiresNoId)
+          if (!requiresNoId)
             expect(Request).toBeCalledWith(
               "GET",
               apiEndpoint + `${action.payload.id}/`
             );
 
-          if (getMethodRequiresNoId)
-            expect(Request).toBeCalledWith("GET", apiEndpoint);
+          if (requiresNoId) expect(Request).toBeCalledWith("GET", apiEndpoint);
 
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
@@ -654,11 +663,19 @@ export const AsyncTest = (
 
           asyncFn.asyncUpdate({ state: State2, action });
 
-          expect(Request).toBeCalledWith(
-            "PUT",
-            apiEndpoint + `${action.payload.id}/`,
-            { ...mockObject }
-          );
+          if (!requiresNoId)
+            expect(Request).toBeCalledWith(
+              "PUT",
+              apiEndpoint + `${action.payload.id}/`,
+              {
+                ...action.payload,
+              }
+            );
+
+          if (requiresNoId)
+            expect(Request).toBeCalledWith("PUT", apiEndpoint, {
+              ...mockObject,
+            });
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
             type: ApiActions.FailureAuth,
@@ -678,12 +695,11 @@ export const AsyncTest = (
           State1 = { ...initialState, inventory: [...initialState.inventory] };
           responseCode = 400;
           Request.mockReturnValue([
-            { ...Constants.duplicateObjectApiError },
+            { error: Constants.duplicateObjectApiErrors[0] },
             responseCode,
           ]);
           done();
         });
-
         if (implemented.includes(ApiFunctions.asyncAdd)) {
           it("should call the API, and then dispatch correctly when asyncAdd is called", async () => {
             action = {
@@ -746,17 +762,25 @@ export const AsyncTest = (
 
             asyncFn.asyncUpdate({ state: State2, action });
 
-            expect(Request).toBeCalledWith(
-              "PUT",
-              apiEndpoint + `${action.payload.id}/`,
-              { ...mockObject }
-            );
+            if (!requiresNoId)
+              expect(Request).toBeCalledWith(
+                "PUT",
+                apiEndpoint + `${action.payload.id}/`,
+                { ...mockObject }
+              );
+
+            if (requiresNoId)
+              expect(Request).toBeCalledWith("PUT", apiEndpoint, {
+                ...mockObject,
+              });
+
             await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
             expect(mockDispatch).toBeCalledWith({
               type: ApiActions.DuplicateObject,
               callback: mockCallBack,
             });
           });
+
           it("should call the API, and then dispatch correctly when asyncUpdate is called, no callback", async () => {
             action = {
               payload: { ...mockObject },
@@ -771,11 +795,18 @@ export const AsyncTest = (
 
             asyncFn.asyncUpdate({ state: State2, action });
 
-            expect(Request).toBeCalledWith(
-              "PUT",
-              apiEndpoint + `${action.payload.id}/`,
-              { ...mockObject }
-            );
+            if (!requiresNoId)
+              expect(Request).toBeCalledWith(
+                "PUT",
+                apiEndpoint + `${action.payload.id}/`,
+                { ...mockObject }
+              );
+
+            if (requiresNoId)
+              expect(Request).toBeCalledWith("PUT", apiEndpoint, {
+                ...mockObject,
+              });
+
             await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
             expect(mockDispatch).toBeCalledWith({
               type: ApiActions.DuplicateObject,

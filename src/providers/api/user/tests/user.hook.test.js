@@ -8,6 +8,8 @@ import InitialState from "../user.initial";
 import { UserContext } from "../user.provider";
 import ApiFunctions from "../../api.functions";
 
+import { propCount } from "../../../../test.fixtures/objectComparison";
+
 const dispatchMock = jest.fn();
 const providerWrapper = ({ state, ...props }) => {
   const providerContext = {
@@ -51,6 +53,7 @@ describe("test getProfile", () => {
     act(() => hook.current.profile.getProfile());
     expect(dispatchMock).toBeCalledTimes(1);
     const call = dispatchMock.mock.calls[0][0];
+    propCount(call, 3);
     expect(call.type).toBe(ApiActions.StartGet);
     expect(call.func).toBe(ApiFunctions.asyncGet);
     expect(call.dispatch).toBe(dispatchMock);
@@ -70,9 +73,27 @@ describe("test updateProfile", () => {
     act(() => hook.current.profile.updateProfile(mockProfile));
     expect(dispatchMock).toBeCalledTimes(1);
     const call = dispatchMock.mock.calls[0][0];
+    propCount(call, 4);
     expect(call.type).toBe(ApiActions.StartUpdate);
     expect(call.func).toBe(ApiFunctions.asyncUpdate);
     expect(call.dispatch).toBe(dispatchMock);
-    expect(call.action).toStrictEqual({ payload: mockProfile });
+    expect(call.payload).toStrictEqual(mockProfile);
+  });
+});
+
+describe("test clearErrors", () => {
+  let hook;
+  beforeEach(() => {
+    jest.clearAllMocks();
+    const { result } = customRender(InitialState);
+    hook = result;
+  });
+
+  it("should dispatch to clear any api errors", () => {
+    act(() => hook.current.profile.clearErrors());
+    expect(dispatchMock).toBeCalledTimes(1);
+    const call = dispatchMock.mock.calls[0][0];
+    propCount(call, 1);
+    expect(call.type).toBe(ApiActions.ClearErrors);
   });
 });
