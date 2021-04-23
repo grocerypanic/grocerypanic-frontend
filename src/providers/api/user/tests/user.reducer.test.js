@@ -11,8 +11,6 @@ import InitialState from "../user.initial";
 import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
 jest.mock("../user.async");
 
-InitialState.inventory = [];
-
 ReducerTest(
   "user",
   UserReducer,

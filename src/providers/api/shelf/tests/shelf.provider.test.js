@@ -4,9 +4,6 @@ import ShelfProvider, { ShelfContext } from "../shelf.provider";
 
 import InitialState from "../shelf.initial";
 
-// TODO: remove the placeholder data used for development
-InitialState.inventory = [];
-
 describe("Check the Inital Provider State", () => {
   afterEach(cleanup);
 

@@ -4,9 +4,6 @@ import StoreProvider, { StoreContext } from "../store.provider";
 
 import InitialState from "../store.initial";
 
-// TODO: remove the placeholder data used for development
-InitialState.inventory = [];
-
 describe("Check the Inital Provider State", () => {
   afterEach(cleanup);
 

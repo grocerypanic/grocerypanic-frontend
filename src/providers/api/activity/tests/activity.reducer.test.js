@@ -11,8 +11,6 @@ import InitialState from "../activity.initial";
 import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
 jest.mock("../activity.async");
 
-InitialState.inventory = [];
-
 ReducerTest(
   "activity",
   ActivityReducer,

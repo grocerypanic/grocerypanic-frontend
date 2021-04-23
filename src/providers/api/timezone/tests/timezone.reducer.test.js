@@ -11,8 +11,6 @@ import InitialState from "../timezone.initial";
 import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
 jest.mock("../timezone.async");
 
-InitialState.inventory = [];
-
 ReducerTest(
   "timezone",
   timezoneReducer,

@@ -4,9 +4,6 @@ import ItemProvider, { ItemContext } from "../item.provider";
 
 import InitialState from "../item.initial";
 
-// TODO: remove the placeholder data used for development
-InitialState.inventory = [];
-
 describe("Check the Inital Provider State", () => {
   afterEach(cleanup);
 

@@ -11,8 +11,6 @@ import InitialState from "../transaction.initial";
 import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
 jest.mock("../transaction.async");
 
-InitialState.inventory = [];
-
 ReducerTest(
   "transaction",
   TransactionReducer,

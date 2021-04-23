@@ -2,8 +2,6 @@ import React from "react";
 import { render, cleanup } from "@testing-library/react";
 
 export const ProviderTest = (Provider, Context, InitialState) => {
-  InitialState.inventory = [];
-
   describe("Check the Inital Provider State", () => {
     afterEach(cleanup);
 
