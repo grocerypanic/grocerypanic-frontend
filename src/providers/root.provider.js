@@ -9,6 +9,7 @@ import ActivityProvider from "./api/activity/activity.provider";
 import ItemProvider from "./api/item/item.provider";
 import ShelfProvider from "./api/shelf/shelf.provider";
 import StoreProvider from "./api/store/store.provider";
+import TimezoneProvider from "./api/timezone/timezone.provider";
 import TransactionProvider from "./api/transaction/transaction.provider";
 import UserProvider from "./api/user/user.provider";
 
@@ -23,9 +24,11 @@ const RootProvider = ({ children }) => {
             <ShelfProvider>
               <StoreProvider>
                 <ActivityProvider>
-                  <TransactionProvider>
-                    <UserProvider>{children}</UserProvider>
-                  </TransactionProvider>
+                  <TimezoneProvider>
+                    <TransactionProvider>
+                      <UserProvider>{children}</UserProvider>
+                    </TransactionProvider>
+                  </TimezoneProvider>
                 </ActivityProvider>
               </StoreProvider>
             </ShelfProvider>

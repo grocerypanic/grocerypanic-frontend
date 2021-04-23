@@ -37,6 +37,7 @@ export const Paths = {
   manageItems: "/api/v1/items/",
   manageTransactions: "/api/v1/transactions/",
   manageUsers: "/api/v1/users/",
+  manageTimezones: "/api/v1/users/timezones/",
   refreshCSRF: "/api/v1/auth/csrf/",
 };
 

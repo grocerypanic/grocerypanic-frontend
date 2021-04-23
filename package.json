@@ -65,7 +65,8 @@
       "src/setupTests.js",
       "src/configuration/*",
       "src/test.fixtures/*",
-      "src/providers/api/test.fixtures/*"
+      "src/providers/api/test.fixtures/*",
+      ".hook.mock.js"
     ],
     "coverageThreshold": {
       "global": {

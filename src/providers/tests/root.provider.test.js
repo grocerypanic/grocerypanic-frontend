@@ -10,6 +10,7 @@ import ActivityProvider from "../api/activity/activity.provider";
 import ItemProvider from "../api/item/item.provider";
 import ShelfProvider from "../api/shelf/shelf.provider";
 import StoreProvider from "../api/store/store.provider";
+import TimezoneProvider from "../api/timezone/timezone.provider";
 import TransactionProvider from "../api/transaction/transaction.provider";
 import UserProvider from "../api/user/user.provider";
 
@@ -21,6 +22,7 @@ jest.mock("../header/header.provider");
 jest.mock("../api/item/item.provider");
 jest.mock("../api/shelf/shelf.provider");
 jest.mock("../api/store/store.provider");
+jest.mock("../api/timezone/timezone.provider");
 jest.mock("../api/transaction/transaction.provider");
 jest.mock("../social/social.provider");
 jest.mock("../api/user/user.provider");
@@ -32,6 +34,7 @@ ItemProvider.mockImplementation(({ children }) => children);
 ShelfProvider.mockImplementation(({ children }) => children);
 SocialProvider.mockImplementation(({ children }) => children);
 StoreProvider.mockImplementation(({ children }) => children);
+TimezoneProvider.mockImplementation(({ children }) => children);
 TransactionProvider.mockImplementation(({ children }) => children);
 UserProvider.mockImplementation(({ children }) => children);
 
@@ -55,6 +58,7 @@ it("should render with the correct message", () => {
   expect(ShelfProvider).toHaveBeenCalledTimes(1);
   expect(ItemProvider).toHaveBeenCalledTimes(1);
   expect(StoreProvider).toHaveBeenCalledTimes(1);
+  expect(TimezoneProvider).toHaveBeenCalledTimes(1);
   expect(TransactionProvider).toHaveBeenCalledTimes(1);
   expect(SocialProvider).toHaveBeenCalledTimes(1);
   expect(UserProvider).toHaveBeenCalledTimes(1);
