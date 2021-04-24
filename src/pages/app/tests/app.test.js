@@ -1,5 +1,5 @@
 import React from "react";
-import { render, cleanup, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import i18next from "i18next";
@@ -8,6 +8,7 @@ import App from "../app.js";
 import SignIn from "../../signin/signin.container";
 import About from "../../about/about.page";
 import PrivacyPage from "../../privacy/privacy.page";
+import ProfilePage from "../../profile/profile.page";
 import ShelvesPage from "../../shelves/shelves.page";
 import StoresPage from "../../stores/stores.page";
 import ItemsPage from "../../items/items.page";
@@ -28,6 +29,7 @@ jest.mock("../../../providers/analytics/analytics.provider");
 
 jest.mock("../../signin/signin.container");
 jest.mock("../../privacy/privacy.page");
+jest.mock("../../profile/profile.page");
 jest.mock("../../shelves/shelves.page");
 jest.mock("../../stores/stores.page");
 jest.mock("../../items/items.page");
@@ -41,6 +43,7 @@ jest.mock("../../../components/header/header.component");
 About.mockImplementation(() => <div>MockPlaceholderAboutPage</div>);
 SignIn.mockImplementation(() => <div>MockPlaceholderSignin</div>);
 PrivacyPage.mockImplementation(() => <div>MockPlaceholderPrivacyPage</div>);
+ProfilePage.mockImplementation(() => <div>MockPlaceholderPrivacyPage</div>);
 ShelvesPage.mockImplementation(() => <div>MockPlaceholderShelvesPage</div>);
 StoresPage.mockImplementation(() => <div>MockPlaceholderStoresPage</div>);
 ItemsPage.mockImplementation(() => <div>MockPlaceholderItemsPage</div>);
@@ -49,6 +52,20 @@ MenuPage.mockImplementation(() => <div>MockPlaceholderMenuPage</div>);
 CreatePage.mockImplementation(() => <div>MockPlaceholderCreatePage</div>);
 Header.mockImplementation(() => <div>MockHeader</div>);
 SplashPage.mockImplementation(() => <div>MockSplashPage</div>);
+
+const allPages = [
+  About,
+  SignIn,
+  PrivacyPage,
+  ProfilePage,
+  ShelvesPage,
+  StoresPage,
+  ItemsPage,
+  DetailsPage,
+  MenuPage,
+  CreatePage,
+  SplashPage,
+];
 
 const mockDispatch = jest.fn();
 const mockHeaderUpdate = jest.fn();
@@ -63,7 +80,15 @@ describe("Check Routing", () => {
     setup = { state: { fail: false } };
   });
 
-  afterEach(cleanup);
+  const checkPages = async (calledPages) => {
+    for (const page of calledPages) {
+      await waitFor(() => expect(page).toBeCalledTimes(1));
+    }
+    for (const page of allPages) {
+      if (calledPages.includes(page)) continue;
+      await waitFor(() => expect(page).toBeCalledTimes(0));
+    }
+  };
 
   const renderHelper = (currentTest) => {
     history.push(setup.path);
@@ -100,16 +125,7 @@ describe("Check Routing", () => {
       });
       it("should render menu on menu url", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([MenuPage]);
         expect(window.location.pathname).toBe(Routes.menu);
       });
       it("should configure the header properly", () => {
@@ -124,16 +140,40 @@ describe("Check Routing", () => {
 
       it("should redirect to signin on root url (from menu page)", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([MenuPage, SignIn]);
+        expect(window.location.pathname).toBe(Routes.signin);
+      });
+      it("should configure the header properly", () => {
+        checkHeader();
+      });
+    });
+  });
+
+  describe("profile url", () => {
+    beforeEach(() => (setup.path = Routes.profile));
+    describe("active login", () => {
+      beforeEach(() => {
+        setup.state.login = true;
+        utils = renderHelper({ ...setup });
+      });
+      it("should render profile on profile url", async () => {
+        expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
+        await checkPages([ProfilePage]);
+        expect(window.location.pathname).toBe(Routes.profile);
+      });
+      it("should configure the header properly", () => {
+        checkHeader();
+      });
+    });
+    describe("inactive login", () => {
+      beforeEach(() => {
+        setup.state.login = false;
+        utils = renderHelper({ ...setup });
+      });
+
+      it("should redirect to signin on profile url", async () => {
+        expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
+        await checkPages([SignIn, ProfilePage]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -152,16 +192,7 @@ describe("Check Routing", () => {
 
       it("should render the menu root page", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([MenuPage]);
         await waitFor(() => expect(window.location.pathname).toBe(Routes.menu));
       });
       it("should configure the header properly", () => {
@@ -175,16 +206,7 @@ describe("Check Routing", () => {
       });
       it("should redirect to signin on invalid url (from menu page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([SignIn, MenuPage]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -203,16 +225,7 @@ describe("Check Routing", () => {
 
       it("should render stores on stores url, with login set to true", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(1));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([StoresPage]);
         expect(window.location.pathname).toBe(Routes.stores);
       });
       it("should configure the header properly", () => {
@@ -228,16 +241,7 @@ describe("Check Routing", () => {
 
       it("should redirect to signin on stores url (from stores page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(1));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([SignIn, StoresPage]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -256,16 +260,7 @@ describe("Check Routing", () => {
 
       it("should render shelves on shelves url, with login set to true", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(1));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([ShelvesPage]);
         expect(window.location.pathname).toBe(Routes.shelves);
       });
       it("should configure the header properly", () => {
@@ -281,16 +276,7 @@ describe("Check Routing", () => {
 
       it("should redirect to signin on shelves url (from shelves page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(1));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([SignIn, ShelvesPage]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -309,16 +295,7 @@ describe("Check Routing", () => {
 
       it("should render items on items url, with login set to true", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(1));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([ItemsPage]);
         expect(window.location.pathname).toBe(Routes.items);
       });
       it("should configure the header properly", () => {
@@ -334,16 +311,7 @@ describe("Check Routing", () => {
 
       it("should redirect to signin on items url (from items page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(1));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([SignIn, ItemsPage]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -362,16 +330,7 @@ describe("Check Routing", () => {
 
       it("should render details on details url, with login set to true", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(1));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([DetailsPage]);
         expect(window.location.pathname).toBe(Routes.details);
       });
       it("should configure the header properly", () => {
@@ -387,16 +346,7 @@ describe("Check Routing", () => {
 
       it("should redirect to signin on details url (from details page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(1));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([DetailsPage, SignIn]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -415,16 +365,7 @@ describe("Check Routing", () => {
 
       it("should render create on create url, with login set to true", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(1));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([CreatePage]);
         expect(window.location.pathname).toBe(Routes.create);
       });
       it("should configure the header properly", () => {
@@ -440,16 +381,7 @@ describe("Check Routing", () => {
 
       it("should redirect to signin on create url (from create page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(1));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([CreatePage, SignIn]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -468,16 +400,7 @@ describe("Check Routing", () => {
 
       it("should render about on about url, with login set to true", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
-        await waitFor(() => expect(About).toBeCalledTimes(1));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([About]);
         expect(window.location.pathname).toBe(Routes.about);
       });
       it("should configure the header properly", () => {
@@ -493,16 +416,7 @@ describe("Check Routing", () => {
 
       it("should redirect to signin on about url (from about page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
-        await waitFor(() => expect(About).toBeCalledTimes(1));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(1));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([About, SignIn]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
       it("should configure the header properly", () => {
@@ -520,16 +434,7 @@ describe("Check Routing", () => {
       });
       it("should redirect to menu on splash url (from splash page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(1));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([MenuPage]);
         expect(window.location.pathname).toBe(Routes.menu);
       });
       it("should configure the header properly", () => {
@@ -543,16 +448,7 @@ describe("Check Routing", () => {
       });
       it("should render splash page on splash url", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(1));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(0));
+        await checkPages([SplashPage]);
         expect(window.location.pathname).toBe(Routes.splash);
       });
       it("should configure the header properly", () => {
@@ -570,16 +466,7 @@ describe("Check Routing", () => {
       });
       it("should render the privacy policy page", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeTruthy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(1));
+        await checkPages([PrivacyPage]);
         expect(window.location.pathname).toBe(Routes.privacy);
       });
       it("should configure the header properly", () => {
@@ -593,16 +480,7 @@ describe("Check Routing", () => {
       });
       it("should render the privacy policy page", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
-        await waitFor(() => expect(About).toBeCalledTimes(0));
-        await waitFor(() => expect(SignIn).toBeCalledTimes(0));
-        await waitFor(() => expect(ShelvesPage).toBeCalledTimes(0));
-        await waitFor(() => expect(StoresPage).toBeCalledTimes(0));
-        await waitFor(() => expect(ItemsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(DetailsPage).toBeCalledTimes(0));
-        await waitFor(() => expect(CreatePage).toBeCalledTimes(0));
-        await waitFor(() => expect(MenuPage).toBeCalledTimes(0));
-        await waitFor(() => expect(SplashPage).toBeCalledTimes(0));
-        await waitFor(() => expect(PrivacyPage).toBeCalledTimes(1));
+        await checkPages([PrivacyPage]);
         expect(window.location.pathname).toBe(Routes.privacy);
       });
       it("should configure the header properly", () => {

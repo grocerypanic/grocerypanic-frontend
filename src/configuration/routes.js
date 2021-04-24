@@ -3,6 +3,7 @@ const Routes = {
   menu: "/menu",
   about: "/about",
   privacy: "/privacy",
+  profile: "/profile",
   signin: "/signin",
   shelves: "/shelves",
   splash: "/",
