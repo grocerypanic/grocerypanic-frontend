@@ -1,5 +1,5 @@
 import React from "react";
-import { render, cleanup, waitFor, act } from "@testing-library/react";
+import { render, waitFor, act } from "@testing-library/react";
 import { propCount } from "../../../test.fixtures/objectComparison";
 import i18next from "i18next";
 
@@ -43,12 +43,12 @@ const mockAnalyticsContext = {
 
 describe("Setup Environment", () => {
   let currentTest;
+  let currentProfileHook;
+  let currentSocialHook;
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
-
-  afterEach(cleanup);
 
   const checkHeader = () => {
     expect(mockHeaderUpdate).toBeCalledWith({
@@ -59,10 +59,11 @@ describe("Setup Environment", () => {
   };
 
   const renderHelper = async (props) => {
-    useSocialLogin.mockImplementation(() => {
-      return { social: { ...mockSocialHook.social, socialLogin: props } };
-    });
-    useProfile.mockImplementation(() => mockProfileHook);
+    currentSocialHook = mockSocialHook();
+    currentSocialHook.social.socialLogin = { ...props };
+    currentProfileHook = mockProfileHook();
+    useSocialLogin.mockImplementation(() => currentSocialHook);
+    useProfile.mockImplementation(() => currentProfileHook);
 
     return render(
       <HeaderContext.Provider
@@ -100,8 +101,8 @@ describe("Setup Environment", () => {
       propCount(signInCall, 2);
 
       act(() => signInCall.handleSocialLogin("mockResponse"));
-      expect(mockSocialHook.social.login).toBeCalledTimes(1);
-      const call = mockSocialHook.social.login.mock.calls[0];
+      expect(currentSocialHook.social.login).toBeCalledTimes(1);
+      const call = currentSocialHook.social.login.mock.calls[0];
       propCount(call, 1);
       expect(call[0]).toBe("mockResponse");
 
@@ -117,8 +118,8 @@ describe("Setup Environment", () => {
       propCount(signInCall, 2);
 
       act(() => signInCall.handleSocialLoginError());
-      expect(mockSocialHook.social.error).toBeCalledTimes(1);
-      const call = mockSocialHook.social.error.mock.calls[0];
+      expect(currentSocialHook.social.error).toBeCalledTimes(1);
+      const call = currentSocialHook.social.error.mock.calls[0];
       propCount(call, 0);
     });
   });
@@ -154,8 +155,8 @@ describe("Setup Environment", () => {
       const call1 = ErrorDialogue.mock.calls[0][0];
 
       call1.clearError();
-      expect(mockSocialHook.social.reset).toBeCalledTimes(1);
-      const call = mockSocialHook.social.reset.mock.calls[0];
+      expect(currentSocialHook.social.reset).toBeCalledTimes(1);
+      const call = currentSocialHook.social.reset.mock.calls[0];
       propCount(call, 0);
     });
   });
@@ -172,7 +173,7 @@ describe("Setup Environment", () => {
 
     it("should call the getProfile hook method", async () => {
       await waitFor(() =>
-        expect(mockProfileHook.profile.getProfile).toBeCalledTimes(1)
+        expect(currentProfileHook.profile.getProfile).toBeCalledTimes(1)
       );
     });
   });

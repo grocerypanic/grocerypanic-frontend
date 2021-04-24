@@ -1,10 +1,13 @@
 import InitialState from "../timezone.initial";
 
-const mockHook = {
-  timezones: {
-    timezones: { ...InitialState },
-    getTimezones: jest.fn(),
-  },
+const generateMock = () => {
+  return {
+    timezones: {
+      timezones: { ...InitialState },
+      getTimezones: jest.fn(),
+      clearErrors: jest.fn(),
+    },
+  };
 };
 
-export default mockHook;
+export default generateMock;
