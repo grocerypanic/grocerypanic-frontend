@@ -12,7 +12,10 @@ export const dark = "#495057";
 export const black = "#000000";
 export const warning = "#ffc107";
 
-export const ui = { alertTimeout: 2000 };
+export const ui = {
+  alertTimeout: 2000,
+  resizeTimeout: 1,
+};
 
 export const navbarSize = "50px";
 export const tabSize = "26px";

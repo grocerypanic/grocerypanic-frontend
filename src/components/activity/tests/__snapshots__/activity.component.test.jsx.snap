@@ -73,12 +73,12 @@ exports[`Setup Environment after report is fetched with a valid activity report 
     class="c0"
   >
     <div
-      class="c1 alert alert-success mb-2"
+      class="c1 alert alert-success"
     >
       Item Activity Report
     </div>
     <div
-      class="c1 alert alert-warning mb-2"
+      class="c1 alert alert-warning"
     >
       1 Item(s) Expiring Soon
     </div>
@@ -232,17 +232,17 @@ exports[`Setup Environment after report is fetched with expired items in invento
     class="c0"
   >
     <div
-      class="c1 alert alert-success mb-2"
+      class="c1 alert alert-success"
     >
       Item Activity Report
     </div>
     <div
-      class="c1 alert alert-danger mb-2"
+      class="c1 alert alert-danger"
     >
       Expired Items Warning
     </div>
     <div
-      class="c1 alert alert-warning mb-2"
+      class="c1 alert alert-warning"
     >
       1 Item(s) Expiring Soon
     </div>
@@ -396,12 +396,12 @@ exports[`Setup Environment after report is fetched with items expirying soon in 
     class="c0"
   >
     <div
-      class="c1 alert alert-success mb-2"
+      class="c1 alert alert-success"
     >
       Item Activity Report
     </div>
     <div
-      class="c1 alert alert-warning mb-2"
+      class="c1 alert alert-warning"
     >
       1 Item(s) Expiring Soon
     </div>
@@ -555,12 +555,12 @@ exports[`Setup Environment after report is fetched with no items expirying soon 
     class="c0"
   >
     <div
-      class="c1 alert alert-success mb-2"
+      class="c1 alert alert-success"
     >
       Item Activity Report
     </div>
     <div
-      class="c1 alert alert-danger mb-2"
+      class="c1 alert alert-danger"
     >
       Expired Items Warning
     </div>
@@ -714,12 +714,12 @@ exports[`Setup Environment before transactions are fetched with items in the inv
     class="c0"
   >
     <div
-      class="c1 alert alert-success mb-2"
+      class="c1 alert alert-success"
     >
       Item Activity Report
     </div>
     <div
-      class="c1 alert alert-warning mb-2"
+      class="c1 alert alert-warning"
     >
       1 Item(s) Expiring Soon
     </div>

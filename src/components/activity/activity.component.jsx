@@ -63,16 +63,16 @@ const ActivityReport = ({ item, activity_report }) => {
   return (
     <>
       <Paper>
-        <Banner className="alert alert-success mb-2">
+        <Banner className="alert alert-success">
           {t("ItemActivity.Title")}
         </Banner>
         {calculateExpired() ? (
-          <Banner className="alert alert-danger mb-2">
+          <Banner className="alert alert-danger">
             {t("ItemActivity.RecommendExpiredItems")}
           </Banner>
         ) : null}
         {within7Days(item.next_expiry_date) && item.next_expiry_quantity > 0 ? (
-          <Banner className="alert alert-warning mb-2">
+          <Banner className="alert alert-warning">
             {`${item.next_expiry_quantity} ${t(
               "ItemActivity.RecommendExpiringSoon"
             )}`}

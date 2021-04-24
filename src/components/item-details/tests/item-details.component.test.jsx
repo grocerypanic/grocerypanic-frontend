@@ -158,15 +158,17 @@ describe("Setup Environment", () => {
   let utils;
   let current;
 
-  beforeAll(() =>
+  beforeAll(() => {
     jest.spyOn(document, "querySelector").mockImplementation(() => {
       return {
-        clientWidth: 200,
+        clientWidth: 201,
       };
-    })
-  );
+    });
+  });
 
-  afterAll(() => document.querySelector.mockRestore());
+  afterAll(async () => {
+    document.querySelector.mockRestore();
+  });
 
   describe("outside of a transaction", () => {
     describe.each([
@@ -192,6 +194,18 @@ describe("Setup Environment", () => {
       beforeEach(() => {
         jest.clearAllMocks();
         utils = renderHelper(current);
+      });
+
+      it("renders, should resize a div with the useLayout hook", async () => {
+        await waitFor(() =>
+          expect(utils.queryByTestId("resized-tab")).toBeTruthy()
+        );
+        await waitFor(() =>
+          expect(utils.queryByTestId("resized-tab")).toHaveAttribute(
+            "style",
+            "width: 201px;"
+          )
+        );
       });
 
       it("renders, should call header with the correct params", () => {
@@ -237,10 +251,10 @@ describe("Setup Environment", () => {
         const tab2 = utils.getByText(Strings.ItemDetails.Tabs.Edit);
         fireEvent.click(tab2, "click");
 
-        expect(ItemDetailsForm).toBeCalledTimes(1);
+        expect(ItemDetailsForm).toBeCalledTimes(2);
         expect(tab2.className.search("active")).toBeGreaterThan(0);
 
-        expect(ActivityReport).toBeCalledTimes(1);
+        expect(ActivityReport).toBeCalledTimes(2);
         expect(tab1.className.search("active")).toBeLessThan(0);
       });
 
@@ -331,10 +345,10 @@ describe("Setup Environment", () => {
         const tab2 = utils.getByText(Strings.ItemDetails.Tabs.Edit);
         fireEvent.click(tab2, "click");
 
-        expect(ItemDetailsForm).toBeCalledTimes(2);
+        expect(ItemDetailsForm).toBeCalledTimes(3);
         expect(tab2.className.search("active")).toBeGreaterThan(0);
 
-        expect(ActivityReport).toBeCalledTimes(2);
+        expect(ActivityReport).toBeCalledTimes(3);
         expect(tab1.className.search("active")).toBeLessThan(0);
       });
 
@@ -411,10 +425,10 @@ describe("Setup Environment", () => {
       fireEvent.click(tab2, "click");
       fireEvent(window, new Event("orientationchange"));
 
-      expect(ActivityReport).toBeCalledTimes(2);
+      expect(ActivityReport).toBeCalledTimes(3);
       expect(tab2.className.search("active")).toBeGreaterThan(0);
 
-      expect(ItemDetailsForm).toBeCalledTimes(2);
+      expect(ItemDetailsForm).toBeCalledTimes(3);
       expect(tab1.className.search("active")).toBeLessThan(0);
     });
 

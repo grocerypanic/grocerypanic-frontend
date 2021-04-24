@@ -11,6 +11,8 @@ import { HeaderContext } from "../../providers/header/header.provider";
 import { Container } from "../../global-styles/containers";
 import { TabBox } from "./item-details.styles";
 
+import { ui } from "../../configuration/theme";
+
 const ItemDetails = ({
   headerTitle,
   transaction,
@@ -27,6 +29,7 @@ const ItemDetails = ({
 
   const changeTab = (key) => {
     setTab(key);
+    setTabWidth(document.querySelector(".TabBox").clientWidth);
     if (key === "stats") requestActivityReport();
   };
 
@@ -34,18 +37,22 @@ const ItemDetails = ({
     setTab("edit");
   };
 
-  const recalculateWidth = () =>
-    setTabWidth(document.querySelector(".TabBox").clientWidth);
+  const recalculateWidth = () => {
+    const timer = setTimeout(() => {
+      setTabWidth(document.querySelector(".TabBox").clientWidth);
+    }, ui.resizeTimeout);
+    return () => clearTimeout(timer);
+  };
 
   React.useLayoutEffect(() => {
-    recalculateWidth();
+    return recalculateWidth();
   }, []);
 
   React.useEffect(() => {
-    window.addEventListener("resize", recalculateWidth);
+    window.addEventListener("resize", editTab);
     window.addEventListener("orientationchange", editTab);
     return () => {
-      window.removeEventListener("resize", recalculateWidth);
+      window.removeEventListener("resize", editTab);
       window.removeEventListener("orientationchange", editTab);
     };
   }, []);
@@ -88,7 +95,7 @@ const ItemDetails = ({
                 </div>
               </Tab>
               <Tab eventKey="stats" title={t("ItemDetails.Tabs.Stats")}>
-                <div style={{ width: tabWidth }}>
+                <div data-testid="resized-tab" style={{ width: tabWidth }}>
                   <ActivityReport
                     item={OtherFormProps.item}
                     activity_report={report}
