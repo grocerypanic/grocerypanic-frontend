@@ -22,6 +22,10 @@ export const AnalyticsActions = {
     category: "Item",
     action: "Modified an existing item",
   },
+  ProfileModified: {
+    category: "User",
+    action: "Profile saved",
+  },
   TransactionConsume: {
     category: "Transaction",
     action: "Consumed an item",

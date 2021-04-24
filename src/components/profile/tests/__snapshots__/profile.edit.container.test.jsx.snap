@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Setup Environment outside of an error with a valid user profile loaded outside of a transaction should match the snapshot on file (styles) 1`] = `
+<div>
+  <div>
+    MockForm
+  </div>
+</div>
+`;
