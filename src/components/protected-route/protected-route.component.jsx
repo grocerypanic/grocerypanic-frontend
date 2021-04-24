@@ -3,7 +3,9 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { Route } from "react-router-dom";
-import { SocialContext } from "../../providers/social/social.provider";
+import useSocialLogin from "../../providers/social/social.hook";
+import useProfile from "../../providers/api/user/user.hook";
+import Profile from "../../pages/profile/profile.page";
 
 const ProtectedRoute = ({
   negative,
@@ -12,26 +14,46 @@ const ProtectedRoute = ({
   history,
   ...otherProps
 }) => {
-  const { socialLogin } = React.useContext(SocialContext);
+  const { social } = useSocialLogin();
+  const { profile } = useProfile();
+
+  const [profileInitialized, setProfileIntialized] = React.useState(true);
+
+  const profileSetup = () => {
+    if (profile.user.inventory.length === 0) {
+      setProfileIntialized(false);
+      return;
+    }
+    if (!profile.user.inventory[0].has_profile_initialized) {
+      setProfileIntialized(false);
+      return;
+    }
+    setProfileIntialized(true);
+  };
 
   const handleRedirect = () => {
-    if (negative && !socialLogin[attr]) {
+    if (negative && !social.socialLogin[attr]) {
       history.push(redirect);
     }
-    if (!negative && socialLogin[attr]) {
+    if (!negative && social.socialLogin[attr]) {
       history.push(redirect);
     }
   };
 
   React.useEffect(() => {
-    handleRedirect();
-  }, [socialLogin]); // eslint-disable-line
+    profileSetup();
+  }, [profile]); // eslint-disable-line
 
   React.useEffect(() => {
     handleRedirect();
+  }, [social]); // eslint-disable-line
+
+  React.useEffect(() => {
+    profileSetup();
+    handleRedirect();
   }, []); // eslint-disable-line
 
-  return <Route {...otherProps} />;
+  return profileInitialized ? <Route {...otherProps} /> : <Profile />;
 };
 
 export default withRouter(ProtectedRoute);

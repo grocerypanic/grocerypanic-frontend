@@ -1,5 +1,15 @@
 import { act } from "@testing-library/react";
 
+import useProfile from "../providers/api/user/user.hook";
+import mockProfileHook from "../providers/api/user/tests/user.hook.mock";
+
+jest.mock("../providers/api/user/user.hook");
+const currentProfileHook = mockProfileHook();
+currentProfileHook.profile.user.inventory = [
+  { id: 0, name: "mock user", has_profile_initialized: true },
+];
+useProfile.mockImplementation(() => currentProfileHook);
+
 const mockRegistration = {
   waiting: {
     postMessage: jest.fn(),

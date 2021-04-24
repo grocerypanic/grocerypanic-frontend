@@ -18,6 +18,9 @@ import MenuPage from "../../menu/menu.page";
 import SplashPage from "../../splash/splash.page";
 import Header from "../../../components/header/header.component";
 
+import useProfile from "../../../providers/api/user/user.hook";
+import mockProfileHook from "../../../providers/api/user/tests/user.hook.mock";
+
 import { SocialContext } from "../../../providers/social/social.provider";
 import { HeaderContext } from "../../../providers/header/header.provider";
 import initialHeaderSettings from "../../../providers/header/header.initial";
@@ -39,6 +42,7 @@ jest.mock("../../create/create.page");
 jest.mock("../../about/about.page");
 jest.mock("../../splash/splash.page");
 jest.mock("../../../components/header/header.component");
+jest.mock("../../../providers/api/user/user.hook");
 
 About.mockImplementation(() => <div>MockPlaceholderAboutPage</div>);
 SignIn.mockImplementation(() => <div>MockPlaceholderSignin</div>);
@@ -67,6 +71,11 @@ const allPages = [
   SplashPage,
 ];
 
+const currentProfile = mockProfileHook();
+currentProfile.profile.user.inventory = [
+  { id: 0, name: "mock user", has_profile_initialized: true },
+];
+
 const mockDispatch = jest.fn();
 const mockHeaderUpdate = jest.fn();
 
@@ -91,6 +100,7 @@ describe("Check Routing", () => {
   };
 
   const renderHelper = (currentTest) => {
+    useProfile.mockImplementation(() => currentProfile);
     history.push(setup.path);
     return render(
       <HeaderContext.Provider
