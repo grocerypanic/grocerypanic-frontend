@@ -40,6 +40,7 @@ function App() {
       <Suspense fallback={<HoldingPattern condition={true} />}>
         <Switch>
           <ProtectedRoute
+            noProfile
             exact
             path={Routes.signin}
             component={SignIn}
@@ -47,6 +48,7 @@ function App() {
             redirect={Routes.menu}
           />
           <ProtectedRoute
+            noProfile
             exact
             path={Routes.profile}
             component={Profile}
@@ -95,6 +97,7 @@ function App() {
           />
           <ProtectedRoute
             exact
+            noProfile
             path={Routes.about}
             component={About}
             negative
@@ -110,6 +113,7 @@ function App() {
             redirect={Routes.signin}
           />
           <ProtectedRoute
+            noProfile
             exact
             path={Routes.splash}
             component={Splash}

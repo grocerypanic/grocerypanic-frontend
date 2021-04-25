@@ -36,8 +36,7 @@ Profile.mockImplementation(() => MockComponentContents);
 let currentSocialHook;
 let currentProfileHook;
 
-let call;
-let currentTest = {
+let initialProps = {
   negative: false,
   exact: true,
   component: MockComponent,
@@ -59,51 +58,55 @@ const RenderFunction = ({ state, history, ...otherProps }) => {
 };
 
 describe("Setup Environment", () => {
+  let currentProps;
   beforeEach(() => {
     jest.clearAllMocks();
     currentSocialHook = mockSocialHook();
     currentProfileHook = mockProfileHook();
+    currentProps = { ...initialProps };
   });
 
-  describe("When the route is matching negative", () => {
+  describe("When the route is operating in NEGATIVE match mode", () => {
     beforeEach(() => {
-      currentTest.negative = true;
+      currentProps.negative = true;
     });
-    describe("When the route is not matching login", () => {
+    describe("When the route check does not match (login), and a profile is required", () => {
       describe("when the user profile is initialized", () => {
         beforeEach(() => {
-          currentTest.history.push("/");
-          currentTest.attr = "login";
+          currentProps.history.push("/");
+          currentProps.attr = "login";
           currentProfileHook.profile.user.inventory = [
             { id: 0, name: "mock user", has_profile_initialized: true },
           ];
           const state = { ...initialState, login: true };
-          render(<RenderFunction state={state} {...currentTest} />);
+          render(<RenderFunction state={state} {...currentProps} />);
         });
 
         it("should render the component as expected", () => {
           expect(Route).toHaveBeenCalledTimes(1);
-          call = Route.mock.calls[0][0];
+          const call = Route.mock.calls[0][0];
           propCount(call, 6);
 
           expect(call.component).toBe(MockComponent);
           expect(call.exact).toBeTruthy();
           expect(call.path).toBe("/");
-          expect(call.location).toBe(currentTest.history.location);
+          expect(call.location).toBe(currentProps.history.location);
           expect(call.staticContext).toBe(undefined);
-          expect(currentTest.history.location.pathname).toBe(Routes.root);
+          expect(currentProps.history.location.pathname).toBe(Routes.root);
+
+          expect(Profile).toBeCalledTimes(0);
         });
       });
 
       describe("when the user profile is not initialized", () => {
         beforeEach(() => {
-          currentTest.history.push("/");
-          currentTest.attr = "login";
+          currentProps.history.push("/");
+          currentProps.attr = "login";
           currentProfileHook.profile.user.inventory = [
             { id: 0, name: "mock user", has_profile_initialized: false },
           ];
           const state = { ...initialState, login: true };
-          render(<RenderFunction state={state} {...currentTest} />);
+          render(<RenderFunction state={state} {...currentProps} />);
         });
 
         it("should render the profile component", async () => {
@@ -114,11 +117,11 @@ describe("Setup Environment", () => {
 
       describe("when the user profile is missing", () => {
         beforeEach(() => {
-          currentTest.history.push("/");
-          currentTest.attr = "login";
+          currentProps.history.push("/");
+          currentProps.attr = "login";
           currentProfileHook.profile.user.inventory = [];
           const state = { ...initialState, login: true };
-          render(<RenderFunction state={state} {...currentTest} />);
+          render(<RenderFunction state={state} {...currentProps} />);
         });
 
         it("should render the profile component", async () => {
@@ -127,69 +130,294 @@ describe("Setup Environment", () => {
         });
       });
     });
-    describe("When the route is matching login", () => {
+
+    describe("When the route check does not match (login), and it does not require a user profile", () => {
+      let state;
       beforeEach(() => {
-        currentTest.history.push("/");
-        currentTest.attr = "login";
-        const state = { ...initialState, login: false };
-        render(<RenderFunction state={state} {...currentTest} />);
+        currentProps.history.push("/");
+        currentProps.attr = "login";
+        currentProps.noProfile = true;
+        state = { ...initialState, login: true };
       });
 
-      it("should redirect as expected", () => {
-        expect(Route).toHaveBeenCalledTimes(1);
-
-        call = Route.mock.calls[0][0];
-        propCount(call, 6);
-
-        expect(call.component).toBe(MockComponent);
-        expect(call.exact).toBeTruthy();
-        expect(call.path).toBe("/");
-        expect(call.location).not.toBe(currentTest.history.location);
-        expect(call.staticContext).toBe(undefined);
-        expect(currentTest.history.location.pathname).toBe(Routes.shelves);
-      });
-    });
-  });
-
-  describe("When the route matching positive", () => {
-    beforeEach(() => {
-      currentTest.negative = false;
-    });
-    describe("When the route is not matching error", () => {
-      describe("when the user profile is intialized", () => {
+      describe("when the user profile is initialized", () => {
         beforeEach(() => {
-          currentTest.history.push("/");
-          currentTest.attr = "error";
           currentProfileHook.profile.user.inventory = [
             { id: 0, name: "mock user", has_profile_initialized: true },
           ];
-          const state = { ...initialState, error: false };
-          render(<RenderFunction state={state} {...currentTest} />);
+          render(<RenderFunction state={state} {...currentProps} />);
         });
 
         it("should render the component as expected", () => {
           expect(Route).toHaveBeenCalledTimes(1);
-          call = Route.mock.calls[0][0];
+          const call = Route.mock.calls[0][0];
           propCount(call, 6);
 
           expect(call.component).toBe(MockComponent);
           expect(call.exact).toBeTruthy();
           expect(call.path).toBe("/");
-          expect(call.location).toBe(currentTest.history.location);
+          expect(call.location).toBe(currentProps.history.location);
           expect(call.staticContext).toBe(undefined);
-          expect(currentTest.history.location.pathname).toBe(Routes.root);
+          expect(currentProps.history.location.pathname).toBe(Routes.root);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+
+      describe("when the user profile is not initialized", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [
+            { id: 0, name: "mock user", has_profile_initialized: false },
+          ];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should render the component as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(1);
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.root);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+
+      describe("when the user profile is missing", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should render the component as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(1);
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.root);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+    });
+
+    describe("When the route check matches (login), and a profile is required", () => {
+      let state;
+      beforeEach(() => {
+        currentProps.history.push("/");
+        currentProps.attr = "login";
+        state = { ...initialState, login: false };
+      });
+
+      describe("when the user profile is intialized", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [
+            { id: 0, name: "mock user", has_profile_initialized: true },
+          ];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should redirect as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(2);
+
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).not.toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.shelves);
+
+          expect(Profile).toBeCalledTimes(0);
         });
       });
 
       describe("when the user profile is not intialized", () => {
         beforeEach(() => {
-          currentTest.history.push("/");
-          currentTest.attr = "error";
           currentProfileHook.profile.user.inventory = [
             { id: 0, name: "mock user", has_profile_initialized: false },
           ];
-          const state = { ...initialState, error: false };
-          render(<RenderFunction state={state} {...currentTest} />);
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should redirect as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(2);
+
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).not.toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.shelves);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+
+      describe("when the user profile is missing", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should redirect as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(2);
+
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).not.toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.shelves);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+    });
+
+    describe("When the route check matches (login), and it does not require a user profile", () => {
+      let state;
+      beforeEach(() => {
+        currentProps.history.push("/");
+        currentProps.attr = "login";
+        currentProps.noProfile = true;
+        state = { ...initialState, login: false };
+      });
+
+      describe("when the user profile is intialized", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [
+            { id: 0, name: "mock user", has_profile_initialized: true },
+          ];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should redirect as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(2);
+
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).not.toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.shelves);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+
+      describe("when the user profile is not intialized", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [
+            { id: 0, name: "mock user", has_profile_initialized: false },
+          ];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should redirect as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(2);
+
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).not.toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.shelves);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+
+      describe("when the user profile is missing", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should redirect as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(2);
+
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).not.toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.shelves);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+    });
+  });
+
+  describe("When the route operating in POSITIVE match mode", () => {
+    beforeEach(() => {
+      currentProps.negative = false;
+    });
+    describe("When the route check is not matching (error), and a profile is required", () => {
+      let state;
+      beforeEach(() => {
+        currentProps.history.push("/");
+        currentProps.attr = "error";
+        state = { ...initialState, error: false };
+      });
+      describe("when the user profile is intialized", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [
+            { id: 0, name: "mock user", has_profile_initialized: true },
+          ];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should render the component as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(1);
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.root);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+
+      describe("when the user profile is not initialized", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [
+            { id: 0, name: "mock user", has_profile_initialized: false },
+          ];
+          render(<RenderFunction state={state} {...currentProps} />);
         });
 
         it("should render the profile component", async () => {
@@ -200,11 +428,8 @@ describe("Setup Environment", () => {
 
       describe("when the user profile is missing", () => {
         beforeEach(() => {
-          currentTest.history.push("/");
-          currentTest.attr = "login";
           currentProfileHook.profile.user.inventory = [];
-          const state = { ...initialState, login: true };
-          render(<RenderFunction state={state} {...currentTest} />);
+          render(<RenderFunction state={state} {...currentProps} />);
         });
 
         it("should render the profile component", async () => {
@@ -213,25 +438,242 @@ describe("Setup Environment", () => {
         });
       });
     });
-    describe("When the route is matching error", () => {
+
+    describe("When the route check is not matching (error), and it does not require a user profile", () => {
+      let state;
       beforeEach(() => {
-        currentTest.history.push("/");
-        currentTest.attr = "error";
-        const state = { ...initialState, error: true };
-        render(<RenderFunction state={state} {...currentTest} />);
+        currentProps.history.push("/");
+        currentProps.attr = "error";
+        currentProps.noProfile = true;
+        state = { ...initialState, error: false };
+      });
+      describe("when the user profile is intialized", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [
+            { id: 0, name: "mock user", has_profile_initialized: true },
+          ];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should render the component as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(1);
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.root);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
       });
 
-      it("should redirect as expected", () => {
-        expect(Route).toHaveBeenCalledTimes(1);
-        call = Route.mock.calls[0][0];
-        propCount(call, 6);
+      describe("when the user profile is not initialized", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [
+            { id: 0, name: "mock user", has_profile_initialized: false },
+          ];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
 
-        expect(call.component).toBe(MockComponent);
-        expect(call.exact).toBeTruthy();
-        expect(call.path).toBe("/");
-        expect(call.location).not.toBe(currentTest.history.location);
-        expect(call.staticContext).toBe(undefined);
-        expect(currentTest.history.location.pathname).toBe(Routes.shelves);
+        it("should render the component as expected", async () => {
+          expect(Route).toHaveBeenCalledTimes(1);
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.root);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+
+      describe("when the user profile is missing", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should render the component as expected", async () => {
+          expect(Route).toHaveBeenCalledTimes(1);
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.root);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+    });
+
+    describe("When the route check is matching (error), and a profile is required", () => {
+      let state;
+      beforeEach(() => {
+        currentProps.history.push("/");
+        currentProps.attr = "error";
+        state = { ...initialState, error: true };
+      });
+
+      describe("when the user profile is intialized", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [
+            { id: 0, name: "mock user", has_profile_initialized: true },
+          ];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should redirect as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(2);
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).not.toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.shelves);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+
+      describe("when the user profile is not intialized", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [
+            { id: 0, name: "mock user", has_profile_initialized: false },
+          ];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should redirect as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(2);
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).not.toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.shelves);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+
+      describe("when the user profile is missing", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should redirect as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(2);
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).not.toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.shelves);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+    });
+
+    describe("When the route check is matching (error), and it does not require a user profile", () => {
+      let state;
+      beforeEach(() => {
+        currentProps.history.push("/");
+        currentProps.attr = "error";
+        currentProps.noProfile = true;
+        state = { ...initialState, error: true };
+      });
+
+      describe("when the user profile is intialized", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [
+            { id: 0, name: "mock user", has_profile_initialized: true },
+          ];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should redirect as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(2);
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).not.toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.shelves);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+
+      describe("when the user profile is not intialized", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [
+            { id: 0, name: "mock user", has_profile_initialized: false },
+          ];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should redirect as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(2);
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).not.toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.shelves);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
+      });
+
+      describe("when the user profile is missing", () => {
+        beforeEach(() => {
+          currentProfileHook.profile.user.inventory = [];
+          render(<RenderFunction state={state} {...currentProps} />);
+        });
+
+        it("should redirect as expected", () => {
+          expect(Route).toHaveBeenCalledTimes(2);
+          const call = Route.mock.calls[0][0];
+          propCount(call, 6);
+
+          expect(call.component).toBe(MockComponent);
+          expect(call.exact).toBeTruthy();
+          expect(call.path).toBe("/");
+          expect(call.location).not.toBe(currentProps.history.location);
+          expect(call.staticContext).toBe(undefined);
+          expect(currentProps.history.location.pathname).toBe(Routes.shelves);
+
+          expect(Profile).toBeCalledTimes(0);
+        });
       });
     });
   });

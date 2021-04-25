@@ -8,6 +8,7 @@ import useProfile from "../../providers/api/user/user.hook";
 import Profile from "../../pages/profile/profile.page";
 
 const ProtectedRoute = ({
+  noProfile,
   negative,
   attr,
   redirect,
@@ -19,38 +20,43 @@ const ProtectedRoute = ({
 
   const [profileInitialized, setProfileIntialized] = React.useState(true);
 
-  const profileSetup = () => {
-    if (profile.user.inventory.length === 0) {
-      setProfileIntialized(false);
-      return;
-    }
-    if (!profile.user.inventory[0].has_profile_initialized) {
-      setProfileIntialized(false);
-      return;
-    }
+  const needsRedirect = () => {
+    if (negative && !social.socialLogin[attr]) return true;
+    if (!negative && social.socialLogin[attr]) return true;
+  };
+
+  const needsProfileSetup = () => {
+    if (needsRedirect()) return false;
+    if (noProfile) return false;
+    if (profile.user.inventory.length === 0) return true;
+    if (!profile.user.inventory[0].has_profile_initialized) return true;
+    allowPassThrough();
+  };
+
+  const forceRedirect = () => {
+    history.push(redirect);
+    allowPassThrough();
+  };
+
+  const forceProfileSetup = () => {
+    setProfileIntialized(false);
+  };
+
+  const allowPassThrough = () => {
     setProfileIntialized(true);
   };
 
-  const handleRedirect = () => {
-    if (negative && !social.socialLogin[attr]) {
-      history.push(redirect);
-    }
-    if (!negative && social.socialLogin[attr]) {
-      history.push(redirect);
-    }
+  const handlingRouting = () => {
+    if (needsRedirect()) forceRedirect();
+    if (needsProfileSetup()) forceProfileSetup();
   };
 
   React.useEffect(() => {
-    profileSetup();
-  }, [profile]); // eslint-disable-line
+    handlingRouting();
+  }, [social, profile]); // eslint-disable-line
 
   React.useEffect(() => {
-    handleRedirect();
-  }, [social]); // eslint-disable-line
-
-  React.useEffect(() => {
-    profileSetup();
-    handleRedirect();
+    handlingRouting();
   }, []); // eslint-disable-line
 
   return profileInitialized ? <Route {...otherProps} /> : <Profile />;
@@ -59,6 +65,7 @@ const ProtectedRoute = ({
 export default withRouter(ProtectedRoute);
 
 ProtectedRoute.propTypes = {
+  noProfile: PropTypes.bool,
   attr: PropTypes.string.isRequired,
   negative: PropTypes.bool,
   redirect: PropTypes.string.isRequired,
