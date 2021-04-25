@@ -34,6 +34,12 @@ const ProfileForm = ({
   );
   const [actionMsg, setActionMsg] = React.useState(null);
 
+  React.useEffect(() => {
+    if (!actionMsg) return;
+    const timeout = setTimeout(() => setActionMsg(null), ui.alertTimeout);
+    return () => clearTimeout(timeout);
+  }, [actionMsg]);
+
   const handleSubmit = () => {
     if (transaction) return;
     const new_user = {
@@ -45,7 +51,6 @@ const ProfileForm = ({
     };
     handleSave(new_user);
     setActionMsg(t("Profile.SaveAction"));
-    return setTimeout(() => setActionMsg(null), ui.alertTimeout);
   };
 
   return (
