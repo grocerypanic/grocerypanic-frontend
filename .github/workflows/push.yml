@@ -32,7 +32,7 @@ jobs:
           npm run lint
       - name: Sec Test
         run: |
-          npm audit --audit-level=moderate
+          npm audit --production
       - name: Unit Tests and Coverage
         run: |
           npm run coverage
