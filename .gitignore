@@ -29,3 +29,5 @@ yarn-error.log*
 # eslint
 .eslintcache
 
+# vsc
+.vscode/*

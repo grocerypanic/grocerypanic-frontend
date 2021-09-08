@@ -1,5 +1,12 @@
 name: panic_fe-ProductionDeploys
 
+# Secrets:
+
+#  PRODUCTION_FIREBASE_PROJECT
+#  PRODUCTION_FIREBASE_TOKEN
+#  PRODUCTION_REACT_ENV
+#  SLACK_WEBHOOK
+
 on:
   release:
     types: [published]
@@ -14,47 +21,58 @@ on:
         required: true
         default: ''
 
+env:
+  ORGNAME: grocerypanic
+  REPONAME: grocerypanic-frontend
+  WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
 jobs:
+
   release:
     runs-on: ubuntu-20.04
+    
     steps:      
-      - name: Code Checkout (Dispatch)
+      
+      - name: Release -- Code Checkout (Dispatch)
         if: github.event_name == 'workflow_dispatch'
         uses: actions/checkout@v2         
         with:
           fetch-depth: 0
           ref: ${{ github.event.inputs.TAG  }}
-      - name: Code Checkout (Release Approval)
+      
+      - name: Release -- Code Checkout (Release Approval)
         if: github.event_name != 'workflow_dispatch'
         uses: actions/checkout@v2         
         with:
           fetch-depth: 0
 
-      - name: Install Node Modules
+      - name: Release -- Install Node Modules
         run: |
           npm install
       
-      - name: Production -- Configure Build 
+      - name: Release -- Production -- Configure Build 
         run: |
           echo "${REACT_ENV}" > .env.production.local
         env:
           REACT_ENV: ${{ secrets.PRODUCTION_REACT_ENV }}
-      - name: Production -- Toggle Maintenance Mode (Dispatch)
+
+      - name: Release -- Production -- Toggle Maintenance Mode (Dispatch)
         if: github.event_name == 'workflow_dispatch'
         run: |
           echo "REACT_APP_MAINTENANCE=\"${MAINTENANCE}\"" >> .env.production.local
         env:
           MAINTENANCE: ${{ github.event.inputs.MAINTENANCE }}
-      - name: Production -- Shut off Maintenance Mode (Release Approval)
+
+      - name: Release -- Production -- Shut off Maintenance Mode (Release Approval)
         if: github.event_name != 'workflow_dispatch'
         run: |
           echo "REACT_APP_MAINTENANCE=\"false\"" >> .env.production.local
-      - name: Production -- Build 
+
+      - name: Release -- Production -- Build 
         run: |
           npm run build
 
-      - name: Production -- Automated Deploy        
+      - name: Release -- Production -- Automated Deploy        
         uses: w9jds/firebase-action@v2.0.0
         with:
           args: deploy --only hosting
@@ -62,14 +80,11 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.PRODUCTION_FIREBASE_TOKEN }}
           PROJECT_ID: ${{ secrets.PRODUCTION_FIREBASE_PROJECT }} 
       
-      - name: Production -- Report Success
+      - name: Release -- Production -- Report Success
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated production deployment was successful!"}' "${WEBHOOK_URL}"
-        env:
-          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-      - name: Production -- Report Failure
+          ./.github/workflows/scripts/notifications.sh ":white_check_mark: Deploy to production was successful!"
+
+      - name: Release -- Production -- Report Failure
         if: failure()
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated production deployment has failed!"}' "${WEBHOOK_URL}"
-        env:
-          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          ./.github/workflows/scripts/notifications.sh ":x: Deploy to production has failed!"

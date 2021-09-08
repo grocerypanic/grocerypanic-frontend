@@ -1,5 +1,12 @@
 name: panic_fe-Automation
 
+# Secrets:
+
+#  PRODUCTION_FIREBASE_PROJECT
+#  PRODUCTION_FIREBASE_TOKEN
+#  PRODUCTION_REACT_ENV
+#  SLACK_WEBHOOK
+
 on:
   push:
   schedule:
@@ -11,8 +18,14 @@ on:
           required: true
           default: 'false'
 
+env:
+  ORGNAME: grocerypanic
+  REPONAME: grocerypanic-frontend
+  WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
 jobs:
-  push:
+
+  ci:
     runs-on: ubuntu-20.04
 
     strategy:
@@ -20,55 +33,68 @@ jobs:
         node-version: [14.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: CI -- Checkout Code
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: zricethezav/gitleaks-action@v1.6.0
-      - name: Install Node Modules
+
+      - name: CI -- Start Workflow
+        run: |
+          ./.github/workflows/scripts/notifications.sh ":white_check_mark: CI workflow has started!"
+      
+      - name: CI -- Git Leaks     
+        uses: zricethezav/gitleaks-action@v1.6.0
+
+      - name: CI -- Install Node Modules
         run: |
           npm install
-      - name: Run Linter
+
+      - name: CI -- Run Linter
         run: |
           npm run lint
-      - name: Sec Test
+
+      - name: CI -- Scan Dependencies
         run: |
           npm audit --production
-      - name: Unit Tests and Coverage
+
+      - name: CI -- Unit Tests and Coverage
         run: |
           npm run coverage
-      - name: Report Job Status (Success)
+
+      - name: CI -- Report Job Status (Success)
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: build has succeeded!"}' "${WEBHOOK_URL}"
-        env:
-          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-      - name: Report Job Status
+          ./.github/workflows/scripts/notifications.sh ":white_check_mark: Build was successful!"
+
+      - name: CI -- Report Job Status (Failure)
         if: failure()
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: build has failed!"}' "${WEBHOOK_URL}"
-        env:
-          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          ./.github/workflows/scripts/notifications.sh ":x: Build has failed!"
 
-      - name: Stage -- Configure Build 
+      - name: CI -- Stage -- Configure Build 
         if: github.ref == 'refs/heads/master'
         run: |
           echo "${REACT_ENV}" > .env.production.local
         env:
           REACT_ENV: ${{ secrets.STAGE_REACT_ENV }}
-      - name: Stage -- Toggle Maintenance Mode on Manual Dispatch
+
+      - name: CI -- Stage -- Toggle Maintenance Mode on Manual Dispatch
         if: github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch'
         run: |
           echo "REACT_APP_MAINTENANCE=\"${MAINTENANCE}\"" >> .env.production.local
         env:
           MAINTENANCE: ${{ github.event.inputs.MAINTENANCE }}
-      - name: Stage -- Shut off Maintenance Mode on Automated Push
+
+      - name: CI -- Stage -- Shut off Maintenance Mode on Automated Push
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: |
           echo "REACT_APP_MAINTENANCE=\"false\"" >> .env.production.local
-      - name: Stage -- Build 
+
+      - name: CI -- Stage -- Build 
         if: github.ref == 'refs/heads/master'
         run: |
           npm run build
-      - name: Stage Maintenance -- Automated Deploy        
+
+      - name: CI -- Stage -- Automated Deploy        
         if: github.ref == 'refs/heads/master'
         uses: w9jds/firebase-action@v2.0.0
         with:
@@ -77,31 +103,30 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.STAGE_FIREBASE_TOKEN }}
           PROJECT_ID: ${{ secrets.STAGE_FIREBASE_PROJECT }}        
 
-      - name: Stage -- Report Success
+      - name: CI -- Stage -- Report Success
         if: github.ref == 'refs/heads/master'
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated deploy to stage!"}' "${WEBHOOK_URL}"
-        env:
-          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-      - name: Stage -- Report Failure
+          ./.github/workflows/scripts/notifications.sh ":white_check_mark: Deploy to stage was successful!"
+
+      - name: CI -- Stage -- Report Failure
         if: failure() && github.ref == 'refs/heads/master'
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: stage deploy has failed!"}' "${WEBHOOK_URL}"
-        env:
-          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          ./.github/workflows/scripts/notifications.sh ":x: Deploy to stage has failed!"          
    
-      - name: Production -- Prepare Release Content
+      - name: CI -- Production -- Prepare Release Content
         if: contains(github.ref, '/tags/v')
         run: |
           NEWTAG=${GITHUB_REF#refs/tags/}
           echo "NEWTAG=${NEWTAG}" >> $GITHUB_ENV
-      - name: Production -- Generate Changelog
+
+      - name: CI -- Production -- Generate Changelog
         if: contains(github.ref, '/tags/v')
         uses: scottbrenner/generate-changelog-action@v1.3.3
         id: Changelog
         env:
           REPO: ${{ github.repository }}
-      - name: Production -- Create Release
+
+      - name: CI -- Production -- Create Release
         if: contains(github.ref, '/tags/v')
         uses: actions/create-release@v1
         env:
@@ -120,27 +145,27 @@ jobs:
           draft: 'true'
           prerelease: false
 
-      - name: Production -- Checkout Production Branch
+      - name: CI -- Production -- Checkout Production Branch
         if: contains(github.ref, '/tags/v')
         run: |
           git checkout origin/production
-      - name: Production -- Ensure Build Succeeds
+
+      - name: CI -- Production -- Ensure Build Succeeds
         if: contains(github.ref, '/tags/v')
         run: |
           echo "${REACT_ENV}" > .env.production.local
           npm run build
         env:
           REACT_ENV: ${{ secrets.PRODUCTION_REACT_ENV }}
-      - name: Production -- Report Success
+
+      - name: CI -- Production -- Report Success
         if: contains(github.ref, '/tags/v')
         run: |
-          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"panic_fe: automated release has been created for ${TAG}: https://github.com/niall-byrne/panic-fe/releases\"}" "${WEBHOOK_URL}"
+          ./.github/workflows/scripts/notifications.sh ":white_check_mark: Automated release generated:\nhttps://github.com/${ORGNAME}/${REPONAME}/releases"
         env:
-          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           TAG: ${{ env.NEWTAG }}
-      - name: Production -- Report Failure
+
+      - name: CI -- Production -- Report Failure
         if: failure() && contains(github.ref, '/tags/v')
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"panic_fe: automated production release has failed!"}' "${WEBHOOK_URL}"
-        env:
-          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          ./.github/workflows/scripts/notifications.sh ":x: Automated release generation has failed!"
