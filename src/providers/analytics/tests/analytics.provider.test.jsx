@@ -1,9 +1,8 @@
-import ReactGA from "react-ga";
-import React from "react";
 import { render, cleanup, waitFor, act } from "@testing-library/react";
-import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-
+import React from "react";
+import ReactGA from "react-ga";
+import { Router } from "react-router-dom";
 import AnalyticsProvider, { AnalyticsContext } from "../analytics.provider";
 
 jest.mock("react-ga");

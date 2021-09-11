@@ -1,10 +1,8 @@
 import React from "react";
-import Dialogue from "../../components/dialogue/dialogue.component";
-
-import Header from "../../components/header/header.component";
-
-import { HeaderContext } from "../../providers/header/header.provider";
 import { useTranslation } from "react-i18next";
+import Dialogue from "../../components/dialogue/dialogue.component";
+import Header from "../../components/header/header.component";
+import { HeaderContext } from "../../providers/header/header.provider";
 
 const MaintenancePage = () => {
   const { t } = useTranslation();

@@ -1,6 +1,6 @@
 import { Paths } from "../../../configuration/backend";
-import { match2xx } from "../../../util/requests/status";
 import Request from "../../../util/requests";
+import { match2xx } from "../../../util/requests/status";
 import ApiActions from "../api.actions";
 import {
   authFailure,

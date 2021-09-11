@@ -1,5 +1,4 @@
 import { createButton } from "react-social-login-buttons";
-
 import { tertiary, white } from "../../configuration/theme";
 
 const config = {

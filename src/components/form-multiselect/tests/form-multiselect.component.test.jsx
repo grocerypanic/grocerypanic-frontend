@@ -1,6 +1,5 @@
-import React from "react";
 import { render, cleanup, fireEvent, waitFor } from "@testing-library/react";
-
+import React from "react";
 import MultiDropDown from "../form-multiselect.component";
 
 const setErrorMsg = jest.fn();

@@ -1,6 +1,6 @@
-import { calculateTitle } from "../item-list.util";
 import { FilterTag } from "../../../configuration/backend";
 import Strings from "../../../configuration/strings";
+import { calculateTitle } from "../item-list.util";
 
 const mockTag = "FitlerName";
 

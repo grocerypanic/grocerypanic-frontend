@@ -1,4 +1,6 @@
 import { waitFor } from "@testing-library/react";
+import { Constants } from "../../../configuration/backend";
+import ApiActions from "../api.actions";
 import {
   asyncDispatch,
   authFailure,
@@ -6,8 +8,6 @@ import {
   calculateListUrl,
   retrieveResults,
 } from "../api.async.helpers";
-import ApiActions from "../api.actions";
-import { Constants } from "../../../configuration/backend";
 
 const mockDispatch = jest.fn();
 

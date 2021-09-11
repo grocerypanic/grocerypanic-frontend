@@ -1,9 +1,7 @@
 import React from "react";
 import Spinner from "react-bootstrap/Spinner";
-
-import { HeaderContext } from "../../providers/header/header.provider";
-
 import { CenterBox } from "./holding-pattern.styles";
+import { HeaderContext } from "../../providers/header/header.provider";
 
 const HoldingPattern = ({
   condition,

@@ -1,6 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Setup environment should match the snapshot on file (styles) 1`] = `
+.c3 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  list-style-type: none;
+  list-style-position: outside;
+  overflow: scroll;
+  max-height: 200px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 10px;
+}
+
+.c4 {
+  padding-left: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 0px;
+}
+
+.c4 li:last-child {
+  margin-bottom: 0px;
+}
+
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c0 {
   margin-top: calc(50px + 26px);
   display: -webkit-box;
@@ -44,38 +76,6 @@ exports[`Setup environment should match the snapshot on file (styles) 1`] = `
   border-style: solid;
   border-width: 1px;
   border-color: #000000;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
-.c3 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  list-style-type: none;
-  list-style-position: outside;
-  overflow: scroll;
-  max-height: 200px;
-  border-style: solid;
-  border-color: #808080;
-  border-width: 10px;
-}
-
-.c4 {
-  padding-left: 0px;
-  min-width: 200px;
-  background: #808080;
-  padding: 0px;
-}
-
-.c4 li:last-child {
-  margin-bottom: 0px;
 }
 
 <div>

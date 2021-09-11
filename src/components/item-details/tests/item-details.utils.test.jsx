@@ -1,5 +1,5 @@
-import { calculateDefaults } from "../item-details.utils";
 import { defaultItem } from "../item-details.create.container";
+import { calculateDefaults } from "../item-details.utils";
 
 let params;
 let shelf;

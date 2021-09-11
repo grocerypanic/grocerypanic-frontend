@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import React from "react";
 import ErrorDialogue from "../error-dialogue/error-dialogue.component";
-import PropTypes from "prop-types";
 
 const ErrorHandler = ({ condition, children, ...otherProps }) => {
   if (!condition) return children;

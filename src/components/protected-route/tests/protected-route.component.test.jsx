@@ -1,25 +1,19 @@
-import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
-import { Router, Route } from "react-router-dom";
 import { createBrowserHistory } from "history";
-
-import ProtectedRoute from "../protected-route.component";
+import React from "react";
+import { Router, Route } from "react-router-dom";
+import Routes from "../../../configuration/routes";
+import Profile from "../../../pages/profile/profile.page";
+import mockProfileHook from "../../../providers/api/user/tests/user.hook.mock";
+import useProfile from "../../../providers/api/user/user.hook";
+import useSocialLogin from "../../../providers/social/social.hook";
+import initialState from "../../../providers/social/social.initial";
+import mockSocialHook from "../../../providers/social/tests/social.hook.mock";
 import MockComponent, {
   MockComponentContents,
 } from "../../../test.fixtures/mockComponent";
-
-import initialState from "../../../providers/social/social.initial";
-
-import useProfile from "../../../providers/api/user/user.hook";
-import useSocialLogin from "../../../providers/social/social.hook";
-
-import mockSocialHook from "../../../providers/social/tests/social.hook.mock";
-import mockProfileHook from "../../../providers/api/user/tests/user.hook.mock";
-
-import Routes from "../../../configuration/routes";
-import Profile from "../../../pages/profile/profile.page";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import ProtectedRoute from "../protected-route.component";
 
 jest.mock("../../../providers/social/social.hook");
 jest.mock("../../../providers/api/user/user.hook");

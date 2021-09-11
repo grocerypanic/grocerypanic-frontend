@@ -1,6 +1,5 @@
-import React from "react";
 import { render, cleanup, fireEvent } from "@testing-library/react";
-
+import React from "react";
 import MenuItem from "../menu-item.component";
 
 const mockChoose = jest.fn();

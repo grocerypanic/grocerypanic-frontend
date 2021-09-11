@@ -1,32 +1,28 @@
-import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import i18next from "i18next";
-
-import App from "../app.js";
-import SignIn from "../../signin/signin.container";
+import React from "react";
+import { Router } from "react-router-dom";
+import Header from "../../../components/header/header.component";
+import Routes from "../../../configuration/routes";
+import Strings from "../../../configuration/strings";
+import mockProfileHook from "../../../providers/api/user/tests/user.hook.mock";
+import useProfile from "../../../providers/api/user/user.hook";
+import initialHeaderSettings from "../../../providers/header/header.initial";
+import { HeaderContext } from "../../../providers/header/header.provider";
+import { SocialContext } from "../../../providers/social/social.provider";
 import About from "../../about/about.page";
+import CreatePage from "../../create/create.page";
+import DetailsPage from "../../details/details.page";
+import ItemsPage from "../../items/items.page";
+import MenuPage from "../../menu/menu.page";
 import PrivacyPage from "../../privacy/privacy.page";
 import ProfilePage from "../../profile/profile.page";
 import ShelvesPage from "../../shelves/shelves.page";
-import StoresPage from "../../stores/stores.page";
-import ItemsPage from "../../items/items.page";
-import CreatePage from "../../create/create.page";
-import DetailsPage from "../../details/details.page";
-import MenuPage from "../../menu/menu.page";
+import SignIn from "../../signin/signin.container";
 import SplashPage from "../../splash/splash.page";
-import Header from "../../../components/header/header.component";
-
-import useProfile from "../../../providers/api/user/user.hook";
-import mockProfileHook from "../../../providers/api/user/tests/user.hook.mock";
-
-import { SocialContext } from "../../../providers/social/social.provider";
-import { HeaderContext } from "../../../providers/header/header.provider";
-import initialHeaderSettings from "../../../providers/header/header.initial";
-
-import Routes from "../../../configuration/routes";
-import Strings from "../../../configuration/strings";
+import StoresPage from "../../stores/stores.page";
+import App from "../app.js";
 
 jest.mock("../../../providers/analytics/analytics.provider");
 

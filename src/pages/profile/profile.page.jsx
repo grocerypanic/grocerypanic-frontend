@@ -1,8 +1,6 @@
 import React from "react";
-
-import UserProfileEditContainer from "../../components/profile/profile.edit.container";
-
 import { useTranslation } from "react-i18next";
+import UserProfileEditContainer from "../../components/profile/profile.edit.container";
 import Options from "../../configuration/menu";
 
 const ProfilePage = () => {

@@ -1,6 +1,50 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Setup Environment when given a valid analytics event message when given a redirect should match the snapshot on file (styles) 1`] = `
+.c3 {
+  padding-left: 0px;
+  margin: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 10px;
+}
+
+.c4 {
+  margin: 0px;
+  min-width: 200px;
+  padding: 10px;
+}
+
+.c6 {
+  margin-top: 10px;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #FF0000;
+  color: #FFFFFF;
+  text-align: center;
+  overflow: hidden;
+}
+
+.c5 {
+  text-align: center;
+}
+
 .c0 {
   margin-top: calc(50px + 26px);
   display: -webkit-box;
@@ -44,50 +88,6 @@ exports[`Setup Environment when given a valid analytics event message when given
   border-style: solid;
   border-width: 1px;
   border-color: #000000;
-}
-
-.c3 {
-  padding-left: 0px;
-  margin: 0px;
-  min-width: 200px;
-  background: #808080;
-  padding: 10px;
-}
-
-.c4 {
-  margin: 0px;
-  min-width: 200px;
-  padding: 10px;
-}
-
-.c6 {
-  margin-top: 10px;
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #FF0000;
-  color: #FFFFFF;
-  text-align: center;
-  overflow: hidden;
-}
-
-.c5 {
-  text-align: center;
 }
 
 <div
@@ -135,6 +135,50 @@ exports[`Setup Environment when given a valid analytics event message when given
 `;
 
 exports[`Setup Environment when given a valid analytics event message when given a redirect to go back should match the snapshot on file (styles) 1`] = `
+.c3 {
+  padding-left: 0px;
+  margin: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 10px;
+}
+
+.c4 {
+  margin: 0px;
+  min-width: 200px;
+  padding: 10px;
+}
+
+.c6 {
+  margin-top: 10px;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #FF0000;
+  color: #FFFFFF;
+  text-align: center;
+  overflow: hidden;
+}
+
+.c5 {
+  text-align: center;
+}
+
 .c0 {
   margin-top: calc(50px + 26px);
   display: -webkit-box;
@@ -178,50 +222,6 @@ exports[`Setup Environment when given a valid analytics event message when given
   border-style: solid;
   border-width: 1px;
   border-color: #000000;
-}
-
-.c3 {
-  padding-left: 0px;
-  margin: 0px;
-  min-width: 200px;
-  background: #808080;
-  padding: 10px;
-}
-
-.c4 {
-  margin: 0px;
-  min-width: 200px;
-  padding: 10px;
-}
-
-.c6 {
-  margin-top: 10px;
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #FF0000;
-  color: #FFFFFF;
-  text-align: center;
-  overflow: hidden;
-}
-
-.c5 {
-  text-align: center;
 }
 
 <div
@@ -269,6 +269,50 @@ exports[`Setup Environment when given a valid analytics event message when given
 `;
 
 exports[`Setup Environment when given a valid analytics event message when given a route with no redirect should match the snapshot on file (styles) 1`] = `
+.c3 {
+  padding-left: 0px;
+  margin: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 10px;
+}
+
+.c4 {
+  margin: 0px;
+  min-width: 200px;
+  padding: 10px;
+}
+
+.c6 {
+  margin-top: 10px;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #FF0000;
+  color: #FFFFFF;
+  text-align: center;
+  overflow: hidden;
+}
+
+.c5 {
+  text-align: center;
+}
+
 .c0 {
   margin-top: calc(50px + 26px);
   display: -webkit-box;
@@ -312,50 +356,6 @@ exports[`Setup Environment when given a valid analytics event message when given
   border-style: solid;
   border-width: 1px;
   border-color: #000000;
-}
-
-.c3 {
-  padding-left: 0px;
-  margin: 0px;
-  min-width: 200px;
-  background: #808080;
-  padding: 10px;
-}
-
-.c4 {
-  margin: 0px;
-  min-width: 200px;
-  padding: 10px;
-}
-
-.c6 {
-  margin-top: 10px;
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #FF0000;
-  color: #FFFFFF;
-  text-align: center;
-  overflow: hidden;
-}
-
-.c5 {
-  text-align: center;
 }
 
 <div
@@ -403,6 +403,50 @@ exports[`Setup Environment when given a valid analytics event message when given
 `;
 
 exports[`Setup Environment when given an invalid analytics event message when given any redirect type should match the snapshot on file (styles) 1`] = `
+.c3 {
+  padding-left: 0px;
+  margin: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 10px;
+}
+
+.c4 {
+  margin: 0px;
+  min-width: 200px;
+  padding: 10px;
+}
+
+.c6 {
+  margin-top: 10px;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #FF0000;
+  color: #FFFFFF;
+  text-align: center;
+  overflow: hidden;
+}
+
+.c5 {
+  text-align: center;
+}
+
 .c0 {
   margin-top: calc(50px + 26px);
   display: -webkit-box;
@@ -446,50 +490,6 @@ exports[`Setup Environment when given an invalid analytics event message when gi
   border-style: solid;
   border-width: 1px;
   border-color: #000000;
-}
-
-.c3 {
-  padding-left: 0px;
-  margin: 0px;
-  min-width: 200px;
-  background: #808080;
-  padding: 10px;
-}
-
-.c4 {
-  margin: 0px;
-  min-width: 200px;
-  padding: 10px;
-}
-
-.c6 {
-  margin-top: 10px;
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #FF0000;
-  color: #FFFFFF;
-  text-align: center;
-  overflow: hidden;
-}
-
-.c5 {
-  text-align: center;
 }
 
 <div

@@ -1,8 +1,7 @@
-import React from "react";
 import { render, cleanup } from "@testing-library/react";
-import SocialProvider, { SocialContext } from "../social.provider";
-
+import React from "react";
 import InitialState from "../social.initial";
+import SocialProvider, { SocialContext } from "../social.provider";
 
 describe("Check the Inital Provider State", () => {
   afterEach(cleanup);

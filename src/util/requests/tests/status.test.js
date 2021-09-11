@@ -1,5 +1,5 @@
-import { match2xx, match400duplicate } from "../status";
 import { Constants } from "../../../configuration/backend";
+import { match2xx, match400duplicate } from "../status";
 
 describe("setup the environment for testing match2xx", () => {
   beforeEach(() => {});

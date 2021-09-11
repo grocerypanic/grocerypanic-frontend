@@ -1,6 +1,5 @@
-import React from "react";
 import { render, waitFor, fireEvent } from "@testing-library/react";
-
+import React from "react";
 import Pagination from "../pagination.component";
 import { rewriteUrlWithPagination } from "../pagination.query.utils";
 

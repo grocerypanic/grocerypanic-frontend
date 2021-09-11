@@ -1,14 +1,12 @@
-import React from "react";
 import { render, cleanup, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Router, MemoryRouter } from "react-router-dom";
 import { createBrowserHistory } from "history";
-
-import SimpleListItem from "../simple-list-item.component";
-
-import Strings from "../../../configuration/strings";
-import Routes from "../../../configuration/routes";
+import React from "react";
+import { Router, MemoryRouter } from "react-router-dom";
 import { FilterTag } from "../../../configuration/backend";
+import Routes from "../../../configuration/routes";
+import Strings from "../../../configuration/strings";
+import SimpleListItem from "../simple-list-item.component";
 
 jest.mock("../../../configuration/theme", () => {
   return {

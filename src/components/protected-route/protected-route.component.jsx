@@ -1,11 +1,10 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
-
 import { Route } from "react-router-dom";
-import useSocialLogin from "../../providers/social/social.hook";
-import useProfile from "../../providers/api/user/user.hook";
 import Profile from "../../pages/profile/profile.page";
+import useProfile from "../../providers/api/user/user.hook";
+import useSocialLogin from "../../providers/social/social.hook";
 
 const ProtectedRoute = ({
   noProfile,

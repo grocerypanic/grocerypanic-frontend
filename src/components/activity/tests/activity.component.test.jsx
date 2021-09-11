@@ -1,18 +1,14 @@
-import { renderChart } from "../activity.chart";
-
-import React from "react";
 import "jest-canvas-mock";
 import { render, cleanup, waitFor } from "@testing-library/react";
 import moment from "moment";
-
-import HoldingPattern from "../../holding-pattern/holding-pattern.component";
-import ActivityReport, { nullReport } from "../activity.component";
-
-import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-
+import React from "react";
 import Strings from "../../../configuration/strings";
 import { graph } from "../../../configuration/theme";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import { propCount } from "../../../test.fixtures/objectComparison";
+import HoldingPattern from "../../holding-pattern/holding-pattern.component";
+import { renderChart } from "../activity.chart";
+import ActivityReport, { nullReport } from "../activity.component";
 
 jest.mock("../activity.chart");
 jest.mock("../../holding-pattern/holding-pattern.component");

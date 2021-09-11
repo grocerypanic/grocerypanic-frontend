@@ -1,12 +1,10 @@
-import React from "react";
 import { render, cleanup, fireEvent } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
-import StandBy from "../social-login-controller.standby";
-
-import SocialLoginController from "../social-login-controller.container";
+import React from "react";
 import { Providers } from "../../../configuration/backend";
 import Strings from "../../../configuration/strings";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import SocialLoginController from "../social-login-controller.container";
+import StandBy from "../social-login-controller.standby";
 
 console.warn = jest.fn(); // suppress warnings from the react-social-login library
 

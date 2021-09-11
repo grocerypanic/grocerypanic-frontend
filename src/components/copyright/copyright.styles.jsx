@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { primary, black } from "../../configuration/theme";
 
 export const CopyrightBox = styled.div`

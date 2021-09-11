@@ -1,7 +1,6 @@
 import { act } from "@testing-library/react";
-
-import useProfile from "../providers/api/user/user.hook";
 import mockProfileHook from "../providers/api/user/tests/user.hook.mock";
+import useProfile from "../providers/api/user/user.hook";
 
 jest.mock("../providers/api/user/user.hook");
 const currentProfileHook = mockProfileHook();

@@ -1,5 +1,5 @@
-import React from "react";
 import { render, cleanup } from "@testing-library/react";
+import React from "react";
 
 export const ProviderTest = (Provider, Context, InitialState) => {
   describe("Check the Inital Provider State", () => {

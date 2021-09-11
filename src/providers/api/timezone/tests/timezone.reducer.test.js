@@ -1,4 +1,4 @@
-import timezoneReducer from "../timezone.reducer";
+import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
 import {
   asyncAdd,
   asyncDel,
@@ -6,9 +6,9 @@ import {
   asyncList,
   asyncUpdate,
 } from "../timezone.async";
-
 import InitialState from "../timezone.initial";
-import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
+import timezoneReducer from "../timezone.reducer";
+
 jest.mock("../timezone.async");
 
 ReducerTest(

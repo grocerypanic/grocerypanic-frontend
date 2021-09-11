@@ -1,31 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Setup Environment after report is fetched with a valid activity report should match the snapshot on file (styles) 1`] = `
-.c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.c1 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
 .c2 {
   list-style-type: none;
   list-style-position: outside;
@@ -66,6 +41,31 @@ exports[`Setup Environment after report is fetched with a valid activity report 
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
   width: 100%;
+}
+
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
 }
 
 <div>
@@ -160,31 +160,6 @@ exports[`Setup Environment after report is fetched with a valid activity report 
 `;
 
 exports[`Setup Environment after report is fetched with expired items in inventory should match the snapshot on file (styles) 1`] = `
-.c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.c1 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
 .c2 {
   list-style-type: none;
   list-style-position: outside;
@@ -225,6 +200,31 @@ exports[`Setup Environment after report is fetched with expired items in invento
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
   width: 100%;
+}
+
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
 }
 
 <div>
@@ -324,31 +324,6 @@ exports[`Setup Environment after report is fetched with expired items in invento
 `;
 
 exports[`Setup Environment after report is fetched with items expiring soon in inventory should match the snapshot on file (styles) 1`] = `
-.c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.c1 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
 .c2 {
   list-style-type: none;
   list-style-position: outside;
@@ -389,6 +364,31 @@ exports[`Setup Environment after report is fetched with items expiring soon in i
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
   width: 100%;
+}
+
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
 }
 
 <div>
@@ -483,31 +483,6 @@ exports[`Setup Environment after report is fetched with items expiring soon in i
 `;
 
 exports[`Setup Environment after report is fetched with no items expiring soon in inventory, but an old next_expiry_date set should match the snapshot on file (styles) 1`] = `
-.c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.c1 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
 .c2 {
   list-style-type: none;
   list-style-position: outside;
@@ -548,6 +523,31 @@ exports[`Setup Environment after report is fetched with no items expiring soon i
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
   width: 100%;
+}
+
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
 }
 
 <div>
@@ -642,31 +642,6 @@ exports[`Setup Environment after report is fetched with no items expiring soon i
 `;
 
 exports[`Setup Environment before transactions are fetched with items in the inventory should match the snapshot on file (styles) 1`] = `
-.c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.c1 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
 .c2 {
   list-style-type: none;
   list-style-position: outside;
@@ -707,6 +682,31 @@ exports[`Setup Environment before transactions are fetched with items in the inv
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
   width: 100%;
+}
+
+.c1 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
 }
 
 <div>

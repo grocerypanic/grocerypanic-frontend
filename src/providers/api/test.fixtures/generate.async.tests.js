@@ -1,11 +1,8 @@
 import { waitFor } from "@testing-library/react";
-
+import { Constants } from "../../../configuration/backend";
+import Request from "../../../util/requests";
 import ApiActions from "../api.actions";
 import ApiFunctions from "../api.functions";
-
-import { Constants } from "../../../configuration/backend";
-
-import Request from "../../../util/requests";
 jest.mock("../../../util/requests");
 
 // Freeze Time

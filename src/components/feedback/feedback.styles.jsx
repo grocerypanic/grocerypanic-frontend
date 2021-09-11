@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { primary, tertiary } from "../../configuration/theme";
 
 export const TextBox = styled.div`

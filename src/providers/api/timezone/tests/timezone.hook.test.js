@@ -1,14 +1,11 @@
-import React from "react";
 import { renderHook, act } from "@testing-library/react-hooks";
+import React from "react";
+import { propCount } from "../../../../test.fixtures/objectComparison";
 import ApiActions from "../../api.actions";
-
+import ApiFunctions from "../../api.functions";
 import useTimezones from "../timezone.hook";
 import InitialState from "../timezone.initial";
-
 import { TimezoneContext } from "../timezone.provider";
-import ApiFunctions from "../../api.functions";
-
-import { propCount } from "../../../../test.fixtures/objectComparison";
 
 const dispatchMock = jest.fn();
 const providerWrapper = ({ state, ...props }) => {

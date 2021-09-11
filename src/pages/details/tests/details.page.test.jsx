@@ -1,19 +1,15 @@
-import React from "react";
 import { render, cleanup, waitFor, act } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
+import React from "react";
 import { MemoryRouter, Route } from "react-router-dom";
-
-import ItemDetailsPage from "../details.page";
 import ItemDetailsEditContainer from "../../../components/item-details/item-details.edit.container";
-
-import { ItemContext } from "../../../providers/api/item/item.provider";
-
-import { SocialContext } from "../../../providers/social/social.provider";
-import initialState from "../../../providers/social/social.initial";
-import SocialActions from "../../../providers/social/social.actions";
-
-import Strings from "../../../configuration/strings";
 import Routes from "../../../configuration/routes";
+import Strings from "../../../configuration/strings";
+import { ItemContext } from "../../../providers/api/item/item.provider";
+import SocialActions from "../../../providers/social/social.actions";
+import initialState from "../../../providers/social/social.initial";
+import { SocialContext } from "../../../providers/social/social.provider";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import ItemDetailsPage from "../details.page";
 
 jest.mock("../../../components/item-details/item-details.edit.container");
 ItemDetailsEditContainer.mockImplementation(() => <div>MockDetails</div>);

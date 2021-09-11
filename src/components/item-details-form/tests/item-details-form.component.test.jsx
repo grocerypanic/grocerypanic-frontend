@@ -1,4 +1,3 @@
-import React from "react";
 import {
   render,
   cleanup,
@@ -6,19 +5,16 @@ import {
   fireEvent,
   act,
 } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
-import Alert from "../../alert/alert.component";
-import ItemDetailsForm from "../item-details-form.component";
-import Hint from "../../hint/hint.component";
-
-import FormInput from "../../form-input/form-input.component";
-import DropDown from "../../form-dropdown/form-dropdown.component";
-import MultiDropDown from "../../form-multiselect/form-multiselect.component";
-
+import React from "react";
 import { ShelfLifeConstants, Constants } from "../../../configuration/backend";
-
 import Strings from "../../../configuration/strings";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import Alert from "../../alert/alert.component";
+import DropDown from "../../form-dropdown/form-dropdown.component";
+import FormInput from "../../form-input/form-input.component";
+import MultiDropDown from "../../form-multiselect/form-multiselect.component";
+import Hint from "../../hint/hint.component";
+import ItemDetailsForm from "../item-details-form.component";
 
 jest.mock("../../alert/alert.component");
 jest.mock("../../hint/hint.component");

@@ -1,13 +1,10 @@
-import InitialState from "../user.initial";
-
 import { Paths } from "../../../../configuration/backend";
-import * as AsyncFn from "../user.async";
-
-import { AsyncTest } from "../../test.fixtures/generate.async.tests";
-import ApiFunctions from "../../api.functions";
-
 import { Constants } from "../../../../configuration/backend";
+import ApiFunctions from "../../api.functions";
 import { generateConverter } from "../../generators/generate.converter";
+import { AsyncTest } from "../../test.fixtures/generate.async.tests";
+import * as AsyncFn from "../user.async";
+import InitialState from "../user.initial";
 
 jest.mock("../../../../util/requests");
 

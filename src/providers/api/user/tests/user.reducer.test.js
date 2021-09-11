@@ -1,4 +1,4 @@
-import UserReducer from "../user.reducer";
+import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
 import {
   asyncAdd,
   asyncDel,
@@ -6,9 +6,9 @@ import {
   asyncList,
   asyncUpdate,
 } from "../user.async";
-
 import InitialState from "../user.initial";
-import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
+import UserReducer from "../user.reducer";
+
 jest.mock("../user.async");
 
 ReducerTest(

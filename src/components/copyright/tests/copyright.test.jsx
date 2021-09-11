@@ -1,15 +1,12 @@
-import React from "react";
 import { render, cleanup, fireEvent } from "@testing-library/react";
+import React from "react";
 import { MemoryRouter } from "react-router-dom";
-
-import Copyright from "../copyright.component";
-
-import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
-import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-
-import Strings from "../../../configuration/strings";
 import Assets from "../../../configuration/assets";
 import { External } from "../../../configuration/routes";
+import Strings from "../../../configuration/strings";
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
+import Copyright from "../copyright.component";
 
 // Freeze Time
 Date.now = jest.fn(() => new Date("2019-06-16T11:01:58.135Z"));

@@ -1,6 +1,6 @@
 import React, { useReducer, createContext } from "react";
-import ShelfReducer from "./shelf.reducer";
 import InitialState from "./shelf.initial";
+import ShelfReducer from "./shelf.reducer";
 
 export const ShelfContext = createContext({ ...InitialState });
 

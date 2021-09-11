@@ -1,23 +1,20 @@
 // For editing existing components
 
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import { withRouter } from "react-router-dom";
-
-import HoldingPattern from "../holding-pattern/holding-pattern.component";
-import ErrorHandler from "../error-handler/error-handler.component";
 import ItemDetails from "./item-details.component";
-
+import Routes from "../../configuration/routes";
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
+import { ActivityContext } from "../../providers/api/activity/activity.provider";
+import ApiActions from "../../providers/api/api.actions";
+import ApiFunctions from "../../providers/api/api.functions";
 import { ItemContext } from "../../providers/api/item/item.provider";
 import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
 import { StoreContext } from "../../providers/api/store/store.provider";
-import { ActivityContext } from "../../providers/api/activity/activity.provider";
-
-import ApiActions from "../../providers/api/api.actions";
-import ApiFuctions from "../../providers/api/api.functions";
-import Routes from "../../configuration/routes";
+import ErrorHandler from "../error-handler/error-handler.component";
+import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
 const defaultItem = {
   name: "",
@@ -118,7 +115,7 @@ const ItemDetailsEditContainer = ({
     // Item
     setPerformItemAsync({
       type: ApiActions.StartGet,
-      func: ApiFuctions.asyncGet,
+      func: ApiFunctions.asyncGet,
       dispatch: setPerformItemAsync,
       payload: { id: itemId },
     });
@@ -126,7 +123,7 @@ const ItemDetailsEditContainer = ({
     // Store;
     setPerformStoreAsync({
       type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
+      func: ApiFunctions.asyncList,
       dispatch: setPerformStoreAsync,
       fetchAll: 1,
     });
@@ -134,7 +131,7 @@ const ItemDetailsEditContainer = ({
     // Shelf
     setPerformShelfAsync({
       type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
+      func: ApiFunctions.asyncList,
       dispatch: setPerformShelfAsync,
       fetchAll: 1,
     });
@@ -144,7 +141,7 @@ const ItemDetailsEditContainer = ({
     if (listActivityComplete) return;
     setPerformActivityAsync({
       type: ApiActions.StartGet,
-      func: ApiFuctions.asyncGet,
+      func: ApiFunctions.asyncGet,
       dispatch: setPerformActivityAsync,
       payload: { id: parseInt(itemId) },
     });
@@ -158,7 +155,7 @@ const ItemDetailsEditContainer = ({
       event(AnalyticsActions.ItemModified);
       setPerformItemAsync({
         type: ApiActions.StartUpdate,
-        func: ApiFuctions.asyncUpdate,
+        func: ApiFunctions.asyncUpdate,
         dispatch: setPerformItemAsync,
         payload: { ...newItem },
       });
@@ -169,7 +166,7 @@ const ItemDetailsEditContainer = ({
     event(AnalyticsActions.ItemDeleted);
     setPerformItemAsync({
       type: ApiActions.StartDel,
-      func: ApiFuctions.asyncDel,
+      func: ApiFunctions.asyncDel,
       dispatch: setPerformItemAsync,
       payload: { id: newItem.id },
     });

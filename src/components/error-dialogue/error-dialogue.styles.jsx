@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { white, tertiary, error } from "../../configuration/theme";
 
 export const NotePad = styled.ul`

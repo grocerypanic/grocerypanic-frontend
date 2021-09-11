@@ -1,16 +1,12 @@
 // Package Imports
 import React, { Suspense, lazy } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-
-import { HeaderContext } from "../../providers/header/header.provider";
-
 import Consent from "../../components/consent/consent.component";
-import ProtectedRoute from "../../components/protected-route/protected-route.component";
-import HoldingPattern from "../../components/holding-pattern/holding-pattern.component";
 import Header from "../../components/header/header.component";
-
-// Configuration
+import HoldingPattern from "../../components/holding-pattern/holding-pattern.component";
+import ProtectedRoute from "../../components/protected-route/protected-route.component";
 import Routes from "../../configuration/routes";
+import { HeaderContext } from "../../providers/header/header.provider";
 
 const About = lazy(() => import("../about/about.page"));
 const Create = lazy(() => import("../create/create.page"));

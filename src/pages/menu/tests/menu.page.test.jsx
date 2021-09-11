@@ -1,12 +1,10 @@
-import React from "react";
 import { render, cleanup, waitFor } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
-import MenuPage from "../menu.page";
+import React from "react";
 import Menu from "../../../components/menu/menu.component";
-
-import Strings from "../../../configuration/strings";
 import Options from "../../../configuration/menu";
+import Strings from "../../../configuration/strings";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import MenuPage from "../menu.page";
 
 jest.mock("../../../components/menu/menu.component");
 Menu.mockImplementation(() => <div>MockList</div>);

@@ -1,20 +1,16 @@
-import React from "react";
-import { render, cleanup, fireEvent, waitFor } from "@testing-library/react";
-import { Router } from "react-router-dom";
-import { createBrowserHistory } from "history";
 import WarningOutlinedIcon from "@material-ui/icons/WarningOutlined";
+import { render, cleanup, fireEvent, waitFor } from "@testing-library/react";
+import { createBrowserHistory } from "history";
 import i18next from "i18next";
-
-import ErrorDialogue from "../error-dialogue.component";
-
+import React from "react";
+import { Router } from "react-router-dom";
+import Routes from "../../../configuration/routes";
+import Strings from "../../../configuration/strings";
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import initialHeaderSettings from "../../../providers/header/header.initial";
 import { HeaderContext } from "../../../providers/header/header.provider";
-
-import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
-
-import Strings from "../../../configuration/strings";
-import Routes from "../../../configuration/routes";
+import ErrorDialogue from "../error-dialogue.component";
 
 jest.mock("@material-ui/icons/WarningOutlined", () => ({
   __esModule: true,

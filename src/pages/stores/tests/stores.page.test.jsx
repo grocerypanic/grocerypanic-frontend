@@ -1,18 +1,13 @@
-import React from "react";
 import { render, cleanup, waitFor, act } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
-import StoresPage from "../stores.page";
-
+import React from "react";
 import SimpleList from "../../../components/simple-list/simple-list.component";
-
-import { StoreContext } from "../../../providers/api/store/store.provider";
-
-import { SocialContext } from "../../../providers/social/social.provider";
-import initialState from "../../../providers/social/social.initial";
-import SocialActions from "../../../providers/social/social.actions";
-
 import Strings from "../../../configuration/strings";
+import { StoreContext } from "../../../providers/api/store/store.provider";
+import SocialActions from "../../../providers/social/social.actions";
+import initialState from "../../../providers/social/social.initial";
+import { SocialContext } from "../../../providers/social/social.provider";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import StoresPage from "../stores.page";
 
 jest.mock("../../../components/simple-list/simple-list.component");
 SimpleList.mockImplementation(() => <div>MockList</div>);

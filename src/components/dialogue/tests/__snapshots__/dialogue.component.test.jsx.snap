@@ -1,58 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Setup Environment when passed parameters should match the snapshot on file (styles) 1`] = `
-.c0 {
-  margin-top: calc(50px + 26px);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c0 .nav-tabs {
-  height: 28px !important;
-  font-size: 0.75em;
-}
-
-.c0 a[role="tab"] {
-  padding-bottom: 0px;
-  padding-top: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -104,6 +52,58 @@ exports[`Setup Environment when passed parameters should match the snapshot on f
 
 .c5 span:last-child {
   margin-bottom: 0px;
+}
+
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c0 {
+  margin-top: calc(50px + 26px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
 }
 
 <div>

@@ -1,5 +1,4 @@
 import React from "react";
-
 import { rewriteUrlWithPagination } from "./pagination.query.utils";
 import { PaginationControl, Spacer } from "./pagination.styles";
 

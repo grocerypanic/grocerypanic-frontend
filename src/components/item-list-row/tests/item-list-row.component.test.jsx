@@ -1,15 +1,13 @@
-import React from "react";
 import { render, cleanup, waitFor, fireEvent } from "@testing-library/react";
 import moment from "moment";
-
-import ItemListRow from "../item-list-row.component.jsx";
+import React from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
-import GeneratePopOver from "../../popover/popover.component";
-
 import Strings from "../../../configuration/strings";
 import { ui } from "../../../configuration/theme"; // eslint-disable-line
+import GeneratePopOver from "../../popover/popover.component";
+import ItemListRow from "../item-list-row.component.jsx";
 
 jest.mock("react-bootstrap/Dropdown", () => ({
   __esModule: true,

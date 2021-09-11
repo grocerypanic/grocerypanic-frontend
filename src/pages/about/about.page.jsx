@@ -1,8 +1,7 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import Dialogue from "../../components/dialogue/dialogue.component";
 import FeedBack from "../../components/feedback/feedback.component";
-
-import { useTranslation } from "react-i18next";
 
 const AboutPage = () => {
   const { t } = useTranslation();

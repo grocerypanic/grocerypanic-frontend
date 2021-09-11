@@ -1,27 +1,21 @@
-import React from "react";
 import { render, act } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
-import ProfileEditContainer from "../profile.edit.container";
-import ProfileForm from "../profile.edit.form.component";
-import ErrorHandler from "../../error-handler/error-handler.component";
-import HoldingPattern from "../../holding-pattern/holding-pattern.component";
-
-import useProfile from "../../../providers/api/user/user.hook";
-import useTimezones from "../../../providers/api/timezone/timezone.hook";
-import useSocialLogin from "../../../providers/social/social.hook";
-
-import { HeaderContext } from "../../../providers/header/header.provider";
+import React from "react";
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-
-import initialHeaderSettings from "../../../providers/header/header.initial";
-
-import mockSocialHook from "../../../providers/social/tests/social.hook.mock";
-import mockProfileHook from "../../../providers/api/user/tests/user.hook.mock";
-import mockTimezoneHook from "../../../providers/api/timezone/tests/timezone.hook.mock";
-
 import ApiActions from "../../../providers/api/api.actions";
+import mockTimezoneHook from "../../../providers/api/timezone/tests/timezone.hook.mock";
+import useTimezones from "../../../providers/api/timezone/timezone.hook";
+import mockProfileHook from "../../../providers/api/user/tests/user.hook.mock";
+import useProfile from "../../../providers/api/user/user.hook";
+import initialHeaderSettings from "../../../providers/header/header.initial";
+import { HeaderContext } from "../../../providers/header/header.provider";
+import useSocialLogin from "../../../providers/social/social.hook";
+import mockSocialHook from "../../../providers/social/tests/social.hook.mock";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import ErrorHandler from "../../error-handler/error-handler.component";
+import HoldingPattern from "../../holding-pattern/holding-pattern.component";
+import ProfileEditContainer from "../profile.edit.container";
+import ProfileForm from "../profile.edit.form.component";
 
 jest.mock("../profile.edit.form.component");
 jest.mock("../../../providers/social/social.hook");

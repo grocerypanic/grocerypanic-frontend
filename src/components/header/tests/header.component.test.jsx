@@ -1,23 +1,19 @@
-import React from "react";
-import { render, cleanup, fireEvent, waitFor } from "@testing-library/react";
-
-import { Router } from "react-router-dom";
-import { createBrowserHistory } from "history";
-
-import Header from "../header.component";
-import { HeaderContext } from "../../../providers/header/header.provider";
-
-import * as bootstrap from "react-bootstrap";
 import * as AddIcon from "@material-ui/icons/Add";
-import * as HomeIcon from "@material-ui/icons/Home";
-import * as StoreIcon from "@material-ui/icons/Store";
-import * as KitchenIcon from "@material-ui/icons/Kitchen";
-import * as InfoIcon from "@material-ui/icons/Info";
 import * as FormatListNumbered from "@material-ui/icons/FormatListNumbered";
+import * as HomeIcon from "@material-ui/icons/Home";
+import * as InfoIcon from "@material-ui/icons/Info";
+import * as KitchenIcon from "@material-ui/icons/Kitchen";
 import * as LockOpenIcon from "@material-ui/icons/LockOpen";
-
+import * as StoreIcon from "@material-ui/icons/Store";
+import { render, cleanup, fireEvent, waitFor } from "@testing-library/react";
+import { createBrowserHistory } from "history";
+import React from "react";
+import * as bootstrap from "react-bootstrap";
+import { Router } from "react-router-dom";
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
+import { HeaderContext } from "../../../providers/header/header.provider";
+import Header from "../header.component";
 
 const mockHeaderUpdate = jest.fn();
 jest.unmock("react-bootstrap");

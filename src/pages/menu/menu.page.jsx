@@ -1,8 +1,6 @@
 import React from "react";
-
-import Menu from "../../components/menu/menu.component";
-
 import { useTranslation } from "react-i18next";
+import Menu from "../../components/menu/menu.component";
 import Options from "../../configuration/menu";
 
 const MenuPage = () => {

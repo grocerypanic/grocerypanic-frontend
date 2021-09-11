@@ -1,13 +1,10 @@
-import React from "react";
 import { render, cleanup, fireEvent } from "@testing-library/react";
-
-import FeedBack from "../feedback.component";
-
+import React from "react";
+import { External } from "../../../configuration/routes";
+import Strings from "../../../configuration/strings";
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-
-import Strings from "../../../configuration/strings";
-import { External } from "../../../configuration/routes";
+import FeedBack from "../feedback.component";
 
 const mockAnalyticsContext = {
   initialized: true,

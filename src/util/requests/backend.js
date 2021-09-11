@@ -1,5 +1,5 @@
-import debug from "../debug";
 import { Constants, SafeMethods } from "../../configuration/backend";
+import debug from "../debug";
 
 const Backend = (method, path, data = null) => {
   // Prepend Backend Hostname and Protocol If Needed

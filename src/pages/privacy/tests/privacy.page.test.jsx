@@ -1,13 +1,11 @@
-import React from "react";
 import { render, cleanup, waitFor } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
+import React from "react";
 import { act } from "react-dom/test-utils";
-
-import PrivacyPage from "../privacy.page";
-import FeedBack from "../../../components/feedback/feedback.component";
 import Dialogue from "../../../components/dialogue/dialogue.component";
-
+import FeedBack from "../../../components/feedback/feedback.component";
 import Strings from "../../../configuration/strings";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import PrivacyPage from "../privacy.page";
 
 const mockFetch = jest.fn();
 jest.mock("../../../components/dialogue/dialogue.component");

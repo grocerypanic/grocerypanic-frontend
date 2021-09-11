@@ -1,12 +1,10 @@
-import React from "react";
 import { render, cleanup } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
-import HoldingPattern from "../holding-pattern.component";
+import React from "react";
 import Spinner from "react-bootstrap/Spinner";
-
 import initialHeaderSettings from "../../../providers/header/header.initial";
 import { HeaderContext } from "../../../providers/header/header.provider";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import HoldingPattern from "../holding-pattern.component";
 
 const mockHeaderUpdate = jest.fn();
 jest.mock("react-bootstrap/Spinner", () => ({

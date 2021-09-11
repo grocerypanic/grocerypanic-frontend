@@ -1,9 +1,7 @@
-import React from "react";
 import { render, cleanup } from "@testing-library/react";
-
-import Alert from "../alert.component";
-
+import React from "react";
 import Assets from "../../../configuration/assets";
+import Alert from "../alert.component";
 
 describe("Setup Environment", () => {
   let utils;

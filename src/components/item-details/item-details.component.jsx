@@ -1,17 +1,14 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
-import Tabs from "react-bootstrap/Tabs";
+import React, { useState } from "react";
 import Tab from "react-bootstrap/Tab";
-
-import ItemDetailsForm from "../item-details-form/item-details-form.component";
-import ActivityReport, { nullReport } from "../activity/activity.component";
-import { HeaderContext } from "../../providers/header/header.provider";
-
-import { Container } from "../../global-styles/containers";
+import Tabs from "react-bootstrap/Tabs";
+import { useTranslation } from "react-i18next";
 import { TabBox } from "./item-details.styles";
-
 import { ui } from "../../configuration/theme";
+import { Container } from "../../global-styles/containers";
+import { HeaderContext } from "../../providers/header/header.provider";
+import ActivityReport, { nullReport } from "../activity/activity.component";
+import ItemDetailsForm from "../item-details-form/item-details-form.component";
 
 const ItemDetails = ({
   headerTitle,

@@ -1,8 +1,8 @@
-import { Paths, Providers } from "../../configuration/backend";
-import { match2xx } from "../../util/requests/status";
-import Request from "../../util/requests";
-import { Constants } from "../../configuration/backend";
 import SocialActions from "./social.actions";
+import { Paths, Providers } from "../../configuration/backend";
+import { Constants } from "../../configuration/backend";
+import Request from "../../util/requests";
+import { match2xx } from "../../util/requests/status";
 
 export const asyncLogin = async ({ state, action }) => {
   const { payload, dispatch } = action;

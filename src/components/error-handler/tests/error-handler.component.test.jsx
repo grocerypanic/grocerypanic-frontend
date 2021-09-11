@@ -1,10 +1,8 @@
-import React from "react";
 import { render, cleanup } from "@testing-library/react";
-
-import ErrorHandler from "../error-handler.component";
-import ErrorDialogue from "../../error-dialogue/error-dialogue.component";
-
+import React from "react";
 import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import ErrorDialogue from "../../error-dialogue/error-dialogue.component";
+import ErrorHandler from "../error-handler.component";
 
 jest.mock("../../error-dialogue/error-dialogue.component");
 ErrorDialogue.mockImplementation(() => <div>I am a error!</div>);

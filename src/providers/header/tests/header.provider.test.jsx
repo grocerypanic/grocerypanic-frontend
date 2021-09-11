@@ -1,8 +1,7 @@
-import React from "react";
 import { act, render, cleanup, waitFor } from "@testing-library/react";
-import HeaderProvider, { HeaderContext } from "../header.provider";
-
+import React from "react";
 import InitialState from "../header.initial";
+import HeaderProvider, { HeaderContext } from "../header.provider";
 
 describe("Check the Inital Provider State", () => {
   afterEach(cleanup);

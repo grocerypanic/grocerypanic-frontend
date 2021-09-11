@@ -1,4 +1,4 @@
-import ItemReducer from "../item.reducer";
+import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
 import {
   asyncAdd,
   asyncDel,
@@ -6,9 +6,9 @@ import {
   asyncList,
   asyncUpdate,
 } from "../item.async";
-
 import InitialState from "../item.initial";
-import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
+import ItemReducer from "../item.reducer";
+
 jest.mock("../item.async");
 
 ReducerTest(

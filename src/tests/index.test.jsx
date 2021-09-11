@@ -1,6 +1,6 @@
+import { waitFor } from "@testing-library/react";
 import React from "react";
 import RootProvider from "../providers/root.provider";
-import { waitFor } from "@testing-library/react";
 
 jest.mock("../providers/root.provider");
 jest.mock("../pages/app/app");

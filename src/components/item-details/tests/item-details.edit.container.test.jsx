@@ -1,32 +1,27 @@
-import React from "react";
 import { render, cleanup, waitFor, act } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-import { MemoryRouter, Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import i18next from "i18next";
-
+import React from "react";
+import { MemoryRouter, Router } from "react-router-dom";
+import Routes from "../../../configuration/routes";
+import Strings from "../../../configuration/strings";
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
+import ActivityInitialValue from "../../../providers/api/activity/activity.initial";
+import { ActivityContext } from "../../../providers/api/activity/activity.provider";
+import ApiActions from "../../../providers/api/api.actions";
+import ApiFunctions from "../../../providers/api/api.functions";
+import ItemInitialValue from "../../../providers/api/item/item.initial";
+import { ItemContext } from "../../../providers/api/item/item.provider";
+import ShelfInitialValue from "../../../providers/api/shelf/shelf.initial";
+import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
+import StoreInitialValue from "../../../providers/api/store/store.initial";
+import { StoreContext } from "../../../providers/api/store/store.provider";
+import { propCount } from "../../../test.fixtures/objectComparison";
 import ErrorHandler from "../../error-handler/error-handler.component";
 import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 import ItemDetails from "../item-details.component";
 import ItemDetailsEditContainer from "../item-details.edit.container";
-
-import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
-import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-import { ItemContext } from "../../../providers/api/item/item.provider";
-import { ActivityContext } from "../../../providers/api/activity/activity.provider";
-import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
-import { StoreContext } from "../../../providers/api/store/store.provider";
-
-import ItemInitialValue from "../../../providers/api/item/item.initial";
-import ShelfInitialValue from "../../../providers/api/shelf/shelf.initial";
-import StoreInitialValue from "../../../providers/api/store/store.initial";
-import ActivityInitialValue from "../../../providers/api/activity/activity.initial";
-
-import ApiActions from "../../../providers/api/api.actions";
-import ApiFunctions from "../../../providers/api/api.functions";
-
-import Strings from "../../../configuration/strings";
-import Routes from "../../../configuration/routes";
 
 jest.mock("../item-details.component");
 jest.mock("../../holding-pattern/holding-pattern.component");

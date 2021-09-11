@@ -1,14 +1,11 @@
-import React from "react";
 import { render, cleanup } from "@testing-library/react";
-import CookieConsent from "react-cookie-consent";
 import cookie from "cookie_js";
-
-import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-
-import Consent from "../consent.component";
+import React from "react";
+import CookieConsent from "react-cookie-consent";
 import { Constants } from "../../../configuration/backend";
-
 import Strings from "../../../configuration/strings";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
+import Consent from "../consent.component";
 
 jest.mock("react-cookie-consent");
 

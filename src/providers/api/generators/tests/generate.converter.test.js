@@ -1,5 +1,4 @@
 import moment from "moment";
-
 import { generateConverter, generateUTCConverter } from "../generate.converter";
 
 const mockItem = {

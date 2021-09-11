@@ -1,7 +1,7 @@
 import React, { createContext } from "react";
-import UserReducer from "./user.reducer";
-import InitialState from "./user.initial";
 import createPersistedReducer from "use-persisted-reducer";
+import InitialState from "./user.initial";
+import UserReducer from "./user.reducer";
 
 export const UserContext = createContext({ ...InitialState });
 const usePersistedReducer = createPersistedReducer("user-profile");

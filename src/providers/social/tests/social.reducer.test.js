@@ -1,7 +1,6 @@
-import SocialReducer from "../social.reducer";
 import SocialActions from "../social.actions";
-
 import InitialState from "../social.initial";
+import SocialReducer from "../social.reducer";
 
 describe("Check The Reducer Functionality", () => {
   let received;

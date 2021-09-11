@@ -1,16 +1,13 @@
+import WarningOutlinedIcon from "@material-ui/icons/WarningOutlined";
+import PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
-import WarningOutlinedIcon from "@material-ui/icons/WarningOutlined";
-import PropTypes from "prop-types";
-
-import { Paper, Container } from "../../global-styles/containers";
 import { NotePad, Page, OK, ErrorBox, Centered } from "./error-dialogue.styles";
-
+import Routes from "../../configuration/routes";
+import { Paper, Container } from "../../global-styles/containers";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 import { HeaderContext } from "../../providers/header/header.provider";
-
-import Routes from "../../configuration/routes";
 
 const ErrorDialogue = ({
   clearError,

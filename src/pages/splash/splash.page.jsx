@@ -1,14 +1,11 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
-
-import { HeaderContext } from "../../providers/header/header.provider";
 import { useTranslation } from "react-i18next";
-import { Container } from "../../global-styles/containers";
-
 import { SplashBox, Paragraphs } from "./splash.styles";
-import { mobileThreshold } from "../../configuration/theme";
-
 import Assets from "../../configuration/assets";
+import { mobileThreshold } from "../../configuration/theme";
+import { Container } from "../../global-styles/containers";
+import { HeaderContext } from "../../providers/header/header.provider";
 
 const SplashPage = () => {
   const { t } = useTranslation();

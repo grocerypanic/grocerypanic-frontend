@@ -1,9 +1,7 @@
-import React from "react";
 import { render, cleanup } from "@testing-library/react";
-
-import Hint from "../hint.component";
-
+import React from "react";
 import Strings from "../../../configuration/strings";
+import Hint from "../hint.component";
 
 describe("Setup Environment", () => {
   let utils;

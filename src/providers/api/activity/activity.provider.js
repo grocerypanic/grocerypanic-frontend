@@ -1,6 +1,6 @@
 import React, { useReducer, createContext } from "react";
-import ActivityReducer from "./activity.reducer";
 import InitialState from "./activity.initial";
+import ActivityReducer from "./activity.reducer";
 
 export const ActivityContext = createContext({ ...InitialState });
 

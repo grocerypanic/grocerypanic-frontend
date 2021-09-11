@@ -1,3 +1,33 @@
 {
-  "extends": ["react-app", "plugin:prettier/recommended"]
+  "extends": ["react-app", "plugin:prettier/recommended"],
+  "plugins": ["unused-imports"],
+  "rules": {
+    "import/order": [
+      "error",
+      {
+        "alphabetize": { "order": "asc" },
+        "groups": [
+          "external",
+          "builtin",
+          "sibling",
+          "parent",
+          "object",
+          "index",
+          "internal"
+        ],
+        "newlines-between": "never",
+        "pathGroups": [
+          {
+            "pattern": "@app/**",
+            "group": "external",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["builtin"]
+      }
+    ],
+    //"jest-formatting/padding-around-expect-groups": "off",
+    "no-unused-vars": "error",
+    "unused-imports/no-unused-imports": "error"
+  }
 }

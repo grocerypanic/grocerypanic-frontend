@@ -1,17 +1,13 @@
-import React from "react";
 import { render, cleanup, fireEvent, waitFor } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
 import moment from "moment";
-
-import ItemDetails from "../item-details.component";
-import ItemDetailsForm from "../../item-details-form/item-details-form.component";
-import ActivityReport, { nullReport } from "../../activity/activity.component";
-
-import { HeaderContext } from "../../../providers/header/header.provider";
-import initialHeaderSettings from "../../../providers/header/header.initial";
-
+import React from "react";
 import Strings from "../../../configuration/strings";
+import initialHeaderSettings from "../../../providers/header/header.initial";
+import { HeaderContext } from "../../../providers/header/header.provider";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import ActivityReport, { nullReport } from "../../activity/activity.component";
+import ItemDetailsForm from "../../item-details-form/item-details-form.component";
+import ItemDetails from "../item-details.component";
 
 const ActivityReportMocks = () => {
   const activityComponentModule = jest.requireActual(

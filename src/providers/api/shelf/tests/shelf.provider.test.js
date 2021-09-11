@@ -1,8 +1,7 @@
-import React from "react";
 import { render, cleanup } from "@testing-library/react";
-import ShelfProvider, { ShelfContext } from "../shelf.provider";
-
+import React from "react";
 import InitialState from "../shelf.initial";
+import ShelfProvider, { ShelfContext } from "../shelf.provider";
 
 describe("Check the Inital Provider State", () => {
   afterEach(cleanup);

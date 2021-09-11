@@ -1,12 +1,9 @@
-import InitialState from "../timezone.initial";
-
 import { Paths } from "../../../../configuration/backend";
-import * as AsyncFn from "../timezone.async";
-
-import { AsyncTest } from "../../test.fixtures/generate.async.tests";
 import ApiFunctions from "../../api.functions";
-
 import { generateConverter } from "../../generators/generate.converter";
+import { AsyncTest } from "../../test.fixtures/generate.async.tests";
+import * as AsyncFn from "../timezone.async";
+import InitialState from "../timezone.initial";
 
 jest.mock("../../../../util/requests");
 

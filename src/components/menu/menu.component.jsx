@@ -1,16 +1,13 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import { withRouter } from "react-router-dom";
-
-import MenuItem from "../menu-item/menu-item.component";
-import Hint from "../hint/hint.component";
-
-import { HeaderContext } from "../../providers/header/header.provider";
-
-import { Paper, Container } from "../../global-styles/containers";
-import { ItemizedBanner } from "../../global-styles/banner";
 import { Scroller, ListBox } from "./menu.styles";
+import { ItemizedBanner } from "../../global-styles/banner";
+import { Paper, Container } from "../../global-styles/containers";
+import { HeaderContext } from "../../providers/header/header.provider";
 import calculateMaxHeight from "../../util/height";
+import Hint from "../hint/hint.component";
+import MenuItem from "../menu-item/menu-item.component";
 
 const Menu = ({ options, headerTitle, title, history, helpText }) => {
   const choose = (route) => {

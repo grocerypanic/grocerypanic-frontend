@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { tertiary, itemAttributes } from "../../configuration/theme";
 
 export const Scroller = styled.div`

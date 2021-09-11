@@ -1,4 +1,4 @@
-import TransactionReducer from "../transaction.reducer";
+import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
 import {
   asyncAdd,
   asyncDel,
@@ -6,9 +6,9 @@ import {
   asyncList,
   asyncUpdate,
 } from "../transaction.async";
-
 import InitialState from "../transaction.initial";
-import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
+import TransactionReducer from "../transaction.reducer";
+
 jest.mock("../transaction.async");
 
 ReducerTest(

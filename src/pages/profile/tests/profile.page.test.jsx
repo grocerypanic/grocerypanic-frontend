@@ -1,12 +1,10 @@
-import React from "react";
 import { render, cleanup, waitFor } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
-import ProfilePage from "../profile.page";
+import React from "react";
 import UserProfileEditContainer from "../../../components/profile/profile.edit.container";
-
-import Strings from "../../../configuration/strings";
 import Options from "../../../configuration/menu";
+import Strings from "../../../configuration/strings";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import ProfilePage from "../profile.page";
 
 jest.mock("../../../components/profile/profile.edit.container");
 UserProfileEditContainer.mockImplementation(() => <div>MockProfileEditor</div>);

@@ -1,5 +1,5 @@
-import withAsyncLogger from "../async.logger.js";
 import { waitFor } from "@testing-library/dom";
+import withAsyncLogger from "../async.logger.js";
 
 // Freeze Performance Time
 performance.now = jest.fn();

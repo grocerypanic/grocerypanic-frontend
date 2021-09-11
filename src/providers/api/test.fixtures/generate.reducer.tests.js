@@ -1,9 +1,7 @@
 import { waitFor } from "@testing-library/react";
-
+import { propCount } from "../../../test.fixtures/objectComparison";
 import ApiActions from "../api.actions";
 import ApiFunctions from "../api.functions";
-
-import { propCount } from "../../../test.fixtures/objectComparison";
 
 export const ReducerTest = (
   classType,

@@ -1,5 +1,4 @@
 import { ShelfLifeConstants } from "../../../configuration/backend";
-
 import {
   normalizeNameArray,
   normalizeName,

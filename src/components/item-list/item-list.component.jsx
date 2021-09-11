@@ -1,33 +1,27 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import { withRouter } from "react-router-dom";
-
-import ErrorHandler from "../error-handler/error-handler.component";
-import Pagination from "../pagination/pagination.component";
-import ItemListRow from "../item-list-row/item-list-row.component";
-import Hint from "../hint/hint.component";
-import Alert from "../alert/alert.component";
-import HoldingPattern from "../holding-pattern/holding-pattern.component";
-
-import { HeaderContext } from "../../providers/header/header.provider";
+import { Scroller, ListBox, PlaceHolderListItem } from "./item-list.styles";
+import { calculateTitle } from "./item-list.util";
+import { Constants } from "../../configuration/backend";
+import Routes from "../../configuration/routes";
+import { ItemizedBanner } from "../../global-styles/banner";
+import { Paper, Container } from "../../global-styles/containers";
+import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
+import ApiActions from "../../providers/api/api.actions";
+import ApiFunctions from "../../providers/api/api.functions";
 import { ItemContext } from "../../providers/api/item/item.provider";
 import { TransactionContext } from "../../providers/api/transaction/transaction.provider";
-import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
-
-import ApiActions from "../../providers/api/api.actions";
-import ApiFuctions from "../../providers/api/api.functions";
-import Routes from "../../configuration/routes";
-import { Constants } from "../../configuration/backend";
-
-import preventContext from "../../util/preventDefault";
+import { HeaderContext } from "../../providers/header/header.provider";
 import calculateMaxHeight from "../../util/height";
-
-import { calculateTitle } from "./item-list.util";
-
-import { Paper, Container } from "../../global-styles/containers";
-import { ItemizedBanner } from "../../global-styles/banner";
-import { Scroller, ListBox, PlaceHolderListItem } from "./item-list.styles";
+import preventContext from "../../util/preventDefault";
+import Alert from "../alert/alert.component";
+import ErrorHandler from "../error-handler/error-handler.component";
+import Hint from "../hint/hint.component";
+import HoldingPattern from "../holding-pattern/holding-pattern.component";
+import ItemListRow from "../item-list-row/item-list-row.component";
+import Pagination from "../pagination/pagination.component";
 
 const ItemList = ({
   headerTitle,
@@ -93,7 +87,7 @@ const ItemList = ({
     const page = filter.get(Constants.pageLookupParam);
     itemDispatch({
       type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
+      func: ApiFunctions.asyncList,
       dispatch: setPerformItemAsync,
       filter: filter,
       page,
@@ -117,7 +111,7 @@ const ItemList = ({
         new Promise((resolve) =>
           setPerformItemAsync({
             type: ApiActions.StartGet,
-            func: ApiFuctions.asyncGet,
+            func: ApiFunctions.asyncGet,
             dispatch: setPerformItemAsync,
             payload: {
               id: itemToRefresh.id,
@@ -137,7 +131,7 @@ const ItemList = ({
     if (transactionStatus()) return;
     setPerformTransactionAsync({
       type: ApiActions.StartAdd,
-      func: ApiFuctions.asyncAdd,
+      func: ApiFunctions.asyncAdd,
       dispatch: setPerformTransactionAsync,
       payload: {
         item: receivedItem.id,
@@ -151,7 +145,7 @@ const ItemList = ({
     if (transactionStatus()) return;
     setPerformTransactionAsync({
       type: ApiActions.StartAdd,
-      func: ApiFuctions.asyncAdd,
+      func: ApiFunctions.asyncAdd,
       dispatch: setPerformTransactionAsync,
       payload: {
         item: receivedItem.id,
@@ -165,7 +159,7 @@ const ItemList = ({
     setReady(false);
     setPerformItemAsync({
       type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
+      func: ApiFunctions.asyncList,
       dispatch: setPerformItemAsync,
       override: page,
     });

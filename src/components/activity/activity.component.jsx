@@ -1,19 +1,15 @@
+import moment from "moment";
+import PropTypes from "prop-types";
 import React from "react";
 import Table from "react-bootstrap/Table";
 import { useTranslation } from "react-i18next";
-import moment from "moment";
-import PropTypes from "prop-types";
-
-import HoldingPattern from "../holding-pattern/holding-pattern.component";
-
-import { within7Days } from "../../util/datetime";
-
 import { renderChart } from "./activity.chart";
-import { graph } from "../../configuration/theme";
-
-import { Paper } from "../../global-styles/containers";
-import { Banner } from "../../global-styles/banner";
 import { Outline, InnerBox } from "./activity.styles";
+import { graph } from "../../configuration/theme";
+import { Banner } from "../../global-styles/banner";
+import { Paper } from "../../global-styles/containers";
+import { within7Days } from "../../util/datetime";
+import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
 export const nullReport = {
   id: null,

@@ -1,6 +1,6 @@
 import React, { useReducer, createContext } from "react";
-import TransactionReducer from "./transaction.reducer";
 import InitialState from "./transaction.initial";
+import TransactionReducer from "./transaction.reducer";
 
 export const TransactionContext = createContext({ ...InitialState });
 

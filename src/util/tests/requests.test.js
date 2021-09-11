@@ -1,10 +1,8 @@
 import { waitFor } from "@testing-library/react";
-
+import { Constants } from "../../configuration/backend";
 import Request from "../requests";
 import Backend from "../requests/backend";
 import RefreshCSRF from "../requests/csrf";
-
-import { Constants } from "../../configuration/backend";
 
 jest.mock("../requests/backend");
 jest.mock("../requests/csrf");

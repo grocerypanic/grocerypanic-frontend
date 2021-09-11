@@ -1,15 +1,12 @@
-import React from "react";
 import { renderHook, act } from "@testing-library/react-hooks";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
-import SocialActions from "../social.actions";
+import React from "react";
 import { Providers } from "../../../configuration/backend";
-
+import { propCount } from "../../../test.fixtures/objectComparison";
+import SocialActions from "../social.actions";
+import * as asyncFn from "../social.async";
 import useSocialLogin from "../social.hook";
 import InitialState from "../social.initial";
-
 import { SocialContext } from "../social.provider";
-import * as asyncFn from "../social.async";
 
 const dispatchMock = jest.fn();
 const providerWrapper = ({ state, ...props }) => {

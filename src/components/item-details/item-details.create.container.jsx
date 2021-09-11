@@ -1,29 +1,22 @@
 // For creating new components
 
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import { withRouter } from "react-router-dom";
-
-import HoldingPattern from "../holding-pattern/holding-pattern.component";
-import ErrorHandler from "../error-handler/error-handler.component";
-import ItemDetailsForm from "../item-details-form/item-details-form.component";
-import { HeaderContext } from "../../providers/header/header.provider";
-
-import ApiActions from "../../providers/api/api.actions";
-import ApiFuctions from "../../providers/api/api.functions";
-
+import { calculateDefaults } from "./item-details.utils.jsx";
+import Routes from "../../configuration/routes";
+import { Container } from "../../global-styles/containers";
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-
-import Routes from "../../configuration/routes";
-
+import ApiActions from "../../providers/api/api.actions";
+import ApiFunctions from "../../providers/api/api.functions";
 import { ItemContext } from "../../providers/api/item/item.provider";
 import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
 import { StoreContext } from "../../providers/api/store/store.provider";
-
-import { Container } from "../../global-styles/containers";
-
-import { calculateDefaults } from "./item-details.utils.jsx";
+import { HeaderContext } from "../../providers/header/header.provider";
+import ErrorHandler from "../error-handler/error-handler.component";
+import HoldingPattern from "../holding-pattern/holding-pattern.component";
+import ItemDetailsForm from "../item-details-form/item-details-form.component";
 
 export const defaultItem = {
   name: "",
@@ -116,14 +109,14 @@ const ItemDetailsCreateContainer = ({
   React.useEffect(() => {
     setPerformShelfAsync({
       type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
+      func: ApiFunctions.asyncList,
       dispatch: setPerformShelfAsync,
       callback: setReceivedShelves,
       fetchAll: 1,
     });
     setPerformStoreAsync({
       type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
+      func: ApiFunctions.asyncList,
       dispatch: setPerformStoreAsync,
       callback: setReceivedStores,
       fetchAll: 1,
@@ -134,7 +127,7 @@ const ItemDetailsCreateContainer = ({
     event(AnalyticsActions.ItemCreated);
     setPerformItemAsync({
       type: ApiActions.StartAdd,
-      func: ApiFuctions.asyncAdd,
+      func: ApiFunctions.asyncAdd,
       dispatch: setPerformItemAsync,
       payload: { ...newItem },
     });

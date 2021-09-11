@@ -1,14 +1,11 @@
-import React from "react";
 import { renderHook, act } from "@testing-library/react-hooks";
+import React from "react";
+import { propCount } from "../../../../test.fixtures/objectComparison";
 import ApiActions from "../../api.actions";
-
+import ApiFunctions from "../../api.functions";
 import useProfile from "../user.hook";
 import InitialState from "../user.initial";
-
 import { UserContext } from "../user.provider";
-import ApiFunctions from "../../api.functions";
-
-import { propCount } from "../../../../test.fixtures/objectComparison";
 
 const dispatchMock = jest.fn();
 const providerWrapper = ({ state, ...props }) => {

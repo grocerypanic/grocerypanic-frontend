@@ -1,8 +1,8 @@
 import { useContext, useState, useEffect } from "react";
-import { SocialContext } from "./social.provider";
 import SocialActions from "./social.actions";
-import { Providers } from "../../configuration/backend";
 import * as asyncFn from "./social.async";
+import { SocialContext } from "./social.provider";
+import { Providers } from "../../configuration/backend";
 
 const useSocialLogin = () => {
   const { socialLogin, dispatch } = useContext(SocialContext);

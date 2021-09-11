@@ -1,24 +1,10 @@
 // For editing existing components, then will add create functionality
 
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import Form from "react-bootstrap/Form";
-
 import { useTranslation } from "react-i18next";
-
-import Alert from "../alert/alert.component";
-import Hint from "../hint/hint.component";
-import FormInput from "../form-input/form-input.component";
-import DropDown from "../form-dropdown/form-dropdown.component";
-import MultiDropDown from "../form-multiselect/form-multiselect.component";
-
-import { Paper } from "../../global-styles/containers";
-import { Banner } from "../../global-styles/banner";
 import { FormBox, Outline, ButtonBox } from "./item-details-form.styles";
-
-import { Constants, ShelfLifeConstants } from "../../configuration/backend";
-import { ui } from "../../configuration/theme";
-
 import {
   normalizeNameArray,
   normalizeName,
@@ -26,6 +12,15 @@ import {
   normalizeShelfLifeName,
   normalizeShelfLifeId,
 } from "./item-details-form.utils";
+import { Constants, ShelfLifeConstants } from "../../configuration/backend";
+import { ui } from "../../configuration/theme";
+import { Banner } from "../../global-styles/banner";
+import { Paper } from "../../global-styles/containers";
+import Alert from "../alert/alert.component";
+import DropDown from "../form-dropdown/form-dropdown.component";
+import FormInput from "../form-input/form-input.component";
+import MultiDropDown from "../form-multiselect/form-multiselect.component";
+import Hint from "../hint/hint.component";
 
 const ItemDetailsForm = ({
   item,

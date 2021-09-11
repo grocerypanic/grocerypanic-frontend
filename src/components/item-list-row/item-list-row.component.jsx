@@ -1,24 +1,18 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
+import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
 import PropTypes from "prop-types";
-
+import React from "react";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
-
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-
-import AddIcon from "@material-ui/icons/Add";
-import RemoveIcon from "@material-ui/icons/Remove";
-
-import Routes from "../../configuration/routes";
-import GeneratePopOver from "../popover/popover.component";
-
-import { ui } from "../../configuration/theme";
+import { useTranslation } from "react-i18next";
 import { Control, Digit, Symbol, Row, ListTitle } from "./item-list-row.styles";
-
+import Routes from "../../configuration/routes";
+import { ui } from "../../configuration/theme";
 import { within7Days, expired } from "../../util/datetime";
+import GeneratePopOver from "../popover/popover.component";
 
 const ItemListRow = ({
   item,

@@ -1,29 +1,24 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-
 import AddIcon from "@material-ui/icons/Add";
+import FormatListNumbered from "@material-ui/icons/FormatListNumbered";
 import HomeIcon from "@material-ui/icons/Home";
 import InfoIcon from "@material-ui/icons/Info";
-import StoreIcon from "@material-ui/icons/Store";
 import KitchenIcon from "@material-ui/icons/Kitchen";
-import FormatListNumbered from "@material-ui/icons/FormatListNumbered";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
-
-import { HeaderContext } from "../../providers/header/header.provider";
-
+import StoreIcon from "@material-ui/icons/Store";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-
+import React from "react";
 import { Navbar, Nav, Spinner } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { withRouter } from "react-router-dom";
 import {
   NavContainer,
   IconContainer,
   OffIconContainer,
   MenuContainer,
 } from "./header.styles";
-
 import Routes from "../../configuration/routes";
 import { headerMobileThreshold } from "../../configuration/theme";
+import { HeaderContext } from "../../providers/header/header.provider";
 
 const Header = ({ history }) => {
   React.useEffect(() => {}, []);

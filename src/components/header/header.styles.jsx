@@ -1,7 +1,6 @@
-import styled, { css } from "styled-components";
 import { Navbar } from "react-bootstrap";
+import styled, { css } from "styled-components";
 import { primary } from "../../configuration/theme";
-
 import { white, navbarSize } from "../../configuration/theme";
 
 const container = css`

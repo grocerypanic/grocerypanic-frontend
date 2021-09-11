@@ -1,3 +1,4 @@
+import { Constants } from "../../../configuration/backend";
 import {
   hasQueryString,
   hasPaginationParam,
@@ -5,8 +6,6 @@ import {
   getOtherQueryParams,
   rewriteUrlWithPagination,
 } from "../pagination.query.utils";
-
-import { Constants } from "../../../configuration/backend";
 
 let querystring1 = "http://hasquerystring.com?this=is&a=string";
 let querystring2 = "http://hasnoquerystring.com";

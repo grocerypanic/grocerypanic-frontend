@@ -1,12 +1,10 @@
-import React from "react";
 import { render, cleanup, waitFor } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
-import AboutPage from "../about.page";
-import FeedBack from "../../../components/feedback/feedback.component";
+import React from "react";
 import Dialogue from "../../../components/dialogue/dialogue.component";
-
+import FeedBack from "../../../components/feedback/feedback.component";
 import Strings from "../../../configuration/strings";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import AboutPage from "../about.page";
 
 jest.mock("../../../components/dialogue/dialogue.component");
 jest.mock("../../../components/feedback/feedback.component");

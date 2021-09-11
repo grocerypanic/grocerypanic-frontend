@@ -1,7 +1,7 @@
-import React from "react";
-import Popover from "react-bootstrap/Popover";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import PropTypes from "prop-types";
+import React from "react";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Popover from "react-bootstrap/Popover";
 
 const GeneratePopOver = ({ translate, children, title, message }) => (
   <OverlayTrigger

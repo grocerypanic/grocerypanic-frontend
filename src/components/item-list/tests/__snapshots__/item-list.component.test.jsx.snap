@@ -1,6 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Setup Environment during an api failure should match the snapshot on file (styles) 1`] = `
+.c3 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  list-style-type: none;
+  list-style-position: outside;
+  overflow: scroll;
+  max-height: 200px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 10px;
+}
+
+.c4 {
+  padding-left: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 0px;
+}
+
+.c4 li:last-child {
+  margin-bottom: 0px;
+}
+
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c0 {
   margin-top: 50px;
   display: -webkit-box;
@@ -44,38 +76,6 @@ exports[`Setup Environment during an api failure should match the snapshot on fi
   border-style: solid;
   border-width: 1px;
   border-color: #000000;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
-.c3 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  list-style-type: none;
-  list-style-position: outside;
-  overflow: scroll;
-  max-height: 200px;
-  border-style: solid;
-  border-color: #808080;
-  border-width: 10px;
-}
-
-.c4 {
-  padding-left: 0px;
-  min-width: 200px;
-  background: #808080;
-  padding: 0px;
-}
-
-.c4 li:last-child {
-  margin-bottom: 0px;
 }
 
 <div>
@@ -124,6 +124,38 @@ exports[`Setup Environment during an api failure should match the snapshot on fi
 `;
 
 exports[`Setup Environment outside of a failure inside of a transaction should match the snapshot on file (styles) 1`] = `
+.c3 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  list-style-type: none;
+  list-style-position: outside;
+  overflow: scroll;
+  max-height: 200px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 10px;
+}
+
+.c4 {
+  padding-left: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 0px;
+}
+
+.c4 li:last-child {
+  margin-bottom: 0px;
+}
+
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c0 {
   margin-top: 50px;
   display: -webkit-box;
@@ -167,38 +199,6 @@ exports[`Setup Environment outside of a failure inside of a transaction should m
   border-style: solid;
   border-width: 1px;
   border-color: #000000;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
-.c3 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  list-style-type: none;
-  list-style-position: outside;
-  overflow: scroll;
-  max-height: 200px;
-  border-style: solid;
-  border-color: #808080;
-  border-width: 10px;
-}
-
-.c4 {
-  padding-left: 0px;
-  min-width: 200px;
-  background: #808080;
-  padding: 0px;
-}
-
-.c4 li:last-child {
-  margin-bottom: 0px;
 }
 
 <div>
@@ -247,6 +247,38 @@ exports[`Setup Environment outside of a failure inside of a transaction should m
 `;
 
 exports[`Setup Environment outside of a failure outside of a transaction with wait for api engaged should match the snapshot on file (styles) 1`] = `
+.c3 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  list-style-type: none;
+  list-style-position: outside;
+  overflow: scroll;
+  max-height: 200px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 10px;
+}
+
+.c4 {
+  padding-left: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 0px;
+}
+
+.c4 li:last-child {
+  margin-bottom: 0px;
+}
+
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c0 {
   margin-top: 50px;
   display: -webkit-box;
@@ -290,38 +322,6 @@ exports[`Setup Environment outside of a failure outside of a transaction with wa
   border-style: solid;
   border-width: 1px;
   border-color: #000000;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
-.c3 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  list-style-type: none;
-  list-style-position: outside;
-  overflow: scroll;
-  max-height: 200px;
-  border-style: solid;
-  border-color: #808080;
-  border-width: 10px;
-}
-
-.c4 {
-  padding-left: 0px;
-  min-width: 200px;
-  background: #808080;
-  padding: 0px;
-}
-
-.c4 li:last-child {
-  margin-bottom: 0px;
 }
 
 <div>
@@ -370,6 +370,38 @@ exports[`Setup Environment outside of a failure outside of a transaction with wa
 `;
 
 exports[`Setup Environment outside of a failure outside of a transaction with wait for api not engaged with items in the inventory should match the snapshot on file (styles) 1`] = `
+.c3 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  list-style-type: none;
+  list-style-position: outside;
+  overflow: scroll;
+  max-height: 200px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 10px;
+}
+
+.c4 {
+  padding-left: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding: 0px;
+}
+
+.c4 li:last-child {
+  margin-bottom: 0px;
+}
+
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
 .c0 {
   margin-top: 50px;
   display: -webkit-box;
@@ -413,38 +445,6 @@ exports[`Setup Environment outside of a failure outside of a transaction with wa
   border-style: solid;
   border-width: 1px;
   border-color: #000000;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
-.c3 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  list-style-type: none;
-  list-style-position: outside;
-  overflow: scroll;
-  max-height: 200px;
-  border-style: solid;
-  border-color: #808080;
-  border-width: 10px;
-}
-
-.c4 {
-  padding-left: 0px;
-  min-width: 200px;
-  background: #808080;
-  padding: 0px;
-}
-
-.c4 li:last-child {
-  margin-bottom: 0px;
 }
 
 <div>
@@ -493,58 +493,6 @@ exports[`Setup Environment outside of a failure outside of a transaction with wa
 `;
 
 exports[`Setup Environment outside of a failure outside of a transaction with wait for api not engaged with no items in the inventory should match the snapshot on file (styles) 1`] = `
-.c0 {
-  margin-top: 50px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c0 .nav-tabs {
-  height: 28px !important;
-  font-size: 0.75em;
-}
-
-.c0 a[role="tab"] {
-  padding-bottom: 0px;
-  padding-top: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
 .c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -592,6 +540,58 @@ exports[`Setup Environment outside of a failure outside of a transaction with wa
   min-width: 220px;
   color: #006600;
   margin-bottom: 0px;
+}
+
+.c2 {
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.c0 {
+  margin-top: 50px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
 }
 
 <div>

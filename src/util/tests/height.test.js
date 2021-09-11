@@ -1,5 +1,5 @@
-import calculateMaxHeight from "../height";
 import { itemAttributes } from "../../configuration/theme";
+import calculateMaxHeight from "../height";
 
 describe("Setup to test the calculateMaxHeight helper function", () => {
   const inputs = [200, 300, 400, 500, 600, 700, 800, 900];

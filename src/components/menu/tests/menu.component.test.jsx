@@ -1,4 +1,3 @@
-import React from "react";
 import {
   render,
   cleanup,
@@ -6,20 +5,16 @@ import {
   waitFor,
   act,
 } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
-import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
-
-import { HeaderContext } from "../../../providers/header/header.provider";
+import React from "react";
+import { Router } from "react-router-dom";
 import initialHeaderSettings from "../../../providers/header/header.initial";
-
-import Menu from "../menu.component";
-
-import MenuItem from "../../menu-item/menu-item.component";
-import Hint from "../../hint/hint.component";
-
+import { HeaderContext } from "../../../providers/header/header.provider";
+import { propCount } from "../../../test.fixtures/objectComparison";
 import calculateMaxHeight from "../../../util/height";
+import Hint from "../../hint/hint.component";
+import MenuItem from "../../menu-item/menu-item.component";
+import Menu from "../menu.component";
 
 jest.mock("../../menu-item/menu-item.component");
 jest.mock("../../hint/hint.component");

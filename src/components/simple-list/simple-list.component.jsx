@@ -1,32 +1,26 @@
-import React from "react";
 import PropTypes from "prop-types";
-
+import React from "react";
+import { Scroller, ListBox, PlaceHolderListItem } from "./simple-list.styles";
+import { Constants } from "../../configuration/backend";
+import Routes from "../../configuration/routes";
+import { ItemizedBanner } from "../../global-styles/banner";
+import { Paper, Container } from "../../global-styles/containers";
 import {
   AnalyticsActions,
   IndexedAnalyticsActions,
 } from "../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-import { HeaderContext } from "../../providers/header/header.provider";
-
-import ErrorHandler from "../error-handler/error-handler.component";
-import SimpleListItem from "../simple-list-item/simple-list-item.component";
-import Hint from "../hint/hint.component";
-import Alert from "../alert/alert.component";
-import Pagination from "../pagination/pagination.component";
-import HoldingPattern from "../holding-pattern/holding-pattern.component";
-
-import Routes from "../../configuration/routes";
-import { Constants } from "../../configuration/backend";
-
 import ApiActions from "../../providers/api/api.actions";
-import ApiFuctions from "../../providers/api/api.functions";
-
-import { Paper, Container } from "../../global-styles/containers";
-import { ItemizedBanner } from "../../global-styles/banner";
-import { Scroller, ListBox, PlaceHolderListItem } from "./simple-list.styles";
-
-import preventContext from "../../util/preventDefault";
+import ApiFunctions from "../../providers/api/api.functions";
+import { HeaderContext } from "../../providers/header/header.provider";
 import calculateMaxHeight from "../../util/height";
+import preventContext from "../../util/preventDefault";
+import Alert from "../alert/alert.component";
+import ErrorHandler from "../error-handler/error-handler.component";
+import Hint from "../hint/hint.component";
+import HoldingPattern from "../holding-pattern/holding-pattern.component";
+import Pagination from "../pagination/pagination.component";
+import SimpleListItem from "../simple-list-item/simple-list-item.component";
 
 const SimpleList = ({
   headerTitle,
@@ -79,7 +73,7 @@ const SimpleList = ({
     const params = new URLSearchParams(window.location.search);
     dispatch({
       type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
+      func: ApiFunctions.asyncList,
       dispatch: setPerformAsync,
       callback: setItemsFetched,
       page: params.get(Constants.pageLookupParam),
@@ -106,7 +100,7 @@ const SimpleList = ({
     event(IndexedAnalyticsActions[apiObject.class].create);
     setPerformAsync({
       type: ApiActions.StartAdd,
-      func: ApiFuctions.asyncAdd,
+      func: ApiFunctions.asyncAdd,
       dispatch: setPerformAsync,
       payload: { name },
     });
@@ -118,7 +112,7 @@ const SimpleList = ({
     event(IndexedAnalyticsActions[apiObject.class].delete);
     setPerformAsync({
       type: ApiActions.StartDel,
-      func: ApiFuctions.asyncDel,
+      func: ApiFunctions.asyncDel,
       dispatch: setPerformAsync,
       payload: { id },
     });
@@ -131,7 +125,7 @@ const SimpleList = ({
   const handlePagination = (page) => {
     setPerformAsync({
       type: ApiActions.StartList,
-      func: ApiFuctions.asyncList,
+      func: ApiFunctions.asyncList,
       dispatch: setPerformAsync,
       callback: setItemsFetched,
       override: page,

@@ -1,6 +1,6 @@
 import React, { useReducer, createContext } from "react";
-import StoreReducer from "./store.reducer";
 import InitialState from "./store.initial";
+import StoreReducer from "./store.reducer";
 
 export const StoreContext = createContext({ ...InitialState });
 

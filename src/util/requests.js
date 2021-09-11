@@ -1,6 +1,5 @@
 import Backend from "./requests/backend";
 import RefreshCSRF from "./requests/csrf";
-
 import { Constants } from "../configuration/backend";
 
 const Request = async (method, path, data = null) => {

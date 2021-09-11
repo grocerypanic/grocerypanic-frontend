@@ -1,18 +1,14 @@
-import React from "react";
 import { render, cleanup } from "@testing-library/react";
 import i18next from "i18next";
 import matchMediaPolyfill from "mq-polyfill";
-
-import SpashPage from "../splash.page";
-import FeedBack from "../../../components/feedback/feedback.component";
+import React from "react";
 import Dialogue from "../../../components/dialogue/dialogue.component";
-
-import { mobileThreshold } from "../../../configuration/theme";
-
-import { HeaderContext } from "../../../providers/header/header.provider";
-import initialHeaderSettings from "../../../providers/header/header.initial";
-
+import FeedBack from "../../../components/feedback/feedback.component";
 import Strings from "../../../configuration/strings";
+import { mobileThreshold } from "../../../configuration/theme";
+import initialHeaderSettings from "../../../providers/header/header.initial";
+import { HeaderContext } from "../../../providers/header/header.provider";
+import SpashPage from "../splash.page";
 
 matchMediaPolyfill(window);
 

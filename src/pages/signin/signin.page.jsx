@@ -1,20 +1,15 @@
-import React from "react";
-
 import LockOpenIcon from "@material-ui/icons/LockOpen";
-
+import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   GoogleLoginButton,
   FacebookLoginButton,
 } from "react-social-login-buttons";
-
-import SocialLoginController from "../../components/social-login-controller/social-login-controller.container";
-import Copyright from "../../components/copyright/copyright.component";
-import { useTranslation } from "react-i18next";
-
-import { Providers } from "../../configuration/backend";
-
-import { Paper, Container } from "../../global-styles/containers";
 import { LockBox, ButtonBox } from "./signin.styles";
+import Copyright from "../../components/copyright/copyright.component";
+import SocialLoginController from "../../components/social-login-controller/social-login-controller.container";
+import { Providers } from "../../configuration/backend";
+import { Paper, Container } from "../../global-styles/containers";
 
 const SignIn = ({ handleSocialLogin, handleSocialLoginError }) => {
   const { t } = useTranslation();

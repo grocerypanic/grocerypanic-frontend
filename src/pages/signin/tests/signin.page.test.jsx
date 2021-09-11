@@ -1,20 +1,16 @@
-import React from "react";
-import { render, waitFor, cleanup } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
 import * as Icons from "@material-ui/icons/LockOpen";
-
+import { render, waitFor, cleanup } from "@testing-library/react";
+import React from "react";
 import {
   GoogleLoginButton,
   FacebookLoginButton,
 } from "react-social-login-buttons";
-
-import SocialLoginController from "../../../components/social-login-controller/social-login-controller.container";
 import Copyright from "../../../components/copyright/copyright.component";
-import Signin from "../signin.page";
-
-import Strings from "../../../configuration/strings";
+import SocialLoginController from "../../../components/social-login-controller/social-login-controller.container";
 import { Providers } from "../../../configuration/backend";
+import Strings from "../../../configuration/strings";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import Signin from "../signin.page";
 
 jest.mock(
   "../../../components/social-login-controller/social-login-controller.container",

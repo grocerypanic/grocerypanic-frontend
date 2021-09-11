@@ -1,8 +1,7 @@
-import React from "react";
-import SocialLogin from "react-social-login";
 import PropTypes from "prop-types";
+import React from "react";
 import { withTranslation } from "react-i18next";
-
+import SocialLogin from "react-social-login";
 import StandBy from "./social-login-controller.standby";
 
 class SocialLoginController extends React.Component {

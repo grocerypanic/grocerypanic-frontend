@@ -1,8 +1,7 @@
-import ApiActions from "../api.actions";
-
+import withAsyncLogger from "../../../util/async.logger";
 import withMiddleware from "../../../util/middleware";
 import reducerLoggingMiddleware from "../../../util/reducer.logger";
-import withAsyncLogger from "../../../util/async.logger";
+import ApiActions from "../api.actions";
 
 const generateReducer = (async, name) => {
   const reducer = (state, action) => {

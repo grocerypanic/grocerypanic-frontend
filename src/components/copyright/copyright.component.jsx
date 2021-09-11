@@ -1,12 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-
+import { CopyrightBox, StyledLink } from "./copyright.styles.jsx";
+import { External } from "../../configuration/routes";
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-
-import { External } from "../../configuration/routes";
-
-import { CopyrightBox, StyledLink } from "./copyright.styles.jsx";
 
 const Copyright = () => {
   const { t } = useTranslation();

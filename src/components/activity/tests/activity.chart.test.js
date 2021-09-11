@@ -1,8 +1,7 @@
+import { render } from "@testing-library/react";
 import Chart from "chart.js";
 import "jest-canvas-mock";
-import { render } from "@testing-library/react";
 import { Constants } from "../../../configuration/backend";
-
 import {
   renderChart,
   generateChartData,

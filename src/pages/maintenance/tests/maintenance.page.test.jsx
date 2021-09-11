@@ -1,16 +1,13 @@
-import React from "react";
 import { render, cleanup, waitFor } from "@testing-library/react";
 import i18next from "i18next";
-import { propCount } from "../../../test.fixtures/objectComparison";
-
-import MaintenancePage from "../maintenance.page";
+import React from "react";
 import Dialogue from "../../../components/dialogue/dialogue.component";
 import Header from "../../../components/header/header.component";
-
-import { HeaderContext } from "../../../providers/header/header.provider";
-import initialHeaderSettings from "../../../providers/header/header.initial";
-
 import Strings from "../../../configuration/strings";
+import initialHeaderSettings from "../../../providers/header/header.initial";
+import { HeaderContext } from "../../../providers/header/header.provider";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import MaintenancePage from "../maintenance.page";
 
 jest.mock("../../../components/dialogue/dialogue.component");
 jest.mock("../../../components/header/header.component");

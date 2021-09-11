@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { black } from "../../configuration/theme";
 
 export const ListDialogue = styled.div`

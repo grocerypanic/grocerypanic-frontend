@@ -1,33 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Check the correct props are passed to  in desktop mode should match the snapshot on file (styles) 1`] = `
-.c0 {
-  margin-top: 50px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c0 .nav-tabs {
-  height: 28px !important;
-  font-size: 0.75em;
-}
-
-.c0 a[role="tab"] {
-  padding-bottom: 0px;
-  padding-top: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
 .c1 {
   height: calc(100vh - 50px);
   text-shadow: 3px 3px 6px rgba(0,0,0,0.8),0px 0px 3px rgba(0,0,0,1);
@@ -72,6 +45,33 @@ exports[`Check the correct props are passed to  in desktop mode should match the
   -ms-flex-pack: end;
   justify-content: flex-end;
   font-size: 1.5em;
+}
+
+.c0 {
+  margin-top: 50px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 <div>
@@ -195,33 +195,6 @@ exports[`Check the correct props are passed to  in desktop mode should match the
 `;
 
 exports[`Check the correct props are passed to  in mobile mode should match the snapshot on file (styles) 1`] = `
-.c0 {
-  margin-top: 50px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c0 .nav-tabs {
-  height: 28px !important;
-  font-size: 0.75em;
-}
-
-.c0 a[role="tab"] {
-  padding-bottom: 0px;
-  padding-top: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
 .c1 {
   height: calc(100vh - 50px);
   text-shadow: 3px 3px 6px rgba(0,0,0,0.8),0px 0px 3px rgba(0,0,0,1);
@@ -268,6 +241,33 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
   -ms-flex-pack: end;
   justify-content: flex-end;
   font-size: 1em;
+}
+
+.c0 {
+  margin-top: 50px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 <div>

@@ -1,9 +1,7 @@
-import React from "react";
 import { render, within, fireEvent, waitFor } from "@testing-library/react";
-
-import ProfileForm, { nullFunction } from "../profile.edit.form.component";
-
+import React from "react";
 import Strings from "../../../configuration/strings";
+import ProfileForm, { nullFunction } from "../profile.edit.form.component";
 
 jest.mock("../../../configuration/theme", () => {
   return {

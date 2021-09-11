@@ -1,13 +1,11 @@
 import React from "react";
-
 import SignIn from "./signin.page";
 import ErrorDialogue from "../../components/error-dialogue/error-dialogue.component";
 import HoldingPattern from "../../components/holding-pattern/holding-pattern.component";
-
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-import { HeaderContext } from "../../providers/header/header.provider";
 import useProfile from "../../providers/api/user/user.hook";
+import { HeaderContext } from "../../providers/header/header.provider";
 import useSocialLogin from "../../providers/social/social.hook";
 
 const SignInContainer = () => {

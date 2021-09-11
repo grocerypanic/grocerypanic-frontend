@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { primary, white } from "../../configuration/theme";
 
 export const ButtonBox = styled.div`

@@ -1,11 +1,6 @@
-import React from "react";
 import { render, cleanup } from "@testing-library/react";
-
-import RootProvider from "../root.provider";
-
+import React from "react";
 import AnalyticsProvider from "../analytics/analytics.provider";
-import HeaderProvider from "../header/header.provider";
-
 import ActivityProvider from "../api/activity/activity.provider";
 import ItemProvider from "../api/item/item.provider";
 import ShelfProvider from "../api/shelf/shelf.provider";
@@ -13,7 +8,8 @@ import StoreProvider from "../api/store/store.provider";
 import TimezoneProvider from "../api/timezone/timezone.provider";
 import TransactionProvider from "../api/transaction/transaction.provider";
 import UserProvider from "../api/user/user.provider";
-
+import HeaderProvider from "../header/header.provider";
+import RootProvider from "../root.provider";
 import SocialProvider from "../social/social.provider";
 
 jest.mock("../api/activity/activity.provider");

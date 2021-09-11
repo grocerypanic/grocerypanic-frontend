@@ -1,27 +1,21 @@
-import React from "react";
 import { render, waitFor, act } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
 import i18next from "i18next";
-
-import useProfile from "../../../providers/api/user/user.hook";
-import useSocialLogin from "../../../providers/social/social.hook";
-
-import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
-import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-import { HeaderContext } from "../../../providers/header/header.provider";
-
-import initialSocialState from "../../../providers/social/social.initial";
-import initialHeaderSettings from "../../../providers/header/header.initial";
-
-import Strings from "../../../configuration/strings";
-
-import SignInContainer from "../signin.container";
-import SignIn from "../signin.page";
+import React from "react";
 import ErrorDialogue from "../../../components/error-dialogue/error-dialogue.component";
 import HoldingPattern from "../../../components/holding-pattern/holding-pattern.component";
-
-import mockSocialHook from "../../../providers/social/tests/social.hook.mock";
+import Strings from "../../../configuration/strings";
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import mockProfileHook from "../../../providers/api/user/tests/user.hook.mock";
+import useProfile from "../../../providers/api/user/user.hook";
+import initialHeaderSettings from "../../../providers/header/header.initial";
+import { HeaderContext } from "../../../providers/header/header.provider";
+import useSocialLogin from "../../../providers/social/social.hook";
+import initialSocialState from "../../../providers/social/social.initial";
+import mockSocialHook from "../../../providers/social/tests/social.hook.mock";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import SignInContainer from "../signin.container";
+import SignIn from "../signin.page";
 
 jest.mock("../signin.page");
 

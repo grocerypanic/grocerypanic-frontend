@@ -1,4 +1,4 @@
-import ShelfReducer from "../shelf.reducer";
+import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
 import {
   asyncAdd,
   asyncDel,
@@ -6,9 +6,9 @@ import {
   asyncList,
   asyncUpdate,
 } from "../shelf.async";
-
 import InitialState from "../shelf.initial";
-import { ReducerTest } from "../../test.fixtures/generate.reducer.tests";
+import ShelfReducer from "../shelf.reducer";
+
 jest.mock("../shelf.async");
 
 ReducerTest(

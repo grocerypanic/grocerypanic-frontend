@@ -1,7 +1,6 @@
-import debug from "../../debug";
-
-import Backend from "../backend";
 import { Constants } from "../../../configuration/backend";
+import debug from "../../debug";
+import Backend from "../backend";
 
 jest.mock("../../debug");
 const mockLocalStorage = jest.spyOn(Storage.prototype, "getItem");

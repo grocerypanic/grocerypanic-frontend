@@ -1,21 +1,17 @@
 // For editing user profiles
 
-import React from "react";
 import PropTypes from "prop-types";
-
-import HoldingPattern from "../holding-pattern/holding-pattern.component";
-import ErrorHandler from "../error-handler/error-handler.component";
+import React from "react";
 import ProfileForm from "./profile.edit.form.component";
-
 import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-import { HeaderContext } from "../../providers/header/header.provider";
-
-import useProfile from "../../providers/api/user/user.hook";
-import useTimezones from "../../providers/api/timezone/timezone.hook";
-import useSocialLogin from "../../providers/social/social.hook";
-
 import ApiActions from "../../providers/api/api.actions";
+import useTimezones from "../../providers/api/timezone/timezone.hook";
+import useProfile from "../../providers/api/user/user.hook";
+import { HeaderContext } from "../../providers/header/header.provider";
+import useSocialLogin from "../../providers/social/social.hook";
+import ErrorHandler from "../error-handler/error-handler.component";
+import HoldingPattern from "../holding-pattern/holding-pattern.component";
 
 const UserProfileEditContainer = ({ headerTitle, helpText, title }) => {
   const { profile } = useProfile();

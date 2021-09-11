@@ -1,6 +1,7 @@
+import InitialState from "./item.initial";
 import { Paths } from "../../../configuration/backend";
-import { match2xx, match400duplicate } from "../../../util/requests/status";
 import Request from "../../../util/requests";
+import { match2xx, match400duplicate } from "../../../util/requests/status";
 import ApiActions from "../api.actions";
 import {
   authFailure,
@@ -10,7 +11,6 @@ import {
   retrieveResults,
 } from "../api.async.helpers";
 import { generateConverter } from "../generators/generate.converter";
-import InitialState from "./item.initial";
 
 const convertDatesToLocal = generateConverter(InitialState.class);
 

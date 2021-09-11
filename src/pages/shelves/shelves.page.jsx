@@ -1,12 +1,9 @@
 import React from "react";
-
-import SimpleList from "../../components/simple-list/simple-list.component";
-
-import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
-import { SocialContext } from "../../providers/social/social.provider";
-import { authExpired } from "../../providers/social/social.async";
-
 import { useTranslation } from "react-i18next";
+import SimpleList from "../../components/simple-list/simple-list.component";
+import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
+import { authExpired } from "../../providers/social/social.async";
+import { SocialContext } from "../../providers/social/social.provider";
 
 const ShelvesPage = () => {
   const { t } = useTranslation();

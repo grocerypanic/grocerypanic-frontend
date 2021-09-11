@@ -1,15 +1,13 @@
 import { waitFor } from "@testing-library/react";
+import { Providers, Paths, Constants } from "../../../configuration/backend";
+import Request from "../../../util/requests";
+import SocialActions from "../social.actions";
 import {
   resetLogin,
   asyncLogin,
   loginError,
   authExpired,
 } from "../social.async";
-import SocialActions from "../social.actions";
-
-import { Providers, Paths, Constants } from "../../../configuration/backend";
-
-import Request from "../../../util/requests";
 
 jest.mock("../../../util/requests");
 const mockDispatch = jest.fn();

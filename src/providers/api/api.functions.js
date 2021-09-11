@@ -1,6 +1,6 @@
 // Async Functions That Are Implemented by the API Reducers
 
-const ApiFuctions = {
+const ApiFunctions = {
   asyncAdd: "asyncAdd",
   asyncDel: "asyncDel",
   asyncGet: "asyncGet",
@@ -8,4 +8,4 @@ const ApiFuctions = {
   asyncUpdate: "asyncUpdate",
 };
 
-export default ApiFuctions;
+export default ApiFunctions;

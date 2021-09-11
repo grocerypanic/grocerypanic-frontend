@@ -1,6 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Setup Environment should match the snapshot on file (styles) 1`] = `
+.c3 {
+  padding-bottom: 10px;
+  min-width: 250px;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #006600;
+  color: #FFFFFF;
+  text-align: center;
+  overflow: hidden;
+}
+
 .c0 {
   margin-top: calc(50px + 26px);
   display: -webkit-box;
@@ -44,33 +71,6 @@ exports[`Setup Environment should match the snapshot on file (styles) 1`] = `
   border-style: solid;
   border-width: 1px;
   border-color: #000000;
-}
-
-.c3 {
-  padding-bottom: 10px;
-  min-width: 250px;
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #006600;
-  color: #FFFFFF;
-  text-align: center;
-  overflow: hidden;
 }
 
 <div>

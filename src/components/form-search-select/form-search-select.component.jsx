@@ -1,7 +1,7 @@
-import React from "react";
 import PropTypes from "prop-types";
-import Select from "react-select";
+import React from "react";
 import Form from "react-bootstrap/Form";
+import Select from "react-select";
 
 const SearchSelect = ({
   setErrorMsg,

@@ -1,14 +1,12 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-
-import Routes from "../../configuration/routes";
+import { ListItem, ListTitle } from "./simple-list-item.styles";
 import { FilterTag } from "../../configuration/backend";
+import Routes from "../../configuration/routes";
 import { ui } from "../../configuration/theme";
 import UseLongPress from "../../util/longpress";
-
-import { ListItem, ListTitle } from "./simple-list-item.styles";
 
 const SimpleListItem = ({
   item,

@@ -1,12 +1,9 @@
 import React from "react";
-
-import ItemList from "../../components/item-list/item-list.component";
-
-import { ItemContext } from "../../providers/api/item/item.provider";
-import { SocialContext } from "../../providers/social/social.provider";
-import { authExpired } from "../../providers/social/social.async";
-
 import { useTranslation } from "react-i18next";
+import ItemList from "../../components/item-list/item-list.component";
+import { ItemContext } from "../../providers/api/item/item.provider";
+import { authExpired } from "../../providers/social/social.async";
+import { SocialContext } from "../../providers/social/social.provider";
 
 const ItemsPage = () => {
   const { t } = useTranslation();

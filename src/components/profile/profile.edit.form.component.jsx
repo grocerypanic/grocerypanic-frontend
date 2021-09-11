@@ -1,19 +1,15 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
+import React from "react";
 import Form from "react-bootstrap/Form";
-
-import FormInput from "../form-input/form-input.component";
-import Alert from "../alert/alert.component";
-import Hint from "../hint/hint.component";
-
-import SearchSelect from "../form-search-select/form-search-select.component";
-
-import { Paper, Container } from "../../global-styles/containers";
-import { Banner } from "../../global-styles/banner";
-import { ui } from "../../configuration/theme";
-
+import { useTranslation } from "react-i18next";
 import { FormBox, Outline, ButtonBox } from "./profile.form.styles";
+import { ui } from "../../configuration/theme";
+import { Banner } from "../../global-styles/banner";
+import { Paper, Container } from "../../global-styles/containers";
+import Alert from "../alert/alert.component";
+import FormInput from "../form-input/form-input.component";
+import SearchSelect from "../form-search-select/form-search-select.component";
+import Hint from "../hint/hint.component";
 
 const ProfileForm = ({
   title,

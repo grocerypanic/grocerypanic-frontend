@@ -1,12 +1,10 @@
-import React from "react";
 import PropTypes from "prop-types";
-
-import calculateMaxHeight from "../../util/height";
-
-import { Paper, Container } from "../../global-styles/containers";
-import { ItemizedBanner } from "../../global-styles/banner";
+import React from "react";
 import { Scroller, ContentBorder, Content } from "./dialogue.styles";
+import { ItemizedBanner } from "../../global-styles/banner";
+import { Paper, Container } from "../../global-styles/containers";
 import { HeaderContext } from "../../providers/header/header.provider";
+import calculateMaxHeight from "../../util/height";
 
 const Dialogue = ({ headerTitle, title, body, Footer }) => {
   const { updateHeader } = React.useContext(HeaderContext);

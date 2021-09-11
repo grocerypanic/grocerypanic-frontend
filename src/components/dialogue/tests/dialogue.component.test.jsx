@@ -1,12 +1,9 @@
-import React from "react";
 import { render, cleanup, waitFor, fireEvent } from "@testing-library/react";
-
-import Dialogue from "../dialogue.component";
-
-import { HeaderContext } from "../../../providers/header/header.provider";
+import React from "react";
 import initialHeaderSettings from "../../../providers/header/header.initial";
-
+import { HeaderContext } from "../../../providers/header/header.provider";
 import calculateMaxHeight from "../../../util/height";
+import Dialogue from "../dialogue.component";
 
 jest.mock("../../../util/height");
 const mockHeaderUpdate = jest.fn();

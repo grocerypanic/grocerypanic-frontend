@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from "react";
-import UserReducer from "./timezone.reducer";
 import InitialState from "./timezone.initial";
+import UserReducer from "./timezone.reducer";
 
 export const TimezoneContext = createContext({ ...InitialState });
 

@@ -1,13 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
-import { BrowserRouter } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
-import RootProvider from "./providers/root.provider";
+import { BrowserRouter } from "react-router-dom";
 import i18n from "./configuration/localization";
-
 import App from "./pages/app/app";
 import Maintenance from "./pages/maintenance/maintenance.page";
+import RootProvider from "./providers/root.provider";
 import * as serviceWorker from "./serviceWorker";
 
 import "./index.css";

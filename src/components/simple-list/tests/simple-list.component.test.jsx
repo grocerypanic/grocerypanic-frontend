@@ -1,4 +1,3 @@
-import React from "react";
 import {
   render,
   cleanup,
@@ -6,33 +5,28 @@ import {
   waitFor,
   fireEvent,
 } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
 import i18next from "i18next";
-
-import ErrorHandler from "../../error-handler/error-handler.component";
-import Pagination from "../../pagination/pagination.component";
-import Hint from "../../hint/hint.component";
-import HoldingPattern from "../../holding-pattern/holding-pattern.component";
-
-import { HeaderContext } from "../../../providers/header/header.provider";
-import initialHeaderSettings from "../../../providers/header/header.initial";
-
+import React from "react";
+import { Constants } from "../../../configuration/backend";
+import Routes from "../../../configuration/routes";
+import Strings from "../../../configuration/strings";
 import {
   AnalyticsActions,
   IndexedAnalyticsActions,
 } from "../../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-
 import ApiActions from "../../../providers/api/api.actions";
 import ApiFunctions from "../../../providers/api/api.functions";
-
+import initialHeaderSettings from "../../../providers/header/header.initial";
+import { HeaderContext } from "../../../providers/header/header.provider";
+import { propCount } from "../../../test.fixtures/objectComparison";
+import calculateMaxHeight from "../../../util/height";
+import ErrorHandler from "../../error-handler/error-handler.component";
+import Hint from "../../hint/hint.component";
+import HoldingPattern from "../../holding-pattern/holding-pattern.component";
+import Pagination from "../../pagination/pagination.component";
 import SimpleListItem from "../../simple-list-item/simple-list-item.component";
 import SimpleList from "../simple-list.component";
-
-import { Constants } from "../../../configuration/backend";
-import Routes from "../../../configuration/routes";
-import Strings from "../../../configuration/strings";
-import calculateMaxHeight from "../../../util/height";
 
 jest.mock("../../holding-pattern/holding-pattern.component");
 jest.mock("../../simple-list-item/simple-list-item.component");

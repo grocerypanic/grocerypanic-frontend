@@ -1,5 +1,5 @@
-import React from "react";
 import { render } from "@testing-library/react";
+import React from "react";
 import App from "../pages/app/app.js";
 import MaintenancePage from "../pages/maintenance/maintenance.page";
 import RootProvider from "../providers/root.provider";

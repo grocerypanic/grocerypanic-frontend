@@ -1,11 +1,9 @@
-import React, { useContext } from "react";
-import { useTranslation } from "react-i18next";
-import CookieConsent from "react-cookie-consent";
 import cookie from "cookie_js";
-
-import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-
+import React, { useContext } from "react";
+import CookieConsent from "react-cookie-consent";
+import { useTranslation } from "react-i18next";
 import { Constants } from "../../configuration/backend";
+import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
 
 const Consent = () => {
   const { setup } = useContext(AnalyticsContext);

@@ -1,8 +1,7 @@
-import React from "react";
 import { render, cleanup } from "@testing-library/react";
-import ItemProvider, { ItemContext } from "../item.provider";
-
+import React from "react";
 import InitialState from "../item.initial";
+import ItemProvider, { ItemContext } from "../item.provider";
 
 describe("Check the Inital Provider State", () => {
   afterEach(cleanup);

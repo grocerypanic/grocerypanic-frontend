@@ -1,8 +1,7 @@
-import React from "react";
-import Assets from "../../configuration/assets";
 import PropTypes from "prop-types";
-
+import React from "react";
 import { AlertContainer } from "./alert.styles";
+import Assets from "../../configuration/assets";
 
 const Alert = ({ message }) => (
   <AlertContainer>

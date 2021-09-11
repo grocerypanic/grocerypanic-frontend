@@ -1,33 +1,28 @@
-import React from "react";
 import { render, act, waitFor, fireEvent } from "@testing-library/react";
-import { propCount } from "../../../test.fixtures/objectComparison";
-import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import i18next from "i18next";
-
-import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
-import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-import { ItemContext } from "../../../providers/api/item/item.provider";
-import { TransactionContext } from "../../../providers/api/transaction/transaction.provider";
+import React from "react";
+import { Router } from "react-router-dom";
 import { Constants } from "../../../configuration/backend";
-
-import ErrorHandler from "../../error-handler/error-handler.component";
-import Pagination from "../../pagination/pagination.component";
-import ItemList from "../item-list.component";
-import ItemListRow from "../../item-list-row/item-list-row.component";
-import Hint from "../../hint/hint.component";
-import Alert from "../../alert/alert.component";
-import HoldingPattern from "../../holding-pattern/holding-pattern.component";
-
-import { HeaderContext } from "../../../providers/header/header.provider";
-import initialHeaderSettings from "../../../providers/header/header.initial";
-
-import ApiActions from "../../../providers/api/api.actions";
-import ApiFunctions from "../../../providers/api/api.functions";
-
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
+import ApiActions from "../../../providers/api/api.actions";
+import ApiFunctions from "../../../providers/api/api.functions";
+import { ItemContext } from "../../../providers/api/item/item.provider";
+import { TransactionContext } from "../../../providers/api/transaction/transaction.provider";
+import initialHeaderSettings from "../../../providers/header/header.initial";
+import { HeaderContext } from "../../../providers/header/header.provider";
+import { propCount } from "../../../test.fixtures/objectComparison";
 import calculateMaxHeight from "../../../util/height";
+import Alert from "../../alert/alert.component";
+import ErrorHandler from "../../error-handler/error-handler.component";
+import Hint from "../../hint/hint.component";
+import HoldingPattern from "../../holding-pattern/holding-pattern.component";
+import ItemListRow from "../../item-list-row/item-list-row.component";
+import Pagination from "../../pagination/pagination.component";
+import ItemList from "../item-list.component";
 
 jest.mock("../../holding-pattern/holding-pattern.component");
 jest.mock("../../item-list-row/item-list-row.component");

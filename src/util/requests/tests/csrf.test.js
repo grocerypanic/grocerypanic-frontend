@@ -1,9 +1,7 @@
 import { waitFor } from "@testing-library/react";
-
+import { Paths, Constants } from "../../../configuration/backend";
 import Backend from "../backend";
 import RefreshCSRF from "../csrf";
-
-import { Paths, Constants } from "../../../configuration/backend";
 
 const mockLocalStorage = jest.spyOn(Storage.prototype, "setItem");
 jest.mock("../backend");

@@ -1,7 +1,7 @@
 import React, { createContext } from "react";
-import SocialReducer from "./social.reducer";
-import InitialState from "./social.initial";
 import createPersistedReducer from "use-persisted-reducer";
+import InitialState from "./social.initial";
+import SocialReducer from "./social.reducer";
 
 export const SocialContext = createContext({ ...InitialState });
 
