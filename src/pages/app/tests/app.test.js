@@ -124,20 +124,24 @@ describe("Check Routing", () => {
 
   describe("menu url", () => {
     beforeEach(() => (setup.path = Routes.menu));
+
     describe("active login", () => {
       beforeEach(() => {
         setup.state.login = true;
         utils = renderHelper({ ...setup });
       });
+
       it("should render menu on menu url", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
         await checkPages([MenuPage]);
         expect(window.location.pathname).toBe(Routes.menu);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
     });
+
     describe("inactive login", () => {
       beforeEach(() => {
         setup.state.login = false;
@@ -149,6 +153,7 @@ describe("Check Routing", () => {
         await checkPages([MenuPage, SignIn]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -157,20 +162,24 @@ describe("Check Routing", () => {
 
   describe("profile url", () => {
     beforeEach(() => (setup.path = Routes.profile));
+
     describe("active login", () => {
       beforeEach(() => {
         setup.state.login = true;
         utils = renderHelper({ ...setup });
       });
+
       it("should render profile on profile url", async () => {
         expect(utils.getByTestId("HoldingPattern")).toBeTruthy();
         await checkPages([ProfilePage]);
         expect(window.location.pathname).toBe(Routes.profile);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
     });
+
     describe("inactive login", () => {
       beforeEach(() => {
         setup.state.login = false;
@@ -182,6 +191,7 @@ describe("Check Routing", () => {
         await checkPages([SignIn, ProfilePage]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -190,6 +200,7 @@ describe("Check Routing", () => {
 
   describe("invalid url", () => {
     beforeEach(() => (setup.path = "InvalidRouteInvalidRoute"));
+
     describe("active login", () => {
       beforeEach(() => {
         setup.state.login = true;
@@ -201,20 +212,24 @@ describe("Check Routing", () => {
         await checkPages([MenuPage]);
         await waitFor(() => expect(window.location.pathname).toBe(Routes.menu));
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
     });
+
     describe("inactive login", () => {
       beforeEach(() => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
+
       it("should redirect to signin on invalid url (from menu page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await checkPages([SignIn, MenuPage]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -223,6 +238,7 @@ describe("Check Routing", () => {
 
   describe("stores url", () => {
     beforeEach(() => (setup.path = Routes.stores));
+
     describe("active login", () => {
       beforeEach(() => {
         setup.state.login = true;
@@ -234,6 +250,7 @@ describe("Check Routing", () => {
         await checkPages([StoresPage]);
         expect(window.location.pathname).toBe(Routes.stores);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -250,6 +267,7 @@ describe("Check Routing", () => {
         await checkPages([SignIn, StoresPage]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -258,6 +276,7 @@ describe("Check Routing", () => {
 
   describe("shelves url", () => {
     beforeEach(() => (setup.path = Routes.shelves));
+
     describe("active login", () => {
       beforeEach(() => {
         setup.state.login = true;
@@ -269,6 +288,7 @@ describe("Check Routing", () => {
         await checkPages([ShelvesPage]);
         expect(window.location.pathname).toBe(Routes.shelves);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -285,6 +305,7 @@ describe("Check Routing", () => {
         await checkPages([SignIn, ShelvesPage]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -293,6 +314,7 @@ describe("Check Routing", () => {
 
   describe("items url", () => {
     beforeEach(() => (setup.path = Routes.items));
+
     describe("active login", () => {
       beforeEach(() => {
         setup.state.login = true;
@@ -304,6 +326,7 @@ describe("Check Routing", () => {
         await checkPages([ItemsPage]);
         expect(window.location.pathname).toBe(Routes.items);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -320,6 +343,7 @@ describe("Check Routing", () => {
         await checkPages([SignIn, ItemsPage]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -328,6 +352,7 @@ describe("Check Routing", () => {
 
   describe("details url", () => {
     beforeEach(() => (setup.path = Routes.details));
+
     describe("active login", () => {
       beforeEach(() => {
         setup.state.login = true;
@@ -339,6 +364,7 @@ describe("Check Routing", () => {
         await checkPages([DetailsPage]);
         expect(window.location.pathname).toBe(Routes.details);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -355,6 +381,7 @@ describe("Check Routing", () => {
         await checkPages([DetailsPage, SignIn]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -363,6 +390,7 @@ describe("Check Routing", () => {
 
   describe("create url", () => {
     beforeEach(() => (setup.path = Routes.create));
+
     describe("active login", () => {
       beforeEach(() => {
         setup.state.login = true;
@@ -374,6 +402,7 @@ describe("Check Routing", () => {
         await checkPages([CreatePage]);
         expect(window.location.pathname).toBe(Routes.create);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -390,6 +419,7 @@ describe("Check Routing", () => {
         await checkPages([CreatePage, SignIn]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -398,6 +428,7 @@ describe("Check Routing", () => {
 
   describe("about url", () => {
     beforeEach(() => (setup.path = Routes.about));
+
     describe("active login", () => {
       beforeEach(() => {
         setup.state.login = true;
@@ -409,6 +440,7 @@ describe("Check Routing", () => {
         await checkPages([About]);
         expect(window.location.pathname).toBe(Routes.about);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -425,6 +457,7 @@ describe("Check Routing", () => {
         await checkPages([About, SignIn]);
         expect(window.location.pathname).toBe(Routes.signin);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -433,30 +466,36 @@ describe("Check Routing", () => {
 
   describe("splash url", () => {
     beforeEach(() => (setup.path = Routes.splash));
+
     describe("active login", () => {
       beforeEach(() => {
         setup.state.login = true;
         utils = renderHelper({ ...setup });
       });
+
       it("should redirect to menu on splash url (from splash page)", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await checkPages([MenuPage]);
         expect(window.location.pathname).toBe(Routes.menu);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
     });
+
     describe("inactive login", () => {
       beforeEach(() => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
+
       it("should render splash page on splash url", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await checkPages([SplashPage]);
         expect(window.location.pathname).toBe(Routes.splash);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
@@ -465,30 +504,36 @@ describe("Check Routing", () => {
 
   describe("privacy url", () => {
     beforeEach(() => (setup.path = Routes.privacy));
+
     describe("active login", () => {
       beforeEach(() => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
+
       it("should render the privacy policy page", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeTruthy();
         await checkPages([PrivacyPage]);
         expect(window.location.pathname).toBe(Routes.privacy);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });
     });
+
     describe("inactive login", () => {
       beforeEach(() => {
         setup.state.login = false;
         utils = renderHelper({ ...setup });
       });
+
       it("should render the privacy policy page", async () => {
         expect(utils.queryByTestId("HoldingPattern")).toBeFalsy();
         await checkPages([PrivacyPage]);
         expect(window.location.pathname).toBe(Routes.privacy);
       });
+
       it("should configure the header properly", () => {
         checkHeader();
       });

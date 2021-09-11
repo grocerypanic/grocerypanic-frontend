@@ -23,12 +23,14 @@ const environment = process.env;
 describe("Setup Test", () => {
   let utils;
   let div;
+
   beforeEach(() => {
     document.body.innerHTML = "";
     div = document.createElement("div");
     div.id = "root";
     document.body.appendChild(div);
   });
+
   afterAll(() => {
     process.env = environment;
   });

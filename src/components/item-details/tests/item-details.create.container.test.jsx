@@ -341,6 +341,7 @@ describe("Setup Environment", () => {
     const history = createBrowserHistory();
     let testStore;
     let testShelf;
+
     beforeEach(() => {
       jest.clearAllMocks();
       history.location.pathname = originalPath;

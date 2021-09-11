@@ -27,6 +27,7 @@ const customRender = (providerProps) => {
 
 describe("test useTimezones default initial state", () => {
   let hook;
+
   beforeEach(() => {
     jest.clearAllMocks();
     const { result } = customRender(InitialState);
@@ -40,6 +41,7 @@ describe("test useTimezones default initial state", () => {
 
 describe("test getTimezones", () => {
   let hook;
+
   beforeEach(() => {
     jest.clearAllMocks();
     const { result } = customRender(InitialState);
@@ -59,6 +61,7 @@ describe("test getTimezones", () => {
 
 describe("test clearErrors", () => {
   let hook;
+
   beforeEach(() => {
     jest.clearAllMocks();
     const { result } = customRender(InitialState);

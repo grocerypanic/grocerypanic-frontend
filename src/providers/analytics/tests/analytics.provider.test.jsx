@@ -11,6 +11,7 @@ const originalEnvironment = process.env;
 describe("Manage Environment", () => {
   let received = {};
   let history;
+
   beforeEach(() => {
     jest.clearAllMocks();
     history = createMemoryHistory();

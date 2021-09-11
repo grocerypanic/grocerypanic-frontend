@@ -256,6 +256,7 @@ describe("with nav enabled", () => {
         expect(utils.container.firstChild).toMatchSnapshot();
       });
     });
+
     describe("without a create function", () => {
       beforeEach(() => {
         history.location.pathname = "/some/unmatched/path";

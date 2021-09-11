@@ -177,6 +177,7 @@ describe("Setup for Testing resetLogin", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
   it("should dispatch the correct action to the user reducer", () => {
     resetLogin(mockDispatch);
     expect(mockDispatch).toBeCalledWith({
@@ -189,6 +190,7 @@ describe("Setup for Testing loginError", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
   it("should dispatch the correct action to the user reducer", () => {
     loginError(mockDispatch);
     expect(mockDispatch).toBeCalledWith({
@@ -202,6 +204,7 @@ describe("Setup for Testing authExpired", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
   it("should dispatch the correct action to the user reducer", () => {
     authExpired(mockDispatch);
     expect(mockDispatch).toBeCalledWith({

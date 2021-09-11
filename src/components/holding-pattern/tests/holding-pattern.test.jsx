@@ -14,6 +14,7 @@ jest.mock("react-bootstrap/Spinner", () => ({
 
 describe("Setup Environment", () => {
   let utils;
+
   beforeEach(() => {
     jest.clearAllMocks();
   });

@@ -354,6 +354,7 @@ describe("Setup Environment For Action Tests", () => {
         jest.clearAllMocks();
         utils = render(<ItemDetailsForm {...current} />);
       });
+
       it("saves the default item as expected", async () => {
         await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
         Alert.mockClear();
@@ -557,6 +558,7 @@ describe("Setup Environment For Action Tests", () => {
         jest.clearAllMocks();
         utils = render(<ItemDetailsForm {...current} />);
       });
+
       afterEach(cleanup);
 
       it("does not save an invalid shelflife, will revert to the original value", async () => {
@@ -638,6 +640,7 @@ describe("Setup Environment For Action Tests", () => {
       const updatedProps = { ...current, transaction: true };
       utils = render(<ItemDetailsForm {...updatedProps} />);
     });
+
     afterEach(cleanup);
 
     it("handles delete as expected, by doing nothing", async () => {

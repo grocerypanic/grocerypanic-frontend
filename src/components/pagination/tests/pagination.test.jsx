@@ -14,6 +14,7 @@ const handlePagination = jest.fn();
 describe("inside of a transaction", () => {
   let mockState = {};
   let utils;
+
   beforeEach(() => {
     jest.clearAllMocks();
     mockState = {
@@ -21,11 +22,13 @@ describe("inside of a transaction", () => {
       handlePagination,
     };
   });
+
   describe("When there is an active previous", () => {
     beforeEach(() => {
       jest.clearAllMocks();
       mockState.apiObject.previous = "previous";
     });
+
     describe("When there is an active next", () => {
       beforeEach(() => {
         mockState.apiObject.next = "next";
@@ -66,6 +69,7 @@ describe("inside of a transaction", () => {
       jest.clearAllMocks();
       mockState.apiObject.previous = null;
     });
+
     describe("When there is an active next", () => {
       beforeEach(() => {
         mockState.apiObject.next = "next";
@@ -105,6 +109,7 @@ describe("inside of a transaction", () => {
 describe("outside of a transaction", () => {
   let mockState = {};
   let utils;
+
   beforeEach(() => {
     jest.clearAllMocks();
     mockState = {
@@ -112,11 +117,13 @@ describe("outside of a transaction", () => {
       handlePagination,
     };
   });
+
   describe("When there is an active previous", () => {
     beforeEach(() => {
       jest.clearAllMocks();
       mockState.apiObject.previous = "previous";
     });
+
     describe("When there is an active next", () => {
       beforeEach(() => {
         mockState.apiObject.next = "next";
@@ -185,6 +192,7 @@ describe("outside of a transaction", () => {
       jest.clearAllMocks();
       mockState.apiObject.previous = null;
     });
+
     describe("When there is an active next", () => {
       beforeEach(() => {
         mockState.apiObject.next = "next";

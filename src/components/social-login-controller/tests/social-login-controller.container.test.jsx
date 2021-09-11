@@ -35,6 +35,7 @@ describe("Setup Environment", () => {
     });
 
     afterEach(cleanup);
+
     afterAll(() => {
       delete window.gapi;
       delete window.FB;

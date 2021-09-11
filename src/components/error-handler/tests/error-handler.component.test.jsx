@@ -20,6 +20,7 @@ const props = {
 
 describe("Setup Environment", () => {
   let utils;
+
   beforeEach(() => {
     jest.clearAllMocks();
     current = { ...props };
@@ -47,10 +48,12 @@ describe("Setup Environment", () => {
     beforeEach(() => {
       current.condition = true;
     });
+
     describe("When given a redirect", () => {
       beforeEach(() => {
         utils = renderHelper(current);
       });
+
       it("should render the error dialogue", () => {
         expect(utils.queryByText(mockContent)).toBeFalsy();
         expect(ErrorDialogue).toBeCalledTimes(1);

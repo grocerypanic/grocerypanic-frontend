@@ -88,10 +88,12 @@ describe("Setup to test getOtherQueryParams", () => {
 describe("Setup to test rewriteUrlWithPagination", () => {
   const originalWindow = window.location;
   const path = "/somepath";
+
   beforeEach(() => {
     window.history.pushState = jest.fn();
     delete window.location;
   });
+
   afterAll(() => {
     delete window.location;
     window.location = originalWindow;
@@ -107,6 +109,7 @@ describe("Setup to test rewriteUrlWithPagination", () => {
         path + "?" + Constants.pageLookupParam + "=2"
       );
     });
+
     it("when given a window pathname with params, it should call window.history.pushState correctly", () => {
       window.location = new URL(
         "https://myserver.com:8080" + path + "?extra_param1=1&extra_param2=2"

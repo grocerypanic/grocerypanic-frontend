@@ -75,6 +75,7 @@ describe("Setup Test", () => {
 
     describe("when the website is not maintenance mode", () => {
       let originalLocation;
+
       beforeAll(() => {
         originalLocation = window.location;
         jest.resetModules();

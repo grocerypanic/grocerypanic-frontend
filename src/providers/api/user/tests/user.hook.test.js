@@ -27,6 +27,7 @@ const customRender = (providerProps) => {
 
 describe("test useProfile default initial state", () => {
   let hook;
+
   beforeEach(() => {
     jest.clearAllMocks();
     const { result } = customRender(InitialState);
@@ -40,6 +41,7 @@ describe("test useProfile default initial state", () => {
 
 describe("test getProfile", () => {
   let hook;
+
   beforeEach(() => {
     jest.clearAllMocks();
     const { result } = customRender(InitialState);
@@ -59,6 +61,7 @@ describe("test getProfile", () => {
 
 describe("test updateProfile", () => {
   let hook;
+
   beforeEach(() => {
     jest.clearAllMocks();
     const { result } = customRender(InitialState);
@@ -80,6 +83,7 @@ describe("test updateProfile", () => {
 
 describe("test clearErrors", () => {
   let hook;
+
   beforeEach(() => {
     jest.clearAllMocks();
     const { result } = customRender(InitialState);

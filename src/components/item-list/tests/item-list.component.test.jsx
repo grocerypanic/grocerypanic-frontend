@@ -178,6 +178,7 @@ describe("Setup Environment", () => {
     beforeEach(() => {
       current.fail = false;
     });
+
     describe("outside of a transaction", () => {
       beforeEach(() => {
         current.transaction = false;
@@ -248,6 +249,7 @@ describe("Setup Environment", () => {
       describe("with wait for api not engaged", () => {
         describe("when called from an url containing a query string with a page reference", () => {
           let page = "2";
+
           beforeEach(() => {
             delete window.location;
             window.location = new URL("https://myserver.com:8080");
@@ -286,6 +288,7 @@ describe("Setup Environment", () => {
 
         describe("with called from an url containing some other query string", () => {
           let qstring;
+
           beforeEach(() => {
             current.inventory = [...mockItems];
             let history = createBrowserHistory();
@@ -871,6 +874,7 @@ describe("Setup Environment", () => {
 
             utils = renderHelper(itemContext, transactionContext, history);
           });
+
           it("renders, outside of a transaction, with no items in the list, and renders the mockPlaceHolderMessage", () => {
             expect(current.transaction).toBe(false);
 
@@ -895,6 +899,7 @@ describe("Setup Environment", () => {
         });
       });
     });
+
     describe("inside of a transaction", () => {
       beforeEach(() => {
         current.transaction = true;

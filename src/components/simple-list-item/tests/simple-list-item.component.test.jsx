@@ -62,18 +62,22 @@ let test = {
 
 let utils;
 let current;
+
 describe("Setup Environment", () => {
   beforeEach(() => {
     current = test;
   });
+
   describe("when not rendering a newly created item", () => {
     beforeEach(() => {
       current.item = mockData[0];
     });
+
     describe("when outside of a transaction", () => {
       beforeEach(() => {
         current.listValues.transaction = false;
       });
+
       describe("when not selected", () => {
         beforeEach(() => {
           current.listValues.selected = null;
@@ -84,6 +88,7 @@ describe("Setup Environment", () => {
             </MemoryRouter>
           );
         });
+
         afterEach(cleanup);
 
         it("renders only the expected components", () => {
@@ -125,6 +130,7 @@ describe("Setup Environment", () => {
             </Router>
           );
         });
+
         afterEach(cleanup);
 
         it("handles a short click on items as expected", (done) => {
@@ -188,6 +194,7 @@ describe("Setup Environment", () => {
             </MemoryRouter>
           );
         });
+
         afterEach(cleanup);
 
         it("renders only the expected components", () => {
@@ -222,10 +229,12 @@ describe("Setup Environment", () => {
         });
       });
     });
+
     describe("when inside of a transaction", () => {
       beforeEach(() => {
         current.listValues.transaction = true;
       });
+
       describe("when not selected", () => {
         beforeEach(() => {
           current.listValues.selected = null;
@@ -236,6 +245,7 @@ describe("Setup Environment", () => {
             </MemoryRouter>
           );
         });
+
         afterEach(cleanup);
 
         it("renders only the expected components", () => {
@@ -268,6 +278,7 @@ describe("Setup Environment", () => {
             </MemoryRouter>
           );
         });
+
         afterEach(cleanup);
 
         it("handles a click on item names as expected (by doing nothing)", () => {
@@ -295,10 +306,12 @@ describe("Setup Environment", () => {
       current.item.id = -1;
       current.item.name = "";
     });
+
     describe("when outside of a transaction", () => {
       beforeEach(() => {
         current.listValues.transaction = false;
       });
+
       describe("when there is an error message", () => {
         beforeEach(() => {
           current.listValues.errorMsg = "Some Existing Error Message";
@@ -311,6 +324,7 @@ describe("Setup Environment", () => {
             </MemoryRouter>
           );
         });
+
         afterEach(cleanup);
 
         it("renders only the expected components, including the save button", () => {
@@ -334,6 +348,7 @@ describe("Setup Environment", () => {
           expect(utils.container.firstChild).toMatchSnapshot();
         });
       });
+
       describe("when there is no error message", () => {
         beforeEach(() => {
           current.listValues.errorMsg = "";
@@ -346,6 +361,7 @@ describe("Setup Environment", () => {
             </MemoryRouter>
           );
         });
+
         afterEach(cleanup);
 
         it("should not call setErrorMsg or setDuplicate as expected", async () => {
@@ -394,6 +410,7 @@ describe("Setup Environment", () => {
           expect(utils.container.firstChild).toMatchSnapshot();
         });
       });
+
       describe("when a duplicate item has been created", () => {
         beforeEach(() => {
           current.listValues.duplicate = true;

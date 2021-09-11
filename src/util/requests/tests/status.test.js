@@ -32,14 +32,17 @@ describe("setup the environment for testing match2xx", () => {
 describe("setup the environment for testing match400duplicate", () => {
   let statusCode;
   let apiResponse;
+
   describe("given a duplicate error list from the api", () => {
     beforeEach(() => {
       apiResponse = { error: [Constants.duplicateObjectApiErrors[0]] };
     });
+
     describe("given a 400 status code", () => {
       beforeEach(() => {
         statusCode = 400;
       });
+
       it("should match this condition and return true", () => {
         expect(match400duplicate(statusCode, apiResponse)).toBe(true);
       });
@@ -49,6 +52,7 @@ describe("setup the environment for testing match400duplicate", () => {
       beforeEach(() => {
         statusCode = 200;
       });
+
       it("should not match this condition and return false", () => {
         expect(match400duplicate(statusCode, apiResponse)).toBe(false);
       });
@@ -59,10 +63,12 @@ describe("setup the environment for testing match400duplicate", () => {
     beforeEach(() => {
       apiResponse = { error: Constants.duplicateObjectApiErrors[0] };
     });
+
     describe("given a 400 status code", () => {
       beforeEach(() => {
         statusCode = 400;
       });
+
       it("should match this condition and return true", () => {
         expect(match400duplicate(statusCode, apiResponse)).toBe(true);
       });
@@ -72,6 +78,7 @@ describe("setup the environment for testing match400duplicate", () => {
       beforeEach(() => {
         statusCode = 200;
       });
+
       it("should not match this condition and return false", () => {
         expect(match400duplicate(statusCode, apiResponse)).toBe(false);
       });
@@ -84,10 +91,12 @@ describe("setup the environment for testing match400duplicate", () => {
         happy: "I'm happy, but looking.",
       };
     });
+
     describe("given a 400 status code", () => {
       beforeEach(() => {
         statusCode = 400;
       });
+
       it("should not match this condition and return false", () => {
         expect(match400duplicate(statusCode, apiResponse)).toBe(false);
       });
@@ -97,6 +106,7 @@ describe("setup the environment for testing match400duplicate", () => {
       beforeEach(() => {
         statusCode = 200;
       });
+
       it("should not match this condition and return false", () => {
         expect(match400duplicate(statusCode, apiResponse)).toBe(false);
       });

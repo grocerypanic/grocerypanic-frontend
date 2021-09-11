@@ -36,6 +36,7 @@ let utils;
 
 describe("Setup Environment for ProfileForm test", () => {
   let currentProps;
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -108,6 +109,7 @@ describe("Setup Environment for ProfileForm test", () => {
       });
     });
   });
+
   describe("during a transaction", () => {
     beforeEach(async () => {
       currentProps = { ...props };

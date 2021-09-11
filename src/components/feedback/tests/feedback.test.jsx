@@ -29,6 +29,7 @@ describe("Setup Environment", () => {
     expect(utils.getByTestId("FeedBack")).toBeTruthy();
     expect(utils.getByText(Strings.FeedBack.Request1)).toBeTruthy();
   });
+
   it("should render with the correct external link", () => {
     const node = utils.getByTestId("FeedBackLink");
     const [text2, link, text3] = Array.from(node.childNodes);

@@ -36,6 +36,7 @@ describe("Setup environment", () => {
   let utils;
   let startPath = "/some/unmatched/path";
   const history = createBrowserHistory();
+
   beforeEach(() => {
     history.location.pathname = startPath;
     jest.clearAllMocks();

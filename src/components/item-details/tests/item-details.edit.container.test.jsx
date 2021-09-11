@@ -211,6 +211,7 @@ describe("Setup Environment", () => {
   describe("when the item cannot be found", () => {
     let history;
     let itemProvider;
+
     beforeEach(() => {
       jest.clearAllMocks();
       history = createBrowserHistory();

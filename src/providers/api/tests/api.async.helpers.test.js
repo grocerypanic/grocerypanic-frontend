@@ -26,6 +26,7 @@ describe("Setup Environment", () => {
       });
     });
   });
+
   describe("test duplicateObject", () => {
     it("should dispatch with the provided arguments", async () => {
       duplicateObject(mockDispatch, "mockCallback");
@@ -36,6 +37,7 @@ describe("Setup Environment", () => {
       });
     });
   });
+
   describe("test asyncDispatch", () => {
     it("should dispatch with the provided arguments", async () => {
       const action = { type: "BogusAction" };
@@ -58,10 +60,12 @@ describe("Check calculateListUrl works as expected", () => {
     beforeEach(() => {
       action.override = null;
     });
+
     describe("given an action with a page index", () => {
       beforeEach(() => {
         action.page = 22;
       });
+
       it("should return an url with the appropriate query string", () => {
         expect(calculateListUrl(action, path)).toBe(
           `https:/myserver/?${Constants.pageLookupParam}=22`
@@ -73,6 +77,7 @@ describe("Check calculateListUrl works as expected", () => {
       beforeEach(() => {
         action.fetchAll = "true";
       });
+
       it("should return an url with the appropriate query string", () => {
         expect(calculateListUrl(action, path)).toBe(
           `https:/myserver/?${Constants.pageOverrideParam}=true`
@@ -105,6 +110,7 @@ describe("Check calculateListUrl works as expected", () => {
       beforeEach(() => {
         action.fetchAll = "true";
       });
+
       it("should return the override url", () => {
         expect(calculateListUrl(action, path)).toBe(action.override);
       });
@@ -114,6 +120,7 @@ describe("Check calculateListUrl works as expected", () => {
       beforeEach(() => {
         action.page = 22;
       });
+
       it("should return the override url", () => {
         expect(calculateListUrl(action, path)).toBe(action.override);
       });
@@ -144,6 +151,7 @@ describe("Setup to test retrieveResults", () => {
         { id: 1, name: "Some Other Stalker" },
       ];
     });
+
     it("should return the data as expected", () => {
       expect(retrieveResults(response)).toBe(response);
     });
@@ -160,6 +168,7 @@ describe("Setup to test retrieveResults", () => {
         ],
       };
     });
+
     it("should return the data as expected", () => {
       expect(retrieveResults(response)).toBe(response.results);
     });

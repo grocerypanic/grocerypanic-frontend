@@ -1,6 +1,10 @@
 {
-  "extends": ["react-app", "plugin:prettier/recommended"],
-  "plugins": ["unused-imports"],
+  "extends": [
+    "react-app",
+    "plugin:jest-formatting/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["jest-formatting", "unused-imports"],
   "rules": {
     "import/order": [
       "error",
@@ -26,7 +30,7 @@
         "pathGroupsExcludedImportTypes": ["builtin"]
       }
     ],
-    //"jest-formatting/padding-around-expect-groups": "off",
+    "jest-formatting/padding-around-expect-groups": "off",
     "no-unused-vars": "error",
     "unused-imports/no-unused-imports": "error"
   }

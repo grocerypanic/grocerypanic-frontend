@@ -28,6 +28,7 @@ const customRender = (providerProps) => {
 
 describe("test useSocialLogin default initial state", () => {
   let hook;
+
   beforeEach(() => {
     jest.clearAllMocks();
     const { result } = customRender(InitialState);
@@ -41,6 +42,7 @@ describe("test useSocialLogin default initial state", () => {
 
 describe("test reset", () => {
   let hook;
+
   beforeEach(() => {
     jest.clearAllMocks();
     const { result } = customRender(InitialState);
@@ -57,6 +59,7 @@ describe("test reset", () => {
 
 describe("test login", () => {
   let hook;
+
   beforeEach(() => {
     jest.clearAllMocks();
     const { result } = customRender(InitialState);
@@ -84,6 +87,7 @@ describe("test login", () => {
 
 describe("test error", () => {
   let hook;
+
   beforeEach(() => {
     jest.clearAllMocks();
     const { result } = customRender(InitialState);
@@ -111,6 +115,7 @@ describe("test error", () => {
 
 describe("test expiredAuth", () => {
   let hook;
+
   beforeEach(() => {
     jest.clearAllMocks();
     const { result } = customRender(InitialState);

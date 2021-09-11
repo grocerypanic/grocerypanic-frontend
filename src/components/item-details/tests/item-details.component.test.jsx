@@ -296,6 +296,7 @@ describe("Setup Environment", () => {
         };
         utils = renderHelper(current);
       });
+
       afterEach(cleanup);
 
       it("renders, should call header with the correct params", () => {
@@ -387,6 +388,7 @@ describe("Setup Environment", () => {
       current = { ...props, transaction: true };
       utils = renderHelper(current);
     });
+
     afterEach(cleanup);
 
     it("renders, should call header with the correct params", () => {

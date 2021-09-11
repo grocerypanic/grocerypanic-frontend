@@ -17,10 +17,12 @@ describe("Setup Environment", () => {
     beforeEach(() => {
       utils = render(<Alert />);
     });
+
     it("should render with with a non breaking space", () => {
       const node = utils.getByTestId("alert");
       expect(node.textContent).toBe(Assets.nonBreakingSpace);
     });
+
     it("should match the snapshot on file (styles)", () => {
       expect(utils.container.firstChild).toMatchSnapshot();
     });
@@ -31,11 +33,13 @@ describe("Setup Environment", () => {
       message = "Test Message";
       utils = render(<Alert message={message} />);
     });
+
     it("should render with the translated message", () => {
       expect(message).not.toBe(null);
       expect(utils.getByText(message)).toBeTruthy();
       expect(utils.getByTestId("alert")).toBeTruthy();
     });
+
     it("should match the snapshot on file (styles)", () => {
       expect(utils.container.firstChild).toMatchSnapshot();
     });

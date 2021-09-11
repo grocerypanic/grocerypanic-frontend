@@ -4,6 +4,7 @@ import SocialReducer from "../social.reducer";
 
 describe("Check The Reducer Functionality", () => {
   let received;
+
   beforeEach(() => {
     received = {};
   });

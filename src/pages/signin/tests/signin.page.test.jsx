@@ -38,6 +38,7 @@ const originalEnvironment = process.env;
 
 describe("Setup Environment", () => {
   let utils;
+
   beforeEach(() => {
     jest.clearAllMocks();
     process.env.REACT_APP_FACEBOOK_ACCOUNT_ID = "MOCK_FACEBOOK_ACCOUNT";
@@ -49,6 +50,7 @@ describe("Setup Environment", () => {
       />
     );
   });
+
   afterAll(() => {
     process.env = originalEnvironment;
   });

@@ -53,6 +53,7 @@ const RenderFunction = ({ state, history, ...otherProps }) => {
 
 describe("Setup Environment", () => {
   let currentProps;
+
   beforeEach(() => {
     jest.clearAllMocks();
     currentSocialHook = mockSocialHook();
@@ -64,6 +65,7 @@ describe("Setup Environment", () => {
     beforeEach(() => {
       currentProps.negative = true;
     });
+
     describe("When the route check does not match (login), and a profile is required", () => {
       describe("when the user profile is initialized", () => {
         beforeEach(() => {
@@ -127,6 +129,7 @@ describe("Setup Environment", () => {
 
     describe("When the route check does not match (login), and it does not require a user profile", () => {
       let state;
+
       beforeEach(() => {
         currentProps.history.push("/");
         currentProps.attr = "login";
@@ -207,6 +210,7 @@ describe("Setup Environment", () => {
 
     describe("When the route check matches (login), and a profile is required", () => {
       let state;
+
       beforeEach(() => {
         currentProps.history.push("/");
         currentProps.attr = "login";
@@ -289,6 +293,7 @@ describe("Setup Environment", () => {
 
     describe("When the route check matches (login), and it does not require a user profile", () => {
       let state;
+
       beforeEach(() => {
         currentProps.history.push("/");
         currentProps.attr = "login";
@@ -375,13 +380,16 @@ describe("Setup Environment", () => {
     beforeEach(() => {
       currentProps.negative = false;
     });
+
     describe("When the route check is not matching (error), and a profile is required", () => {
       let state;
+
       beforeEach(() => {
         currentProps.history.push("/");
         currentProps.attr = "error";
         state = { ...initialState, error: false };
       });
+
       describe("when the user profile is intialized", () => {
         beforeEach(() => {
           currentProfileHook.profile.user.inventory = [
@@ -435,12 +443,14 @@ describe("Setup Environment", () => {
 
     describe("When the route check is not matching (error), and it does not require a user profile", () => {
       let state;
+
       beforeEach(() => {
         currentProps.history.push("/");
         currentProps.attr = "error";
         currentProps.noProfile = true;
         state = { ...initialState, error: false };
       });
+
       describe("when the user profile is intialized", () => {
         beforeEach(() => {
           currentProfileHook.profile.user.inventory = [
@@ -514,6 +524,7 @@ describe("Setup Environment", () => {
 
     describe("When the route check is matching (error), and a profile is required", () => {
       let state;
+
       beforeEach(() => {
         currentProps.history.push("/");
         currentProps.attr = "error";
@@ -593,6 +604,7 @@ describe("Setup Environment", () => {
 
     describe("When the route check is matching (error), and it does not require a user profile", () => {
       let state;
+
       beforeEach(() => {
         currentProps.history.push("/");
         currentProps.attr = "error";

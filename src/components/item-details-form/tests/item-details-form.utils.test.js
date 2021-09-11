@@ -24,6 +24,7 @@ describe("normalizeNameArray", () => {
       objects[1],
     ]);
   });
+
   it("should return an empty array with invalid input data", () => {
     expect(normalizeNameArray([9], objects)).toStrictEqual([]);
   });
@@ -35,9 +36,11 @@ describe("normalizeName", () => {
   it("should return as expected with valid input data", () => {
     expect(normalizeName(2, objects)).toBe("George");
   });
+
   it("should return the first element with out of range input data", () => {
     expect(normalizeName(100, objects)).toBe("Niall");
   });
+
   it("should return an empty string with no objects", () => {
     expect(normalizeName(100, [])).toBe("");
   });
@@ -49,9 +52,11 @@ describe("normalizeId", () => {
   it("should return as expected with valid input data", () => {
     expect(normalizeId("George", objects)).toBe(2);
   });
+
   it("should return the first element with an unknown name", () => {
     expect(normalizeId("Unknown Name", objects)).toBe(1);
   });
+
   it("should return an empty string with no objects", () => {
     expect(normalizeId("Niall", [])).toBe("");
   });
@@ -65,6 +70,7 @@ describe("normalizeShelfLifeName", () => {
       ShelfLifeConstants[0].name
     );
   });
+
   it("should return a custom shelf life string with an unknown shelf life input", () => {
     expect(normalizeShelfLifeName("33")).toBe(`${33} Days`);
   });
@@ -78,6 +84,7 @@ describe("normalizeShelfId", () => {
       normalizeShelfLifeId(ShelfLifeConstants[0].name, "default value")
     ).toBe(ShelfLifeConstants[0].id);
   });
+
   it("should the default value with an unknown shelf life name", () => {
     expect(normalizeShelfLifeId(120, 33)).toBe(33);
   });

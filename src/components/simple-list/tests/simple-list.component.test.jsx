@@ -158,6 +158,7 @@ describe("Setup Environment", () => {
           current = { ...apiObjectState, transaction: false, inventory: [] };
           utils = renderHelper(current);
         });
+
         it("renders, outside of a transaction, with no items in the list, and renders the mockPlaceHolderMessage", () => {
           expect(current.transaction).toBe(false);
           expect(SimpleListItem).toBeCalledTimes(0);
@@ -230,6 +231,7 @@ describe("Setup Environment", () => {
 
       describe("when called from an url containing a page reference", () => {
         let page = "2";
+
         beforeEach(() => {
           window.location = new URL(
             "https://myserver.com:8080?" +
@@ -602,6 +604,7 @@ describe("Setup Environment", () => {
         current = { ...apiObjectState, transaction: false, fail: true };
         utils = renderHelper(current);
       });
+
       it("renders, should call the error handler with the correct params", async () => {
         await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
         const call = ErrorHandler.mock.calls[0][0];

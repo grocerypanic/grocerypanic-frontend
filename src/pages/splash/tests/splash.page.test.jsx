@@ -30,6 +30,7 @@ window.resizeTo = function resizeTo(width, height) {
 
 describe("Check the correct props are passed to ", () => {
   let utils;
+
   beforeEach(() => {
     jest.clearAllMocks();
   });

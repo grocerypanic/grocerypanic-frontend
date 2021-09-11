@@ -88,6 +88,7 @@ describe("Test renderGraph", () => {
 
 describe("Test generateChartData", () => {
   let result;
+
   describe("With item data", () => {
     beforeEach(() => {
       result = generateChartData(mockTransactions, mockItem);

@@ -90,6 +90,7 @@ describe("Setup Environment", () => {
   beforeEach(() => {
     current = { ...testData, item: { ...mockItem }, allItems: [mockItem] };
   });
+
   describe("when outside of a transaction", () => {
     describe("with short item names", () => {
       beforeEach(() => {
@@ -98,6 +99,7 @@ describe("Setup Environment", () => {
         jest.clearAllMocks();
         utils = renderHelper(current);
       });
+
       afterEach(cleanup);
 
       it("Renders the restock menu as expected", () => {
@@ -185,6 +187,7 @@ describe("Setup Environment", () => {
         jest.clearAllMocks();
         utils = renderHelper(current);
       });
+
       afterEach(cleanup);
 
       it("renders the expected components", () => {
