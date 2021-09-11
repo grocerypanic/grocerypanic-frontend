@@ -10,8 +10,8 @@ const DATE_OBJECT_TIME_OF_DAY = {
   item: { hour: 23, minute: 59, second: 59, millisecond: 999 },
 };
 
-const utc2Local = (datetimeObjec) => {
-  return moment.utc(datetimeObjec).local();
+const utc2Local = (datetimeObject) => {
+  return moment.utc(datetimeObject).local();
 };
 
 export const generateConverter = (dateObjectField) => {

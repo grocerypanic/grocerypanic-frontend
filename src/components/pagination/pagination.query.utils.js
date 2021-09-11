@@ -28,7 +28,7 @@ export const rewriteUrlWithPagination = (apiUrl) => {
   // Only Attempt This If The Browser Seems to Support It
   if (!window.history.pushState) return;
   if (hasPaginationParam(apiUrl)) {
-    let seperator = "?";
+    let separator = "?";
     const apiQueryParams = getQueryParams(apiUrl);
     const params = getOtherQueryParams(window.location.search);
     params.set(
@@ -37,7 +37,7 @@ export const rewriteUrlWithPagination = (apiUrl) => {
     );
     const url =
       window.location.pathname +
-      seperator +
+      separator +
       new URLSearchParams(params).toString();
     window.history.pushState(null, document.title, url);
   } else {

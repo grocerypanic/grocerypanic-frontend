@@ -177,7 +177,7 @@ const ItemDetailsForm = ({
                   details={""}
                   labelColumn={"col-1"}
                   itemColumn={"col-4"}
-                  min={Constants.minimumQuanity}
+                  min={Constants.minimumQuantity}
                   max={Constants.maximumQuantity}
                   step="1"
                   readOnly={true}
@@ -220,7 +220,7 @@ const ItemDetailsForm = ({
                   fieldName="preferred_stores"
                   options={stores}
                   transaction={transaction}
-                  details={t("ItemDetails.PerferredLocationDetails")}
+                  details={t("ItemDetails.PreferredLocationDetails")}
                   labelColumn={""}
                   itemColumn={"col-12"}
                 />

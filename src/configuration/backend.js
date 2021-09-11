@@ -8,7 +8,7 @@ export const Constants = {
   genericAPIError: "API Error",
   csrfErrorMessage: "Refresh csrf and try again.",
   alreadyRegistered: "User is already registered with this e-mail address.",
-  minimumQuanity: 0,
+  minimumQuantity: 0,
   maximumQuantity: 10000,
   minimumShelfLife: 1,
   maximumShelfLife: 365 * 3,

@@ -4,7 +4,7 @@ export const AnalyticsActions = {
   LoginSuccess: { category: "Login", action: "Logged In" },
   ApiError: {
     category: "Error",
-    action: "Unable to retrive a requested object from the api",
+    action: "Unable to retrieve a requested object from the api",
   },
   FeedBackLink: {
     category: "Link",

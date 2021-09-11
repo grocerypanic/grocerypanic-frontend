@@ -323,7 +323,7 @@ exports[`Setup Environment after report is fetched with expired items in invento
 </div>
 `;
 
-exports[`Setup Environment after report is fetched with items expirying soon in inventory should match the snapshot on file (styles) 1`] = `
+exports[`Setup Environment after report is fetched with items expiring soon in inventory should match the snapshot on file (styles) 1`] = `
 .c0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -482,7 +482,7 @@ exports[`Setup Environment after report is fetched with items expirying soon in 
 </div>
 `;
 
-exports[`Setup Environment after report is fetched with no items expirying soon in inventory, but an old next_expiry_date set should match the snapshot on file (styles) 1`] = `
+exports[`Setup Environment after report is fetched with no items expiring soon in inventory, but an old next_expiry_date set should match the snapshot on file (styles) 1`] = `
 .c0 {
   display: -webkit-box;
   display: -webkit-flex;

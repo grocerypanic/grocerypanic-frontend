@@ -19,14 +19,14 @@ const Copyright = () => {
 
   return (
     <CopyrightBox data-testid="CopyRight">
-      {t("Copyight.CopyrightDeclaration")}
+      {t("Copyright.CopyrightDeclaration")}
       <StyledLink
         data-testid="CopyRightLink"
         target={"_blank"}
         href={External.credit}
         onClick={handleClick}
       >
-        {t("Copyight.CopyrightMessage")}
+        {t("Copyright.CopyrightMessage")}
       </StyledLink>
       &nbsp;{`${year}.`}
     </CopyrightBox>

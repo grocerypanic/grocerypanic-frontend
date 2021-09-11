@@ -167,7 +167,7 @@ describe("Setup Environment, Render Tests", () => {
         expect(qtyInput.details).toBe("");
         expect(qtyInput.labelColumn).toBe("col-1");
         expect(qtyInput.itemColumn).toBe("col-4");
-        expect(qtyInput.min).toBe(Constants.minimumQuanity);
+        expect(qtyInput.min).toBe(Constants.minimumQuantity);
         expect(qtyInput.max).toBe(Constants.maximumQuantity);
         expect(qtyInput.step).toBe("1");
         expect(qtyInput.readOnly).toBe(true);
@@ -227,7 +227,7 @@ describe("Setup Environment, Render Tests", () => {
         expect(qtyInput.details).toBe("");
         expect(qtyInput.labelColumn).toBe("col-1");
         expect(qtyInput.itemColumn).toBe("col-4");
-        expect(qtyInput.min).toBe(Constants.minimumQuanity);
+        expect(qtyInput.min).toBe(Constants.minimumQuantity);
         expect(qtyInput.max).toBe(Constants.maximumQuantity);
         expect(qtyInput.step).toBe("1");
         expect(qtyInput.readOnly).toBe(true);
@@ -280,7 +280,7 @@ describe("Setup Environment, Render Tests", () => {
         expect(shelf.options).toStrictEqual([mockShelf1, mockShelf2]);
       });
 
-      it("renders, multidropdown as expected", async () => {
+      it("renders, MultiDropDown as expected", async () => {
         await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
 
         const preferredStores = MultiDropDown.mock.calls[1][0];
@@ -292,7 +292,7 @@ describe("Setup Environment, Render Tests", () => {
         expect(preferredStores.fieldName).toBe("preferred_stores");
         expect(preferredStores.transaction).toBe(false);
         expect(preferredStores.details).toBe(
-          Strings.ItemDetails.PerferredLocationDetails
+          Strings.ItemDetails.PreferredLocationDetails
         );
         expect(preferredStores.labelColumn).toBe("");
         expect(preferredStores.itemColumn).toBe("col-12");
@@ -321,8 +321,6 @@ describe("Setup Environment, Render Tests", () => {
       it("calculates the options for shelf_life correctly", async () => {
         await waitFor(() => expect(DropDown).toHaveBeenCalledTimes(4));
         let shelfLife = DropDown.mock.calls[2][0];
-
-        // No additional shelf_lifes since this is a standard value
         expect(shelfLife.options).toStrictEqual([...ShelfLifeConstants]);
       });
     });

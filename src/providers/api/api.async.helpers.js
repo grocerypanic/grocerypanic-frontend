@@ -28,7 +28,7 @@ export const calculateListUrl = (action, path, additionalParam = {}) => {
   let filterParams = "";
   let url = path;
   let paginationParams = "";
-  let paginationOverideParams = "";
+  let paginationOverrideParams = "";
   let param = {};
 
   if (action.filter) {
@@ -51,8 +51,8 @@ export const calculateListUrl = (action, path, additionalParam = {}) => {
   if (action.fetchAll) {
     param = {};
     param[Constants.pageOverrideParam] = action.fetchAll;
-    paginationOverideParams =
-      paginationOverideParams + new URLSearchParams(param).toString();
+    paginationOverrideParams =
+      paginationOverrideParams + new URLSearchParams(param).toString();
   }
 
   if (additionalParamString) {
@@ -62,7 +62,7 @@ export const calculateListUrl = (action, path, additionalParam = {}) => {
   // Assemble URL
   const assembledParams = [
     paginationParams,
-    paginationOverideParams,
+    paginationOverrideParams,
     filterParams,
     extraParams,
   ]
@@ -74,7 +74,7 @@ export const calculateListUrl = (action, path, additionalParam = {}) => {
   return url;
 };
 
-// Retrive Results From API, paginated or not
+// Retrieve Results From API, paginated or not
 export const retrieveResults = (response) => {
   if (response.results) return response.results;
   return response;

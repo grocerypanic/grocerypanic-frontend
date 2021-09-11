@@ -250,7 +250,7 @@ describe("Setup Environment", () => {
       });
     });
 
-    describe("with items expirying soon in inventory", () => {
+    describe("with items expiring soon in inventory", () => {
       beforeEach(() => {
         utils = renderHelper(current);
       });
@@ -285,7 +285,7 @@ describe("Setup Environment", () => {
       });
     });
 
-    describe("with no items expirying soon in inventory, but an old next_expiry_date set", () => {
+    describe("with no items expiring soon in inventory, but an old next_expiry_date set", () => {
       beforeEach(() => {
         jest.clearAllMocks();
         current.item.next_expiry_date = moment("2019-06-16");
