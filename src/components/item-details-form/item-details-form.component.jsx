@@ -24,6 +24,7 @@ import {
   normalizeName,
   normalizeId,
   normalizeShelfLifeName,
+  normalizeShelfLifeId,
 } from "./item-details-form.utils";
 
 const ItemDetailsForm = ({
@@ -107,7 +108,6 @@ const ItemDetailsForm = ({
   // Perform validation as needed
   const handleSubmit = () => {
     if (transaction) return;
-    const derivedShelfLife = normalizeId(shelfLifeState, ShelfLifeConstants);
     if (preferredStoresState.length === 0) {
       setErrorMsg(t("ItemDetails.ErrorUnselectedStore"));
       return setTimeout(() => setErrorMsg(null), ui.alertTimeout);
@@ -117,7 +117,7 @@ const ItemDetailsForm = ({
       name: nameState,
       quantity: quantityState,
       price: priceState,
-      shelf_life: derivedShelfLife ? derivedShelfLife : item.shelf_life,
+      shelf_life: normalizeShelfLifeId(shelfLifeState, item.shelf_life),
       preferred_stores: preferredStoresState.map((o) => o.id),
       shelf: normalizeId(shelfState, shelves),
     };
