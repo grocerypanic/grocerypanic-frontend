@@ -178,7 +178,11 @@ const Header = ({ history }) => {
           >
             <IconContainer data-testid="AddIcon">
               {headerSettings.transaction ? (
-                <Spinner size="sm" animation="border" />
+                <Spinner
+                  data-testid="AddSpinner"
+                  size="sm"
+                  animation="border"
+                />
               ) : (
                 <AddIcon />
               )}

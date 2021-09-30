@@ -40,7 +40,6 @@ const FormInput = ({
           type={type}
           name={fieldName}
           size={size}
-          required
           value={storeState}
           onChange={(e) => processChange(e)}
           readOnly={transaction}

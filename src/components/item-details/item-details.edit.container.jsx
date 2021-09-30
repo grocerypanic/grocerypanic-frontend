@@ -21,7 +21,7 @@ const defaultItem = {
   preferred_stores: [],
   price: "",
   quantity: 0,
-  shelf: "",
+  shelf: null,
   shelf_life: 14,
 };
 

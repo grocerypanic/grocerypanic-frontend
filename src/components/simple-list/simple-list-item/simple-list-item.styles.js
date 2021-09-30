@@ -4,7 +4,7 @@ import {
   highlight,
   selected,
   itemAttributes,
-} from "../../configuration/theme";
+} from "../../../configuration/theme";
 
 export const ListItem = styled.li`
   display: flex;

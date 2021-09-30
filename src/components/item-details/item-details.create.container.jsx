@@ -23,7 +23,7 @@ export const defaultItem = {
   preferred_stores: [],
   price: "",
   quantity: 0,
-  shelf: "",
+  shelf: null,
   shelf_life: 14,
 };
 
@@ -153,28 +153,20 @@ const ItemDetailsCreateContainer = ({
       redirect={Routes.goBack}
     >
       <HoldingPattern condition={checkForNonReceivedContent()}>
-        <ErrorHandler
-          condition={!store.inventory.length || !shelf.inventory.length}
-          clearError={() => {}}
-          eventMessage={null}
-          messageTranslationKey={"ItemDetails.NeedShelvesAndStores"}
-          redirect={Routes.goBack}
-        >
-          <Container>
-            <ItemDetailsForm
-              allItems={item.inventory}
-              item={defaults}
-              title={title}
-              helpText={helpText}
-              transaction={transaction}
-              stores={store.inventory}
-              shelves={shelf.inventory}
-              handleSave={handleSave}
-              duplicate={duplicate}
-              setDuplicate={setDuplicate}
-            />
-          </Container>
-        </ErrorHandler>
+        <Container>
+          <ItemDetailsForm
+            allItems={item.inventory}
+            item={defaults}
+            title={title}
+            helpText={helpText}
+            transaction={transaction}
+            stores={store.inventory}
+            shelves={shelf.inventory}
+            handleSave={handleSave}
+            duplicate={duplicate}
+            setDuplicate={setDuplicate}
+          />
+        </Container>
       </HoldingPattern>
     </ErrorHandler>
   );

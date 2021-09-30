@@ -1,29 +1,19 @@
 import { ShelfLifeConstants } from "../../configuration/backend";
 
-const defaultName = (objectList) => {
-  if (objectList.length > 0) return objectList[0].name;
-  return "";
-};
-
-const defaultId = (objectList) => {
-  if (objectList.length > 0) return objectList[0].id;
-  return "";
-};
-
 export const normalizeNameArray = (idList, objectList) => {
   return objectList.filter((o) => idList.includes(o.id));
 };
 
-export const normalizeName = (id, objectList) => {
+export const normalizeShelfName = (id, objectList) => {
   const search = objectList.find((o) => o.id === id);
   if (search) return search.name;
-  return defaultName(objectList);
+  return null;
 };
 
-export const normalizeId = (name, objectList) => {
+export const normalizeShelfId = (name, objectList) => {
   const search = objectList.find((o) => o.name === name);
   if (search) return search.id;
-  return defaultId(objectList);
+  return null;
 };
 
 export const normalizeShelfLifeName = (value) => {

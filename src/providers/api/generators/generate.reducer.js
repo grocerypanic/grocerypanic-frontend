@@ -93,6 +93,18 @@ const generateReducer = (async, name) => {
           errorMessage: action.type,
           fail: false,
         };
+      case ApiActions.RequiredObject:
+        if (action.callback)
+          new Promise(function (resolve) {
+            action.callback({ success: false, complete: false });
+          });
+        return {
+          ...state,
+          inventory: [...state.inventory],
+          transaction: false,
+          errorMessage: action.type,
+          fail: false,
+        };
       default:
         return state;
     }

@@ -6,6 +6,7 @@ import ApiActions from "../api.actions";
 import {
   authFailure,
   duplicateObject,
+  requiredObject,
   asyncDispatch,
   calculateListUrl,
   retrieveResults,
@@ -66,6 +67,7 @@ export const asyncDel = async ({ state, action }) => {
       return;
     }
     if (status === 401) return authFailure(dispatch, callback);
+    if (status === 409) return requiredObject(dispatch, callback);
     throw Error("Unknown Status Code");
   }).catch((err) => {
     asyncDispatch(dispatch, {

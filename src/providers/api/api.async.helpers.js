@@ -13,6 +13,12 @@ export const duplicateObject = (dispatch, callback) => {
   });
 };
 
+export const requiredObject = (dispatch, callback) => {
+  new Promise((resolve) => {
+    dispatch({ type: ApiActions.RequiredObject, callback });
+  });
+};
+
 export const asyncDispatch = (dispatch, action) => {
   new Promise((resolve) => {
     dispatch(action);

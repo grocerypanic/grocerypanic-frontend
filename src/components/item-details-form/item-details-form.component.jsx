@@ -7,8 +7,8 @@ import { useTranslation } from "react-i18next";
 import { FormBox, Outline, ButtonBox } from "./item-details-form.styles";
 import {
   normalizeNameArray,
-  normalizeName,
-  normalizeId,
+  normalizeShelfName,
+  normalizeShelfId,
   normalizeShelfLifeName,
   normalizeShelfLifeId,
 } from "./item-details-form.utils";
@@ -37,7 +37,6 @@ const ItemDetailsForm = ({
 }) => {
   const { t } = useTranslation();
 
-  // Create State For Each Form Component
   const [nameState, setNameState] = React.useState("");
   const [quantityState, setQuantityState] = React.useState("");
   const [priceState, setPriceState] = React.useState("");
@@ -48,24 +47,13 @@ const ItemDetailsForm = ({
   const [shelfOptions, setShelfOptions] = React.useState([]);
   const [actionMsg, setActionMsg] = React.useState(null);
 
-  const bootstrapStrapWidthHack = () => {
-    if (window.innerWidth < 380) return "col-5";
-    return "col-6";
-  };
-  const [priceBootstrapWidth, setPriceBootstrapWidth] = React.useState(
-    bootstrapStrapWidthHack()
-  );
-  const updatePriceWidth = () =>
-    setPriceBootstrapWidth(bootstrapStrapWidthHack());
-
-  // Normalize the api data as it comes in
   React.useEffect(() => {
     setNameState(item.name);
     setQuantityState(item.quantity);
     setPriceState(item.price);
     setShelfLifeState(normalizeShelfLifeName(item.shelf_life));
     setPreferredStoresState(normalizeNameArray(item.preferred_stores, stores));
-    setShelfState(normalizeName(item.shelf, shelves));
+    setShelfState(normalizeShelfName(item.shelf, shelves));
   }, [item, stores, shelves]);
 
   React.useEffect(() => {
@@ -75,10 +63,9 @@ const ItemDetailsForm = ({
       setActionMsg(null);
       setTimeout(() => setErrorMsg(null), ui.alertTimeout);
     }
-  }, [duplicate]); // eslint-disable-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [duplicate]);
 
-  // The data from the api may include a non standard shelf-life option
-  // Normalize the shelf options and create a new custom entry if needed
   React.useEffect(() => {
     const options = [...ShelfLifeConstants];
     const search = options.findIndex((o) => o.id === item.shelf_life);
@@ -90,41 +77,66 @@ const ItemDetailsForm = ({
         { name: `${item.shelf_life} Days`, id: item.shelf_life },
       ]);
     }
-  }, [shelves]); // eslint-disable-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shelves]);
 
   React.useEffect(() => {
     window.addEventListener("resize", updatePriceWidth);
     return () => {
       window.removeEventListener("resize", updatePriceWidth);
     };
-  }, []); // eslint-disable-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Reassemble the form data into an object and pass back to handleSave
-  // Perform validation as needed
-  const handleSubmit = () => {
-    if (transaction) return;
-    if (preferredStoresState.length === 0) {
-      setErrorMsg(t("ItemDetails.ErrorUnselectedStore"));
-      return setTimeout(() => setErrorMsg(null), ui.alertTimeout);
-    }
-    const newItem = {
+  const assembleNewItem = () => {
+    return {
       id: item.id,
       name: nameState,
       quantity: quantityState,
       price: priceState,
       shelf_life: normalizeShelfLifeId(shelfLifeState, item.shelf_life),
       preferred_stores: preferredStoresState.map((o) => o.id),
-      shelf: normalizeId(shelfState, shelves),
+      shelf: normalizeShelfId(shelfState, shelves),
     };
-    handleSave(newItem);
-    setActionMsg(t("ItemDetails.SaveAction"));
+  };
+
+  const bootstrapStrapWidthHack = () => {
+    if (window.innerWidth < 380) return "col-5";
+    return "col-6";
+  };
+  const [priceBootstrapWidth, setPriceBootstrapWidth] = React.useState(
+    bootstrapStrapWidthHack()
+  );
+  const updatePriceWidth = () =>
+    setPriceBootstrapWidth(bootstrapStrapWidthHack());
+
+  const flashErrorMessage = (string) => {
+    setErrorMsg(string);
+    return setTimeout(() => setErrorMsg(null), ui.alertTimeout);
+  };
+
+  const flashInfoMessage = (string) => {
+    setActionMsg(string);
     return setTimeout(() => setActionMsg(null), ui.alertTimeout);
+  };
+
+  const handleSubmit = () => {
+    if (transaction) return;
+    if (nameState === "") {
+      return flashErrorMessage(t("ItemDetails.NoNameError"));
+    }
+    if (priceState === "") {
+      return flashErrorMessage(t("ItemDetails.NoPriceError"));
+    }
+    const newItem = assembleNewItem();
+    handleSave(newItem);
+    return flashInfoMessage(t("ItemDetails.SaveAction"));
   };
 
   const handleDeleteButton = (e) => {
     if (transaction) return;
     handleDelete(item);
-    setActionMsg(t("ItemDetails.DeleteAction"));
+    return flashInfoMessage(t("ItemDetails.DeleteAction"));
   };
 
   return (
@@ -226,7 +238,10 @@ const ItemDetailsForm = ({
                   storeState={shelfState}
                   handleState={setShelfState}
                   fieldName="shelf"
-                  options={shelves}
+                  options={[
+                    { id: null, name: t("ItemDetails.UndefinedShelf") },
+                    ...shelves,
+                  ]}
                   transaction={transaction}
                   details={t("ItemDetails.ShelvesDetail")}
                   labelColumn={""}

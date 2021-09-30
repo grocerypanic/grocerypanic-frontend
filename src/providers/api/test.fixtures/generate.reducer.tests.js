@@ -447,5 +447,42 @@ export const ReducerTest = (
       expect(received.class).toBe(classType);
       expect(mockCallBack).toBeCalledTimes(0);
     });
+
+    it("handles RequiredObject correctly", () => {
+      const state = {
+        ...InitialState,
+        fail: true,
+        errorMessage: "Error",
+        transaction: true,
+      };
+      const received = testReducer(state, {
+        type: ApiActions.RequiredObject,
+        callback: mockCallBack,
+      });
+      propCount(received, Object.keys(InitialState).length);
+      expect(received.fail).toBe(false);
+      expect(received.errorMessage).toBe(ApiActions.RequiredObject);
+      expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
+      expect(mockCallBack).toBeCalledWith({ success: false, complete: false });
+    });
+
+    it("handles RequiredObject correctly, no callback", () => {
+      const state = {
+        ...InitialState,
+        fail: true,
+        errorMessage: "Error",
+        transaction: true,
+      };
+      const received = testReducer(state, {
+        type: ApiActions.RequiredObject,
+      });
+      propCount(received, Object.keys(InitialState).length);
+      expect(received.fail).toBe(false);
+      expect(received.errorMessage).toBe(ApiActions.RequiredObject);
+      expect(received.transaction).toBe(false);
+      expect(received.class).toBe(classType);
+      expect(mockCallBack).toBeCalledTimes(0);
+    });
   });
 };

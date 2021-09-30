@@ -1,8 +1,8 @@
 import { ShelfLifeConstants } from "../../../configuration/backend";
 import {
   normalizeNameArray,
-  normalizeName,
-  normalizeId,
+  normalizeShelfName,
+  normalizeShelfId,
   normalizeShelfLifeName,
   normalizeShelfLifeId,
 } from "../item-details-form.utils";
@@ -30,35 +30,35 @@ describe("normalizeNameArray", () => {
   });
 });
 
-describe("normalizeName", () => {
+describe("normalizeShelfName", () => {
   beforeEach(() => {});
 
   it("should return as expected with valid input data", () => {
-    expect(normalizeName(2, objects)).toBe("George");
+    expect(normalizeShelfName(2, objects)).toBe("George");
   });
 
-  it("should return the first element with out of range input data", () => {
-    expect(normalizeName(100, objects)).toBe("Niall");
+  it("should return null with out of range input data", () => {
+    expect(normalizeShelfName(100, objects)).toBe(null);
   });
 
-  it("should return an empty string with no objects", () => {
-    expect(normalizeName(100, [])).toBe("");
+  it("should return null with no objects", () => {
+    expect(normalizeShelfName(100, [])).toBe(null);
   });
 });
 
-describe("normalizeId", () => {
+describe("normalizeShelfId", () => {
   beforeEach(() => {});
 
   it("should return as expected with valid input data", () => {
-    expect(normalizeId("George", objects)).toBe(2);
+    expect(normalizeShelfId("George", objects)).toBe(2);
   });
 
-  it("should return the first element with an unknown name", () => {
-    expect(normalizeId("Unknown Name", objects)).toBe(1);
+  it("should return null with an unknown name", () => {
+    expect(normalizeShelfId("Unknown Name", objects)).toBe(null);
   });
 
   it("should return an empty string with no objects", () => {
-    expect(normalizeId("Niall", [])).toBe("");
+    expect(normalizeShelfId("Niall", [])).toBe(null);
   });
 });
 
@@ -76,7 +76,7 @@ describe("normalizeShelfLifeName", () => {
   });
 });
 
-describe("normalizeShelfId", () => {
+describe("normalizeShelfLifeId", () => {
   beforeEach(() => {});
 
   it("should return the correct id with known shelf life name data", () => {

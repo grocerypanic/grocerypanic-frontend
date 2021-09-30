@@ -154,7 +154,7 @@ describe("Setup Environment", () => {
   let utils;
   let current;
 
-  beforeAll(() => {
+  beforeEach(() => {
     jest.spyOn(document, "querySelector").mockImplementation(() => {
       return {
         clientWidth: 201,

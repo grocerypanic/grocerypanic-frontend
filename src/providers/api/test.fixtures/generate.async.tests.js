@@ -813,5 +813,69 @@ export const AsyncTest = (
         }
       });
     }
+
+    if (implemented.includes(ApiFunctions.asyncDel)) {
+      describe("Required Object Error Response", () => {
+        beforeEach((done) => {
+          jest.clearAllMocks();
+          State1 = { ...initialState, inventory: [...initialState.inventory] };
+          responseCode = 409;
+          Request.mockReturnValue([
+            { error: Constants.duplicateObjectApiErrors[0] },
+            responseCode,
+          ]);
+          done();
+        });
+
+        it("should call the API, and then dispatch correctly when asyncDel is called", async () => {
+          action = {
+            payload: { ...mockObject },
+            dispatch: mockDispatch,
+            callback: mockCallBack,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push({ ...mockObject });
+
+          asyncFn.asyncDel({ state: State2, action });
+
+          expect(Request).toBeCalledWith(
+            "DELETE",
+            apiEndpoint + `${action.payload.id}/`
+          );
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.RequiredObject,
+            callback: mockCallBack,
+          });
+        });
+
+        it("should call the API, and then dispatch correctly when asyncDel is called, no callback", async () => {
+          action = {
+            payload: { ...mockObject },
+            dispatch: mockDispatch,
+          };
+          State2 = {
+            ...State1,
+            inventory: [...State1.inventory],
+          };
+          State2.inventory.push({ ...mockObject });
+
+          asyncFn.asyncDel({ state: State2, action });
+
+          expect(Request).toBeCalledWith(
+            "DELETE",
+            apiEndpoint + `${action.payload.id}/`
+          );
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          expect(mockDispatch).toBeCalledWith({
+            type: ApiActions.RequiredObject,
+            callback: undefined,
+          });
+        });
+      });
+    }
   });
 };

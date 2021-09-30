@@ -207,7 +207,6 @@ exports[`Setup Environment for ProfileForm test during a transaction should matc
                   name="first_name"
                   placeholder=""
                   readonly=""
-                  required=""
                   type="text"
                   value="Niall"
                 />
@@ -240,7 +239,6 @@ exports[`Setup Environment for ProfileForm test during a transaction should matc
                   name="last_name"
                   placeholder=""
                   readonly=""
-                  required=""
                   type="text"
                   value="Byrne"
                 />
@@ -598,7 +596,6 @@ exports[`Setup Environment for ProfileForm test outside of a transaction with a 
                   minlength="2"
                   name="first_name"
                   placeholder=""
-                  required=""
                   type="text"
                   value="Niall"
                 />
@@ -630,7 +627,6 @@ exports[`Setup Environment for ProfileForm test outside of a transaction with a 
                   minlength="2"
                   name="last_name"
                   placeholder=""
-                  required=""
                   type="text"
                   value="Byrne"
                 />

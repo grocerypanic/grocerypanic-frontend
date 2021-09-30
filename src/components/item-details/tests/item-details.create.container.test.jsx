@@ -153,7 +153,7 @@ describe("Setup Environment", () => {
     });
 
     it("renders, bypasses ErrorHandler1 as expected", async () => {
-      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
+      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(3));
       const call = ErrorHandler.mock.calls[2][0];
       propCount(call, 6);
       expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
@@ -175,30 +175,6 @@ describe("Setup Environment", () => {
       const call = HoldingPattern.mock.calls[0][0];
       propCount(call, 2);
       expect(call.condition).toBe(true);
-    });
-
-    it("renders, bypasses ErrorHandler2 as expected", async () => {
-      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
-      const call = ErrorHandler.mock.calls[5][0];
-      propCount(call, 6);
-      expect(call.eventMessage).toBe(null);
-      expect(call.condition).toBe(false);
-      expect(call.clearError).toBeInstanceOf(Function);
-      expect(call.messageTranslationKey).toBe(
-        "ItemDetails.NeedShelvesAndStores"
-      );
-      expect(call.redirect).toBe(Routes.goBack);
-      expect(call.children).toBeTruthy();
-
-      expect(i18Next.t("ItemDetails.NeedShelvesAndStores")).toBe(
-        Strings.ItemDetails.NeedShelvesAndStores
-      );
-    });
-
-    it("renders, the ErrorHandler2 clearErrors function is a no op", async () => {
-      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
-      const call = ErrorHandler.mock.calls[5][0];
-      call.clearError();
     });
 
     it("renders, calls item auth failure as expected", async () => {
@@ -380,24 +356,24 @@ describe("Setup Environment", () => {
 
     it("should render false on empty shelves and empty stores", async () => {
       renderHelper(testStore, testShelf);
-      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
-      const call = ErrorHandler.mock.calls[5][0];
+      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(3));
+      const call = ErrorHandler.mock.calls[2][0];
       expect(call.condition).toBe(false);
     });
 
     it("should render false on some shelves and empty stores", async () => {
       testShelf.apiObject.inventory = [mockShelf];
       renderHelper(testStore, testShelf);
-      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
-      const call = ErrorHandler.mock.calls[5][0];
+      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(3));
+      const call = ErrorHandler.mock.calls[2][0];
       expect(call.condition).toBe(false);
     });
 
     it("should render false on empty shelves and some stores", async () => {
       testStore.apiObject.inventory = [mockStore];
       renderHelper(testStore, testShelf);
-      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
-      const call = ErrorHandler.mock.calls[5][0];
+      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(3));
+      const call = ErrorHandler.mock.calls[2][0];
       expect(call.condition).toBe(false);
     });
 
@@ -405,8 +381,8 @@ describe("Setup Environment", () => {
       testStore.apiObject.inventory = [mockStore];
       testShelf.apiObject.inventory = [mockShelf];
       renderHelper(testStore, testShelf);
-      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(6));
-      const call = ErrorHandler.mock.calls[5][0];
+      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(3));
+      const call = ErrorHandler.mock.calls[2][0];
       expect(call.condition).toBe(false);
     });
   });
@@ -469,7 +445,7 @@ describe("Setup Environment", () => {
       });
 
       it("renders, calls the ErrorHandler with the correct params", () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(6);
+        expect(ErrorHandler).toHaveBeenCalledTimes(3);
 
         const errorHandlerCall = ErrorHandler.mock.calls[0][0];
         propCount(errorHandlerCall, 6);
@@ -488,7 +464,7 @@ describe("Setup Environment", () => {
       });
 
       it("renders, clear error works as expected", async () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(6); // Three rerenders for API data
+        expect(ErrorHandler).toHaveBeenCalledTimes(3); // Three rerenders for API data
         const clearError = ErrorHandler.mock.calls[0][0].clearError;
         jest.clearAllMocks();
 
@@ -524,7 +500,7 @@ describe("Setup Environment", () => {
       });
 
       it("renders, calls the ErrorHandler with the correct params", () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(6);
+        expect(ErrorHandler).toHaveBeenCalledTimes(3);
 
         const errorHandlerCall = ErrorHandler.mock.calls[0][0];
         propCount(errorHandlerCall, 6);
@@ -543,7 +519,7 @@ describe("Setup Environment", () => {
       });
 
       it("renders, clear error works as expected", async () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(6); // Three rerenders for API data
+        expect(ErrorHandler).toHaveBeenCalledTimes(3); // Three rerenders for API data
         const clearError = ErrorHandler.mock.calls[0][0].clearError;
         jest.clearAllMocks();
 
@@ -584,7 +560,7 @@ describe("Setup Environment", () => {
       });
 
       it("renders, calls the ErrorHandler with the correct params", () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(6);
+        expect(ErrorHandler).toHaveBeenCalledTimes(3);
 
         const errorHandlerCall = ErrorHandler.mock.calls[0][0];
         propCount(errorHandlerCall, 6);
@@ -603,7 +579,7 @@ describe("Setup Environment", () => {
       });
 
       it("renders, clear error works as expected", async () => {
-        expect(ErrorHandler).toHaveBeenCalledTimes(6); // Three rerenders for API data
+        expect(ErrorHandler).toHaveBeenCalledTimes(3); // Three rerenders for API data
         const clearError = ErrorHandler.mock.calls[0][0].clearError;
         jest.clearAllMocks();
 

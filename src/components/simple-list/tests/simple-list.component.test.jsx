@@ -1,19 +1,19 @@
 import {
-  render,
-  cleanup,
   act,
-  waitFor,
   fireEvent,
+  render,
+  screen,
+  waitFor,
 } from "@testing-library/react";
+import { createBrowserHistory } from "history";
 import i18next from "i18next";
 import React from "react";
+import { Router } from "react-router-dom";
 import { Constants } from "../../../configuration/backend";
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
-import {
-  AnalyticsActions,
-  IndexedAnalyticsActions,
-} from "../../../providers/analytics/analytics.actions";
+import { ItemizedBanner } from "../../../global-styles/banner";
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import ApiActions from "../../../providers/api/api.actions";
 import ApiFunctions from "../../../providers/api/api.functions";
@@ -21,43 +21,51 @@ import initialHeaderSettings from "../../../providers/header/header.initial";
 import { HeaderContext } from "../../../providers/header/header.provider";
 import { propCount } from "../../../test.fixtures/objectComparison";
 import calculateMaxHeight from "../../../util/height";
+import Alert from "../../alert/alert.component";
 import ErrorHandler from "../../error-handler/error-handler.component";
 import Hint from "../../hint/hint.component";
 import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 import Pagination from "../../pagination/pagination.component";
-import SimpleListItem from "../../simple-list-item/simple-list-item.component";
+import SimpleListItem from "../simple-list-item/simple-list-item.component";
 import SimpleList from "../simple-list.component";
 
 jest.mock("../../holding-pattern/holding-pattern.component");
-jest.mock("../../simple-list-item/simple-list-item.component");
+jest.mock("../simple-list-item/simple-list-item.component");
 jest.mock("../../hint/hint.component");
 jest.mock("../../../util/height");
 jest.mock("../../error-handler/error-handler.component");
 jest.mock("../../pagination/pagination.component");
+jest.mock("../../alert/alert.component");
+jest.mock("../../../global-styles/banner", () => ({
+  __esModule: true,
+  ItemizedBanner: jest.fn(),
+}));
 
+jest.mock("../../../configuration/theme", () => {
+  return {
+    __esModule: true,
+    ...jest.requireActual("../../../configuration/theme"),
+    ui: { alertTimeout: 10 },
+  };
+});
+
+Alert.mockImplementation(() => <div>MockAlert</div>);
 ErrorHandler.mockImplementation(({ children }) => children);
 HoldingPattern.mockImplementation(({ children }) => children);
 SimpleListItem.mockImplementation(() => <div>MockListItem</div>);
 Hint.mockImplementation(() => <div>MockHelp</div>);
 Pagination.mockImplementation(() => <div>MockPagination</div>);
 calculateMaxHeight.mockImplementation(() => 200);
+ItemizedBanner.mockImplementation(() => <div>MockBanner</div>);
 
 const mockHeaderUpdate = jest.fn();
 const mockDispatch = jest.fn();
-const mockHandleExpiredAuth = jest.fn();
-const mockRedirectTag = "store";
 
-// Mock Api Data
-const mockData = [
+const mockInventoryData = [
   { id: 1, name: "Shelf1" },
   { id: 2, name: "Shelf2" },
   { id: 3, name: "Shelf3" },
 ];
-const mockDataState = {
-  transaction: false,
-  fail: false,
-  errorMsg: null,
-};
 
 const mockAnalyticsContext = {
   initialized: true,
@@ -65,746 +73,358 @@ const mockAnalyticsContext = {
   setup: true,
 };
 
-const mockPlaceHolderMessage = "I'm Right Here";
+const mockInitialAPIObjectState = {
+  inventory: [...mockInventoryData],
+  class: "shelf",
+  transaction: false,
+  fail: false,
+  errorMsg: null,
+};
+const MockApiContext = React.createContext({
+  apiObject: mockInitialAPIObjectState,
+  dispatch: mockDispatch,
+});
 
-describe("Setup Environment", () => {
-  let utils;
-  const mockTitle = "Some Title";
-  const mockHeaderTitle = "Some Header Title";
-  const create = jest.fn();
-  let ApiContext;
-  let apiObjectState;
-  let current;
+describe("SimpleList", () => {
+  let mockProps = {
+    title: "Some Title",
+    headerTitle: "Some Header Title",
+    placeHolderMessage: "Holding a Place",
+    handleCreate: jest.fn(),
+    handleExpiredAuth: jest.fn(),
+    redirectTag: "store",
+  };
+  const history = createBrowserHistory({ basename: Routes.root });
   const originalWindow = window.location;
+  let currentAPIData;
+  let mockPaginationOffset;
+  let container;
 
   beforeEach(() => {
+    setUrl("https://myserver.com:8080");
     jest.clearAllMocks();
-
-    apiObjectState = {
-      inventory: mockData,
-      class: "shelf",
-      ...mockDataState,
+    currentAPIData = {
+      ...cloneInitialState(),
     };
-
-    ApiContext = React.createContext({
-      apiObject: apiObjectState,
-      dispatch: mockDispatch,
-    });
-
-    delete window.location;
-    window.location = new URL("https://myserver.com:8080");
   });
-
-  afterEach(cleanup);
 
   afterAll(() => {
     window.location = originalWindow;
   });
 
-  const validateFunctions = (call) => {
-    expect(call.listFunctions.setDuplicate).toBeInstanceOf(Function);
-    expect(call.listFunctions.setSelected).toBeInstanceOf(Function);
-    expect(call.listFunctions.setErrorMsg).toBeInstanceOf(Function);
-    expect(call.listFunctions.setCreated).toBeInstanceOf(Function);
-    expect(call.listFunctions.setLongPress).toBeInstanceOf(Function);
-    expect(call.listFunctions.add).toBeInstanceOf(Function);
-    expect(call.listFunctions.del).toBeInstanceOf(Function);
-    expect(call.listFunctions.setActionMsg).toBeInstanceOf(Function);
-
-    expect(call.listFunctions.setDuplicate.name).toBe("bound dispatchAction");
-    expect(call.listFunctions.setErrorMsg.name).toBe("bound dispatchAction");
-    expect(call.listFunctions.setSelected.name).toBe("bound dispatchAction");
-    expect(call.listFunctions.setCreated.name).toBe("bound dispatchAction");
-    expect(call.listFunctions.setLongPress.name).toBe("bound dispatchAction");
-    expect(call.listFunctions.setActionMsg.name).toBe("bound dispatchAction");
-    expect(call.listFunctions.add.name).toBe("handleSave");
-    expect(call.listFunctions.del.name).toBe("handleDelete");
+  const setUrl = (url) => {
+    delete window.location;
+    window.location = new URL(url);
   };
 
-  const renderHelper = (currentProps) => {
-    return render(
-      <AnalyticsContext.Provider value={mockAnalyticsContext}>
-        <HeaderContext.Provider
-          value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
-        >
-          <ApiContext.Provider
-            value={{
-              apiObject: currentProps,
-              dispatch: mockDispatch,
-            }}
+  const cloneInitialState = () =>
+    JSON.parse(JSON.stringify(mockInitialAPIObjectState));
+
+  const arrange = (currentProps) => {
+    const result = render(
+      <Router history={history}>
+        <AnalyticsContext.Provider value={mockAnalyticsContext}>
+          <HeaderContext.Provider
+            value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
           >
-            <SimpleList
-              title={mockTitle}
-              headerTitle={mockHeaderTitle}
-              create={create}
-              transaction={currentProps.transaction}
-              ApiObjectContext={ApiContext}
-              placeHolderMessage={mockPlaceHolderMessage}
-              handleExpiredAuth={mockHandleExpiredAuth}
-              helpText={Strings.Testing.GenericTranslationTestString}
-              redirectTag={mockRedirectTag}
-              waitForApi={false}
-            />
-          </ApiContext.Provider>
-        </HeaderContext.Provider>
-      </AnalyticsContext.Provider>
+            <MockApiContext.Provider
+              value={{
+                apiObject: currentProps,
+                dispatch: mockDispatch,
+              }}
+            >
+              <SimpleList
+                title={mockProps.title}
+                headerTitle={mockProps.headerTitle}
+                create={mockProps.create}
+                transaction={currentProps.transaction}
+                ApiObjectContext={MockApiContext}
+                placeHolderMessage={mockProps.placeHolderMessage}
+                handleExpiredAuth={mockProps.handleExpiredAuth}
+                helpText={Strings.Testing.GenericTranslationTestString}
+                redirectTag={mockProps.redirectTag}
+              />
+            </MockApiContext.Provider>
+          </HeaderContext.Provider>
+        </AnalyticsContext.Provider>
+      </Router>
     );
+    container = result.container;
   };
 
-  describe("outside of a transaction", () => {
-    describe("outside of an api failure", () => {
-      describe("no items in the list", () => {
-        beforeEach(() => {
-          current = { ...apiObjectState, transaction: false, inventory: [] };
-          utils = renderHelper(current);
-        });
-
-        it("renders, outside of a transaction, with no items in the list, and renders the mockPlaceHolderMessage", () => {
-          expect(current.transaction).toBe(false);
-          expect(SimpleListItem).toBeCalledTimes(0);
-          expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
-
-          expect(utils.getByText(mockPlaceHolderMessage)).toBeTruthy();
-        });
-
-        it("renders, should call header with the correct params", () => {
-          expect(current.transaction).toBe(false);
-
-          expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
-          const headerCall = mockHeaderUpdate.mock.calls[0][0];
-          expect(headerCall.title).toBe(mockHeaderTitle);
-          expect(headerCall.create).toBeInstanceOf(Function);
-          expect(headerCall.transaction).toBe(false);
-          expect(headerCall.disableNav).toBe(false);
-        });
-
-        it("renders, should call pagination with the correct params", () => {
-          expect(current.transaction).toBe(false);
-
-          expect(Pagination).toHaveBeenCalledTimes(1);
-          const pagination = Pagination.mock.calls[0][0];
-          propCount(pagination, 2);
-          expect(pagination.apiObject).toStrictEqual(current);
-          expect(pagination.handlePagination).toBeInstanceOf(Function);
-        });
-
-        it("renders, and skips the holding pattern to trigger the spinner", async () => {
-          expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
-          expect(HoldingPattern).toHaveBeenCalledTimes(1);
-          const holdingPatternCall = HoldingPattern.mock.calls[0][0];
-          propCount(holdingPatternCall, 2);
-          expect(holdingPatternCall.condition).toBe(false);
-        });
-
-        it("should call calculateMaxHeight on render", () => {
-          expect(calculateMaxHeight).toBeCalledTimes(1);
-        });
-
-        it("a should call calculateMaxHeight again on a window resize", async () => {
-          expect(calculateMaxHeight).toBeCalledTimes(1);
-          fireEvent(window, new Event("resize"));
-          await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-        });
-
-        it("renders, should call the error handler with the correct params", async () => {
-          await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
-          const call = ErrorHandler.mock.calls[0][0];
-          propCount(call, 6);
-          expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
-          expect(call.condition).toBe(false);
-          expect(call.clearError).toBeInstanceOf(Function);
-          expect(call.messageTranslationKey).toBe(
-            "SimpleList.ApiCommunicationError"
-          );
-          expect(call.redirect).toBe(Routes.goBack);
-          expect(call.children).toBeTruthy();
-
-          expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
-            Strings.SimpleList.ApiCommunicationError
-          );
-        });
-
-        it("should match the snapshot on file (styles)", () => {
-          expect(utils.container).toMatchSnapshot();
-        });
-      });
-
-      describe("when called from an url containing a page reference", () => {
-        let page = "2";
-
-        beforeEach(() => {
-          window.location = new URL(
-            "https://myserver.com:8080?" +
-              Constants.pageLookupParam +
-              "=" +
-              page
-          );
-          current = { ...apiObjectState, transaction: false };
-          utils = renderHelper(current);
-        });
-
-        it("renders, calls StartList on first render, with the page param", async () => {
-          expect(current.transaction).toBeFalsy();
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
-          const apiCall = mockDispatch.mock.calls[0][0];
-          propCount(apiCall, 5);
-          expect(apiCall.type).toBe(ApiActions.StartList);
-          expect(apiCall.func).toBe(ApiFunctions.asyncList);
-          expect(apiCall.dispatch).toBeInstanceOf(Function);
-          expect(apiCall.callback).toBeInstanceOf(Function);
-          expect(apiCall.page).toBe(page);
-        });
-      });
-
-      describe("without paginated results", () => {
-        beforeEach(() => {
-          current = { ...apiObjectState, transaction: false };
-          utils = renderHelper(current);
-        });
-
-        it("renders, calls StartList on first render", async () => {
-          expect(current.transaction).toBeFalsy();
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
-          const apiCall = mockDispatch.mock.calls[0][0];
-          propCount(apiCall, 5);
-          expect(apiCall.type).toBe(ApiActions.StartList);
-          expect(apiCall.func).toBe(ApiFunctions.asyncList);
-          expect(apiCall.dispatch).toBeInstanceOf(Function);
-          expect(apiCall.callback).toBeInstanceOf(Function);
-          expect(apiCall.page).toBe(null);
-        });
-
-        it("renders, should call header with the correct params", () => {
-          expect(current.transaction).toBe(false);
-
-          expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
-          const headerCall = mockHeaderUpdate.mock.calls[0][0];
-          expect(headerCall.title).toBe(mockHeaderTitle);
-          expect(headerCall.create).toBeInstanceOf(Function);
-          expect(headerCall.transaction).toBe(false);
-          expect(headerCall.disableNav).toBe(false);
-        });
-
-        it("renders, should call pagination with the correct params", () => {
-          expect(current.transaction).toBe(false);
-
-          expect(Pagination).toHaveBeenCalledTimes(1);
-          const pagination = Pagination.mock.calls[0][0];
-          propCount(pagination, 2);
-          expect(pagination.apiObject).toStrictEqual(current);
-          expect(pagination.handlePagination).toBeInstanceOf(Function);
-        });
-
-        it("renders, should call hint with the correct params", () => {
-          expect(current.transaction).toBe(false);
-
-          expect(Hint).toHaveBeenCalledTimes(1);
-
-          const helpCall = Hint.mock.calls[0][0];
-          propCount(helpCall, 1);
-          expect(helpCall.children).toBe(
-            Strings.Testing.GenericTranslationTestString
-          );
-        });
-
-        it("renders, should call the simple list component(s) with the correct params", () => {
-          expect(current.transaction).toBe(false);
-
-          expect(SimpleListItem).toHaveBeenCalledTimes(3);
-
-          const call1 = SimpleListItem.mock.calls[0][0];
-          propCount(call1, 5);
-          propCount(call1.listFunctions, 8);
-          propCount(call1.listValues, 5);
-
-          expect(call1.item).toBe(mockData[0]);
-          expect(call1.redirectTag).toBe(mockRedirectTag);
-          expect(call1.objectClass).toBe(apiObjectState.class);
-
-          expect(call1.listValues.duplicate).toBe(false);
-          expect(call1.listValues.selected).toBe(null);
-          expect(call1.listValues.errorMsg).toBe(null);
-          expect(call1.listValues.transaction).toBe(false);
-          expect(call1.listValues.longPress).toBe(false);
-
-          validateFunctions(call1);
-
-          const call2 = SimpleListItem.mock.calls[1][0];
-          propCount(call2, 5);
-          propCount(call2.listFunctions, 8);
-          propCount(call2.listValues, 5);
-
-          expect(call2.item).toBe(mockData[1]);
-          expect(call2.redirectTag).toBe(mockRedirectTag);
-          expect(call1.objectClass).toBe(apiObjectState.class);
-
-          expect(call2.listValues.duplicate).toBe(false);
-          expect(call2.listValues.selected).toBe(null);
-          expect(call2.listValues.errorMsg).toBe(null);
-          expect(call2.listValues.transaction).toBe(false);
-          expect(call2.listValues.longPress).toBe(false);
-
-          validateFunctions(call2);
-
-          const call3 = SimpleListItem.mock.calls[2][0];
-          propCount(call3, 5);
-          propCount(call3.listFunctions, 8);
-          propCount(call3.listValues, 5);
-
-          expect(call3.item).toBe(mockData[2]);
-          expect(call3.redirectTag).toBe(mockRedirectTag);
-          expect(call1.objectClass).toBe(apiObjectState.class);
-
-          expect(call3.listValues.duplicate).toBe(false);
-          expect(call3.listValues.selected).toBe(null);
-          expect(call3.listValues.errorMsg).toBe(null);
-          expect(call3.listValues.transaction).toBe(false);
-          expect(call3.listValues.longPress).toBe(false);
-
-          validateFunctions(call3);
-        });
-
-        it("renders, there should be no error message rendered", () => {
-          expect(SimpleListItem).toHaveBeenCalledTimes(3);
-          const { errorMsg } = SimpleListItem.mock.calls[0][0].listValues;
-          expect(utils.getByText(mockTitle)).toBeTruthy();
-          expect(errorMsg).toBeNull();
-        });
-
-        it("renders, when an error occurs during a create, it's rendered", async () => {
-          expect(SimpleListItem).toHaveBeenCalledTimes(3);
-
-          const {
-            setCreated,
-            setErrorMsg,
-          } = SimpleListItem.mock.calls[0][0].listFunctions;
-          SimpleListItem.mockClear(); // Prepare for rerender, so we can count again
-
-          act(() => {
-            setErrorMsg("Error");
-            setCreated(true);
-          });
-          await waitFor(() =>
-            expect(utils.queryByText(mockTitle)).not.toBeInTheDocument()
-          );
-          expect(utils.getByText("Error")).toBeTruthy();
-
-          // An Extra Simple List Item should now be rendered for the created item
-          expect(SimpleListItem).toHaveBeenCalledTimes(4);
-        });
-
-        it("renders, when handleCreate is called, it creates a new object", async () => {
-          expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
-          const { create } = mockHeaderUpdate.mock.calls[0][0];
-          expect(current.transaction).toBeFalsy();
-
-          SimpleListItem.mockClear(); // rerender
-          act(() => {
-            create();
-          });
-
-          await waitFor(() => expect(SimpleListItem).toHaveBeenCalledTimes(4));
-          const { item } = SimpleListItem.mock.calls[3][0];
-          const { selected } = SimpleListItem.mock.calls[3][0].listValues;
-          expect(item).toStrictEqual({ id: -1, name: "" });
-          expect(selected).toBe(-1);
-        });
-
-        it("renders, and dispatches the API reducer when handleSave is called", async () => {
-          expect(SimpleListItem).toHaveBeenCalledTimes(3);
-          const { add } = SimpleListItem.mock.calls[0][0].listFunctions;
-          expect(current.transaction).toBeFalsy();
-
-          act(() => {
-            add("shelfname");
-          });
-
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
-          expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
-
-          const apiCall = mockDispatch.mock.calls[1][0];
-          propCount(apiCall, 4);
-          expect(apiCall.type).toBe(ApiActions.StartAdd);
-          expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
-          expect(apiCall.payload).toStrictEqual({ name: "shelfname" });
-          expect(apiCall.dispatch).toBeInstanceOf(Function);
-
-          expect(mockAnalyticsContext.event).toBeCalledWith(
-            IndexedAnalyticsActions.shelf.create
-          );
-        });
-
-        it("renders, and dispatches the API reducer when handleSave is called", async () => {
-          expect(SimpleListItem).toHaveBeenCalledTimes(3);
-          const { add } = SimpleListItem.mock.calls[0][0].listFunctions;
-          expect(current.transaction).toBeFalsy();
-
-          act(() => {
-            add("shelfname");
-          });
-
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
-          expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
-
-          const apiCall = mockDispatch.mock.calls[1][0];
-          propCount(apiCall, 4);
-          expect(apiCall.type).toBe(ApiActions.StartAdd);
-          expect(apiCall.func).toBe(ApiFunctions.asyncAdd);
-          expect(apiCall.payload).toStrictEqual({ name: "shelfname" });
-          expect(apiCall.dispatch).toBeInstanceOf(Function);
-
-          expect(mockAnalyticsContext.event).toBeCalledWith(
-            IndexedAnalyticsActions.shelf.create
-          );
-        });
-
-        it("renders, and dispatches the API reducer when handleDelete is called", async () => {
-          expect(SimpleListItem).toHaveBeenCalledTimes(3);
-          const { del } = SimpleListItem.mock.calls[0][0].listFunctions;
-          expect(current.transaction).toBeFalsy();
-
-          act(() => {
-            del(2);
-          });
-
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
-          expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
-
-          const apiCall = mockDispatch.mock.calls[1][0];
-          propCount(apiCall, 4);
-          expect(apiCall.type).toBe(ApiActions.StartDel);
-          expect(apiCall.func).toBe(ApiFunctions.asyncDel);
-          expect(apiCall.payload.id).toBe(2);
-          expect(apiCall.dispatch).toBeInstanceOf(Function);
-
-          expect(mockAnalyticsContext.event).toBeCalledWith(
-            IndexedAnalyticsActions.shelf.delete
-          );
-        });
-
-        it("renders, and handles an auth failure condition as expected", async () => {
-          expect(SimpleListItem).toHaveBeenCalledTimes(3);
-          const { del } = SimpleListItem.mock.calls[0][0].listFunctions;
-          expect(current.transaction).toBeFalsy();
-
-          act(() => {
-            del(2);
-          });
-
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
-          expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
-
-          const apiCall = mockDispatch.mock.calls[1][0];
-          const setPerformAsync = apiCall.dispatch;
-
-          act(() => {
-            setPerformAsync({ type: ApiActions.FailureAuth });
-          });
-
-          await waitFor(() =>
-            expect(mockHandleExpiredAuth).toHaveBeenCalledTimes(1)
-          );
-        });
-
-        it("renders, and skips the holding pattern to trigger the spinner", async () => {
-          expect(HoldingPattern).toHaveBeenCalledTimes(1);
-          const holdingPatternCall = HoldingPattern.mock.calls[0][0];
-          propCount(holdingPatternCall, 2);
-          expect(holdingPatternCall.condition).toBe(false);
-        });
-
-        it("should call calculateMaxHeight on render", () => {
-          expect(calculateMaxHeight).toBeCalledTimes(1);
-        });
-
-        it("a should call calculateMaxHeight again on a window resize", async () => {
-          expect(calculateMaxHeight).toBeCalledTimes(1);
-          fireEvent(window, new Event("resize"));
-          await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-        });
-
-        it("renders, should call the error handler with the correct params", async () => {
-          await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
-          const call = ErrorHandler.mock.calls[0][0];
-          propCount(call, 6);
-          expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
-          expect(call.condition).toBe(false);
-          expect(call.clearError).toBeInstanceOf(Function);
-          expect(call.messageTranslationKey).toBe(
-            "SimpleList.ApiCommunicationError"
-          );
-          expect(call.redirect).toBe(Routes.goBack);
-          expect(call.children).toBeTruthy();
-
-          expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
-            Strings.SimpleList.ApiCommunicationError
-          );
-        });
-
-        it("handles a duplicate object error correctly", async () => {
-          expect(SimpleListItem).toHaveBeenCalledTimes(3);
-
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(1));
-          const dispatch = mockDispatch.mock.calls[0][0].dispatch;
-
-          act(() => dispatch({ type: ApiActions.DuplicateObject }));
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
-
-          expect(SimpleListItem).toHaveBeenCalledTimes(9);
-
-          const call1 = SimpleListItem.mock.calls[6][0];
-          expect(call1.listValues.duplicate).toBe(true);
-        });
-
-        it("should match the snapshot on file (styles)", () => {
-          expect(utils.container).toMatchSnapshot();
-        });
-      });
-
-      describe("with paginated results", () => {
-        beforeEach(() => {
-          current = { ...apiObjectState, transaction: false };
-          current.next = "next";
-          current.previous = "next";
-          utils = renderHelper(current);
-        });
-
-        it("renders, should call pagination with the correct params", () => {
-          expect(current.transaction).toBe(false);
-
-          expect(Pagination).toHaveBeenCalledTimes(1);
-          const pagination = Pagination.mock.calls[0][0];
-          propCount(pagination, 2);
-          expect(pagination.apiObject).toStrictEqual(current);
-          expect(pagination.handlePagination).toBeInstanceOf(Function);
-        });
-
-        it("renders, should handle a call to handlePagination correctly", async () => {
-          expect(current.transaction).toBe(false);
-          expect(Pagination).toHaveBeenCalledTimes(1);
-          const handlePagination = Pagination.mock.calls[0][0].handlePagination;
-
-          act(() => handlePagination("http://next"));
-
-          await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
-
-          const apiCall = mockDispatch.mock.calls[1][0];
-          propCount(apiCall, 5);
-          expect(apiCall.type).toBe(ApiActions.StartList);
-          expect(apiCall.func).toBe(ApiFunctions.asyncList);
-          expect(apiCall.dispatch).toBeInstanceOf(Function);
-          expect(apiCall.callback).toBeInstanceOf(Function);
-          expect(apiCall.override).toBe("http://next");
-        });
-      });
+  const checkBasicComponents = () => {
+    it("should update the Header with the correct params", () => {
+      expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
+      const headerCall = mockHeaderUpdate.mock.calls[0][0];
+      expect(headerCall.title).toBe(mockProps.headerTitle);
+      expect(headerCall.create).toBeInstanceOf(Function);
+      expect(headerCall.transaction).toBe(currentAPIData.transaction);
+      expect(headerCall.disableNav).toBe(false);
     });
 
-    describe("during an api error", () => {
-      beforeEach(() => {
-        current = { ...apiObjectState, transaction: false, fail: true };
-        utils = renderHelper(current);
-      });
-
-      it("renders, should call the error handler with the correct params", async () => {
-        await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
-        const call = ErrorHandler.mock.calls[0][0];
-        propCount(call, 6);
-        expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
-        expect(call.condition).toBe(true);
-        expect(call.clearError).toBeInstanceOf(Function);
-        expect(call.messageTranslationKey).toBe(
-          "SimpleList.ApiCommunicationError"
-        );
-        expect(call.redirect).toBe(Routes.goBack);
-        expect(call.children).toBeTruthy();
-
-        expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
-          Strings.SimpleList.ApiCommunicationError
-        );
-      });
-
-      it("renders, handles a call to clear errors as expected", async () => {
-        await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
-        const call = ErrorHandler.mock.calls[0][0];
-        act(() => call.clearError());
-        await waitFor(() => expect(mockDispatch).toBeCalledTimes(2));
-        expect(mockDispatch.mock.calls[1][0].type).toBe(ApiActions.ClearErrors);
-      });
-
-      it("should match the snapshot on file (styles)", () => {
-        expect(utils.container).toMatchSnapshot();
-      });
-    });
-  });
-
-  describe("during a transaction", () => {
-    beforeEach(() => {
-      current = { ...apiObjectState, transaction: true };
-      utils = renderHelper(current);
-    });
-
-    it("renders, should call the error handler with the correct params", async () => {
-      await waitFor(() => expect(ErrorHandler).toHaveBeenCalledTimes(1));
+    it("should call the ErrorHandler with the correct params", () => {
+      expect(ErrorHandler).toHaveBeenCalledTimes(1);
       const call = ErrorHandler.mock.calls[0][0];
       propCount(call, 6);
       expect(call.eventMessage).toBe(AnalyticsActions.ApiError);
-      expect(call.condition).toBe(false);
+      expect(call.condition).toBe(currentAPIData.fail);
       expect(call.clearError).toBeInstanceOf(Function);
       expect(call.messageTranslationKey).toBe(
         "SimpleList.ApiCommunicationError"
       );
       expect(call.redirect).toBe(Routes.goBack);
       expect(call.children).toBeTruthy();
-
-      expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
-        Strings.SimpleList.ApiCommunicationError
-      );
     });
 
-    it("renders, should call pagination with the correct params", () => {
-      expect(current.transaction).toBe(true);
-
-      expect(Pagination).toHaveBeenCalledTimes(1);
-      const pagination = Pagination.mock.calls[0][0];
-      propCount(pagination, 2);
-      expect(pagination.apiObject).toStrictEqual(current);
-      expect(pagination.handlePagination).toBeInstanceOf(Function);
-    });
-
-    it("renders, and then when there is an transaction bypasses calls to handleCreate", async () => {
-      expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
-      const { create } = mockHeaderUpdate.mock.calls[0][0];
-      expect(current.transaction).toBeTruthy();
-
-      SimpleListItem.mockClear(); // no changes, no rerender
-      act(() => {
-        create();
-      });
-
-      expect(SimpleListItem).toHaveBeenCalledTimes(0);
-    });
-
-    it("renders, and then when there is an transaction bypasses calls to handleSave", async () => {
-      expect(SimpleListItem).toHaveBeenCalledTimes(3);
-      const { add } = SimpleListItem.mock.calls[0][0].listFunctions;
-      expect(current.transaction).toBeTruthy();
-
-      SimpleListItem.mockClear(); // no changes, no rerender
-      act(() => {
-        add("name");
-      });
-
-      expect(SimpleListItem).toHaveBeenCalledTimes(0);
-      // MockDispatch only has a call for the initial item listing, not for the add
-      expect(mockDispatch).toHaveBeenCalledTimes(1);
-      expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
-    });
-
-    it("renders, and then when there is an transaction bypasses calls to handleDelete", async () => {
-      expect(SimpleListItem).toHaveBeenCalledTimes(3);
-      const { del } = SimpleListItem.mock.calls[0][0].listFunctions;
-      expect(current.transaction).toBeTruthy();
-
-      SimpleListItem.mockClear(); // no changes, no rerender
-      act(() => {
-        del(2);
-      });
-
-      expect(SimpleListItem).toHaveBeenCalledTimes(0);
-      expect(mockDispatch).toHaveBeenCalledTimes(1);
-      expect(mockDispatch.mock.calls[0][0].type).toBe(ApiActions.StartList);
-    });
-
-    it("renders, should call header with the correct params", () => {
-      expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
-      const headerCall = mockHeaderUpdate.mock.calls[0][0];
-      expect(headerCall.title).toBe(mockHeaderTitle);
-      expect(headerCall.create).toBeInstanceOf(Function);
-      expect(headerCall.transaction).toBe(true);
-      expect(headerCall.disableNav).toBe(false);
-    });
-
-    it("renders, and skips the holding pattern to trigger the spinner", async () => {
-      expect(HoldingPattern).toHaveBeenCalledTimes(1);
-      const holdingPatternCall = HoldingPattern.mock.calls[0][0];
-      propCount(holdingPatternCall, 2);
-      expect(holdingPatternCall.condition).toBe(false);
-    });
-
-    it("should call calculateMaxHeight on render", () => {
-      expect(calculateMaxHeight).toBeCalledTimes(1);
-    });
-
-    it("a should call calculateMaxHeight again on a window resize", async () => {
-      expect(calculateMaxHeight).toBeCalledTimes(1);
-      fireEvent(window, new Event("resize"));
-      await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
-    });
-
-    it("should match the snapshot on file (styles)", () => {
-      expect(utils.container).toMatchSnapshot();
-    });
-  });
-
-  describe("pending api load", () => {
-    beforeEach(() => {
-      current = { ...apiObjectState, transaction: true };
-      utils = render(
-        <AnalyticsContext.Provider value={mockAnalyticsContext}>
-          <HeaderContext.Provider
-            value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
-          >
-            <ApiContext.Provider
-              value={{
-                apiObject: current,
-                dispatch: mockDispatch,
-              }}
-            >
-              <SimpleList
-                title={mockTitle}
-                headerTitle={mockHeaderTitle}
-                create={create}
-                transaction={current.transaction}
-                ApiObjectContext={ApiContext}
-                placeHolderMessage={mockPlaceHolderMessage}
-                handleExpiredAuth={mockHandleExpiredAuth}
-                helpText={Strings.Testing.GenericTranslationTestString}
-                redirectTag={mockRedirectTag}
-              />
-            </ApiContext.Provider>
-          </HeaderContext.Provider>
-        </AnalyticsContext.Provider>
-      );
-    });
-
-    it("renders, should call header with the correct params", () => {
-      expect(mockHeaderUpdate).toHaveBeenCalledTimes(1);
-      const headerCall = mockHeaderUpdate.mock.calls[0][0];
-      expect(headerCall.title).toBe(mockHeaderTitle);
-      expect(headerCall.create).toBeInstanceOf(Function);
-      expect(headerCall.transaction).toBe(true);
-      expect(headerCall.disableNav).toBe(false);
-    });
-
-    it("renders, and loads the holding pattern to trigger the spinner", async () => {
+    it("should call the HoldingPattern spinner with the correct params", () => {
       expect(HoldingPattern).toHaveBeenCalledTimes(1);
       const holdingPatternCall = HoldingPattern.mock.calls[0][0];
       propCount(holdingPatternCall, 2);
       expect(holdingPatternCall.condition).toBe(true);
     });
 
-    it("should call calculateMaxHeight on render", () => {
+    it("should call Pagination with the correct params", () => {
+      expect(Pagination).toHaveBeenCalledTimes(1);
+      const pagination = Pagination.mock.calls[0][0];
+      propCount(pagination, 2);
+      expect(pagination.apiObject).toStrictEqual(currentAPIData);
+      expect(pagination.handlePagination).toBeInstanceOf(Function);
+    });
+
+    it("should translate SimpleList.ApiCommunicationError correctly", () => {
+      expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
+        Strings.SimpleList.ApiCommunicationError
+      );
+    });
+
+    it("should call calculateMaxHeight", () => {
       expect(calculateMaxHeight).toBeCalledTimes(1);
     });
 
-    it("a should call calculateMaxHeight again on a window resize", async () => {
-      expect(calculateMaxHeight).toBeCalledTimes(1);
-      fireEvent(window, new Event("resize"));
-      await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
+    describe("when the screen is resized", () => {
+      beforeEach(() => {
+        fireEvent(window, new Event("resize"));
+      });
+
+      it("should call calculateMaxHeight a second time", async () => {
+        await waitFor(() => expect(calculateMaxHeight).toBeCalledTimes(2));
+      });
     });
+  };
+
+  describe("when there is NOT a transaction", () => {
+    beforeEach(() => (currentAPIData.transaction = false));
+
+    describe("when there is NOT an api failure", () => {
+      beforeEach(() => (currentAPIData.fail = false));
+
+      describe("when there are NO items in the list", () => {
+        beforeEach(() => {
+          currentAPIData.inventory = [];
+          arrange(currentAPIData);
+        });
+
+        it("should display the mockPlaceHolderMessage", () => {
+          expect(screen.getByText(mockProps.placeHolderMessage)).toBeTruthy();
+        });
+
+        it("should NOT call SimpleListItem", () => {
+          expect(SimpleListItem).toBeCalledTimes(0);
+        });
+
+        checkBasicComponents();
+
+        it("should call StartList on first render", () => {
+          expect(mockDispatch).toHaveBeenCalledTimes(1);
+          const apiCall = mockDispatch.mock.calls[0][0];
+          propCount(apiCall, 5);
+          expect(apiCall.type).toBe(ApiActions.StartList);
+          expect(apiCall.func).toBe(ApiFunctions.asyncList);
+          expect(apiCall.dispatch).toBeInstanceOf(Function);
+          expect(apiCall.callback).toBeInstanceOf(Function);
+          expect(apiCall.page).toBeNull();
+        });
+
+        it("should match the snapshot on file (styles)", () => {
+          expect(container).toMatchSnapshot();
+        });
+      });
+
+      describe("when there are items in the list", () => {
+        beforeEach(() => (currentAPIData.inventory = [...mockInventoryData]));
+
+        const checkSimpleListItem = (index) => {
+          const call = SimpleListItem.mock.calls[index][0];
+          expect(call.item).toBe(currentAPIData.inventory[index]);
+          expect(typeof call.handleDelete).toBe("function");
+          expect(typeof call.handleSave).toBe("function");
+          expect(typeof call.setErrorMsg).toBe("function");
+          expect(call.objectClass).toBe(currentAPIData.class);
+          expect(call.transaction).toBe(currentAPIData.transaction);
+          expect(call.redirectTag).toBe(mockProps.redirectTag);
+          expect(call.selected).toBe(null);
+          expect(typeof call.setSelected).toBe("function");
+          expect(call.history).toBe(history);
+          propCount(call, 10);
+        };
+
+        const checkSimpleListItems = () => {
+          it("should call the SimpleListItem for each item", () => {
+            expect(SimpleListItem).toBeCalledTimes(
+              currentAPIData.inventory.length
+            );
+            currentAPIData.inventory.map((_, index) =>
+              checkSimpleListItem(index)
+            );
+          });
+        };
+
+        it("should match the snapshot on file (styles)", () => {
+          expect(container).toMatchSnapshot();
+        });
+
+        describe("when an API authentication error occurs", () => {
+          beforeEach(() => {
+            arrange(currentAPIData);
+          });
+
+          it("should match the snapshot on file (styles)", () => {
+            expect(container).toMatchSnapshot();
+          });
+
+          it("renders, and handles an auth failure condition as expected", async () => {
+            const { handleDelete } = SimpleListItem.mock.calls[0][0];
+
+            act(() => {
+              handleDelete(2);
+            });
+
+            await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
+            await waitFor(() => expect(Alert).toHaveBeenCalledTimes(4));
+
+            const apiCall = mockDispatch.mock.calls[1][0];
+            const setPerformAsync = apiCall.dispatch;
+
+            act(() => {
+              setPerformAsync({ type: ApiActions.FailureAuth });
+            });
+
+            await waitFor(() =>
+              expect(mockProps.handleExpiredAuth).toHaveBeenCalledTimes(1)
+            );
+          });
+        });
+
+        describe("when the page has a pagination reference", () => {
+          beforeEach(() => {
+            mockPaginationOffset = "2";
+            setUrl(
+              `https://myserver.com:8080?${Constants.pageLookupParam}=${mockPaginationOffset}`
+            );
+            arrange(currentAPIData);
+          });
+
+          it("should NOT display the mockPlaceHolderMessage", () => {
+            expect(screen.queryByText(mockProps.placeHolderMessage)).toBeNull();
+          });
+
+          checkBasicComponents();
+          checkSimpleListItems();
+
+          it("should call StartList on first render, with the page param", () => {
+            expect(mockDispatch).toHaveBeenCalledTimes(1);
+            const apiCall = mockDispatch.mock.calls[0][0];
+            propCount(apiCall, 5);
+            expect(apiCall.type).toBe(ApiActions.StartList);
+            expect(apiCall.func).toBe(ApiFunctions.asyncList);
+            expect(apiCall.dispatch).toBeInstanceOf(Function);
+            expect(apiCall.callback).toBeInstanceOf(Function);
+            expect(apiCall.page).toBe(mockPaginationOffset);
+          });
+
+          it("should match the snapshot on file (styles)", () => {
+            expect(container).toMatchSnapshot();
+          });
+        });
+
+        describe("when the page does NOT have a pagination reference", () => {
+          beforeEach(() => {
+            arrange(currentAPIData);
+          });
+
+          it("should NOT display the mockPlaceHolderMessage", () => {
+            expect(screen.queryByText(mockProps.placeHolderMessage)).toBeNull();
+          });
+
+          checkBasicComponents();
+          checkSimpleListItems();
+
+          it("should call StartList on first render, with the page param", () => {
+            expect(mockDispatch).toHaveBeenCalledTimes(1);
+            const apiCall = mockDispatch.mock.calls[0][0];
+            propCount(apiCall, 5);
+            expect(apiCall.type).toBe(ApiActions.StartList);
+            expect(apiCall.func).toBe(ApiFunctions.asyncList);
+            expect(apiCall.dispatch).toBeInstanceOf(Function);
+            expect(apiCall.callback).toBeInstanceOf(Function);
+            expect(apiCall.page).toBeNull();
+          });
+
+          it("should match the snapshot on file (styles)", () => {
+            expect(container).toMatchSnapshot();
+          });
+        });
+      });
+    });
+  });
+
+  describe("when there is an API failure", () => {
+    beforeEach(() => {
+      currentAPIData.fail = true;
+      arrange(currentAPIData);
+    });
+
+    checkBasicComponents();
+  });
+
+  describe("when there is a transaction", () => {
+    beforeEach(() => {
+      currentAPIData.transaction = true;
+      arrange(currentAPIData);
+    });
+
+    checkBasicComponents();
 
     it("should match the snapshot on file (styles)", () => {
-      expect(utils.container).toMatchSnapshot();
+      expect(container).toMatchSnapshot();
+    });
+
+    describe("simulated error scenarios", () => {
+      describe("save item scenario", () => {
+        beforeEach(async () => {
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          await waitFor(() => expect(SimpleListItem).toBeCalledTimes(3));
+          const handleSave = SimpleListItem.mock.calls[0][0].handleSave;
+          await act(() => handleSave("Not A Real Item"));
+        });
+
+        it("should should NOT dispatch for the save", () => {
+          expect(mockDispatch).toBeCalledTimes(1);
+        });
+      });
+
+      describe("delete item scenario", () => {
+        beforeEach(async () => {
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+          await waitFor(() => expect(SimpleListItem).toBeCalledTimes(3));
+          const handleDelete = SimpleListItem.mock.calls[0][0].handleDelete;
+          act(() => handleDelete(0, "Not A Real Item"));
+        });
+
+        it("should should NOT dispatch for the delete", () => {
+          expect(mockDispatch).toBeCalledTimes(1);
+        });
+      });
     });
   });
 });

@@ -273,7 +273,11 @@ describe("Setup Environment, Render Tests", () => {
         expect(shelf.details).toBe(Strings.ItemDetails.ShelvesDetail);
         expect(shelf.labelColumn).toBe("");
         expect(shelf.itemColumn).toBe("col-12");
-        expect(shelf.options).toStrictEqual([mockShelf1, mockShelf2]);
+        expect(shelf.options).toStrictEqual([
+          { id: null, name: Strings.ItemDetails.UndefinedShelf },
+          mockShelf1,
+          mockShelf2,
+        ]);
       });
 
       it("renders, MultiDropDown as expected", async () => {
@@ -546,9 +550,12 @@ describe("Setup Environment For Action Tests", () => {
         const button = utils.getByTestId("delete");
         fireEvent.click(button, "click");
         await waitFor(() => expect(mockHandleDelete).toBeCalledTimes(1));
-        await waitFor(() => expect(Alert).toBeCalledTimes(1));
+        await waitFor(() => expect(Alert).toBeCalledTimes(2));
         expect(Alert.mock.calls[0][0]).toStrictEqual({
           message: Strings.ItemDetails.DeleteAction,
+        });
+        expect(Alert.mock.calls[1][0]).toStrictEqual({
+          message: null,
         });
       });
     });
@@ -586,26 +593,47 @@ describe("Setup Environment For Action Tests", () => {
           message: Strings.ItemDetails.SaveAction,
         });
         expect(Alert.mock.calls[1][0]).toStrictEqual({ message: null });
+        await waitFor(() =>
+          expect(utils.queryByText(Strings.ItemDetails.SaveAction)).toBeNull()
+        );
       });
 
-      it("renders an error if the preferred_store is not selected", async () => {
-        const modified_value = [];
+      it("does not save an undefined name", async () => {
+        await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
 
-        await waitFor(() => expect(MultiDropDown).toHaveBeenCalledTimes(2));
-        const shelf = MultiDropDown.mock.calls[1][0];
-        act(() => shelf.handleState(modified_value));
+        const name = FormInput.mock.calls[0][0];
+        act(() => name.handleState(""));
+        Alert.mockClear();
 
         const button = utils.getByTestId("submit");
         fireEvent.click(button, "click");
+        await waitFor(() => expect(mockHandleSave).toBeCalledTimes(0));
+        await waitFor(() =>
+          expect(utils.findByText(Strings.ItemDetails.NoNameError)).toBeTruthy()
+        );
+        await waitFor(() =>
+          expect(utils.queryByText(Strings.ItemDetails.NoNameError)).toBeNull()
+        );
+      });
+
+      it("does not save an undefined price", async () => {
+        await waitFor(() => expect(FormInput).toHaveBeenCalledTimes(6));
+
+        const price = FormInput.mock.calls[2][0];
+        act(() => price.handleState(""));
+        Alert.mockClear();
+
+        const button = utils.getByTestId("submit");
+        fireEvent.click(button, "click");
+        await waitFor(() => expect(mockHandleSave).toBeCalledTimes(0));
         await waitFor(() =>
           expect(
-            utils.getByText(Strings.ItemDetails.ErrorUnselectedStore)
+            utils.findByText(Strings.ItemDetails.NoPriceError)
           ).toBeTruthy()
         );
         await waitFor(() =>
-          expect(utils.getByText(current.title)).toBeTruthy()
+          expect(utils.queryByText(Strings.ItemDetails.NoPriceError)).toBeNull()
         );
-        expect(mockHandleSave).toBeCalledTimes(0);
       });
     });
 
@@ -625,7 +653,9 @@ describe("Setup Environment For Action Tests", () => {
           ).toBeTruthy()
         );
         await waitFor(() =>
-          expect(utils.getByText(current.title)).toBeTruthy()
+          expect(
+            utils.queryByText(Strings.ItemDetails.ValidationAlreadyExists)
+          ).toBeNull()
         );
 
         expect(mockSetDuplicate).toBeCalledTimes(1);

@@ -41,7 +41,6 @@ const DropDown = ({
           id={fieldName}
           name={fieldName}
           size={size}
-          required
           value={storeState}
           onChange={(e) => calculateSelections(e)}
           readOnly={transaction}

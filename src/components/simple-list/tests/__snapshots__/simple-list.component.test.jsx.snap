@@ -1,160 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Setup Environment during a transaction should match the snapshot on file (styles) 1`] = `
-.c3 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  list-style-type: none;
-  list-style-position: outside;
-  overflow: scroll;
-  max-height: 200px;
-  border-style: solid;
-  border-color: #808080;
-  border-width: 10px;
-}
-
-.c4 {
-  padding-left: 0px;
-  min-width: 200px;
-  background: #808080;
-  padding-top: 0px;
-}
-
-.c4 li:last-child {
-  margin-bottom: 0px;
-}
-
+exports[`SimpleList when there is NOT a transaction when there is NOT an api failure when there are NO items in the list should match the snapshot on file (styles) 1`] = `
 .c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
-.c0 {
-  margin-top: 50px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c0 .nav-tabs {
-  height: 28px !important;
-  font-size: 0.75em;
-}
-
-.c0 a[role="tab"] {
-  padding-bottom: 0px;
-  padding-top: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.c5 .alert-light {
-  padding-top: 5px;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-}
-
-<div>
-  <div
-    class="c0"
-  >
-    <div>
-      MockPagination
-    </div>
-    <div
-      class="c1"
-    >
-      <div
-        class="c2 alert alert-success"
-      >
-        <div>
-          Some Title
-        </div>
-      </div>
-      <div
-        class="c3 overflow-auto"
-        size="200"
-      >
-        <div
-          class="c4"
-        >
-          <div>
-            MockListItem
-          </div>
-          <div>
-            MockListItem
-          </div>
-          <div>
-            MockListItem
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="c5"
-    >
-      <div
-        class="alert alert-light"
-        data-testid="alert"
-        role="alert"
-      >
-         
-      </div>
-    </div>
-    <div>
-      MockHelp
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Setup Environment outside of a transaction during an api error should match the snapshot on file (styles) 1`] = `
-.c3 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -168,171 +15,18 @@ exports[`Setup Environment outside of a transaction during an api error should m
   border-width: 10px;
 }
 
-.c4 {
-  padding-left: 0px;
-  min-width: 200px;
-  background: #808080;
-  padding-top: 0px;
-}
-
-.c4 li:last-child {
-  margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
-.c0 {
-  margin-top: 50px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c0 .nav-tabs {
-  height: 28px !important;
-  font-size: 0.75em;
-}
-
-.c0 a[role="tab"] {
-  padding-bottom: 0px;
-  padding-top: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.c5 .alert-light {
-  padding-top: 5px;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-}
-
-<div>
-  <div
-    class="c0"
-  >
-    <div>
-      MockPagination
-    </div>
-    <div
-      class="c1"
-    >
-      <div
-        class="c2 alert alert-success"
-      >
-        <div>
-          Some Title
-        </div>
-      </div>
-      <div
-        class="c3 overflow-auto"
-        size="200"
-      >
-        <div
-          class="c4"
-        >
-          <div>
-            MockListItem
-          </div>
-          <div>
-            MockListItem
-          </div>
-          <div>
-            MockListItem
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="c5"
-    >
-      <div
-        class="alert alert-light"
-        data-testid="alert"
-        role="alert"
-      >
-         
-      </div>
-    </div>
-    <div>
-      MockHelp
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Setup Environment outside of a transaction outside of an api failure no items in the list should match the snapshot on file (styles) 1`] = `
 .c3 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  list-style-type: none;
-  list-style-position: outside;
-  overflow: scroll;
-  max-height: 200px;
-  border-style: solid;
-  border-color: #808080;
-  border-width: 10px;
-}
-
-.c4 {
   padding-left: 0px;
   min-width: 200px;
   background: #808080;
   padding-top: 0px;
 }
 
-.c4 li:last-child {
+.c3 li:last-child {
   margin-bottom: 0px;
 }
 
-.c5 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -356,13 +50,6 @@ exports[`Setup Environment outside of a transaction outside of an api failure no
   margin-bottom: 0px;
 }
 
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
-}
-
 .c0 {
   margin-top: 50px;
   display: -webkit-box;
@@ -408,27 +95,6 @@ exports[`Setup Environment outside of a transaction outside of an api failure no
   border-color: #000000;
 }
 
-.c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.c6 .alert-light {
-  padding-top: 5px;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-}
-
 <div>
   <div
     class="c0"
@@ -439,38 +105,26 @@ exports[`Setup Environment outside of a transaction outside of an api failure no
     <div
       class="c1"
     >
-      <div
-        class="c2 alert alert-success"
-      >
-        <div>
-          Some Title
-        </div>
+      <div>
+        MockBanner
       </div>
       <div
-        class="c3 overflow-auto"
+        class="c2 overflow-auto"
         size="200"
       >
         <div
-          class="c4"
+          class="c3"
         >
           <li
-            class="c5"
+            class="c4"
           >
-            I'm Right Here
+            Holding a Place
           </li>
         </div>
       </div>
     </div>
-    <div
-      class="c6"
-    >
-      <div
-        class="alert alert-light"
-        data-testid="alert"
-        role="alert"
-      >
-         
-      </div>
+    <div>
+      MockAlert
     </div>
     <div>
       MockHelp
@@ -479,8 +133,10 @@ exports[`Setup Environment outside of a transaction outside of an api failure no
 </div>
 `;
 
-exports[`Setup Environment outside of a transaction outside of an api failure without paginated results should match the snapshot on file (styles) 1`] = `
-.c3 {
+exports[`SimpleList when there is NOT a transaction when there is NOT an api failure when there are items in the list should match the snapshot on file (styles) 1`] = `<div />`;
+
+exports[`SimpleList when there is NOT a transaction when there is NOT an api failure when there are items in the list when an API authentication error occurs should match the snapshot on file (styles) 1`] = `
+.c2 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -494,22 +150,15 @@ exports[`Setup Environment outside of a transaction outside of an api failure wi
   border-width: 10px;
 }
 
-.c4 {
+.c3 {
   padding-left: 0px;
   min-width: 200px;
   background: #808080;
   padding-top: 0px;
 }
 
-.c4 li:last-child {
+.c3 li:last-child {
   margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .c0 {
@@ -557,27 +206,6 @@ exports[`Setup Environment outside of a transaction outside of an api failure wi
   border-color: #000000;
 }
 
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.c5 .alert-light {
-  padding-top: 5px;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-}
-
 <div>
   <div
     class="c0"
@@ -588,19 +216,15 @@ exports[`Setup Environment outside of a transaction outside of an api failure wi
     <div
       class="c1"
     >
-      <div
-        class="c2 alert alert-success"
-      >
-        <div>
-          Some Title
-        </div>
+      <div>
+        MockBanner
       </div>
       <div
-        class="c3 overflow-auto"
+        class="c2 overflow-auto"
         size="200"
       >
         <div
-          class="c4"
+          class="c3"
         >
           <div>
             MockListItem
@@ -614,16 +238,8 @@ exports[`Setup Environment outside of a transaction outside of an api failure wi
         </div>
       </div>
     </div>
-    <div
-      class="c5"
-    >
-      <div
-        class="alert alert-light"
-        data-testid="alert"
-        role="alert"
-      >
-         
-      </div>
+    <div>
+      MockAlert
     </div>
     <div>
       MockHelp
@@ -632,8 +248,8 @@ exports[`Setup Environment outside of a transaction outside of an api failure wi
 </div>
 `;
 
-exports[`Setup Environment pending api load should match the snapshot on file (styles) 1`] = `
-.c3 {
+exports[`SimpleList when there is NOT a transaction when there is NOT an api failure when there are items in the list when the page does NOT have a pagination reference should match the snapshot on file (styles) 1`] = `
+.c2 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -647,22 +263,15 @@ exports[`Setup Environment pending api load should match the snapshot on file (s
   border-width: 10px;
 }
 
-.c4 {
+.c3 {
   padding-left: 0px;
   min-width: 200px;
   background: #808080;
   padding-top: 0px;
 }
 
-.c4 li:last-child {
+.c3 li:last-child {
   margin-bottom: 0px;
-}
-
-.c2 {
-  width: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .c0 {
@@ -710,27 +319,6 @@ exports[`Setup Environment pending api load should match the snapshot on file (s
   border-color: #000000;
 }
 
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.c5 .alert-light {
-  padding-top: 5px;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-}
-
 <div>
   <div
     class="c0"
@@ -741,19 +329,15 @@ exports[`Setup Environment pending api load should match the snapshot on file (s
     <div
       class="c1"
     >
-      <div
-        class="c2 alert alert-success"
-      >
-        <div>
-          Some Title
-        </div>
+      <div>
+        MockBanner
       </div>
       <div
-        class="c3 overflow-auto"
+        class="c2 overflow-auto"
         size="200"
       >
         <div
-          class="c4"
+          class="c3"
         >
           <div>
             MockListItem
@@ -767,16 +351,234 @@ exports[`Setup Environment pending api load should match the snapshot on file (s
         </div>
       </div>
     </div>
+    <div>
+      MockAlert
+    </div>
+    <div>
+      MockHelp
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SimpleList when there is NOT a transaction when there is NOT an api failure when there are items in the list when the page has a pagination reference should match the snapshot on file (styles) 1`] = `
+.c2 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  list-style-type: none;
+  list-style-position: outside;
+  overflow: scroll;
+  max-height: 200px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 10px;
+}
+
+.c3 {
+  padding-left: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding-top: 0px;
+}
+
+.c3 li:last-child {
+  margin-bottom: 0px;
+}
+
+.c0 {
+  margin-top: 50px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div>
+      MockPagination
+    </div>
     <div
-      class="c5"
+      class="c1"
     >
-      <div
-        class="alert alert-light"
-        data-testid="alert"
-        role="alert"
-      >
-         
+      <div>
+        MockBanner
       </div>
+      <div
+        class="c2 overflow-auto"
+        size="200"
+      >
+        <div
+          class="c3"
+        >
+          <div>
+            MockListItem
+          </div>
+          <div>
+            MockListItem
+          </div>
+          <div>
+            MockListItem
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      MockAlert
+    </div>
+    <div>
+      MockHelp
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SimpleList when there is a transaction should match the snapshot on file (styles) 1`] = `
+.c2 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  list-style-type: none;
+  list-style-position: outside;
+  overflow: scroll;
+  max-height: 200px;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 10px;
+}
+
+.c3 {
+  padding-left: 0px;
+  min-width: 200px;
+  background: #808080;
+  padding-top: 0px;
+}
+
+.c3 li:last-child {
+  margin-bottom: 0px;
+}
+
+.c0 {
+  margin-top: 50px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 .nav-tabs {
+  height: 28px !important;
+  font-size: 0.75em;
+}
+
+.c0 a[role="tab"] {
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div>
+      MockPagination
+    </div>
+    <div
+      class="c1"
+    >
+      <div>
+        MockBanner
+      </div>
+      <div
+        class="c2 overflow-auto"
+        size="200"
+      >
+        <div
+          class="c3"
+        >
+          <div>
+            MockListItem
+          </div>
+          <div>
+            MockListItem
+          </div>
+          <div>
+            MockListItem
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      MockAlert
     </div>
     <div>
       MockHelp
