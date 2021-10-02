@@ -2,8 +2,13 @@ import PropTypes from "prop-types";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
-import SimpleListItem from "./simple-list-item/simple-list-item.component";
-import { Scroller, ListBox, PlaceHolderListItem } from "./simple-list.styles";
+import InlineListForm from "./inline-list.form/inline-list.form.component";
+import InlineListItem from "./inline-list.item/inline-list.item.component";
+import {
+  InlineListScroller,
+  InlineListBox,
+  InlineListPlaceHolder,
+} from "./inline-list.styles";
 import { Constants } from "../../configuration/backend";
 import Routes from "../../configuration/routes";
 import { ui } from "../../configuration/theme";
@@ -27,7 +32,12 @@ import Pagination from "../pagination/pagination.component";
 
 export const testIDs = {};
 
-const SimpleList = ({
+export const createItemDefaults = {
+  id: -1,
+  name: "",
+};
+
+const InlineList = ({
   headerTitle,
   title,
   ApiObjectContext,
@@ -115,17 +125,16 @@ const SimpleList = ({
 
   const handleCreate = () => {
     if (apiObject.transaction) return;
-    setCreated({ id: -1, name: "" });
-    setSelected(-1);
+    setCreated(createItemDefaults);
+    setSelected(createItemDefaults.id);
   };
 
   const handleSave = async (name) => {
-    if (apiObject.transaction) return;
     if (name.length < 2) {
-      flashErrorMessage(t("SimpleList.ValidationFailure"));
+      flashErrorMessage(t("InlineList.ValidationFailure"));
       return;
     }
-    flashActionMessage(`${t("SimpleList.CreatedAction")} ${name}`);
+    flashActionMessage(`${t("InlineList.CreatedAction")} ${name}`);
     event(IndexedAnalyticsActions[apiObject.class].create);
     setPerformAsync({
       type: ApiActions.StartAdd,
@@ -139,7 +148,7 @@ const SimpleList = ({
   const handleDelete = (id, name) => {
     if (apiObject.transaction) return;
     setSelected(null);
-    flashActionMessage(`${t("SimpleList.DeletedAction")} ${name}`);
+    flashActionMessage(`${t("InlineList.DeletedAction")} ${name}`);
     event(IndexedAnalyticsActions[apiObject.class].delete);
     setPerformAsync({
       type: ApiActions.StartDel,
@@ -167,7 +176,7 @@ const SimpleList = ({
         condition={apiObject.fail}
         clearError={clearError}
         eventMessage={AnalyticsActions.ApiError}
-        messageTranslationKey={"SimpleList.ApiCommunicationError"}
+        messageTranslationKey={"InlineList.ApiCommunicationError"}
         redirect={Routes.goBack}
       >
         <HoldingPattern condition={!itemsFetched.complete}>
@@ -186,17 +195,15 @@ const SimpleList = ({
                   {title}
                 </ItemizedBanner>
               )}
-              <Scroller className="overflow-auto" size={listSize}>
-                <ListBox>
+              <InlineListScroller className="overflow-auto" size={listSize}>
+                <InlineListBox>
                   {apiObject.inventory.map((item) => {
                     return (
-                      <SimpleListItem
-                        key={item.id}
-                        history={history}
+                      <InlineListItem
                         item={item}
+                        key={item.id}
                         handleDelete={handleDelete}
-                        handleSave={handleSave}
-                        setErrorMsg={setErrorMsg}
+                        history={history}
                         objectClass={apiObject.class}
                         transaction={apiObject.transaction}
                         redirectTag={redirectTag}
@@ -206,26 +213,21 @@ const SimpleList = ({
                     );
                   })}
                   {created ? (
-                    <SimpleListItem
-                      history={history}
+                    <InlineListForm
                       item={created}
-                      handleDelete={handleDelete}
                       handleSave={handleSave}
                       setErrorMsg={setErrorMsg}
-                      objectClass={apiObject.class}
-                      transaction={apiObject.transaction}
-                      redirectTag={redirectTag}
-                      selected={selected}
                       setSelected={setSelected}
+                      transaction={apiObject.transaction}
                     />
                   ) : null}
                   {apiObject.inventory.length === 0 && !created ? (
-                    <PlaceHolderListItem>
+                    <InlineListPlaceHolder>
                       {placeHolderMessage}
-                    </PlaceHolderListItem>
+                    </InlineListPlaceHolder>
                   ) : null}
-                </ListBox>
-              </Scroller>
+                </InlineListBox>
+              </InlineListScroller>
             </Paper>
             <Alert message={actionMsg} />
             <Hint>{helpText}</Hint>
@@ -236,9 +238,9 @@ const SimpleList = ({
   );
 };
 
-export default withRouter(SimpleList);
+export default withRouter(InlineList);
 
-SimpleList.propTypes = {
+InlineList.propTypes = {
   headerTitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   ApiObjectContext: PropTypes.object.isRequired,

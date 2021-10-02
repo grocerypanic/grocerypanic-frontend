@@ -26,11 +26,13 @@ import ErrorHandler from "../../error-handler/error-handler.component";
 import Hint from "../../hint/hint.component";
 import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 import Pagination from "../../pagination/pagination.component";
-import SimpleListItem from "../simple-list-item/simple-list-item.component";
-import SimpleList from "../simple-list.component";
+import InlineList, { createItemDefaults } from "../inline-list.component";
+import InlineListForm from "../inline-list.form/inline-list.form.component";
+import InlineListItem from "../inline-list.item/inline-list.item.component";
 
 jest.mock("../../holding-pattern/holding-pattern.component");
-jest.mock("../simple-list-item/simple-list-item.component");
+jest.mock("../inline-list.form/inline-list.form.component");
+jest.mock("../inline-list.item/inline-list.item.component");
 jest.mock("../../hint/hint.component");
 jest.mock("../../../util/height");
 jest.mock("../../error-handler/error-handler.component");
@@ -52,7 +54,8 @@ jest.mock("../../../configuration/theme", () => {
 Alert.mockImplementation(() => <div>MockAlert</div>);
 ErrorHandler.mockImplementation(({ children }) => children);
 HoldingPattern.mockImplementation(({ children }) => children);
-SimpleListItem.mockImplementation(() => <div>MockListItem</div>);
+InlineListItem.mockImplementation(() => <div>MockListItem</div>);
+InlineListForm.mockImplementation(() => <div>MockListItemForm</div>);
 Hint.mockImplementation(() => <div>MockHelp</div>);
 Pagination.mockImplementation(() => <div>MockPagination</div>);
 calculateMaxHeight.mockImplementation(() => 200);
@@ -85,7 +88,7 @@ const MockApiContext = React.createContext({
   dispatch: mockDispatch,
 });
 
-describe("SimpleList", () => {
+describe("InlineList", () => {
   let mockProps = {
     title: "Some Title",
     headerTitle: "Some Header Title",
@@ -133,7 +136,7 @@ describe("SimpleList", () => {
                 dispatch: mockDispatch,
               }}
             >
-              <SimpleList
+              <InlineList
                 title={mockProps.title}
                 headerTitle={mockProps.headerTitle}
                 create={mockProps.create}
@@ -170,7 +173,7 @@ describe("SimpleList", () => {
       expect(call.condition).toBe(currentAPIData.fail);
       expect(call.clearError).toBeInstanceOf(Function);
       expect(call.messageTranslationKey).toBe(
-        "SimpleList.ApiCommunicationError"
+        "InlineList.ApiCommunicationError"
       );
       expect(call.redirect).toBe(Routes.goBack);
       expect(call.children).toBeTruthy();
@@ -191,9 +194,9 @@ describe("SimpleList", () => {
       expect(pagination.handlePagination).toBeInstanceOf(Function);
     });
 
-    it("should translate SimpleList.ApiCommunicationError correctly", () => {
-      expect(i18next.t("SimpleList.ApiCommunicationError")).toBe(
-        Strings.SimpleList.ApiCommunicationError
+    it("should translate InlineList.ApiCommunicationError correctly", () => {
+      expect(i18next.t("InlineList.ApiCommunicationError")).toBe(
+        Strings.InlineList.ApiCommunicationError
       );
     });
 
@@ -228,8 +231,8 @@ describe("SimpleList", () => {
           expect(screen.getByText(mockProps.placeHolderMessage)).toBeTruthy();
         });
 
-        it("should NOT call SimpleListItem", () => {
-          expect(SimpleListItem).toBeCalledTimes(0);
+        it("should NOT call InlineListItem", () => {
+          expect(InlineListItem).toBeCalledTimes(0);
         });
 
         checkBasicComponents();
@@ -248,33 +251,51 @@ describe("SimpleList", () => {
         it("should match the snapshot on file (styles)", () => {
           expect(container).toMatchSnapshot();
         });
+
+        describe("when a new item is created", () => {
+          beforeEach(async () => {
+            await waitFor(() => expect(mockHeaderUpdate).toBeCalledTimes(1));
+            await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
+            const handleCreate = mockHeaderUpdate.mock.calls[0][0].create;
+            act(() => handleCreate());
+          });
+
+          it("should call ListItemForm", async () => {
+            await waitFor(() => expect(InlineListForm).toBeCalledTimes(1));
+            const call = InlineListForm.mock.calls[0][0];
+            propCount(call, 5);
+            expect(call.item).toBe(createItemDefaults);
+            expect(call.handleSave).toBeInstanceOf(Function);
+            expect(call.setErrorMsg).toBeInstanceOf(Function);
+            expect(call.setSelected).toBeInstanceOf(Function);
+            expect(call.transaction).toBe(currentAPIData.transaction);
+          });
+        });
       });
 
       describe("when there are items in the list", () => {
         beforeEach(() => (currentAPIData.inventory = [...mockInventoryData]));
 
-        const checkSimpleListItem = (index) => {
-          const call = SimpleListItem.mock.calls[index][0];
+        const checkInlineListItem = (index) => {
+          const call = InlineListItem.mock.calls[index][0];
           expect(call.item).toBe(currentAPIData.inventory[index]);
           expect(typeof call.handleDelete).toBe("function");
-          expect(typeof call.handleSave).toBe("function");
-          expect(typeof call.setErrorMsg).toBe("function");
+          expect(call.history).toBe(history);
           expect(call.objectClass).toBe(currentAPIData.class);
           expect(call.transaction).toBe(currentAPIData.transaction);
           expect(call.redirectTag).toBe(mockProps.redirectTag);
           expect(call.selected).toBe(null);
           expect(typeof call.setSelected).toBe("function");
-          expect(call.history).toBe(history);
-          propCount(call, 10);
+          propCount(call, 8);
         };
 
-        const checkSimpleListItems = () => {
-          it("should call the SimpleListItem for each item", () => {
-            expect(SimpleListItem).toBeCalledTimes(
+        const checkInlineListItems = () => {
+          it("should call the InlineListItem for each item", () => {
+            expect(InlineListItem).toBeCalledTimes(
               currentAPIData.inventory.length
             );
             currentAPIData.inventory.map((_, index) =>
-              checkSimpleListItem(index)
+              checkInlineListItem(index)
             );
           });
         };
@@ -293,7 +314,7 @@ describe("SimpleList", () => {
           });
 
           it("renders, and handles an auth failure condition as expected", async () => {
-            const { handleDelete } = SimpleListItem.mock.calls[0][0];
+            const { handleDelete } = InlineListItem.mock.calls[0][0];
 
             act(() => {
               handleDelete(2);
@@ -329,7 +350,7 @@ describe("SimpleList", () => {
           });
 
           checkBasicComponents();
-          checkSimpleListItems();
+          checkInlineListItems();
 
           it("should call StartList on first render, with the page param", () => {
             expect(mockDispatch).toHaveBeenCalledTimes(1);
@@ -357,7 +378,7 @@ describe("SimpleList", () => {
           });
 
           checkBasicComponents();
-          checkSimpleListItems();
+          checkInlineListItems();
 
           it("should call StartList on first render, with the page param", () => {
             expect(mockDispatch).toHaveBeenCalledTimes(1);
@@ -400,24 +421,24 @@ describe("SimpleList", () => {
     });
 
     describe("simulated error scenarios", () => {
-      describe("save item scenario", () => {
+      describe("create item scenario", () => {
         beforeEach(async () => {
+          await waitFor(() => expect(mockHeaderUpdate).toBeCalledTimes(1));
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
-          await waitFor(() => expect(SimpleListItem).toBeCalledTimes(3));
-          const handleSave = SimpleListItem.mock.calls[0][0].handleSave;
-          await act(() => handleSave("Not A Real Item"));
+          const handleCreate = mockHeaderUpdate.mock.calls[0][0].create;
+          act(() => handleCreate());
         });
 
-        it("should should NOT dispatch for the save", () => {
-          expect(mockDispatch).toBeCalledTimes(1);
+        it("should NOT call ListItemForm", () => {
+          waitFor(() => expect(InlineListForm).toBeCalledTimes(0));
         });
       });
 
       describe("delete item scenario", () => {
         beforeEach(async () => {
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
-          await waitFor(() => expect(SimpleListItem).toBeCalledTimes(3));
-          const handleDelete = SimpleListItem.mock.calls[0][0].handleDelete;
+          await waitFor(() => expect(InlineListItem).toBeCalledTimes(3));
+          const handleDelete = InlineListItem.mock.calls[0][0].handleDelete;
           act(() => handleDelete(0, "Not A Real Item"));
         });
 

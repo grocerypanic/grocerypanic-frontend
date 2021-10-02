@@ -58,7 +58,7 @@ const ItemDetailsForm = ({
 
   React.useEffect(() => {
     if (duplicate) {
-      setErrorMsg(t("SimpleList.ValidationAlreadyExists"));
+      setErrorMsg(t("InlineList.ValidationAlreadyExists"));
       setDuplicate(false);
       setActionMsg(null);
       setTimeout(() => setErrorMsg(null), ui.alertTimeout);

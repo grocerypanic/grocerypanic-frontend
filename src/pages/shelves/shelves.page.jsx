@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import SimpleList from "../../components/simple-list/simple-list.component";
+import InlineList from "../../components/inline-list/inline-list.component";
 import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
 import { authExpired } from "../../providers/social/social.async";
 import { SocialContext } from "../../providers/social/social.provider";
@@ -22,7 +22,7 @@ const ShelvesPage = () => {
   };
 
   return (
-    <SimpleList
+    <InlineList
       title={t("ShelfPage.Title")}
       headerTitle={t("ShelfPage.HeaderTitle")}
       ApiObjectContext={ShelfContext}

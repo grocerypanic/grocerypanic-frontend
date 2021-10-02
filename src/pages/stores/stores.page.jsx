@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import SimpleList from "../../components/simple-list/simple-list.component";
+import InlineList from "../../components/inline-list/inline-list.component";
 import { StoreContext } from "../../providers/api/store/store.provider";
 import { authExpired } from "../../providers/social/social.async";
 import { SocialContext } from "../../providers/social/social.provider";
@@ -22,7 +22,7 @@ const StoresPage = () => {
   };
 
   return (
-    <SimpleList
+    <InlineList
       title={t("StorePage.Title")}
       headerTitle={t("StorePage.HeaderTitle")}
       ApiObjectContext={StoreContext}

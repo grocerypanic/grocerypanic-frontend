@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InlineList when a transaction is ongoing should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: blue;
+  min-width: 220px;
+}
+
+.c0 div:last-child {
+  margin-left: auto;
+}
+
+.c0 .inline-list-item-title-div:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+}
+
+<div>
+  <li
+    class="c0"
+    data-testid="ListItemElement"
+  >
+    <div
+      class="c1 inline-list-item-title-div"
+      data-testid="ListItemTitle"
+    >
+      mockItem
+    </div>
+    <div />
+  </li>
+</div>
+`;
+
+exports[`InlineList when outside of a transaction should match the snapshot on file (styles) 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: blue;
+  min-width: 220px;
+}
+
+.c0 div:last-child {
+  margin-left: auto;
+}
+
+.c0 .inline-list-item-title-div:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: left;
+  -webkit-box-align: left;
+  -ms-flex-align: left;
+  align-items: left;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 40px;
+}
+
+<div>
+  <li
+    class="c0"
+    data-testid="ListItemElement"
+  >
+    <div
+      class="c1 inline-list-item-title-div"
+      data-testid="ListItemTitle"
+    >
+      mockItem
+    </div>
+    <div />
+  </li>
+</div>
+`;

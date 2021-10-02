@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SimpleList when there is NOT a transaction when there is NOT an api failure when there are NO items in the list should match the snapshot on file (styles) 1`] = `
+exports[`InlineList when there is NOT a transaction when there is NOT an api failure when there are NO items in the list should match the snapshot on file (styles) 1`] = `
 .c2 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -133,9 +133,9 @@ exports[`SimpleList when there is NOT a transaction when there is NOT an api fai
 </div>
 `;
 
-exports[`SimpleList when there is NOT a transaction when there is NOT an api failure when there are items in the list should match the snapshot on file (styles) 1`] = `<div />`;
+exports[`InlineList when there is NOT a transaction when there is NOT an api failure when there are items in the list should match the snapshot on file (styles) 1`] = `<div />`;
 
-exports[`SimpleList when there is NOT a transaction when there is NOT an api failure when there are items in the list when an API authentication error occurs should match the snapshot on file (styles) 1`] = `
+exports[`InlineList when there is NOT a transaction when there is NOT an api failure when there are items in the list when an API authentication error occurs should match the snapshot on file (styles) 1`] = `
 .c2 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -248,7 +248,7 @@ exports[`SimpleList when there is NOT a transaction when there is NOT an api fai
 </div>
 `;
 
-exports[`SimpleList when there is NOT a transaction when there is NOT an api failure when there are items in the list when the page does NOT have a pagination reference should match the snapshot on file (styles) 1`] = `
+exports[`InlineList when there is NOT a transaction when there is NOT an api failure when there are items in the list when the page does NOT have a pagination reference should match the snapshot on file (styles) 1`] = `
 .c2 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -361,7 +361,7 @@ exports[`SimpleList when there is NOT a transaction when there is NOT an api fai
 </div>
 `;
 
-exports[`SimpleList when there is NOT a transaction when there is NOT an api failure when there are items in the list when the page has a pagination reference should match the snapshot on file (styles) 1`] = `
+exports[`InlineList when there is NOT a transaction when there is NOT an api failure when there are items in the list when the page has a pagination reference should match the snapshot on file (styles) 1`] = `
 .c2 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -474,7 +474,7 @@ exports[`SimpleList when there is NOT a transaction when there is NOT an api fai
 </div>
 `;
 
-exports[`SimpleList when there is a transaction should match the snapshot on file (styles) 1`] = `
+exports[`InlineList when there is a transaction should match the snapshot on file (styles) 1`] = `
 .c2 {
   -webkit-align-items: center;
   -webkit-box-align: center;

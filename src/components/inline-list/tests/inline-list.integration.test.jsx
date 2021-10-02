@@ -19,8 +19,8 @@ import HeaderProvider from "../../../providers/header/header.provider";
 import { propCount } from "../../../test.fixtures/objectComparison";
 import calculateMaxHeight from "../../../util/height";
 import Header from "../../header/header.component";
-import { testIDs as itemTestIDs } from "../simple-list-item/simple-list-item.component";
-import SimpleList from "../simple-list.component";
+import InlineList from "../inline-list.component";
+import { testIDs as itemTestIDs } from "../inline-list.item/inline-list.item.component";
 
 jest.mock("../../../util/height");
 
@@ -60,7 +60,7 @@ const MockApiContext = React.createContext({
   dispatch: mockDispatch,
 });
 
-describe("SimpleList", () => {
+describe("InlineList", () => {
   const history = createBrowserHistory({ basename: Routes.root });
   history.push = jest.fn();
   let mockProps = {
@@ -106,7 +106,7 @@ describe("SimpleList", () => {
               }}
             >
               <Header />
-              <SimpleList
+              <InlineList
                 title={mockProps.title}
                 headerTitle={mockProps.headerTitle}
                 create={mockProps.create}
@@ -218,7 +218,7 @@ describe("SimpleList", () => {
           enterText();
           await clickSaveItem();
           await flashActionMessage(
-            `${Strings.SimpleList.CreatedAction} ${objectName}`
+            `${Strings.InlineList.CreatedAction} ${objectName}`
           );
         });
 
@@ -252,7 +252,7 @@ describe("SimpleList", () => {
           await clickAddButton();
           enterText();
           await clickSaveItem();
-          await flashErrorMessage(Strings.SimpleList.ValidationFailure);
+          await flashErrorMessage(Strings.InlineList.ValidationFailure);
         });
 
         it("should NOT call the dispatch function with StartAdd", async () => {
@@ -319,7 +319,7 @@ describe("SimpleList", () => {
         await clickLongItem(getItem());
         await clickDeleteButton();
         await flashActionMessage(
-          `${Strings.SimpleList.DeletedAction} ${getItem().name}`
+          `${Strings.InlineList.DeletedAction} ${getItem().name}`
         );
       });
 
@@ -574,7 +574,7 @@ describe("SimpleList", () => {
       });
 
       it("should display the error message", async () => {
-        for (const message of Strings.SimpleList.ApiCommunicationError.split(
+        for (const message of Strings.InlineList.ApiCommunicationError.split(
           "\n"
         )) {
           expect(await screen.findByText(message)).toBeTruthy();

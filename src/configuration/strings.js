@@ -155,7 +155,7 @@ export const Strings = {
         LocationDetails: "What timezone do you live in?",
         SaveButton: "Save",
       },
-      SimpleList: {
+      InlineList: {
         ValidationAlreadyExists: "This already exists",
         ValidationFailure: "Enter a valid name",
         SaveButton: "save",

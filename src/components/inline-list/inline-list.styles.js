@@ -6,7 +6,7 @@ import {
   itemAttributes,
 } from "../../configuration/theme";
 
-export const Scroller = styled.div`
+export const InlineListScroller = styled.div`
   align-items: center;
   list-style-type: none;
   list-style-position: outside;
@@ -17,7 +17,7 @@ export const Scroller = styled.div`
   border-width: ${itemAttributes.border}px;
 `;
 
-export const ListBox = styled.div`
+export const InlineListBox = styled.div`
   padding-left: 0px;
   min-width: 200px;
   background: ${tertiary};
@@ -28,7 +28,7 @@ export const ListBox = styled.div`
   }
 `;
 
-export const PlaceHolderListItem = styled.li`
+export const InlineListPlaceHolder = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -4,9 +4,9 @@ import {
   highlight,
   selected,
   itemAttributes,
-} from "../../../configuration/theme";
+} from "../../configuration/theme";
 
-export const ListItem = styled.li`
+export const InlineListItemBox = styled.li`
   display: flex;
   justify-content: center;
   align-items: left;
@@ -23,13 +23,13 @@ export const ListItem = styled.li`
     margin-left: auto;
   }
 
-  .simple-list-item-title-div:hover {
+  .inline-list-item-title-div:hover {
     color: ${selected};
     cursor: pointer;
   }
 `;
 
-export const ListTitle = styled.div`
+export const InlineListItemTitle = styled.div`
   display: flex;
   justify-content: center;
   align-items: left;
