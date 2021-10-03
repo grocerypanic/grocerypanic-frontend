@@ -1,5 +1,5 @@
 import Chart from "chart.js";
-import { graph } from "../../configuration/theme";
+import { graph } from "../../../configuration/theme";
 
 export const renderChart = (translateFn, activity_last_two_weeks, item) => {
   const [quantities, changes] = generateChartData(

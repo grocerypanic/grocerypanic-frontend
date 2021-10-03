@@ -1,11 +1,11 @@
-import { ShelfLifeConstants } from "../../../configuration/backend";
+import { ShelfLifeConstants } from "../../../../configuration/backend";
 import {
   normalizeNameArray,
   normalizeShelfName,
   normalizeShelfId,
   normalizeShelfLifeName,
   normalizeShelfLifeId,
-} from "../item-details-form.utils";
+} from "../item-details.form.utils.js";
 
 const objects = [
   { id: 1, name: "Niall" },

@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import React from "react";
 import Table from "react-bootstrap/Table";
 import { useTranslation } from "react-i18next";
-import { renderChart } from "./activity.chart";
-import { Outline, InnerBox } from "./activity.styles";
-import { graph } from "../../configuration/theme";
-import { Banner } from "../../global-styles/banner";
-import { Paper } from "../../global-styles/containers";
-import { within7Days } from "../../util/datetime";
-import HoldingPattern from "../holding-pattern/holding-pattern.component";
+import { renderChart } from "./item-details.activity.chart";
+import { Outline, InnerBox } from "./item-details.activity.styles";
+import { graph } from "../../../configuration/theme";
+import { Banner } from "../../../global-styles/banner";
+import { Paper } from "../../../global-styles/containers";
+import { within7Days } from "../../../util/datetime";
+import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 
 export const nullReport = {
   id: null,

@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
-import ItemDetailsEditContainer from "../../components/item-details/item-details.edit.container";
+import ItemDetailsEditContainer from "../../components/item-details/item-details.edit/item-details.edit.container";
 import { ItemContext } from "../../providers/api/item/item.provider";
 import { authExpired } from "../../providers/social/social.async";
 import { SocialContext } from "../../providers/social/social.provider";

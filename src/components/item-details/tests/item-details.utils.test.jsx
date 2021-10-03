@@ -1,4 +1,4 @@
-import { defaultItem } from "../item-details.create.container";
+import { defaultItem } from "../item-details.create/item-details.create.container";
 import { calculateDefaults } from "../item-details.utils";
 
 let params;

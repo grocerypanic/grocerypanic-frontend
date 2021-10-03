@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { white, tertiary } from "../../configuration/theme";
+import { white, tertiary } from "../../../configuration/theme";
 
 export const Outline = styled.div`
   list-style-type: none;

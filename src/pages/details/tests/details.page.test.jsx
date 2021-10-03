@@ -1,7 +1,7 @@
 import { render, cleanup, waitFor, act } from "@testing-library/react";
 import React from "react";
 import { MemoryRouter, Route } from "react-router-dom";
-import ItemDetailsEditContainer from "../../../components/item-details/item-details.edit.container";
+import ItemDetailsEditContainer from "../../../components/item-details/item-details.edit/item-details.edit.container";
 import Routes from "../../../configuration/routes";
 import Strings from "../../../configuration/strings";
 import { ItemContext } from "../../../providers/api/item/item.provider";
@@ -11,7 +11,9 @@ import { SocialContext } from "../../../providers/social/social.provider";
 import { propCount } from "../../../test.fixtures/objectComparison";
 import ItemDetailsPage from "../details.page";
 
-jest.mock("../../../components/item-details/item-details.edit.container");
+jest.mock(
+  "../../../components/item-details/item-details.edit/item-details.edit.container"
+);
 ItemDetailsEditContainer.mockImplementation(() => <div>MockDetails</div>);
 
 const mockDispatch = jest.fn();

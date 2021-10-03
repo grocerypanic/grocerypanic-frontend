@@ -3,32 +3,32 @@ import { createBrowserHistory } from "history";
 import i18next from "i18next";
 import React from "react";
 import { MemoryRouter, Router } from "react-router-dom";
-import Routes from "../../../configuration/routes";
-import Strings from "../../../configuration/strings";
-import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
-import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
-import ActivityInitialValue from "../../../providers/api/activity/activity.initial";
-import { ActivityContext } from "../../../providers/api/activity/activity.provider";
-import ApiActions from "../../../providers/api/api.actions";
-import ApiFunctions from "../../../providers/api/api.functions";
-import ItemInitialValue from "../../../providers/api/item/item.initial";
-import { ItemContext } from "../../../providers/api/item/item.provider";
-import ShelfInitialValue from "../../../providers/api/shelf/shelf.initial";
-import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
-import StoreInitialValue from "../../../providers/api/store/store.initial";
-import { StoreContext } from "../../../providers/api/store/store.provider";
-import { propCount } from "../../../test.fixtures/objectComparison";
-import ErrorHandler from "../../error-handler/error-handler.component";
-import HoldingPattern from "../../holding-pattern/holding-pattern.component";
-import ItemDetails from "../item-details.component";
+import Routes from "../../../../configuration/routes";
+import Strings from "../../../../configuration/strings";
+import { AnalyticsActions } from "../../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../../providers/analytics/analytics.provider";
+import ActivityInitialValue from "../../../../providers/api/activity/activity.initial";
+import { ActivityContext } from "../../../../providers/api/activity/activity.provider";
+import ApiActions from "../../../../providers/api/api.actions";
+import ApiFunctions from "../../../../providers/api/api.functions";
+import ItemInitialValue from "../../../../providers/api/item/item.initial";
+import { ItemContext } from "../../../../providers/api/item/item.provider";
+import ShelfInitialValue from "../../../../providers/api/shelf/shelf.initial";
+import { ShelfContext } from "../../../../providers/api/shelf/shelf.provider";
+import StoreInitialValue from "../../../../providers/api/store/store.initial";
+import { StoreContext } from "../../../../providers/api/store/store.provider";
+import { propCount } from "../../../../test.fixtures/objectComparison";
+import ErrorHandler from "../../../error-handler/error-handler.component";
+import HoldingPattern from "../../../holding-pattern/holding-pattern.component";
 import ItemDetailsEditContainer from "../item-details.edit.container";
+import ItemDetailsTabs from "../item-details.edit.tabs.component.edit";
 
-jest.mock("../item-details.component");
-jest.mock("../../holding-pattern/holding-pattern.component");
-jest.mock("../../error-handler/error-handler.component");
+jest.mock("../item-details.edit.tabs.component.edit");
+jest.mock("../../../holding-pattern/holding-pattern.component");
+jest.mock("../../../error-handler/error-handler.component");
 
 ErrorHandler.mockImplementation(({ children }) => children);
-ItemDetails.mockImplementation(() => <div>MockDetails</div>);
+ItemDetailsTabs.mockImplementation(() => <div>MockDetails</div>);
 HoldingPattern.mockImplementation(({ children }) => children);
 
 const mockItemDispatch = jest.fn();
@@ -310,8 +310,8 @@ describe("Setup Environment", () => {
       });
 
       it("renders ItemDetails with correct props", async () => {
-        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
-        const call = ItemDetails.mock.calls[2][0];
+        await waitFor(() => expect(ItemDetailsTabs).toHaveBeenCalledTimes(3));
+        const call = ItemDetailsTabs.mock.calls[2][0];
         propCount(call, 15);
         expect(call.allItems).toStrictEqual(props.allItems);
         expect(call.item).toBe(mockItem);
@@ -338,18 +338,18 @@ describe("Setup Environment", () => {
 
         await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(2));
 
-        expect(ItemDetails).toHaveBeenCalledTimes(5);
+        expect(ItemDetailsTabs).toHaveBeenCalledTimes(5);
 
-        const call1 = ItemDetails.mock.calls[4][0];
+        const call1 = ItemDetailsTabs.mock.calls[4][0];
         expect(call1.duplicate).toBe(true);
       });
 
       it("handles a call to handleSave as expected", async () => {
-        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+        await waitFor(() => expect(ItemDetailsTabs).toHaveBeenCalledTimes(3));
 
         const mockObject = { id: 99 };
 
-        const handleSave = ItemDetails.mock.calls[1][0].handleSave;
+        const handleSave = ItemDetailsTabs.mock.calls[1][0].handleSave;
         expect(handleSave).toBeInstanceOf(Function);
         act(() => handleSave(mockObject));
 
@@ -368,11 +368,11 @@ describe("Setup Environment", () => {
       });
 
       it("handles a call to handleSave as expected, no changes to item", async () => {
-        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+        await waitFor(() => expect(ItemDetailsTabs).toHaveBeenCalledTimes(3));
 
         const mockObject = { ...mockItem };
 
-        const handleSave = ItemDetails.mock.calls[1][0].handleSave;
+        const handleSave = ItemDetailsTabs.mock.calls[1][0].handleSave;
         expect(handleSave).toBeInstanceOf(Function);
         act(() => handleSave(mockObject));
 
@@ -381,7 +381,7 @@ describe("Setup Environment", () => {
       });
 
       it("handles a call to handleDelete as expected", async () => {
-        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+        await waitFor(() => expect(ItemDetailsTabs).toHaveBeenCalledTimes(3));
 
         // Perform Initial Get and Lists on API Data
         await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
@@ -390,7 +390,7 @@ describe("Setup Environment", () => {
 
         const mockObject = { id: 7 };
 
-        const handleDelete = ItemDetails.mock.calls[1][0].handleDelete;
+        const handleDelete = ItemDetailsTabs.mock.calls[1][0].handleDelete;
         expect(handleDelete).toBeInstanceOf(Function);
 
         act(() => handleDelete(mockObject));
@@ -410,7 +410,7 @@ describe("Setup Environment", () => {
       });
 
       it("handles successful delete as expected", async () => {
-        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+        await waitFor(() => expect(ItemDetailsTabs).toHaveBeenCalledTimes(3));
 
         // Perform Initial Get and Lists on API Data
         await waitFor(() => expect(mockItemDispatch).toHaveBeenCalledTimes(1));
@@ -421,7 +421,7 @@ describe("Setup Environment", () => {
 
         // Get Perform Async By Using The Delete Handler
 
-        const handleDelete = ItemDetails.mock.calls[1][0].handleDelete;
+        const handleDelete = ItemDetailsTabs.mock.calls[1][0].handleDelete;
         expect(handleDelete).toBeInstanceOf(Function);
 
         act(() => handleDelete(mockObject));
@@ -438,9 +438,9 @@ describe("Setup Environment", () => {
       });
 
       it("handles a call to requestActivityReport as expected", async () => {
-        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+        await waitFor(() => expect(ItemDetailsTabs).toHaveBeenCalledTimes(3));
 
-        const handler = ItemDetails.mock.calls[1][0].requestActivityReport;
+        const handler = ItemDetailsTabs.mock.calls[1][0].requestActivityReport;
         expect(handler).toBeInstanceOf(Function);
         act(() => handler());
 
@@ -457,9 +457,9 @@ describe("Setup Environment", () => {
       });
 
       it("handles a success call on activity get as expected", async () => {
-        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+        await waitFor(() => expect(ItemDetailsTabs).toHaveBeenCalledTimes(3));
 
-        const handler = ItemDetails.mock.calls[1][0].requestActivityReport;
+        const handler = ItemDetailsTabs.mock.calls[1][0].requestActivityReport;
         expect(handler).toBeInstanceOf(Function);
         act(() => handler());
 
@@ -481,9 +481,9 @@ describe("Setup Environment", () => {
       });
 
       it("renders, calls activity auth failure as expected", async () => {
-        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+        await waitFor(() => expect(ItemDetailsTabs).toHaveBeenCalledTimes(3));
 
-        const handler = ItemDetails.mock.calls[1][0].requestActivityReport;
+        const handler = ItemDetailsTabs.mock.calls[1][0].requestActivityReport;
         expect(handler).toBeInstanceOf(Function);
         act(() => handler());
 
@@ -525,9 +525,9 @@ describe("Setup Environment", () => {
       });
 
       it("handles a call to requestActivityReport as expected, without refetching data", async () => {
-        await waitFor(() => expect(ItemDetails).toHaveBeenCalledTimes(3));
+        await waitFor(() => expect(ItemDetailsTabs).toHaveBeenCalledTimes(3));
 
-        const handler = ItemDetails.mock.calls[1][0].requestActivityReport;
+        const handler = ItemDetailsTabs.mock.calls[1][0].requestActivityReport;
         expect(handler).toBeInstanceOf(Function);
         act(() => handler());
 

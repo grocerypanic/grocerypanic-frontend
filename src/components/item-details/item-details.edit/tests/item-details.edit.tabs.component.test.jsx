@@ -1,17 +1,19 @@
 import { render, cleanup, fireEvent, waitFor } from "@testing-library/react";
 import moment from "moment";
 import React from "react";
-import Strings from "../../../configuration/strings";
-import initialHeaderSettings from "../../../providers/header/header.initial";
-import { HeaderContext } from "../../../providers/header/header.provider";
-import { propCount } from "../../../test.fixtures/objectComparison";
-import ActivityReport, { nullReport } from "../../activity/activity.component";
-import ItemDetailsForm from "../../item-details-form/item-details-form.component";
-import ItemDetails from "../item-details.component";
+import Strings from "../../../../configuration/strings";
+import initialHeaderSettings from "../../../../providers/header/header.initial";
+import { HeaderContext } from "../../../../providers/header/header.provider";
+import { propCount } from "../../../../test.fixtures/objectComparison";
+import ActivityReport, {
+  nullReport,
+} from "../../item-details.activity/item-details.activity.component";
+import ItemDetailsForm from "../../item-details.form/item-details.form.component";
+import ItemDetailsTabs from "../item-details.edit.tabs.component.edit";
 
 const ActivityReportMocks = () => {
   const activityComponentModule = jest.requireActual(
-    "../../activity/activity.component"
+    "../../item-details.activity/item-details.activity.component"
   );
   return {
     __esModule: true,
@@ -20,8 +22,10 @@ const ActivityReportMocks = () => {
   };
 };
 
-jest.mock("../../activity/activity.component", () => ActivityReportMocks());
-jest.mock("../../item-details-form/item-details-form.component");
+jest.mock("../../item-details.activity/item-details.activity.component", () =>
+  ActivityReportMocks()
+);
+jest.mock("../../item-details.form/item-details.form.component");
 
 ItemDetailsForm.mockImplementation(() => <div>MockItemDetailsForm</div>);
 ActivityReport.mockImplementation(() => <div>MockActivityReport</div>);
@@ -145,7 +149,7 @@ const renderHelper = (currentProps) => {
     <HeaderContext.Provider
       value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
     >
-      <ItemDetails {...currentProps} />
+      <ItemDetailsTabs {...currentProps} />
     </HeaderContext.Provider>
   );
 };

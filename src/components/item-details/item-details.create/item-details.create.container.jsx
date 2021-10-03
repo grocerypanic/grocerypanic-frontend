@@ -1,22 +1,20 @@
-// For creating new components
-
 import PropTypes from "prop-types";
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { calculateDefaults } from "./item-details.utils.jsx";
-import Routes from "../../configuration/routes";
-import { Container } from "../../global-styles/containers";
-import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
-import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-import ApiActions from "../../providers/api/api.actions";
-import ApiFunctions from "../../providers/api/api.functions";
-import { ItemContext } from "../../providers/api/item/item.provider";
-import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
-import { StoreContext } from "../../providers/api/store/store.provider";
-import { HeaderContext } from "../../providers/header/header.provider";
-import ErrorHandler from "../error-handler/error-handler.component";
-import HoldingPattern from "../holding-pattern/holding-pattern.component";
-import ItemDetailsForm from "../item-details-form/item-details-form.component";
+import Routes from "../../../configuration/routes";
+import { Container } from "../../../global-styles/containers";
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
+import ApiActions from "../../../providers/api/api.actions";
+import ApiFunctions from "../../../providers/api/api.functions";
+import { ItemContext } from "../../../providers/api/item/item.provider";
+import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
+import { StoreContext } from "../../../providers/api/store/store.provider";
+import { HeaderContext } from "../../../providers/header/header.provider";
+import ErrorHandler from "../../error-handler/error-handler.component";
+import HoldingPattern from "../../holding-pattern/holding-pattern.component";
+import ItemDetailsForm from "../item-details.form/item-details.form.component";
+import { calculateDefaults } from "../item-details.utils.jsx";
 
 export const defaultItem = {
   name: "",

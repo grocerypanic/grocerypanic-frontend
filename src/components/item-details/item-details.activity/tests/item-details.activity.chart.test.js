@@ -1,12 +1,12 @@
 import { render } from "@testing-library/react";
 import Chart from "chart.js";
 import "jest-canvas-mock";
-import { Constants } from "../../../configuration/backend";
+import { Constants } from "../../../../configuration/backend";
 import {
   renderChart,
   generateChartData,
   nullFunction,
-} from "../activity.chart";
+} from "../item-details.activity.chart";
 
 const mockItem = { id: 1, name: "Some Item", quantity: 200 };
 const mockTransactions = [

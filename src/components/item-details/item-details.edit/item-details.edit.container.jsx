@@ -1,20 +1,18 @@
-// For editing existing components
-
 import PropTypes from "prop-types";
 import React from "react";
 import { withRouter } from "react-router-dom";
-import ItemDetails from "./item-details.component";
-import Routes from "../../configuration/routes";
-import { AnalyticsActions } from "../../providers/analytics/analytics.actions";
-import { AnalyticsContext } from "../../providers/analytics/analytics.provider";
-import { ActivityContext } from "../../providers/api/activity/activity.provider";
-import ApiActions from "../../providers/api/api.actions";
-import ApiFunctions from "../../providers/api/api.functions";
-import { ItemContext } from "../../providers/api/item/item.provider";
-import { ShelfContext } from "../../providers/api/shelf/shelf.provider";
-import { StoreContext } from "../../providers/api/store/store.provider";
-import ErrorHandler from "../error-handler/error-handler.component";
-import HoldingPattern from "../holding-pattern/holding-pattern.component";
+import ItemDetailsTabs from "./item-details.edit.tabs.component.edit";
+import Routes from "../../../configuration/routes";
+import { AnalyticsActions } from "../../../providers/analytics/analytics.actions";
+import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
+import { ActivityContext } from "../../../providers/api/activity/activity.provider";
+import ApiActions from "../../../providers/api/api.actions";
+import ApiFunctions from "../../../providers/api/api.functions";
+import { ItemContext } from "../../../providers/api/item/item.provider";
+import { ShelfContext } from "../../../providers/api/shelf/shelf.provider";
+import { StoreContext } from "../../../providers/api/store/store.provider";
+import ErrorHandler from "../../error-handler/error-handler.component";
+import HoldingPattern from "../../holding-pattern/holding-pattern.component";
 
 const defaultItem = {
   name: "",
@@ -185,7 +183,7 @@ const ItemDetailsEditContainer = ({
       redirect={Routes.goBack}
     >
       <HoldingPattern condition={calculatedItem === defaultItem}>
-        <ItemDetails
+        <ItemDetailsTabs
           allItems={item.inventory}
           item={calculatedItem}
           headerTitle={headerTitle}

@@ -6,25 +6,28 @@ import {
   act,
 } from "@testing-library/react";
 import React from "react";
-import { ShelfLifeConstants, Constants } from "../../../configuration/backend";
-import Strings from "../../../configuration/strings";
-import { propCount } from "../../../test.fixtures/objectComparison";
-import Alert from "../../alert/alert.component";
-import DropDown from "../../form-dropdown/form-dropdown.component";
-import FormInput from "../../form-input/form-input.component";
-import MultiDropDown from "../../form-multiselect/form-multiselect.component";
-import Hint from "../../hint/hint.component";
-import ItemDetailsForm from "../item-details-form.component";
+import {
+  ShelfLifeConstants,
+  Constants,
+} from "../../../../configuration/backend";
+import Strings from "../../../../configuration/strings";
+import { propCount } from "../../../../test.fixtures/objectComparison";
+import Alert from "../../../alert/alert.component";
+import DropDown from "../../../form-dropdown/form-dropdown.component";
+import FormInput from "../../../form-input/form-input.component";
+import MultiDropDown from "../../../form-multiselect/form-multiselect.component";
+import Hint from "../../../hint/hint.component";
+import ItemDetailsForm from "../item-details.form.component";
 
-jest.mock("../../alert/alert.component");
-jest.mock("../../hint/hint.component");
-jest.mock("../../form-input/form-input.component");
-jest.mock("../../form-dropdown/form-dropdown.component");
-jest.mock("../../form-multiselect/form-multiselect.component");
+jest.mock("../../../alert/alert.component");
+jest.mock("../../../hint/hint.component");
+jest.mock("../../../form-input/form-input.component");
+jest.mock("../../../form-dropdown/form-dropdown.component");
+jest.mock("../../../form-multiselect/form-multiselect.component");
 
-jest.mock("../../../configuration/theme", () => {
+jest.mock("../../../../configuration/theme", () => {
   return {
-    ...jest.requireActual("../../../configuration/theme"),
+    ...jest.requireActual("../../../../configuration/theme"),
     ui: {
       alertTimeout: 200,
     },

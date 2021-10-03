@@ -1,4 +1,4 @@
-import { ShelfLifeConstants } from "../../configuration/backend";
+import { ShelfLifeConstants } from "../../../configuration/backend";
 
 export const normalizeNameArray = (idList, objectList) => {
   return objectList.filter((o) => idList.includes(o.id));
