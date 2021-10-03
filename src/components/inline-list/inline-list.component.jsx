@@ -56,6 +56,7 @@ const InlineList = ({
   const [created, setCreated] = React.useState(null);
   const [selected, setSelected] = React.useState(null);
   const [errorMsg, setErrorMsg] = React.useState(null);
+  const [successMsg, setSuccessMsg] = React.useState(null);
 
   const [performAsync, setPerformAsync] = React.useState(null);
   const [itemsFetched, setItemsFetched] = React.useState({
@@ -65,13 +66,19 @@ const InlineList = ({
 
   const [listSize, setListSize] = React.useState(calculateMaxHeight());
 
+  let actionMessageTimer;
+  let errorMessageTimer;
+
   React.useEffect(() => {
     window.addEventListener("resize", recalculateHeight);
     window.addEventListener("contextmenu", preventContext);
     return () => {
       window.removeEventListener("resize", recalculateHeight);
       window.removeEventListener("contextmenu", preventContext);
+      clearTimeout(actionMessageTimer);
+      clearTimeout(errorMessageTimer);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
@@ -82,6 +89,8 @@ const InlineList = ({
       flashErrorMessage(t("ItemDetails.ValidationAlreadyExists"));
     if (performAsync.type === ApiActions.RequiredObject)
       flashErrorMessage(t("ItemDetails.ResourceIsRequired"));
+    if (performAsync.type === ApiActions.SuccessAdd) successSave();
+    if (performAsync.type === ApiActions.SuccessDel) successDelete();
     setPerformAsync(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [performAsync]);
@@ -112,13 +121,15 @@ const InlineList = ({
   };
 
   const flashErrorMessage = (msg) => {
+    clearTimeout(errorMessageTimer);
     setErrorMsg(msg);
-    setTimeout(() => setErrorMsg(null), ui.alertTimeout);
+    errorMessageTimer = setTimeout(() => setErrorMsg(null), ui.alertTimeout);
   };
 
   const flashActionMessage = (msg) => {
+    clearTimeout(actionMessageTimer);
     setActionMsg(msg);
-    setTimeout(() => {
+    actionMessageTimer = setTimeout(() => {
       setActionMsg(null);
     }, ui.alertTimeout);
   };
@@ -129,27 +140,35 @@ const InlineList = ({
     setSelected(createItemDefaults.id);
   };
 
+  const successSave = () => {
+    event(IndexedAnalyticsActions[apiObject.class].create);
+    flashActionMessage(successMsg);
+    setCreated(null);
+  };
+
   const handleSave = async (name) => {
     if (name.length < 2) {
       flashErrorMessage(t("InlineList.ValidationFailure"));
       return;
     }
-    flashActionMessage(`${t("InlineList.CreatedAction")} ${name}`);
-    event(IndexedAnalyticsActions[apiObject.class].create);
+    setSuccessMsg(`${t("InlineList.CreatedAction")} ${name}`);
     setPerformAsync({
       type: ApiActions.StartAdd,
       func: ApiFunctions.asyncAdd,
       dispatch: setPerformAsync,
       payload: { name },
     });
-    setCreated(null);
+  };
+
+  const successDelete = () => {
+    event(IndexedAnalyticsActions[apiObject.class].delete);
+    flashActionMessage(successMsg);
   };
 
   const handleDelete = (id, name) => {
     if (apiObject.transaction) return;
     setSelected(null);
-    flashActionMessage(`${t("InlineList.DeletedAction")} ${name}`);
-    event(IndexedAnalyticsActions[apiObject.class].delete);
+    setSuccessMsg(`${t("InlineList.DeletedAction")} ${name}`);
     setPerformAsync({
       type: ApiActions.StartDel,
       func: ApiFunctions.asyncDel,

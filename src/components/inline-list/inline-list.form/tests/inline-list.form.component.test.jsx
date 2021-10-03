@@ -53,7 +53,7 @@ describe("InlineList", () => {
       expect(form).toHaveProperty("id", "newItem");
       expect(form).toHaveProperty("type", "text");
       expect(form).toHaveProperty("name", "newItem");
-      expect(form.required).toBeTruthy();
+      expect(form.required).toBeFalsy();
       expect(form.readOnly).toBeFalsy();
       expect(form.defaultValue).toBe(currentProps.item.name);
     });
@@ -135,7 +135,7 @@ describe("InlineList", () => {
       expect(form).toHaveProperty("id", "newItem");
       expect(form).toHaveProperty("type", "text");
       expect(form).toHaveProperty("name", "newItem");
-      expect(form.required).toBeTruthy();
+      expect(form.required).toBeFalsy();
       expect(form.readOnly).toBeTruthy();
       expect(form.defaultValue).toBe(currentProps.item.name);
     });

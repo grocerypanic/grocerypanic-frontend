@@ -321,7 +321,7 @@ describe("InlineList", () => {
             });
 
             await waitFor(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
-            await waitFor(() => expect(Alert).toHaveBeenCalledTimes(4));
+            await waitFor(() => expect(Alert).toHaveBeenCalledTimes(3));
 
             const apiCall = mockDispatch.mock.calls[1][0];
             const setPerformAsync = apiCall.dispatch;

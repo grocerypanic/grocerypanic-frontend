@@ -49,7 +49,6 @@ const InlineListItemForm = ({
             ref={fieldItem}
             name="newItem"
             size={15}
-            required
             defaultValue={item.name}
             onChange={() => setErrorMsg(null)}
             readOnly={transaction}

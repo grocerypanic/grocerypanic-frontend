@@ -153,7 +153,7 @@ describe("InlineList", () => {
   };
 
   const flashActionMessage = async (msg) => {
-    await waitFor(() => expect(screen.queryByText(msg)).toBeTruthy());
+    expect(await screen.findByText(msg)).toBeTruthy();
     await waitFor(() => expect(screen.queryByText(msg)).toBeNull());
   };
 
@@ -217,9 +217,6 @@ describe("InlineList", () => {
           await clickAddButton();
           enterText();
           await clickSaveItem();
-          await flashActionMessage(
-            `${Strings.InlineList.CreatedAction} ${objectName}`
-          );
         });
 
         it("should call the dispatch function with StartAdd", async () => {
@@ -232,17 +229,33 @@ describe("InlineList", () => {
           expect(apiCall.dispatch).toBeInstanceOf(Function);
         });
 
-        it("should generate an analytics event", () => {
-          expect(mockAnalyticsContext.event).toBeCalledTimes(1);
-          expect(mockAnalyticsContext.event).toBeCalledWith(
-            IndexedAnalyticsActions.store.create
-          );
-        });
+        describe("when the SuccessAdd message is generated", () => {
+          beforeEach(async () => {
+            const dispatch = mockDispatch.mock.calls[1][0].dispatch;
+            act(() => dispatch({ type: ApiActions.SuccessAdd }));
+            await waitFor(() => expect(mockDispatch).toBeCalledTimes(3));
+            expect(mockDispatch.mock.calls[2][0].type).toBe(
+              ApiActions.SuccessAdd
+            );
+            await flashActionMessage(
+              `${Strings.InlineList.CreatedAction} ${objectName}`
+            );
+          });
 
-        it("should hide the blank item entry", () => {
-          expect(
-            screen.queryByTestId(itemTestIDs.ListItemNewItemInputElement)
-          ).toBeNull();
+          it("should generate an analytics event", async () => {
+            await waitFor(() =>
+              expect(mockAnalyticsContext.event).toBeCalledTimes(1)
+            );
+            expect(mockAnalyticsContext.event).toBeCalledWith(
+              IndexedAnalyticsActions.store.create
+            );
+          });
+
+          it("should hide the blank item entry", () => {
+            expect(
+              screen.queryByTestId(itemTestIDs.ListItemNewItemInputElement)
+            ).toBeNull();
+          });
         });
       });
 
@@ -318,9 +331,6 @@ describe("InlineList", () => {
         await arrange(currentAPIData);
         await clickLongItem(getItem());
         await clickDeleteButton();
-        await flashActionMessage(
-          `${Strings.InlineList.DeletedAction} ${getItem().name}`
-        );
       });
 
       it("should dispatch a delete item event", async () => {
@@ -335,11 +345,27 @@ describe("InlineList", () => {
         expect(apiCall.dispatch).toBeInstanceOf(Function);
       });
 
-      it("should generate an analytics event", () => {
-        expect(mockAnalyticsContext.event).toBeCalledTimes(1);
-        expect(mockAnalyticsContext.event).toBeCalledWith(
-          IndexedAnalyticsActions.store.delete
-        );
+      describe("when the SuccessDel message is generated", () => {
+        beforeEach(async () => {
+          const dispatch = mockDispatch.mock.calls[1][0].dispatch;
+          act(() => dispatch({ type: ApiActions.SuccessDel }));
+          await waitFor(() => expect(mockDispatch).toBeCalledTimes(3));
+          expect(mockDispatch.mock.calls[2][0].type).toBe(
+            ApiActions.SuccessDel
+          );
+          await flashActionMessage(
+            `${Strings.InlineList.DeletedAction} ${getItem().name}`
+          );
+        });
+
+        it("should generate an analytics event", async () => {
+          await waitFor(() =>
+            expect(mockAnalyticsContext.event).toBeCalledTimes(1)
+          );
+          expect(mockAnalyticsContext.event).toBeCalledWith(
+            IndexedAnalyticsActions.store.delete
+          );
+        });
       });
     });
   };
