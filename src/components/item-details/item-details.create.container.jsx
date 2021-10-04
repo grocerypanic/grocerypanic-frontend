@@ -34,15 +34,12 @@ const ItemDetailsCreateContainer = ({
   helpText,
   history,
 }) => {
-  const { apiObject: item, dispatch: itemDispatch } = React.useContext(
-    ItemContext
-  );
-  const { apiObject: shelf, dispatch: shelfDispatch } = React.useContext(
-    ShelfContext
-  );
-  const { apiObject: store, dispatch: storeDispatch } = React.useContext(
-    StoreContext
-  );
+  const { apiObject: item, dispatch: itemDispatch } =
+    React.useContext(ItemContext);
+  const { apiObject: shelf, dispatch: shelfDispatch } =
+    React.useContext(ShelfContext);
+  const { apiObject: store, dispatch: storeDispatch } =
+    React.useContext(StoreContext);
   const { event } = React.useContext(AnalyticsContext);
   const { updateHeader } = React.useContext(HeaderContext);
 

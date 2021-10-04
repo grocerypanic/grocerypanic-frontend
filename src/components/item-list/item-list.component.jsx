@@ -32,13 +32,10 @@ const ItemList = ({
   history,
   waitForApi = true,
 }) => {
-  const { apiObject: item, dispatch: itemDispatch } = React.useContext(
-    ItemContext
-  );
-  const {
-    apiObject: transaction,
-    dispatch: transactionDispatch,
-  } = React.useContext(TransactionContext);
+  const { apiObject: item, dispatch: itemDispatch } =
+    React.useContext(ItemContext);
+  const { apiObject: transaction, dispatch: transactionDispatch } =
+    React.useContext(TransactionContext);
   const { event } = React.useContext(AnalyticsContext);
   const { updateHeader } = React.useContext(HeaderContext);
 
@@ -46,9 +43,8 @@ const ItemList = ({
   const [actionMsg, setActionMsg] = React.useState(null);
 
   const [performItemAsync, setPerformItemAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions
-  const [performTransactionAsync, setPerformTransactionAsync] = React.useState(
-    null
-  ); // Handles dispatches without duplicating reducer actions
+  const [performTransactionAsync, setPerformTransactionAsync] =
+    React.useState(null); // Handles dispatches without duplicating reducer actions
 
   const [ready, setReady] = React.useState(false);
   const [listSize, setListSize] = React.useState(calculateMaxHeight());

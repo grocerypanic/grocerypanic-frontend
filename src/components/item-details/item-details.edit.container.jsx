@@ -34,18 +34,14 @@ const ItemDetailsEditContainer = ({
   history,
   testHook = false,
 }) => {
-  const { apiObject: item, dispatch: itemDispatch } = React.useContext(
-    ItemContext
-  );
-  const { apiObject: shelf, dispatch: shelfDispatch } = React.useContext(
-    ShelfContext
-  );
-  const { apiObject: store, dispatch: storeDispatch } = React.useContext(
-    StoreContext
-  );
-  const { apiObject: activity, dispatch: activityDispatch } = React.useContext(
-    ActivityContext
-  );
+  const { apiObject: item, dispatch: itemDispatch } =
+    React.useContext(ItemContext);
+  const { apiObject: shelf, dispatch: shelfDispatch } =
+    React.useContext(ShelfContext);
+  const { apiObject: store, dispatch: storeDispatch } =
+    React.useContext(StoreContext);
+  const { apiObject: activity, dispatch: activityDispatch } =
+    React.useContext(ActivityContext);
   const { event } = React.useContext(AnalyticsContext);
 
   const [performItemAsync, setPerformItemAsync] = React.useState(null); // Handles dispatches without duplicating reducer actions

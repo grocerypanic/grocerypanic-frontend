@@ -14,8 +14,7 @@ export const Strings = {
       AboutPage: {
         Title: "Panic Grocery Management",
         HeaderTitle: "About",
-        Body:
-          "Panic was written during the 2020 pandemic with the goal of helping folks organize their grocery shopping.  I'm really grateful for the help and direction I received so that I could implement this.  Thanks very much.\nOpening photos from pixabay.com, thanks and credit goes to:\n- Alexas Fotos\n- stevepb\n\nAdditional thanks to:\n- Linh Ngo (initial designs)\n- Li Karaian (testing, ideation)\n- Adam Wright (helpful input)",
+        Body: "Panic was written during the 2020 pandemic with the goal of helping folks organize their grocery shopping.  I'm really grateful for the help and direction I received so that I could implement this.  Thanks very much.\nOpening photos from pixabay.com, thanks and credit goes to:\n- Alexas Fotos\n- stevepb\n\nAdditional thanks to:\n- Linh Ngo (initial designs)\n- Li Karaian (testing, ideation)\n- Adam Wright (helpful input)",
       },
       PrivacyPage: {
         Title: "Panic Grocery Management",
@@ -25,8 +24,7 @@ export const Strings = {
       Maintenance: {
         Title: "Maintenance Underway",
         HeaderTitle: "Panic Grocery Management",
-        Body:
-          "We're currently restocking our inventory!  Give us a few minutes to straighten things up and we'll be right back.\nSeriously though, we'll make this as short as possible.  Out team will restore service shortly.",
+        Body: "We're currently restocking our inventory!  Give us a few minutes to straighten things up and we'll be right back.\nSeriously though, we'll make this as short as possible.  Out team will restore service shortly.",
       },
       SignIn: {
         Title: "Sign In",
