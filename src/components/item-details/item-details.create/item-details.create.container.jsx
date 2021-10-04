@@ -93,12 +93,10 @@ const ItemDetailsCreateContainer = ({
 
   // Set the first shelf by default
   React.useEffect(() => {
-    if (shelf.inventory.length > 0 && store.inventory.length > 0) {
-      const params = new URLSearchParams(window.location.search);
-      setDefaults(
-        calculateDefaults(params, defaultItem, shelf.inventory, store.inventory)
-      );
-    }
+    const params = new URLSearchParams(window.location.search);
+    setDefaults(
+      calculateDefaults(params, defaultItem, shelf.inventory, store.inventory)
+    );
   }, [shelf, store]);
 
   React.useEffect(() => {
@@ -138,7 +136,6 @@ const ItemDetailsCreateContainer = ({
     /* istanbul ignore next */
     return !receivedStores.complete || !receivedShelves.complete;
   };
-
   return (
     <ErrorHandler
       condition={item.fail || store.fail || shelf.fail}

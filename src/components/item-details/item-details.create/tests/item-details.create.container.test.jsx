@@ -261,7 +261,7 @@ describe("Setup Environment", () => {
       const call = ItemDetailsForm.mock.calls[1][0];
       propCount(call, 10);
       expect(call.allItems).toStrictEqual(props.allItems);
-      expect(call.item).toStrictEqual({ ...defaultItem, shelf: 1 });
+      expect(call.item).toStrictEqual({ ...defaultItem, shelf: null });
       expect(call.title).toBe(props.title);
       expect(call.helpText).toBe(props.helpText);
       expect(call.transaction).toBe(false);

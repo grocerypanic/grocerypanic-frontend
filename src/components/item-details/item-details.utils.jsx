@@ -23,8 +23,5 @@ export const calculateDefaults = (
     if (search_shelves) return_value.shelf = parseInt(shelf);
   }
 
-  if (return_value.shelf === emptyDefault.shelf)
-    return_value.shelf = allShelves[0].id;
-
   return return_value;
 };

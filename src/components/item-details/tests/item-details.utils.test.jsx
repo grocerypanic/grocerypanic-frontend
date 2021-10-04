@@ -5,109 +5,88 @@ let params;
 let shelf;
 let store;
 
-describe("Setup Test", () => {
-  describe("When given an empty query string", () => {
+describe("calculateDefaults", () => {
+  let configured_store;
+  let configured_shelf;
+  const stores = [{ id: 21, name: "Metro" }];
+  const shelves = [
+    { id: 22, name: "Fridge" },
+    { id: 23, name: "Pantry" },
+  ];
+
+  describe("When given an EMPTY query string", () => {
     beforeEach(() => {
       params = new URLSearchParams({});
-      store = [{ id: 21, name: "Metro" }];
-      shelf = [
-        { id: 22, name: "Fridge" },
-        { id: 23, name: "Pantry" },
-      ];
     });
 
     it("should return the correct default values", () => {
       expect(
-        calculateDefaults(params, defaultItem, shelf, store)
+        calculateDefaults(params, defaultItem, shelves, stores)
       ).toStrictEqual({
         ...defaultItem,
-        shelf: shelf[0].id,
+        shelf: null,
       });
     });
   });
 
-  describe("When given a valid query string with a invalid store specified", () => {
-    const configured_store = 99;
-
+  describe("When given a valid query string with an INVALID store specified", () => {
     beforeEach(() => {
+      configured_store = 99;
       params = new URLSearchParams({ preferred_stores: configured_store });
-      store = [{ id: 21, name: "Metro" }];
-      shelf = [
-        { id: 22, name: "Fridge" },
-        { id: 23, name: "Pantry" },
-      ];
     });
 
     it("should return the correct default values, with the specified store", () => {
       expect(
-        calculateDefaults(params, defaultItem, shelf, store)
+        calculateDefaults(params, defaultItem, shelves, stores)
       ).toStrictEqual({
         ...defaultItem,
-        shelf: shelf[0].id,
+        shelf: null,
       });
     });
   });
 
-  describe("When given a valid query string with a valid store specified", () => {
-    const configured_store = 21;
-
+  describe("When given a valid query string with a VALID store specified", () => {
     beforeEach(() => {
+      configured_store = 21;
       params = new URLSearchParams({ preferred_stores: configured_store });
-      store = [{ id: 21, name: "Metro" }];
-      shelf = [
-        { id: 22, name: "Fridge" },
-        { id: 23, name: "Pantry" },
-      ];
     });
 
     it("should return the correct default values, with the specified store", () => {
       expect(
-        calculateDefaults(params, defaultItem, shelf, store)
+        calculateDefaults(params, defaultItem, shelves, stores)
       ).toStrictEqual({
         ...defaultItem,
         preferred_stores: [configured_store],
-        shelf: shelf[0].id,
+        shelf: null,
       });
     });
   });
 
-  describe("When given a valid query string with a invalid shelf specified", () => {
-    const configured_shelf = 99;
-
+  describe("When given a valid query string with an INVALID shelf specified", () => {
     beforeEach(() => {
+      configured_shelf = 99;
       params = new URLSearchParams({ shelf: configured_shelf });
-      store = [{ id: 21, name: "Metro" }];
-      shelf = [
-        { id: 22, name: "Fridge" },
-        { id: 23, name: "Pantry" },
-      ];
     });
 
     it("should return the correct default values, with the specified store", () => {
       expect(
-        calculateDefaults(params, defaultItem, shelf, store)
+        calculateDefaults(params, defaultItem, shelves, stores)
       ).toStrictEqual({
         ...defaultItem,
-        shelf: shelf[0].id,
+        shelf: null,
       });
     });
   });
 
-  describe("When given a valid query string with a valid shelf specified", () => {
-    const configured_shelf = 23;
-
+  describe("When given a valid query string with a VALID shelf specified", () => {
     beforeEach(() => {
+      configured_shelf = 23;
       params = new URLSearchParams({ shelf: configured_shelf });
-      store = [{ id: 21, name: "Metro" }];
-      shelf = [
-        { id: 22, name: "Fridge" },
-        { id: 23, name: "Pantry" },
-      ];
     });
 
     it("should return the correct default values, with the specified store", () => {
       expect(
-        calculateDefaults(params, defaultItem, shelf, store)
+        calculateDefaults(params, defaultItem, shelves, stores)
       ).toStrictEqual({
         ...defaultItem,
         shelf: configured_shelf,
@@ -115,14 +94,9 @@ describe("Setup Test", () => {
     });
   });
 
-  describe("When given a valid query string with nothing specified", () => {
+  describe("When given a valid query string with NOTHING specified", () => {
     beforeEach(() => {
       params = new URLSearchParams({ invalid: 22 });
-      store = [{ id: 21, name: "Metro" }];
-      shelf = [
-        { id: 22, name: "Fridge" },
-        { id: 23, name: "Pantry" },
-      ];
     });
 
     it("should return the correct default values", () => {
@@ -130,7 +104,7 @@ describe("Setup Test", () => {
         calculateDefaults(params, defaultItem, shelf, store)
       ).toStrictEqual({
         ...defaultItem,
-        shelf: shelf[0].id,
+        shelf: null,
       });
     });
   });
