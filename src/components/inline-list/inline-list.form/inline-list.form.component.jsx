@@ -29,6 +29,11 @@ const InlineListItemForm = ({
     setSelected(item.id);
   };
 
+  const handleSubmit = (value) => {
+    if (transaction) return;
+    handleSave(value);
+  };
+
   return (
     <form
       onSubmit={(e) => {
@@ -57,7 +62,7 @@ const InlineListItemForm = ({
         <div>
           <button
             data-testid={testIDs.ListItemSaveButton}
-            onClick={() => handleSave(fieldItem.current.value)}
+            onClick={() => handleSubmit(fieldItem.current.value)}
             className="btn btn-success"
             style={{ height: "40px" }}
           >

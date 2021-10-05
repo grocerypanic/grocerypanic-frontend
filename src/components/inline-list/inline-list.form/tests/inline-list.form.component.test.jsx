@@ -79,20 +79,6 @@ describe("InlineList", () => {
     });
 
     describe("when the form is changed", () => {
-      beforeEach(() => {
-        expect(currentProps.setSelected).toBeCalledTimes(0);
-        fireEvent.change(form, {
-          target: { value: "new value" },
-        });
-      });
-
-      it("should clear any error message", () => {
-        expect(currentProps.setErrorMsg).toBeCalledTimes(1);
-        expect(currentProps.setErrorMsg).toBeCalledWith(null);
-      });
-    });
-
-    describe("when the form is changed", () => {
       let testValue = "new value";
 
       beforeEach(() => {
@@ -123,11 +109,13 @@ describe("InlineList", () => {
 
   describe("when a transaction is ongoing", () => {
     let form;
+    let button;
 
     beforeEach(async () => {
       currentProps.transaction = true;
       arrange();
       form = await screen.findByTestId(testIDs.ListItemNewItemInputElement);
+      button = await screen.findByTestId(testIDs.ListItemSaveButton);
     });
 
     it("should display a READONLY entry form with the correct props", () => {
@@ -152,6 +140,17 @@ describe("InlineList", () => {
 
       it("should NOT set the new item to selected", () => {
         expect(currentProps.setSelected).toBeCalledTimes(0);
+      });
+    });
+
+    describe("when the save button is clicked", () => {
+      beforeEach(() => {
+        expect(currentProps.handleSave).toBeCalledTimes(0);
+        fireEvent.click(button);
+      });
+
+      it("should NOT call handleSave with the form value", () => {
+        expect(currentProps.handleSave).toBeCalledTimes(0);
       });
     });
   });
