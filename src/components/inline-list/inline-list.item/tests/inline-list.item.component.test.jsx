@@ -24,6 +24,7 @@ const initialProps = {
   transaction: false,
   redirectTag: "shelf",
   selected: null,
+  setCreated: jest.fn(),
   setSelected: jest.fn(),
 };
 
@@ -110,6 +111,11 @@ describe("InlineList", () => {
           expect(currentProps.setSelected).toBeCalledTimes(1)
         );
         expect(currentProps.setSelected).toBeCalledWith(1);
+      });
+
+      it("should call setCreated and set it to null", async () => {
+        await waitFor(() => expect(currentProps.setCreated).toBeCalledTimes(1));
+        expect(currentProps.setCreated).toBeCalledWith(null);
       });
     });
 

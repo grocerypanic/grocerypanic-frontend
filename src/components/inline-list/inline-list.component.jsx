@@ -66,8 +66,8 @@ const InlineList = ({
 
   const [listSize, setListSize] = React.useState(calculateMaxHeight());
 
-  let actionMessageTimer;
-  let errorMessageTimer;
+  const actionMessageTimer = React.useRef();
+  const errorMessageTimer = React.useRef();
 
   React.useEffect(() => {
     window.addEventListener("resize", recalculateHeight);
@@ -75,8 +75,8 @@ const InlineList = ({
     return () => {
       window.removeEventListener("resize", recalculateHeight);
       window.removeEventListener("contextmenu", preventContext);
-      clearTimeout(actionMessageTimer);
-      clearTimeout(errorMessageTimer);
+      clearTimeout(actionMessageTimer.current);
+      clearTimeout(errorMessageTimer.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -121,17 +121,27 @@ const InlineList = ({
   };
 
   const flashErrorMessage = (msg) => {
-    clearTimeout(errorMessageTimer);
-    setErrorMsg(msg);
-    errorMessageTimer = setTimeout(() => setErrorMsg(null), ui.alertTimeout);
+    clearTimeout(errorMessageTimer.current);
+    setErrorMsg(null);
+    errorMessageTimer.current = setTimeout(() => {
+      setErrorMsg(msg);
+      errorMessageTimer.current = setTimeout(
+        () => setErrorMsg(null),
+        ui.alertTimeout
+      );
+    }, ui.alertInitial);
   };
 
   const flashActionMessage = (msg) => {
-    clearTimeout(actionMessageTimer);
-    setActionMsg(msg);
-    actionMessageTimer = setTimeout(() => {
-      setActionMsg(null);
-    }, ui.alertTimeout);
+    clearTimeout(actionMessageTimer.current);
+    setActionMsg(null);
+    actionMessageTimer.current = setTimeout(() => {
+      setActionMsg(msg);
+      actionMessageTimer.current = setTimeout(
+        () => setActionMsg(null),
+        ui.alertTimeout
+      );
+    }, ui.alertInitial);
   };
 
   const handleCreate = () => {
@@ -227,6 +237,7 @@ const InlineList = ({
                         transaction={apiObject.transaction}
                         redirectTag={redirectTag}
                         selected={selected}
+                        setCreated={setCreated}
                         setSelected={setSelected}
                       />
                     );

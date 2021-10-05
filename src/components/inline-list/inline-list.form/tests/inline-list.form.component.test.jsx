@@ -140,10 +140,6 @@ describe("InlineList", () => {
       expect(form.defaultValue).toBe(currentProps.item.name);
     });
 
-    it("should NOT display a save button", () => {
-      expect(screen.queryByTestId(testIDs.ListItemSaveButton)).toBeNull();
-    });
-
     it("should match the snapshot on file (styles)", () => {
       expect(container).toMatchSnapshot();
     });

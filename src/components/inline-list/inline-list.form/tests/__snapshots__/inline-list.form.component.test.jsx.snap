@@ -71,6 +71,17 @@ exports[`InlineList when a transaction is ongoing should match the snapshot on f
           value="mockItem"
         />
       </div>
+      <div>
+        <button
+          class="btn btn-success"
+          data-testid="ListItemSaveButton"
+          style="height: 40px;"
+        >
+          <span>
+            save
+          </span>
+        </button>
+      </div>
     </li>
   </form>
 </div>

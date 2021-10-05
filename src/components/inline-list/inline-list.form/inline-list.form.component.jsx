@@ -54,18 +54,16 @@ const InlineListItemForm = ({
             readOnly={transaction}
           />
         </InlineListItemTitle>
-        {!transaction ? (
-          <div>
-            <button
-              data-testid={testIDs.ListItemSaveButton}
-              onClick={() => handleSave(fieldItem.current.value)}
-              className="btn btn-success"
-              style={{ height: "40px" }}
-            >
-              <span>{t("InlineList.SaveButton")}</span>
-            </button>
-          </div>
-        ) : null}
+        <div>
+          <button
+            data-testid={testIDs.ListItemSaveButton}
+            onClick={() => handleSave(fieldItem.current.value)}
+            className="btn btn-success"
+            style={{ height: "40px" }}
+          >
+            <span>{t("InlineList.SaveButton")}</span>
+          </button>
+        </div>
       </InlineListItemBox>
     </form>
   );

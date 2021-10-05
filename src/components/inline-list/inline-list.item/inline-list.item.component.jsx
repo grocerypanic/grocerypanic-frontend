@@ -25,6 +25,7 @@ const InlineListItem = ({
   transaction,
   redirectTag,
   selected,
+  setCreated,
   setSelected,
 }) => {
   const { t } = useTranslation();
@@ -44,6 +45,7 @@ const InlineListItem = ({
   const handleShortClick = (e) => {
     if (transaction) return;
     setSelected(item.id);
+    setCreated(null);
   };
 
   const clickHandler = UseLongPress(
@@ -100,5 +102,6 @@ InlineListItem.propTypes = {
   transaction: PropTypes.bool.isRequired,
   redirectTag: PropTypes.string.isRequired,
   selected: PropTypes.number,
+  setCreated: PropTypes.func.isRequired,
   setSelected: PropTypes.func.isRequired,
 };

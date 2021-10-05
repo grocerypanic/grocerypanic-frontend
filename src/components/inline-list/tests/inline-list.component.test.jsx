@@ -285,8 +285,9 @@ describe("InlineList", () => {
           expect(call.transaction).toBe(currentAPIData.transaction);
           expect(call.redirectTag).toBe(mockProps.redirectTag);
           expect(call.selected).toBe(null);
+          expect(typeof call.setCreated).toBe("function");
           expect(typeof call.setSelected).toBe("function");
-          propCount(call, 8);
+          propCount(call, 9);
         };
 
         const checkInlineListItems = () => {

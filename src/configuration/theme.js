@@ -14,6 +14,7 @@ export const warning = "#ffc107";
 
 export const ui = {
   alertTimeout: 2000,
+  alertInitial: 100,
   resizeTimeout: 1,
 };
 
