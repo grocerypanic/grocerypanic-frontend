@@ -5,7 +5,7 @@ import Select from "react-select";
 
 const SearchSelect = ({
   setErrorMsg,
-  storeState,
+  state,
   handleState,
   options,
   label,
@@ -33,7 +33,7 @@ const SearchSelect = ({
   const transformed_options = options.map((o) => {
     return { value: o.id, label: o.name };
   });
-  const transformed_values = { value: storeState.id, label: storeState.name };
+  const transformed_values = { value: state.id, label: state.name };
 
   return (
     <>

@@ -1,33 +1,27 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { withTranslation } from "react-i18next";
 import SocialLogin from "react-social-login";
+import SocialLoginButton from "./social-login-button/social-login-button";
 import StandBy from "./social-login-controller.standby";
 
-class SocialLoginController extends React.Component {
+class SocialLoginController extends SocialLogin(SocialLoginButton) {
   render() {
-    const { t } = this.props;
-    const { ButtonType, message, triggerLogin } = this.props;
-
-    if (!window.gapi && !window.FB)
-      return (
-        <div data-testid="PendingSocialController">
-          <StandBy>{t("SignIn.PendingSocialConnection")}</StandBy>
-        </div>
-      );
+    const result = super.render();
+    if (result) return result;
 
     return (
-      <div data-testid="SocialController">
-        <ButtonType onClick={triggerLogin}>{message}</ButtonType>
+      <div data-testid="PendingSocialController">
+        <StandBy>{this.props.fallbackMessage}</StandBy>
       </div>
     );
   }
 }
 
-export default withTranslation()(SocialLogin(SocialLoginController));
+export default SocialLoginController;
 
 SocialLoginController.propTypes = {
   ButtonType: PropTypes.func.isRequired,
+  fallbackMessage: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   triggerLogin: PropTypes.func.isRequired,
 };

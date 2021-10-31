@@ -6,7 +6,7 @@ const setErrorMsg = jest.fn();
 const handleState = jest.fn();
 
 const props = {
-  storeState: "Value2",
+  state: "Value2",
   setErrorMsg,
   handleState,
   item: {},
@@ -84,5 +84,49 @@ describe("Setup Environment, no label or details", () => {
 
     expect(setErrorMsg).toBeCalledWith(null);
     expect(handleState).toBeCalledWith("Value1");
+  });
+});
+
+describe("Setup Environment, state is null", () => {
+  let tests = [1];
+  let utils;
+  let currentTest;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    currentTest = tests.shift();
+    const testProps = {
+      ...props,
+      state: null,
+      options: [
+        { id: 0, name: null },
+        { id: 1, name: "Value1" },
+      ],
+    };
+    utils = render(<DropDown {...testProps} />);
+  });
+
+  afterEach(cleanup);
+
+  it("should render and handle input as expected", async () => {
+    expect(currentTest).toBe(1);
+    expect(utils.getByText("Some Label")).toBeTruthy();
+    expect(utils.getByText("Some Detail")).toBeTruthy();
+    const node = utils.getByTestId(`input_${props.fieldName}`);
+    expect(node.value).toBe("");
+    fireEvent.change(node, {
+      target: { value: "Value1" },
+    });
+    await waitFor(() => expect(setErrorMsg).toBeCalledTimes(1));
+    await waitFor(() => expect(handleState).toBeCalledTimes(1));
+    expect(setErrorMsg).toBeCalledWith(null);
+    expect(handleState).toBeCalledWith("Value1");
+    fireEvent.change(node, {
+      target: { value: "" },
+    });
+    await waitFor(() => expect(setErrorMsg).toBeCalledTimes(2));
+    await waitFor(() => expect(handleState).toBeCalledTimes(2));
+    expect(setErrorMsg).toBeCalledWith(null);
+    expect(handleState).toBeCalledWith(null);
   });
 });

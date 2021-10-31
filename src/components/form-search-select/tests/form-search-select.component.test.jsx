@@ -10,7 +10,7 @@ const option2 = { id: 2, name: "Value2" };
 const option3 = { id: 3, name: "Default" };
 
 const props = {
-  storeState: option3,
+  state: option3,
   setErrorMsg,
   handleState,
   item: {},

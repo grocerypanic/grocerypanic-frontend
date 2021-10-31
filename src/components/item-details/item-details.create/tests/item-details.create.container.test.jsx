@@ -326,16 +326,14 @@ describe("Setup Environment", () => {
       testShelf = { ...mockShelfProvider };
     });
 
-    const renderHelper = (storeState, shelfState) =>
+    const renderHelper = (state, shelfState) =>
       render(
         <Router history={history}>
           <HeaderContext.Provider
             value={{ ...initialHeaderSettings, updateHeader: mockHeaderUpdate }}
           >
             <AnalyticsContext.Provider value={mockAnalyticsContext}>
-              <StoreContext.Provider
-                value={{ ...storeState, transaction: false }}
-              >
+              <StoreContext.Provider value={{ ...state, transaction: false }}>
                 <ShelfContext.Provider
                   value={{ ...shelfState, transaction: false }}
                 >

@@ -427,11 +427,11 @@ describe("InlineList", () => {
           await waitFor(() => expect(mockHeaderUpdate).toBeCalledTimes(1));
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           const handleCreate = mockHeaderUpdate.mock.calls[0][0].create;
-          act(() => handleCreate());
+          handleCreate();
         });
 
-        it("should NOT call ListItemForm", () => {
-          waitFor(() => expect(InlineListForm).toBeCalledTimes(0));
+        it("should NOT call ListItemForm", async () => {
+          expect(InlineListForm).toBeCalledTimes(0);
         });
       });
 
@@ -440,7 +440,7 @@ describe("InlineList", () => {
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           await waitFor(() => expect(InlineListItem).toBeCalledTimes(3));
           const handleDelete = InlineListItem.mock.calls[0][0].handleDelete;
-          act(() => handleDelete(0, "Not A Real Item"));
+          handleDelete(0, "Not A Real Item");
         });
 
         it("should should NOT dispatch for the delete", () => {

@@ -10,8 +10,8 @@ const GeneratePopOver = ({ translate, children, title, message }) => (
     transition={false}
     overlay={
       <Popover id="popover-basic">
-        <Popover.Title as="h3">{translate(title)}</Popover.Title>
-        <Popover.Content>{translate(message)}</Popover.Content>
+        <Popover.Header as="h3">{translate(title)}</Popover.Header>
+        <Popover.Body>{translate(message)}</Popover.Body>
       </Popover>
     }
   >

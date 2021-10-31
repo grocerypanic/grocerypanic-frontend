@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 
 const FormInput = ({
   setErrorMsg,
-  storeState,
+  state,
   handleState,
   item,
   label,
@@ -40,7 +40,7 @@ const FormInput = ({
           type={type}
           name={fieldName}
           size={size}
-          value={storeState}
+          value={state}
           onChange={(e) => processChange(e)}
           readOnly={transaction}
           data-testid={`input_${fieldName}`}
@@ -56,7 +56,7 @@ export default FormInput;
 
 FormInput.propTypes = {
   setErrorMsg: PropTypes.func.isRequired,
-  storeState: PropTypes.any.isRequired,
+  state: PropTypes.any.isRequired,
   handleState: PropTypes.func.isRequired,
   transaction: PropTypes.bool.isRequired,
   item: PropTypes.object.isRequired,

@@ -3,23 +3,23 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 
 const DropDown = ({
-  setErrorMsg,
-  storeState,
-  handleState,
-  options,
-  label,
-  fieldName,
-  transaction,
   details,
-  size = 20,
-  handleChange,
-  labelColumn = "col-2",
+  fieldName,
+  handleState,
+  label,
+  options,
+  setErrorMsg,
+  state,
+  transaction,
   itemColumn = "col-9",
+  labelColumn = "col-2",
+  size = 20,
   ...otherProps
 }) => {
   const calculateSelections = (e) => {
     setErrorMsg(null);
-    const selected = options.find((o) => o.name === e.target.value);
+    const targetValue = e.target.value !== "" ? e.target.value : null;
+    const selected = options.find((o) => o.name === targetValue);
     handleState(selected.name);
   };
 
@@ -41,7 +41,7 @@ const DropDown = ({
           id={fieldName}
           name={fieldName}
           size={size}
-          value={storeState}
+          value={state !== null ? state : ""}
           onChange={(e) => calculateSelections(e)}
           readOnly={transaction}
           data-testid={`input_${fieldName}`}
@@ -59,6 +59,8 @@ const DropDown = ({
 export default DropDown;
 
 DropDown.propTypes = {
+  state: PropTypes.string,
+  handleState: PropTypes.func.isRequired,
   setErrorMsg: PropTypes.func.isRequired,
   transaction: PropTypes.bool.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,

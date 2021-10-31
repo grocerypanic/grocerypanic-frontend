@@ -81,14 +81,23 @@ exports[`Check the correct props are passed to  in desktop mode should match the
     <div
       class="carousel slide"
     >
-      <ol
+      <div
         class="carousel-indicators"
       >
-        <li
+        <button
+          aria-current="true"
+          aria-label="Slide 1"
           class="active"
+          data-bs-target=""
+          type="button"
         />
-        <li />
-      </ol>
+        <button
+          aria-current="false"
+          aria-label="Slide 2"
+          data-bs-target=""
+          type="button"
+        />
+      </div>
       <div
         class="carousel-inner"
       >
@@ -161,30 +170,30 @@ exports[`Check the correct props are passed to  in desktop mode should match the
       </div>
       <a
         class="carousel-control-prev"
-        href="#"
         role="button"
+        tabindex="0"
       >
         <span
           aria-hidden="true"
           class="carousel-control-prev-icon"
         />
         <span
-          class="sr-only"
+          class="visually-hidden"
         >
           Previous
         </span>
       </a>
       <a
         class="carousel-control-next"
-        href="#"
         role="button"
+        tabindex="0"
       >
         <span
           aria-hidden="true"
           class="carousel-control-next-icon"
         />
         <span
-          class="sr-only"
+          class="visually-hidden"
         >
           Next
         </span>
@@ -277,14 +286,23 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
     <div
       class="carousel slide"
     >
-      <ol
+      <div
         class="carousel-indicators"
       >
-        <li
+        <button
+          aria-current="true"
+          aria-label="Slide 1"
           class="active"
+          data-bs-target=""
+          type="button"
         />
-        <li />
-      </ol>
+        <button
+          aria-current="false"
+          aria-label="Slide 2"
+          data-bs-target=""
+          type="button"
+        />
+      </div>
       <div
         class="carousel-inner"
       >
@@ -357,30 +375,30 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
       </div>
       <a
         class="carousel-control-prev"
-        href="#"
         role="button"
+        tabindex="0"
       >
         <span
           aria-hidden="true"
           class="carousel-control-prev-icon"
         />
         <span
-          class="sr-only"
+          class="visually-hidden"
         >
           Previous
         </span>
       </a>
       <a
         class="carousel-control-next"
-        href="#"
         role="button"
+        tabindex="0"
       >
         <span
           aria-hidden="true"
           class="carousel-control-next-icon"
         />
         <span
-          class="sr-only"
+          class="visually-hidden"
         >
           Next
         </span>

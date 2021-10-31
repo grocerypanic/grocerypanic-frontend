@@ -26,6 +26,7 @@ const SignIn = ({ handleSocialLogin, handleSocialLoginError }) => {
             ButtonType={GoogleLoginButton}
             appId={process.env.REACT_APP_GOOGLE_ACCOUNT_ID}
             provider={Providers.google}
+            fallbackMessage={t("SignIn.PendingSocialConnection")}
             message={t("SignIn.LoginMessageGoogle")}
             onLoginSuccess={handleSocialLogin}
             onLoginFailure={handleSocialLoginError}
@@ -37,6 +38,7 @@ const SignIn = ({ handleSocialLogin, handleSocialLoginError }) => {
             appId={process.env.REACT_APP_FACEBOOK_ACCOUNT_ID}
             provider={Providers.facebook}
             message={t("SignIn.LoginMessageFacebook")}
+            fallbackMessage={t("SignIn.PendingSocialConnection")}
             onLoginSuccess={handleSocialLogin}
             onLoginFailure={handleSocialLoginError}
           />

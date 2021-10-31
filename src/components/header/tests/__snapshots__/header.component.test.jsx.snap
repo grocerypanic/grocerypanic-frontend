@@ -43,7 +43,7 @@ exports[`with nav disabled with a create function should match the snapshot on f
     </div>
   </span>
   <div
-    class="mr-auto navbar-nav"
+    class="ms-auto navbar-nav"
   />
 </nav>
 `;
@@ -91,7 +91,7 @@ exports[`with nav disabled without a create function should match the snapshot o
     </div>
   </span>
   <div
-    class="mr-auto navbar-nav"
+    class="ms-auto navbar-nav"
   />
 </nav>
 `;
@@ -157,7 +157,7 @@ exports[`with nav enabled during a transaction with a create function should mat
     </div>
   </span>
   <div
-    class="mr-auto navbar-nav"
+    class="ms-auto navbar-nav"
   />
   <div
     class="navbar-nav"
@@ -319,7 +319,7 @@ exports[`with nav enabled during a transaction without a create function should 
     </div>
   </span>
   <div
-    class="mr-auto navbar-nav"
+    class="ms-auto navbar-nav"
   />
   <div
     class="navbar-nav"
@@ -480,7 +480,7 @@ exports[`with nav enabled outside of a transaction with a create function should
     </div>
   </span>
   <div
-    class="mr-auto navbar-nav"
+    class="ms-auto navbar-nav"
   />
   <div
     class="navbar-nav"
@@ -643,7 +643,7 @@ exports[`with nav enabled outside of a transaction without a create function sho
     </div>
   </span>
   <div
-    class="mr-auto navbar-nav"
+    class="ms-auto navbar-nav"
   />
   <div
     class="navbar-nav"
@@ -787,7 +787,7 @@ exports[`with signin enabled with a create function should match the snapshot on
     </div>
   </span>
   <div
-    class="mr-auto navbar-nav"
+    class="ms-auto navbar-nav"
   />
   <div
     class="navbar-nav"
@@ -853,7 +853,7 @@ exports[`with signin enabled without a create function should match the snapshot
     </div>
   </span>
   <div
-    class="mr-auto navbar-nav"
+    class="ms-auto navbar-nav"
   />
   <div
     class="navbar-nav"

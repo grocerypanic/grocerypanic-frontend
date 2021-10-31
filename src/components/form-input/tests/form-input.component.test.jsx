@@ -6,7 +6,7 @@ const setErrorMsg = jest.fn();
 const handleState = jest.fn();
 
 const props = {
-  storeState: "",
+  state: "",
   setErrorMsg,
   handleState,
   item: {},

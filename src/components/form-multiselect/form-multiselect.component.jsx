@@ -4,19 +4,18 @@ import Form from "react-bootstrap/Form";
 import Select from "react-select";
 
 const MultiDropDown = ({
-  setErrorMsg,
-  storeState,
-  handleState,
-  options,
-  label,
-  fieldName,
-  transaction,
   details,
-  size = 20,
-  handleChange,
-  multi = true,
-  labelColumn = "col-2",
+  fieldName,
+  handleState,
+  label,
+  options,
+  setErrorMsg,
+  state,
+  transaction,
   itemColumn = "col-9",
+  labelColumn = "col-2",
+  multi = true,
+  size = 20,
   ...otherProps
 }) => {
   const calculateSelections = (value, { action, removedValue }) => {
@@ -26,7 +25,7 @@ const MultiDropDown = ({
         handleState([]);
         break;
       case "remove-value":
-        handleState(storeState.filter((o) => o.name !== removedValue.label));
+        handleState(state.filter((o) => o.name !== removedValue.label));
         break;
       case "select-option":
         handleState(
@@ -44,7 +43,7 @@ const MultiDropDown = ({
   const transformed_options = options.map((o) => {
     return { value: o.id, label: o.name };
   });
-  const transformed_values = storeState.map((o) => {
+  const transformed_values = state.map((o) => {
     return { value: o.id, label: o.name };
   });
 
@@ -79,11 +78,18 @@ const MultiDropDown = ({
 export default MultiDropDown;
 
 MultiDropDown.propTypes = {
-  setErrorMsg: PropTypes.func.isRequired,
-  transaction: PropTypes.bool.isRequired,
-  options: PropTypes.arrayOf(PropTypes.object).isRequired,
-  fieldName: PropTypes.string.isRequired,
-  label: PropTypes.string,
   details: PropTypes.string,
+  fieldName: PropTypes.string.isRequired,
+  handleState: PropTypes.func.isRequired,
+  label: PropTypes.string,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setErrorMsg: PropTypes.func.isRequired,
+  state: PropTypes.arrayOf(
+    PropTypes.shape({ id: PropTypes.number.isRequired, name: PropTypes.string })
+  ).isRequired,
+  transaction: PropTypes.bool.isRequired,
+  itemColumn: PropTypes.string,
+  labelColumn: PropTypes.string,
+  multi: PropTypes.bool,
   size: PropTypes.number,
 };

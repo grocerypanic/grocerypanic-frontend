@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SocialLoginControllerReady when social login is ready should match the snapshot on file (styles) 1`] = `
+<div
+  data-testid="SocialLoginButton"
+>
+  <div>
+    TestMessage
+  </div>
+</div>
+`;

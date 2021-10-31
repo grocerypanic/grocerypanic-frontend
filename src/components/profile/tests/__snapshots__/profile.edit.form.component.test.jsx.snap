@@ -181,7 +181,7 @@ exports[`Setup Environment for ProfileForm test during a transaction should matc
             class=""
           >
             <div
-              class="row form-group"
+              class="row"
             >
               <div
                 class="col-2 col-form-label"
@@ -213,7 +213,7 @@ exports[`Setup Environment for ProfileForm test during a transaction should matc
               </div>
             </div>
             <div
-              class="row form-group"
+              class="row"
             >
               <div
                 class="col-2 col-form-label"
@@ -245,7 +245,7 @@ exports[`Setup Environment for ProfileForm test during a transaction should matc
               </div>
             </div>
             <div
-              class="row form-group"
+              class="row"
             >
               <div
                 class="col-2 col-form-label"
@@ -264,8 +264,12 @@ exports[`Setup Environment for ProfileForm test during a transaction should matc
                 data-testid="input_timezone_parent"
               >
                 <div
-                  class=" css-2b097c-container"
+                  class=" css-b62m3t-container"
                 >
+                  <span
+                    class="css-1f43avz-a11yText-A11yText"
+                    id="react-select-9-live-region"
+                  />
                   <span
                     aria-atomic="false"
                     aria-live="polite"
@@ -273,39 +277,38 @@ exports[`Setup Environment for ProfileForm test during a transaction should matc
                     class="css-1f43avz-a11yText-A11yText"
                   />
                   <div
-                    class="list__control css-yk16xz-control"
+                    class="list__control css-1s2u09g-control"
                   >
                     <div
-                      class="list__value-container list__value-container--has-value css-g1d714-ValueContainer"
+                      class="list__value-container list__value-container--has-value css-319lph-ValueContainer"
                     >
                       <div
-                        class="list__single-value css-1uccc91-singleValue"
+                        class="list__single-value css-qc6sy-singleValue"
                       >
                         mockTime1
                       </div>
                       <div
-                        class="css-b8ldur-Input"
+                        class="list__input-container css-6j8wv5-Input"
+                        data-value=""
                       >
-                        <div
+                        <input
+                          aria-autocomplete="list"
+                          aria-controls="react-select-9-listbox"
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          aria-owns="react-select-9-listbox"
+                          autocapitalize="none"
+                          autocomplete="off"
+                          autocorrect="off"
                           class="list__input"
-                          style="display: inline-block;"
-                        >
-                          <input
-                            aria-autocomplete="list"
-                            autocapitalize="none"
-                            autocomplete="off"
-                            autocorrect="off"
-                            id="react-select-9-input"
-                            spellcheck="false"
-                            style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                            tabindex="0"
-                            type="text"
-                            value=""
-                          />
-                          <div
-                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                          />
-                        </div>
+                          id="react-select-9-input"
+                          role="combobox"
+                          spellcheck="false"
+                          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
                       </div>
                     </div>
                     <div
@@ -316,7 +319,7 @@ exports[`Setup Environment for ProfileForm test during a transaction should matc
                         class="list__indicator list__loading-indicator css-at12u2-loadingIndicator"
                       >
                         <span
-                          class="css-1yvy2vo-LoadingDot"
+                          class="css-1xtdfmb-LoadingDot"
                         />
                         <span
                           class="css-zoievk-LoadingDot"
@@ -571,7 +574,7 @@ exports[`Setup Environment for ProfileForm test outside of a transaction with a 
             class=""
           >
             <div
-              class="row form-group"
+              class="row"
             >
               <div
                 class="col-2 col-form-label"
@@ -602,7 +605,7 @@ exports[`Setup Environment for ProfileForm test outside of a transaction with a 
               </div>
             </div>
             <div
-              class="row form-group"
+              class="row"
             >
               <div
                 class="col-2 col-form-label"
@@ -633,7 +636,7 @@ exports[`Setup Environment for ProfileForm test outside of a transaction with a 
               </div>
             </div>
             <div
-              class="row form-group"
+              class="row"
             >
               <div
                 class="col-2 col-form-label"
@@ -652,8 +655,12 @@ exports[`Setup Environment for ProfileForm test outside of a transaction with a 
                 data-testid="input_timezone_parent"
               >
                 <div
-                  class=" css-2b097c-container"
+                  class=" css-b62m3t-container"
                 >
+                  <span
+                    class="css-1f43avz-a11yText-A11yText"
+                    id="react-select-2-live-region"
+                  />
                   <span
                     aria-atomic="false"
                     aria-live="polite"
@@ -661,39 +668,38 @@ exports[`Setup Environment for ProfileForm test outside of a transaction with a 
                     class="css-1f43avz-a11yText-A11yText"
                   />
                   <div
-                    class="list__control css-yk16xz-control"
+                    class="list__control css-1s2u09g-control"
                   >
                     <div
-                      class="list__value-container list__value-container--has-value css-g1d714-ValueContainer"
+                      class="list__value-container list__value-container--has-value css-319lph-ValueContainer"
                     >
                       <div
-                        class="list__single-value css-1uccc91-singleValue"
+                        class="list__single-value css-qc6sy-singleValue"
                       >
                         mockTime1
                       </div>
                       <div
-                        class="css-b8ldur-Input"
+                        class="list__input-container css-6j8wv5-Input"
+                        data-value=""
                       >
-                        <div
+                        <input
+                          aria-autocomplete="list"
+                          aria-controls="react-select-2-listbox"
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          aria-owns="react-select-2-listbox"
+                          autocapitalize="none"
+                          autocomplete="off"
+                          autocorrect="off"
                           class="list__input"
-                          style="display: inline-block;"
-                        >
-                          <input
-                            aria-autocomplete="list"
-                            autocapitalize="none"
-                            autocomplete="off"
-                            autocorrect="off"
-                            id="react-select-2-input"
-                            spellcheck="false"
-                            style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
-                            tabindex="0"
-                            type="text"
-                            value=""
-                          />
-                          <div
-                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                          />
-                        </div>
+                          id="react-select-2-input"
+                          role="combobox"
+                          spellcheck="false"
+                          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
                       </div>
                     </div>
                     <div

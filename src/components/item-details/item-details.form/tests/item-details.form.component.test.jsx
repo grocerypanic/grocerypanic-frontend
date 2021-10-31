@@ -142,7 +142,7 @@ describe("Setup Environment, Render Tests", () => {
 
         propCount(nameInput, 12);
         expect(nameInput.setErrorMsg).toBeInstanceOf(Function);
-        expect(nameInput.storeState).toBe(props.item.name);
+        expect(nameInput.state).toBe(props.item.name);
         expect(nameInput.handleState).toBeInstanceOf(Function);
         expect(nameInput.fieldName).toBe("name");
         expect(nameInput.item).toBe(props.item);
@@ -156,7 +156,7 @@ describe("Setup Environment, Render Tests", () => {
 
         propCount(qtyInput, 15);
         expect(qtyInput.setErrorMsg).toBeInstanceOf(Function);
-        expect(qtyInput.storeState).toBe(props.item.quantity);
+        expect(qtyInput.state).toBe(props.item.quantity);
         expect(qtyInput.handleState).toBeInstanceOf(Function);
         expect(qtyInput.fieldName).toBe("quantity");
         expect(qtyInput.item).toBe(props.item);
@@ -173,7 +173,7 @@ describe("Setup Environment, Render Tests", () => {
 
         propCount(priceInput, 14);
         expect(priceInput.setErrorMsg).toBeInstanceOf(Function);
-        expect(priceInput.storeState).toBe(props.item.price);
+        expect(priceInput.state).toBe(props.item.price);
         expect(priceInput.handleState).toBeInstanceOf(Function);
         expect(priceInput.fieldName).toBe("price");
         expect(priceInput.item).toBe(props.item);
@@ -202,7 +202,7 @@ describe("Setup Environment, Render Tests", () => {
 
         propCount(nameInput, 12);
         expect(nameInput.setErrorMsg).toBeInstanceOf(Function);
-        expect(nameInput.storeState).toBe(props.item.name);
+        expect(nameInput.state).toBe(props.item.name);
         expect(nameInput.handleState).toBeInstanceOf(Function);
         expect(nameInput.fieldName).toBe("name");
         expect(nameInput.item).toBe(props.item);
@@ -216,7 +216,7 @@ describe("Setup Environment, Render Tests", () => {
 
         propCount(qtyInput, 15);
         expect(qtyInput.setErrorMsg).toBeInstanceOf(Function);
-        expect(qtyInput.storeState).toBe(props.item.quantity);
+        expect(qtyInput.state).toBe(props.item.quantity);
         expect(qtyInput.handleState).toBeInstanceOf(Function);
         expect(qtyInput.fieldName).toBe("quantity");
         expect(qtyInput.item).toBe(props.item);
@@ -233,7 +233,7 @@ describe("Setup Environment, Render Tests", () => {
 
         propCount(priceInput, 14);
         expect(priceInput.setErrorMsg).toBeInstanceOf(Function);
-        expect(priceInput.storeState).toBe(props.item.price);
+        expect(priceInput.state).toBe(props.item.price);
         expect(priceInput.handleState).toBeInstanceOf(Function);
         expect(priceInput.fieldName).toBe("price");
         expect(priceInput.item).toBe(props.item);
@@ -255,7 +255,7 @@ describe("Setup Environment, Render Tests", () => {
 
         propCount(shelfLife, 9);
         expect(shelfLife.setErrorMsg).toBeInstanceOf(Function);
-        expect(shelfLife.storeState).toBe("25 Days");
+        expect(shelfLife.state).toBe("25 Days");
         expect(shelfLife.handleState).toBeInstanceOf(Function);
         expect(shelfLife.fieldName).toBe("shelf_life");
         expect(shelfLife.transaction).toBe(false);
@@ -269,7 +269,7 @@ describe("Setup Environment, Render Tests", () => {
 
         propCount(shelf, 9);
         expect(shelf.setErrorMsg).toBeInstanceOf(Function);
-        expect(shelf.storeState).toBe(mockShelf2.name);
+        expect(shelf.state).toBe(mockShelf2.name);
         expect(shelf.handleState).toBeInstanceOf(Function);
         expect(shelf.fieldName).toBe("shelf");
         expect(shelf.transaction).toBe(false);
@@ -290,7 +290,7 @@ describe("Setup Environment, Render Tests", () => {
 
         propCount(preferredStores, 9);
         expect(preferredStores.setErrorMsg).toBeInstanceOf(Function);
-        expect(preferredStores.storeState).toStrictEqual([mockStore1]);
+        expect(preferredStores.state).toStrictEqual([mockStore1]);
         expect(preferredStores.handleState).toBeInstanceOf(Function);
         expect(preferredStores.fieldName).toBe("preferred_stores");
         expect(preferredStores.transaction).toBe(false);

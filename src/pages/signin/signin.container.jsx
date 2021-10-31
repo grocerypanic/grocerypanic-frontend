@@ -37,7 +37,7 @@ const SignInContainer = () => {
     social.login(response);
   };
 
-  const handleSocialLoginError = () => {
+  const handleSocialLoginError = (err) => {
     setInProgress(false);
     social.error();
   };

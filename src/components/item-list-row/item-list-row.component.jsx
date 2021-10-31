@@ -101,7 +101,7 @@ const ItemListRow = ({
         </div>
       </ListTitle>
       <Control type="restock" data-testid="restock">
-        <Dropdown alignRight as={ButtonGroup} onSelect={handleRestock}>
+        <Dropdown as={ButtonGroup} onSelect={handleRestock}>
           <DropdownToggle
             id="dropdown-custom-1"
             size="sm"
@@ -112,14 +112,14 @@ const ItemListRow = ({
             </Symbol>
           </DropdownToggle>
           {transaction ? null : (
-            <DropdownMenu popperConfig={{ position: "fixed" }}>
+            <DropdownMenu renderOnMount popperConfig={{ position: "fixed" }}>
               {generateDropDownOptions(item.name, 5, "+")}
             </DropdownMenu>
           )}
         </Dropdown>
       </Control>
       <Control type="consume" data-testid="consume">
-        <Dropdown alignRight as={ButtonGroup} onSelect={handleConsume}>
+        <Dropdown as={ButtonGroup} onSelect={handleConsume}>
           <DropdownToggle
             id="dropdown-custom-2"
             size="sm"
@@ -130,7 +130,7 @@ const ItemListRow = ({
             </Symbol>
           </DropdownToggle>
           {transaction ? null : (
-            <DropdownMenu>
+            <DropdownMenu renderOnMount>
               {generateDropDownOptions(item.name, 5, "-")}
             </DropdownMenu>
           )}

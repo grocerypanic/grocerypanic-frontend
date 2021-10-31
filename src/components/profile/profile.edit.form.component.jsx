@@ -64,7 +64,7 @@ const ProfileForm = ({
               <Form.Group className="row">
                 <FormInput
                   setErrorMsg={nullFunction}
-                  storeState={nameFirstState}
+                  state={nameFirstState}
                   handleState={setNameFirstState}
                   fieldName="first_name"
                   item={user[0]}
@@ -80,7 +80,7 @@ const ProfileForm = ({
               <Form.Group className="row">
                 <FormInput
                   setErrorMsg={nullFunction}
-                  storeState={nameLastState}
+                  state={nameLastState}
                   handleState={setNameLastState}
                   fieldName="last_name"
                   item={user[0]}
@@ -96,7 +96,7 @@ const ProfileForm = ({
               <Form.Group className="row">
                 <SearchSelect
                   setErrorMsg={nullFunction}
-                  storeState={tzState}
+                  state={tzState}
                   handleState={setTZState}
                   fieldName="timezone"
                   options={timezones}

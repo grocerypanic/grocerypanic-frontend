@@ -56,7 +56,7 @@ const Header = ({ history }) => {
             )}`}</div>
           </div>
         </Navbar.Brand>
-        <Nav className="mr-auto"></Nav>
+        <Nav className="ms-auto"></Nav>
       </NavContainer>
     );
 
@@ -71,7 +71,7 @@ const Header = ({ history }) => {
             )}`}</div>
           </div>
         </Navbar.Brand>
-        <Nav className="mr-auto"></Nav>
+        <Nav className="ms-auto"></Nav>
         <Nav>
           <Nav.Item
             className={"nav-link action" + mobileSpacing(mobile)}
@@ -99,7 +99,7 @@ const Header = ({ history }) => {
           }`}</div>
         </div>
       </Navbar.Brand>
-      <Nav className="mr-auto"></Nav>
+      <Nav className="ms-auto"></Nav>
       <Nav>
         <Nav.Item
           className={"nav-link action" + mobileSpacing(mobile)}

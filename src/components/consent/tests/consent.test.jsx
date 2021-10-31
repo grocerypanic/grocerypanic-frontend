@@ -7,7 +7,9 @@ import Strings from "../../../configuration/strings";
 import { AnalyticsContext } from "../../../providers/analytics/analytics.provider";
 import Consent from "../consent.component";
 
-jest.mock("react-cookie-consent");
+jest.mock("react-cookie-consent", () =>
+  jest.fn(() => <div>MockConsentComponent</div>)
+);
 
 const mockSetup = jest.fn();
 const mockAnalyticsSettings = {

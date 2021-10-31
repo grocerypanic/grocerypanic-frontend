@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
-import Chart from "chart.js";
+import { Chart } from "chart.js";
+import ResizeObserver from "resize-observer-polyfill";
 import "jest-canvas-mock";
 import { Constants } from "../../../../configuration/backend";
 import {
@@ -70,6 +71,15 @@ const mockTransactions = [
 
 describe("Test renderGraph", () => {
   const stubbedTranslateFunction = () => {};
+  const originalResizeObserver = global.ResizeObserver;
+
+  beforeAll(() => {
+    global.ResizeObserver = ResizeObserver;
+  });
+
+  afterAll(() => {
+    global.ResizeObserver = originalResizeObserver;
+  });
 
   beforeEach(() => {
     jest.clearAllMocks();

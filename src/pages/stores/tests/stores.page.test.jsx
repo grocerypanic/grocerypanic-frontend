@@ -22,7 +22,7 @@ describe("Check the correct props are passed to simple list", () => {
       <SocialContext.Provider
         value={{ socialLogin: initialState, dispatch: mockDispatch }}
       >
-        <StoreContext.Provider>
+        <StoreContext.Provider value={{}}>
           <StoresPage />
         </StoreContext.Provider>
       </SocialContext.Provider>

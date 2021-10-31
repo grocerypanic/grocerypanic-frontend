@@ -48,7 +48,7 @@ describe("Setup Test", () => {
     it("should render the main application components without crashing", () => {
       expect(utils.getByText("MockApp")).toBeTruthy();
       expect(utils.queryByText("MockMaintenance")).toBeFalsy();
-      expect(RootProvider).toBeCalledTimes(1);
+      expect(RootProvider).toBeCalledTimes(2);
     });
   });
 
@@ -65,7 +65,7 @@ describe("Setup Test", () => {
     it("should render the maintenance page without crashing", () => {
       expect(utils.getByText("MockMaintenance")).toBeTruthy();
       expect(utils.queryByText("MockApp")).toBeFalsy();
-      expect(RootProvider).toBeCalledTimes(1);
+      expect(RootProvider).toBeCalledTimes(2);
     });
   });
 });

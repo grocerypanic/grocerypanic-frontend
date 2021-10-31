@@ -1,5 +1,22 @@
-import Chart from "chart.js";
+import {
+  Chart,
+  CategoryScale,
+  LinearScale,
+  LineController,
+  LineElement,
+  Title,
+  PointElement,
+} from "chart.js";
 import { graph } from "../../../configuration/theme";
+
+Chart.register(
+  CategoryScale,
+  LinearScale,
+  LineController,
+  LineElement,
+  Title,
+  PointElement
+);
 
 export const renderChart = (translateFn, activity_last_two_weeks, item) => {
   const [quantities, changes] = generateChartData(
@@ -59,22 +76,32 @@ export const generateChartData = (activity_last_two_weeks, item) => {
 const generateChartOptions = (item, translateFn) => {
   return {
     scales: {
-      yAxes: [
-        {
-          ticks: {
-            maxTicksLimit: 9,
-            precision: 0,
+      y: {
+        ticks: {
+          maxTicksLimit: 14,
+          major: {
+            enabled: true,
+          },
+          precision: 1,
+          label: {
+            position: "left",
           },
         },
-      ],
+      },
+      x: {
+        display: true,
+      },
     },
-    title: {
-      text: item.name + ` (${translateFn("ItemActivity.GraphSubTitle")})`,
-      display: true,
-    },
-    legend: {
-      display: false,
-      generateLabels: nullFunction,
+    plugins: {
+      title: {
+        text: item.name + ` (${translateFn("ItemActivity.GraphSubTitle")})`,
+        display: true,
+      },
+      legend: {
+        display: false,
+        position: "bottom",
+        generateLabels: nullFunction,
+      },
     },
     layout: {
       padding: {
@@ -83,7 +110,7 @@ const generateChartOptions = (item, translateFn) => {
         top: graph.topPadding,
         bottom: 0,
       },
-      margin: 0,
+      margin: -1,
     },
     responsive: true,
     maintainAspectRatio: false,

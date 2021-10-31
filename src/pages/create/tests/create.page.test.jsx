@@ -28,7 +28,7 @@ describe("Check the correct props are passed to simple list", () => {
         value={{ socialLogin: initialState, dispatch: mockDispatch }}
       >
         <MemoryRouter initialEntries={[Routes.details.replace(":id", ItemId)]}>
-          <ItemContext.Provider>
+          <ItemContext.Provider value={{}}>
             <Route path={Routes.details} component={ItemCreatePage} />
           </ItemContext.Provider>
         </MemoryRouter>

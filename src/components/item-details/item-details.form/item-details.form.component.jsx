@@ -158,7 +158,7 @@ const ItemDetailsForm = ({
               <Form.Group className="row">
                 <FormInput
                   setErrorMsg={setErrorMsg}
-                  storeState={nameState}
+                  state={nameState}
                   handleState={setNameState}
                   fieldName="name"
                   item={item}
@@ -174,7 +174,7 @@ const ItemDetailsForm = ({
               <Form.Group className="row">
                 <FormInput
                   setErrorMsg={setErrorMsg}
-                  storeState={quantityState}
+                  state={quantityState}
                   handleState={setQuantityState}
                   fieldName="quantity"
                   item={item}
@@ -191,7 +191,7 @@ const ItemDetailsForm = ({
                 />
                 <FormInput
                   setErrorMsg={setErrorMsg}
-                  storeState={priceState}
+                  state={priceState}
                   handleState={setPriceState}
                   fieldName="price"
                   item={item}
@@ -209,7 +209,7 @@ const ItemDetailsForm = ({
               <Form.Group className="row">
                 <DropDown
                   setErrorMsg={setErrorMsg}
-                  storeState={shelfLifeState}
+                  state={shelfLifeState}
                   handleState={setShelfLifeState}
                   fieldName="shelf_life"
                   options={shelfOptions}
@@ -222,7 +222,7 @@ const ItemDetailsForm = ({
               <Form.Group className="row">
                 <MultiDropDown
                   setErrorMsg={setErrorMsg}
-                  storeState={preferredStoresState}
+                  state={preferredStoresState}
                   handleState={setPreferredStoresState}
                   fieldName="preferred_stores"
                   options={stores}
@@ -235,7 +235,7 @@ const ItemDetailsForm = ({
               <Form.Group className="row">
                 <DropDown
                   setErrorMsg={setErrorMsg}
-                  storeState={shelfState}
+                  state={shelfState}
                   handleState={setShelfState}
                   fieldName="shelf"
                   options={[

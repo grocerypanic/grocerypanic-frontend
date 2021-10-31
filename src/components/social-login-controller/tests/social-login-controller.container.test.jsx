@@ -1,16 +1,18 @@
-import { render, cleanup, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import React from "react";
+import SocialLogin from "react-social-login";
 import { Providers } from "../../../configuration/backend";
-import Strings from "../../../configuration/strings";
 import { propCount } from "../../../test.fixtures/objectComparison";
-import SocialLoginController from "../social-login-controller.container";
 import StandBy from "../social-login-controller.standby";
 
-console.warn = jest.fn(); // suppress warnings from the react-social-login library
+jest.mock("react-social-login");
+jest.mock("../social-login-controller.standby", () =>
+  jest.fn((props) =>
+    jest.requireActual("../social-login-controller.standby").default(props)
+  )
+);
 
-jest.mock("../social-login-controller.standby");
 const MockGoogleLoginButton = jest.fn();
-StandBy.mockImplementation(({ children }) => <div>{children}</div>);
 MockGoogleLoginButton.mockImplementation(({ children }) => (
   <div>{children}</div>
 ));
@@ -18,39 +20,46 @@ MockGoogleLoginButton.mockImplementation(({ children }) => (
 const buttonProps = {
   ButtonType: MockGoogleLoginButton,
   message: "TestMessage",
+  fallbackMessage: "Connecting ...",
   triggerLogin: jest.fn(),
   appId: process.env.REACT_APP_GOOGLE_ACCOUNT_ID,
   provider: Providers.google,
 };
 
-describe("Setup Environment", () => {
+describe("SocialLoginController", () => {
+  let SocialLoginController;
   let utils;
 
-  describe("Google and Facebook Auth Loaded ...", () => {
+  const reloadModule = () => {
+    jest.isolateModules(() => {
+      SocialLoginController =
+        require("../social-login-controller.container").default;
+    });
+  };
+
+  const arrange = () => {
+    utils = render(<SocialLoginController {...buttonProps} />);
+  };
+
+  describe("when social login is ready", () => {
     beforeEach(() => {
-      window.gapi = "PlaceHolder";
-      window.FB = "Placeholder";
       jest.clearAllMocks();
-      utils = render(<SocialLoginController {...buttonProps} />);
+      SocialLogin.mockImplementation((Component) => Component);
+      reloadModule();
+      arrange();
     });
 
-    afterEach(cleanup);
-
-    afterAll(() => {
-      delete window.gapi;
-      delete window.FB;
+    it("should render with the button text", async () => {
+      expect(await utils.findByText(buttonProps.message)).toBeTruthy();
     });
 
-    it("should issue a warning about depreciating methods in the react-social-login library", () => {
-      expect(console.warn).toBeCalledTimes(1);
-      expect(console.warn.mock.calls).toMatchSnapshot();
+    it("should NOT render with the fallback message", () => {
+      expect(utils.queryByText(buttonProps.fallbackMessage)).not.toBeTruthy();
     });
 
-    it("should render with the correct message", () => {
-      expect(utils.getByText(buttonProps.message)).toBeTruthy();
-      expect(utils.getByTestId("SocialController")).toBeTruthy();
-      expect(StandBy).toHaveBeenCalledTimes(0);
-      expect(MockGoogleLoginButton).toHaveBeenCalledTimes(2);
+    it("should call the underlying button with the correct props", async () => {
+      expect(utils.getByTestId("SocialLoginButton")).toBeTruthy();
+      expect(MockGoogleLoginButton).toHaveBeenCalledTimes(1);
       propCount(MockGoogleLoginButton.mock.calls[0][0], 2);
       expect(MockGoogleLoginButton).toHaveBeenCalledWith(
         {
@@ -66,37 +75,40 @@ describe("Setup Environment", () => {
     });
   });
 
-  describe("Google and Facebook Auth Not Loaded ...", () => {
+  describe("when social login is not ready", () => {
     beforeEach(() => {
-      if (window.gapi) delete window.gapi;
-      if (window.FB) delete window.FB;
       jest.clearAllMocks();
-      utils = render(<SocialLoginController {...buttonProps} />);
+      SocialLogin.mockImplementation(() => {
+        const { Component } = jest.requireActual("react");
+        class MockSocialLogin extends Component {
+          render() {
+            return null;
+          }
+        }
+        return MockSocialLogin;
+      });
+      reloadModule();
+      arrange();
     });
 
-    afterEach(cleanup);
-
-    it("should render with the correct message", () => {
+    it("should NOT render with the button text", () => {
       expect(utils.queryByText(buttonProps.message)).not.toBeTruthy();
-      expect(
-        utils.queryByText(Strings.SignIn.PendingSocialConnection)
-      ).toBeTruthy();
-      expect(utils.getByTestId("PendingSocialController")).toBeTruthy();
-      expect(MockGoogleLoginButton).toHaveBeenCalledTimes(0);
-      expect(StandBy).toHaveBeenCalledTimes(2);
-
-      const call1 = StandBy.mock.calls[0][0];
-      propCount(call1, 1);
-      expect(call1.children).toBe(Strings.SignIn.PendingSocialConnection);
-
-      const call2 = StandBy.mock.calls[1][0];
-      propCount(call2, 1);
-      expect(call2.children).toBe(Strings.SignIn.PendingSocialConnection);
     });
 
-    it("should process a click without doing anything", () => {
-      const node = utils.getByTestId("PendingSocialController").children[0];
-      fireEvent.click(node, "click");
+    it("should render with the fallback message", () => {
+      expect(utils.queryByText(buttonProps.fallbackMessage)).toBeTruthy();
+    });
+
+    it("should call the underlying button with the correct props", async () => {
+      expect(utils.getByTestId("PendingSocialController")).toBeTruthy();
+      expect(StandBy).toHaveBeenCalledTimes(1);
+      expect(StandBy).toHaveBeenCalledWith(
+        {
+          onClick: undefined,
+          children: buttonProps.fallbackMessage,
+        },
+        {}
+      );
     });
 
     it("should match the snapshot on file (styles)", () => {
