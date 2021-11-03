@@ -1,11 +1,36 @@
 {
+  "globals": {
+    "jest": true
+  },
+  "parser": "@typescript-eslint/parser",
   "extends": [
-    "react-app",
-    "plugin:jest-formatting/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jest-formatting/recommended"
   ],
-  "plugins": ["jest-formatting", "unused-imports"],
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "jest-formatting",
+    "react",
+    "react-hooks",
+    "unused-imports"
+  ],
   "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": true,
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
     "import/order": [
       "error",
       {
@@ -17,7 +42,8 @@
           "parent",
           "object",
           "index",
-          "internal"
+          "internal",
+          "type"
         ],
         "newlines-between": "never",
         "pathGroups": [
@@ -31,7 +57,8 @@
       }
     ],
     "jest-formatting/padding-around-expect-groups": "off",
-    "no-unused-vars": "error",
+    "no-unused-vars": ["off"],
+    "react-hooks/exhaustive-deps": ["warn"],
     "unused-imports/no-unused-imports": "error"
   }
 }
