@@ -9,3 +9,6 @@ updates:
       day: "sunday"
     reviewers:
       - "niall-byrne"
+allow:
+  - match:
+    dependency_type: "production"
