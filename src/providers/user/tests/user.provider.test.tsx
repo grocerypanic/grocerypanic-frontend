@@ -1,10 +1,10 @@
 import { render, cleanup } from "@testing-library/react";
-import type { UserContextInterface } from "../types/user.context";
 import InitialState from "../user.initial";
 import UserProvider, { UserContext } from "../user.provider";
+import type { UserContextInterface } from "../types/user.context";
 
 describe("Check the Initial Provider State", () => {
-  let received = {} as Partial<UserContextInterface>;
+  const received = {} as Partial<UserContextInterface>;
 
   beforeEach(() => arrange());
 

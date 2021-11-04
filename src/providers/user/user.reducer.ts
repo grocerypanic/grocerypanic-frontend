@@ -1,12 +1,12 @@
-import type { UserActionType } from "./types/user.actions";
-import type { UserStateInterface } from "./types/user.state";
-import SocialReducerState from "./user.reducer.states.class";
+import UserReducerState from "./user.reducer.states.class";
 import withMiddleware from "../../util/middleware";
 import reducerLoggingMiddleware from "../../util/reducer.logger";
+import type { UserActionType } from "./types/user.actions";
+import type { UserStateInterface } from "./types/user.state";
 
 const userReducer = (state: UserStateInterface, action: UserActionType) => {
   const stateMethod = action.type;
-  const stateGenerator = new SocialReducerState();
+  const stateGenerator = new UserReducerState();
   const newState = stateGenerator[stateMethod](state, action);
   return newState;
 };

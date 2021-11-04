@@ -1,7 +1,7 @@
 import { createContext, ReactChild } from "react";
 import createPersistedReducer from "use-persisted-reducer";
 import { UserContextInitial } from "./user.initial";
-import SocialReducer from "./user.reducer";
+import UserReducer from "./user.reducer";
 
 const usePersistedReducer = createPersistedReducer("UserProvider");
 export const UserContext = createContext({ ...UserContextInitial });
@@ -12,7 +12,7 @@ interface UserProviderProps {
 
 const UserProvider = ({ children }: UserProviderProps) => {
   const [socialLogin, dispatch] = usePersistedReducer(
-    SocialReducer,
+    UserReducer,
     UserContextInitial.socialLogin
   );
 

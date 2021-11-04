@@ -1,7 +1,7 @@
-import type { UserActionType } from "../types/user.actions";
-import type { UserStateInterface } from "../types/user.state";
 import InitialState from "../user.initial";
 import UserReducer from "../user.reducer";
+import type { UserActionType } from "../types/user.actions";
+import type { UserStateInterface } from "../types/user.state";
 
 jest.mock("../user.reducer.states.class", () => {
   return jest.fn().mockImplementation(() => {

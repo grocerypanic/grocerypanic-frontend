@@ -1,8 +1,8 @@
+import InitialState from "./user.initial";
 import type { UserActionType } from "./types/user.actions";
 import type { UserStateInterface } from "./types/user.state";
-import InitialState from "./user.initial";
 
-class SocialReducerStates {
+class UserReducerStates {
   wrongTypeError = "Received wrong action type.";
 
   private getInitialState = () =>
@@ -15,11 +15,12 @@ class SocialReducerStates {
     if (action.type === "AuthExpired") {
       return {
         ...state,
-        transaction: false,
+        login: false,
         error: action.type,
         profile: {
           ...state.profile,
         },
+        transaction: false,
       };
     }
     throw new Error(this.wrongTypeError);
@@ -32,6 +33,42 @@ class SocialReducerStates {
     throw new Error(this.wrongTypeError);
   }
 
+  FetchUserFailure(
+    state: UserStateInterface,
+    action: UserActionType
+  ): UserStateInterface {
+    if (action.type === "FetchUserFailure") {
+      return {
+        ...state,
+        error: action.type,
+        login: false,
+        profile: {
+          ...state.profile,
+        },
+        transaction: false,
+      };
+    }
+    throw new Error(this.wrongTypeError);
+  }
+
+  FetchUserReady(
+    state: UserStateInterface,
+    action: UserActionType
+  ): UserStateInterface {
+    if (action.type === "FetchUserReady") {
+      return {
+        ...state,
+        error: null,
+        login: true,
+        profile: {
+          ...state.profile,
+        },
+        transaction: false,
+      };
+    }
+    throw new Error(this.wrongTypeError);
+  }
+
   FetchUserStart(
     state: UserStateInterface,
     action: UserActionType
@@ -39,15 +76,34 @@ class SocialReducerStates {
     if (action.type === "FetchUserStart") {
       return {
         ...state,
-        transaction: true,
+        login: false,
         profile: {
           ...state.profile,
           username: action.username,
         },
+        transaction: true,
+      };
+    }
+    throw new Error(this.wrongTypeError);
+  }
+
+  FetchUserSuccess(
+    state: UserStateInterface,
+    action: UserActionType
+  ): UserStateInterface {
+    if (action.type === "FetchUserSuccess") {
+      return {
+        ...state,
+        error: null,
+        login: false,
+        profile: {
+          ...action.profile,
+        },
+        transaction: false,
       };
     }
     throw new Error(this.wrongTypeError);
   }
 }
 
-export default SocialReducerStates;
+export default UserReducerStates;

@@ -14,5 +14,10 @@ export type UserActionType =
     }
   | {
       type: "FetchUserSuccess";
+      profile: {
+        username: string;
+        email: string;
+        avatar: string;
+      };
     }
   | { type: "Reset" };

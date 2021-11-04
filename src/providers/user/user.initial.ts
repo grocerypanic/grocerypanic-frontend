@@ -17,5 +17,5 @@ export default InitialState;
 
 export const UserContextInitial: UserContextInterface = {
   socialLogin: InitialState,
-  dispatch: (action: UserActionType) => null,
+  dispatch: (_arg: UserActionType) => null,
 };
