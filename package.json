@@ -30,7 +30,7 @@
     "react-ga": "^3.3.0",
     "react-i18next": "^11.13.0",
     "react-router-dom": "^5.3.0",
-    "react-select": "^5.2.0",
+    "react-select": "^5.2.1",
     "react-social-login": "^3.4.14",
     "react-social-login-buttons": "3.1.0",
     "styled-components": "^5.3.3",
