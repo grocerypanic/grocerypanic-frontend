@@ -19,7 +19,7 @@
     "canvas": "^2.8.0",
     "chart.js": "^3.6.0",
     "cookie_js": "^1.4.2",
-    "i18next": "^21.5.2",
+    "i18next": "^21.6.0",
     "i18next-browser-languagedetector": "^6.1.2",
     "moment": "^2.26.0",
     "prop-types": "^15.7.2",
