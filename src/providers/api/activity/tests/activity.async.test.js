@@ -1,4 +1,4 @@
-import { Paths } from "../../../../configuration/backend";
+import { DynamicPaths } from "../../../../configuration/backend";
 import ApiFunctions from "../../api.functions";
 import { generateUTCConverter } from "../../generators/generate.converter";
 import { AsyncTest } from "../../test.fixtures/generate.async.tests";
@@ -10,7 +10,7 @@ jest.mock("../../../../util/requests");
 const implemented = [ApiFunctions.asyncGet];
 
 AsyncTest(
-  Paths.manageActivity,
+  DynamicPaths.manageActivity,
   InitialState,
   AsyncFn,
   generateUTCConverter(InitialState.class),

@@ -28,10 +28,13 @@ export const Providers = {
   facebook: "facebook",
 };
 
+export const DynamicPaths = {
+  manageActivity: (pk) => `/api/v1/items/${pk}/activity/`,
+};
+
 export const Paths = {
   googleLogin: "/api/v1/auth/social/google/",
   facebookLogin: "/api/v1/auth/social/facebook/",
-  manageActivity: "/api/v1/items/activity/",
   manageShelves: "/api/v1/shelves/",
   manageStores: "/api/v1/stores/",
   manageItems: "/api/v1/items/",

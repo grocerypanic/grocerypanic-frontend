@@ -1,4 +1,4 @@
-import { Paths } from "../../../configuration/backend";
+import { DynamicPaths } from "../../../configuration/backend";
 import Request from "../../../util/requests";
 import { match2xx } from "../../../util/requests/status";
 import ApiActions from "../api.actions";
@@ -19,7 +19,7 @@ export const asyncGet = async ({ state, action }) => {
 
   const [response, status] = await Request(
     "GET",
-    Paths.manageActivity + `${action.payload.id}/`
+    DynamicPaths.manageActivity(action.payload.id)
   );
   new Promise((resolve) => {
     if (match2xx(status)) {

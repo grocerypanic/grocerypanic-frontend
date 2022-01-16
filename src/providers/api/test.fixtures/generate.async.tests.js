@@ -255,13 +255,18 @@ export const AsyncTest = (
 
           asyncFn.asyncGet({ state: State2, action });
 
-          if (!requiresNoId)
-            expect(Request).toBeCalledWith(
-              "GET",
-              apiEndpoint + `${mockObject.id}/`
-            );
+          if (typeof apiEndpoint === "function") {
+            expect(Request).toBeCalledWith("GET", apiEndpoint(mockObject.id));
+          } else {
+            if (!requiresNoId)
+              expect(Request).toBeCalledWith(
+                "GET",
+                apiEndpoint + `${mockObject.id}/`
+              );
 
-          if (requiresNoId) expect(Request).toBeCalledWith("GET", apiEndpoint);
+            if (requiresNoId)
+              expect(Request).toBeCalledWith("GET", apiEndpoint);
+          }
 
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           newState = newState.map((i) => converterFn(i));
@@ -291,13 +296,18 @@ export const AsyncTest = (
 
           asyncFn.asyncGet({ state: State2, action });
 
-          if (!requiresNoId)
-            expect(Request).toBeCalledWith(
-              "GET",
-              apiEndpoint + `${mockObject.id}/`
-            );
+          if (typeof apiEndpoint === "function") {
+            expect(Request).toBeCalledWith("GET", apiEndpoint(mockObject.id));
+          } else {
+            if (!requiresNoId)
+              expect(Request).toBeCalledWith(
+                "GET",
+                apiEndpoint + `${mockObject.id}/`
+              );
 
-          if (requiresNoId) expect(Request).toBeCalledWith("GET", apiEndpoint);
+            if (requiresNoId)
+              expect(Request).toBeCalledWith("GET", apiEndpoint);
+          }
 
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
 
@@ -471,12 +481,17 @@ export const AsyncTest = (
 
           asyncFn.asyncGet({ state: State2, action });
 
-          if (!requiresNoId)
-            expect(Request).toBeCalledWith(
-              "GET",
-              apiEndpoint + `${mockObject.id}/`
-            );
-          if (requiresNoId) expect(Request).toBeCalledWith("GET", apiEndpoint);
+          if (typeof apiEndpoint === "function") {
+            expect(Request).toBeCalledWith("GET", apiEndpoint(mockObject.id));
+          } else {
+            if (!requiresNoId)
+              expect(Request).toBeCalledWith(
+                "GET",
+                apiEndpoint + `${mockObject.id}/`
+              );
+            if (requiresNoId)
+              expect(Request).toBeCalledWith("GET", apiEndpoint);
+          }
 
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
@@ -629,13 +644,21 @@ export const AsyncTest = (
 
           asyncFn.asyncGet({ state: State2, action });
 
-          if (!requiresNoId)
+          if (typeof apiEndpoint === "function") {
             expect(Request).toBeCalledWith(
               "GET",
-              apiEndpoint + `${action.payload.id}/`
+              apiEndpoint(action.payload.id)
             );
+          } else {
+            if (!requiresNoId)
+              expect(Request).toBeCalledWith(
+                "GET",
+                apiEndpoint + `${action.payload.id}/`
+              );
 
-          if (requiresNoId) expect(Request).toBeCalledWith("GET", apiEndpoint);
+            if (requiresNoId)
+              expect(Request).toBeCalledWith("GET", apiEndpoint);
+          }
 
           await waitFor(() => expect(mockDispatch).toBeCalledTimes(1));
           expect(mockDispatch).toBeCalledWith({
