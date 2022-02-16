@@ -170,6 +170,7 @@ exports[`Check the correct props are passed to  in desktop mode should match the
       </div>
       <a
         class="carousel-control-prev"
+        href="#"
         role="button"
         tabindex="0"
       >
@@ -185,6 +186,7 @@ exports[`Check the correct props are passed to  in desktop mode should match the
       </a>
       <a
         class="carousel-control-next"
+        href="#"
         role="button"
         tabindex="0"
       >
@@ -375,6 +377,7 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
       </div>
       <a
         class="carousel-control-prev"
+        href="#"
         role="button"
         tabindex="0"
       >
@@ -390,6 +393,7 @@ exports[`Check the correct props are passed to  in mobile mode should match the 
       </a>
       <a
         class="carousel-control-next"
+        href="#"
         role="button"
         tabindex="0"
       >
