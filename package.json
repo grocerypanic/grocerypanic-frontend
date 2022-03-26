@@ -36,7 +36,7 @@
     "styled-components": "^5.3.3",
     "use-persisted-reducer": "^2.1.0",
     "workbox-core": "^6.4.2",
-    "workbox-expiration": "^6.4.2",
+    "workbox-expiration": "^6.5.2",
     "workbox-precaching": "^6.4.2",
     "workbox-routing": "^6.4.2",
     "workbox-strategies": "^6.4.2"
