@@ -10,7 +10,7 @@
     "url": "https://github.com/grocerypanic/grocerypanic-frontend"
   },
   "license": "UNLICENSED",
-  "version": "0.1.0",
+  "version": "0.27.6",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.4",
@@ -50,7 +50,8 @@
     "target-lint": "./scripts/target-lint",
     "lint": "eslint \"./src/**/*.+(js|jsx)\" --max-warnings=0",
     "clean": "eslint --fix \"./src/**/*.+(js|jsx)\"; prettier --write \"./src/**/*.+(js|jsx|json|yml|yaml|css|scss|md|vue)\"",
-    "coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --coverage --coverageDirectory=coverage --watchAll=false"
+    "coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --coverage --coverageDirectory=coverage --watchAll=false",
+    "release": "standard-version --skip.changelog --releaseCommitMessageFormat 'build(RELEASE): {{currentTag}}'"
   },
   "resolutions": {
     "simple-get": ">=4.0.1"
@@ -112,6 +113,7 @@
     "mq-polyfill": "^1.1.8",
     "prettier": "^2.6.2",
     "react-scripts": "^4.0.3",
-    "resize-observer-polyfill": "^1.5.1"
+    "resize-observer-polyfill": "^1.5.1",
+    "standard-version": "^9.3.2"
   }
 }
