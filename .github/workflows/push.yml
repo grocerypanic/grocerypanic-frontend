@@ -121,10 +121,8 @@ jobs:
 
       - name: CI -- Production -- Generate Changelog
         if: contains(github.ref, '/tags/v')
-        uses: scottbrenner/generate-changelog-action@v1.3.3
-        id: Changelog
-        env:
-          REPO: ${{ github.repository }}
+        run: |
+          source .github/workflows/scripts/changelog.sh
 
       - name: CI -- Production -- Create Release
         if: contains(github.ref, '/tags/v')
@@ -135,7 +133,7 @@ jobs:
           tag_name: ${{ env.NEWTAG }}
           release_name: Release ${{ env.NEWTAG }}
           body: |
-            ${{ steps.Changelog.outputs.changelog }}
+            ${{ env.CHANGE_LOG_CONTENT }}
             ## Deployment Checklist    
             - [ ] Review Commit History
             - [ ] Ensure minimum API version is noted
