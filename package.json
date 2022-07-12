@@ -32,7 +32,7 @@
     "react-router-dom": "^5.3.0",
     "react-select": "^5.2.2",
     "react-social-login": "^3.4.15",
-    "react-social-login-buttons": "3.1.0",
+    "react-social-login-buttons": "3.6.0",
     "styled-components": "^5.3.5",
     "use-persisted-reducer": "^2.1.0",
     "workbox-core": "^6.5.2",
