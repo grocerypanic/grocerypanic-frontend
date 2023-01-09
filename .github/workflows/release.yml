@@ -25,12 +25,13 @@ env:
   ORGNAME: grocerypanic
   REPONAME: grocerypanic-frontend
   WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+  NODE_VERSION: "14"
 
 jobs:
 
   release:
     runs-on: ubuntu-20.04
-    
+
     steps:      
       
       - name: Release -- Code Checkout (Dispatch)
@@ -45,6 +46,11 @@ jobs:
         uses: actions/checkout@v2         
         with:
           fetch-depth: 0
+
+      - name: Release -- Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Release -- Install Node Modules
         run: |
