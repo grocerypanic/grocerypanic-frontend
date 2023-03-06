@@ -98,7 +98,7 @@ jobs:
 
       - name: CI -- Stage -- Automated Deploy        
         if: github.ref == 'refs/heads/master'
-        uses: w9jds/firebase-action@v2.0.0
+        uses: w9jds/firebase-action@v11.22.0
         with:
           args: deploy --only hosting
         env:
@@ -126,24 +126,25 @@ jobs:
         run: |
           source .github/workflows/scripts/changelog.sh
 
-      - name: CI -- Production -- Create Release
+      - name: CI -- Production -- Generate GitHub Release Draft
         if: contains(github.ref, '/tags/v')
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: create_release
+        uses: actions/github-script@v6
         with:
-          tag_name: ${{ env.NEWTAG }}
-          release_name: Release ${{ env.NEWTAG }}
-          body: |
-            ${{ env.CHANGE_LOG_CONTENT }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const script = require('./.github/workflows/scripts/release.js')
+            const body = process.env.CHANGE_LOG_CONTENT + "\n" + process.env.CHECKLIST; 
+            const tag = process.env.NEWTAG;
+            await script({ body, context, core, github, tag })
+        env:
+          CHECKLIST: |
             ## Deployment Checklist    
             - [ ] Review Commit History
             - [ ] Ensure minimum API version is noted
             - [ ] Perform basic QA tests (register, add store, add shelf, add items)
             - [ ] Perform basic QA on Mobile (same tasks)
             - [ ] Visual inspection of recent activity charts in stage
-          draft: 'true'
-          prerelease: false
 
       - name: CI -- Production -- Checkout Production Branch
         if: contains(github.ref, '/tags/v')
