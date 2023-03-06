@@ -9,19 +9,18 @@ export const asyncLogin = async ({ state, action }) => {
   let data;
   let path;
 
+  const extractData = () => ({
+    access_token: payload._token.accessToken,
+    code: payload._token.idToken,
+  });
+
   switch (payload._provider) {
     case Providers.google:
-      data = {
-        access_token: payload._token.accessToken,
-        code: payload._token.idToken,
-      };
+      data = extractData();
       path = Paths.googleLogin;
       break;
     case Providers.facebook:
-      data = {
-        access_token: payload._token.accessToken,
-        code: payload._token.idToken,
-      };
+      data = extractData();
       path = Paths.facebookLogin;
       break;
     default:
@@ -42,6 +41,13 @@ export const asyncLogin = async ({ state, action }) => {
   }
 
   if (match2xx(status)) {
+    if (payload._provider === Providers.google) {
+      payload._profile = {
+        name: response.user.username,
+        email: response.user.email,
+      };
+    }
+
     return new Promise(function (resolve) {
       dispatch({
         type: SocialActions.SuccessFetchUser,
@@ -54,7 +60,7 @@ export const asyncLogin = async ({ state, action }) => {
     });
   }
 
-  return loginError(dispatch, payload._profile.name);
+  return loginError(dispatch, payload._profile?.name);
 };
 
 export const resetLogin = async (dispatch) => {

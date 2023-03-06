@@ -20,18 +20,22 @@ let mockLoginState = [
   {
     _provider: Providers.google,
     _token: { accessToken: "MockAccessToken", idToken: "MockCode" },
-    _profile: { name: "SomeGuy", avatar: "SomeAvatar", email: "SomeEmail" },
+    _profile: null,
     path: Paths.googleLogin,
     status: 200,
-    response: {},
+    response: {
+      user: { username: "SomeGuy", avatar: "SomeAvatar", email: "SomeEmail" },
+    },
   },
   {
     _provider: Providers.google,
     _token: { accessToken: "MockAccessToken", idToken: "MockCode" },
-    _profile: { name: "SomeGuy", avatar: "SomeAvatar", email: "SomeEmail" },
+    _profile: null,
     path: Paths.googleLogin,
     status: 404,
-    response: {},
+    response: {
+      user: { username: "SomeGuy", avatar: "SomeAvatar", email: "SomeEmail" },
+    },
   },
   {
     _provider: Providers.facebook,
@@ -52,7 +56,7 @@ let mockLoginState = [
   {
     _provider: Providers.google,
     _token: { accessToken: "MockAccessToken", idToken: "MockCode" },
-    _profile: { name: "SomeGuy", avatar: "SomeAvatar", email: "SomeEmail" },
+    _profile: null,
     path: Paths.googleLogin,
     status: 400,
     response: { non_field_errors: [Constants.alreadyRegistered] },
@@ -114,7 +118,7 @@ describe("Setup for Testing asyncLogin", () => {
     expect(mockDispatch).toBeCalledWith({
       type: SocialActions.FailureFetchUser,
       payload: {
-        username: mockData._profile.name,
+        username: "",
       },
     });
   });

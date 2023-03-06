@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SocialLoginControllerGoogle when the sdk is loaded when a login is triggered should match the snapshot on file (styles) 1`] = `
+<div>
+  TestMessage
+</div>
+`;

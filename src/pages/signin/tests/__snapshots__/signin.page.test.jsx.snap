@@ -94,7 +94,7 @@ exports[`Setup Environment should match the snapshot on file (styles) 1`] = `
         class="c3"
       >
         <div>
-          SocialLoginButton
+          SocialLoginGoogleButton
         </div>
       </div>
       <div

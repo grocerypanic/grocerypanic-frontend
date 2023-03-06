@@ -1,3 +1,4 @@
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import React, { createContext } from "react";
 import createPersistedReducer from "use-persisted-reducer";
 import InitialState from "./social.initial";
@@ -14,14 +15,16 @@ const SocialProvider = ({ children }) => {
   );
 
   return (
-    <SocialContext.Provider
-      value={{
-        socialLogin,
-        dispatch,
-      }}
-    >
-      {children}
-    </SocialContext.Provider>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_ACCOUNT_ID}>
+      <SocialContext.Provider
+        value={{
+          socialLogin,
+          dispatch,
+        }}
+      >
+        {children}
+      </SocialContext.Provider>
+    </GoogleOAuthProvider>
   );
 };
 

@@ -1,36 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SocialLoginController when social login is not ready should match the snapshot on file (styles) 1`] = `
-<div
-  data-testid="PendingSocialController"
->
-  <button
-    style="display: block; border: 0px; border-radius: 3px; box-shadow: rgba(0, 0, 0, 0.5) 0 1px 2px; color: rgb(255, 255, 255); cursor: pointer; font-size: 19px; margin: 5px; width: calc(100% - 10px); overflow: hidden; padding: 0px 10px; user-select: none; height: 50px; background: rgb(128, 128, 128);"
-  >
-    <div
-      style="align-items: center; display: flex; height: 100%;"
-    >
-      <div
-        style="display: flex; justify-content: center; min-width: 26px;"
-      >
-        <i
-          class="demo-icon icon-null"
-          style="font-size: 26px;"
-        />
-      </div>
-      <div
-        style="width: 10px;"
-      />
-      <div
-        style="text-align: left; width: 100%;"
-      >
-        Connecting ...
-      </div>
-    </div>
-  </button>
-</div>
-`;
-
 exports[`SocialLoginController when social login is ready should match the snapshot on file (styles) 1`] = `
 <div
   data-testid="SocialLoginButton"

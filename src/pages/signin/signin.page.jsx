@@ -7,6 +7,7 @@ import {
 } from "react-social-login-buttons";
 import { LockBox, ButtonBox } from "./signin.styles";
 import Copyright from "../../components/copyright/copyright.component";
+import SocialLoginControllerGoogle from "../../components/social-login-controller-google/social-login-controller-google.container";
 import SocialLoginController from "../../components/social-login-controller/social-login-controller.container";
 import { Providers } from "../../configuration/backend";
 import { Paper, Container } from "../../global-styles/containers";
@@ -22,10 +23,8 @@ const SignIn = ({ handleSocialLogin, handleSocialLoginError }) => {
         </LockBox>
         <h1>{t("SignIn.Title")}</h1>
         <ButtonBox>
-          <SocialLoginController
+          <SocialLoginControllerGoogle
             ButtonType={GoogleLoginButton}
-            appId={process.env.REACT_APP_GOOGLE_ACCOUNT_ID}
-            provider={Providers.google}
             fallbackMessage={t("SignIn.PendingSocialConnection")}
             message={t("SignIn.LoginMessageGoogle")}
             onLoginSuccess={handleSocialLogin}
@@ -36,11 +35,11 @@ const SignIn = ({ handleSocialLogin, handleSocialLoginError }) => {
           <SocialLoginController
             ButtonType={FacebookLoginButton}
             appId={process.env.REACT_APP_FACEBOOK_ACCOUNT_ID}
-            provider={Providers.facebook}
-            message={t("SignIn.LoginMessageFacebook")}
             fallbackMessage={t("SignIn.PendingSocialConnection")}
+            message={t("SignIn.LoginMessageFacebook")}
             onLoginSuccess={handleSocialLogin}
             onLoginFailure={handleSocialLoginError}
+            provider={Providers.facebook}
           />
         </ButtonBox>
         <Copyright />

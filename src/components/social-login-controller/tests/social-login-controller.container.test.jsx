@@ -3,12 +3,16 @@ import React from "react";
 import SocialLogin from "react-social-login";
 import { Providers } from "../../../configuration/backend";
 import { propCount } from "../../../test.fixtures/objectComparison";
-import StandBy from "../social-login-controller.standby";
+import StandBy from "../../social-login-standby/social-login-standby.component";
 
 jest.mock("react-social-login");
-jest.mock("../social-login-controller.standby", () =>
+jest.mock("../../social-login-standby/social-login-standby.component", () =>
   jest.fn((props) =>
-    jest.requireActual("../social-login-controller.standby").default(props)
+    jest
+      .requireActual(
+        "../../social-login-standby/social-login-standby.component"
+      )
+      .default(props)
   )
 );
 
@@ -21,8 +25,9 @@ const buttonProps = {
   ButtonType: MockGoogleLoginButton,
   message: "TestMessage",
   fallbackMessage: "Connecting ...",
-  triggerLogin: jest.fn(),
   appId: process.env.REACT_APP_GOOGLE_ACCOUNT_ID,
+  onLoginSuccess: jest.fn(),
+  onLoginFailure: jest.fn(),
   provider: Providers.google,
 };
 
@@ -91,15 +96,15 @@ describe("SocialLoginController", () => {
       arrange();
     });
 
-    it("should NOT render with the button text", () => {
+    it("should NOT render with the message prop", () => {
       expect(utils.queryByText(buttonProps.message)).not.toBeTruthy();
     });
 
-    it("should render with the fallback message", () => {
+    it("should render the fallbackMessage prop", () => {
       expect(utils.queryByText(buttonProps.fallbackMessage)).toBeTruthy();
     });
 
-    it("should call the underlying button with the correct props", async () => {
+    it("should render the StandBy button with the correct props", async () => {
       expect(utils.getByTestId("PendingSocialController")).toBeTruthy();
       expect(StandBy).toHaveBeenCalledTimes(1);
       expect(StandBy).toHaveBeenCalledWith(
@@ -109,10 +114,6 @@ describe("SocialLoginController", () => {
         },
         {}
       );
-    });
-
-    it("should match the snapshot on file (styles)", () => {
-      expect(utils.container.firstChild).toMatchSnapshot();
     });
   });
 });
