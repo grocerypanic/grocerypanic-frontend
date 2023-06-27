@@ -55,7 +55,8 @@
     "release": "standard-version --skip.changelog --releaseCommitMessageFormat 'build(RELEASE): {{currentTag}}'"
   },
   "resolutions": {
-    "simple-get": ">=4.0.1"
+    "simple-get": ">=4.0.1",
+    "make-dir": ">=4.0.0"
   },
   "jest": {
     "resetMocks": false,
