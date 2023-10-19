@@ -277,26 +277,24 @@ exports[`Setup Environment for ProfileForm test during a transaction should matc
                     class="css-1f43avz-a11yText-A11yText"
                   />
                   <div
-                    class="list__control css-1s2u09g-control"
+                    class="list__control css-13cymwt-control"
                   >
                     <div
-                      class="list__value-container list__value-container--has-value css-319lph-ValueContainer"
+                      class="list__value-container list__value-container--has-value css-1fdsijx-ValueContainer"
                     >
                       <div
-                        class="list__single-value css-qc6sy-singleValue"
+                        class="list__single-value css-1dimb5e-singleValue"
                       >
                         mockTime1
                       </div>
                       <div
-                        class="list__input-container css-6j8wv5-Input"
+                        class="list__input-container css-qbdosj-Input"
                         data-value=""
                       >
                         <input
                           aria-autocomplete="list"
-                          aria-controls="react-select-9-listbox"
                           aria-expanded="false"
                           aria-haspopup="true"
-                          aria-owns="react-select-9-listbox"
                           autocapitalize="none"
                           autocomplete="off"
                           autocorrect="off"
@@ -316,7 +314,7 @@ exports[`Setup Environment for ProfileForm test during a transaction should matc
                     >
                       <div
                         aria-hidden="true"
-                        class="list__indicator list__loading-indicator css-at12u2-loadingIndicator"
+                        class="list__indicator list__loading-indicator css-pogzpp-loadingIndicator"
                       >
                         <span
                           class="css-1xtdfmb-LoadingDot"
@@ -329,11 +327,11 @@ exports[`Setup Environment for ProfileForm test during a transaction should matc
                         />
                       </div>
                       <span
-                        class="list__indicator-separator css-1okebmr-indicatorSeparator"
+                        class="list__indicator-separator css-1u9des2-indicatorSeparator"
                       />
                       <div
                         aria-hidden="true"
-                        class="list__indicator list__dropdown-indicator css-tlfecz-indicatorContainer"
+                        class="list__indicator list__dropdown-indicator css-1xc3v61-indicatorContainer"
                       >
                         <svg
                           aria-hidden="true"
@@ -375,6 +373,7 @@ exports[`Setup Environment for ProfileForm test during a transaction should matc
         class="alert alert-light"
         data-testid="alert"
         role="alert"
+        style="border-width: 0px;"
       >
          
       </div>
@@ -668,26 +667,24 @@ exports[`Setup Environment for ProfileForm test outside of a transaction with a 
                     class="css-1f43avz-a11yText-A11yText"
                   />
                   <div
-                    class="list__control css-1s2u09g-control"
+                    class="list__control css-13cymwt-control"
                   >
                     <div
-                      class="list__value-container list__value-container--has-value css-319lph-ValueContainer"
+                      class="list__value-container list__value-container--has-value css-1fdsijx-ValueContainer"
                     >
                       <div
-                        class="list__single-value css-qc6sy-singleValue"
+                        class="list__single-value css-1dimb5e-singleValue"
                       >
                         mockTime1
                       </div>
                       <div
-                        class="list__input-container css-6j8wv5-Input"
+                        class="list__input-container css-qbdosj-Input"
                         data-value=""
                       >
                         <input
                           aria-autocomplete="list"
-                          aria-controls="react-select-2-listbox"
                           aria-expanded="false"
                           aria-haspopup="true"
-                          aria-owns="react-select-2-listbox"
                           autocapitalize="none"
                           autocomplete="off"
                           autocorrect="off"
@@ -706,11 +703,11 @@ exports[`Setup Environment for ProfileForm test outside of a transaction with a 
                       class="list__indicators css-1hb7zxy-IndicatorsContainer"
                     >
                       <span
-                        class="list__indicator-separator css-1okebmr-indicatorSeparator"
+                        class="list__indicator-separator css-1u9des2-indicatorSeparator"
                       />
                       <div
                         aria-hidden="true"
-                        class="list__indicator list__dropdown-indicator css-tlfecz-indicatorContainer"
+                        class="list__indicator list__dropdown-indicator css-1xc3v61-indicatorContainer"
                       >
                         <svg
                           aria-hidden="true"
@@ -752,6 +749,7 @@ exports[`Setup Environment for ProfileForm test outside of a transaction with a 
         class="alert alert-light"
         data-testid="alert"
         role="alert"
+        style="border-width: 0px;"
       >
          
       </div>

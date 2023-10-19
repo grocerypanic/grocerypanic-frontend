@@ -5,7 +5,12 @@ import Assets from "../../configuration/assets";
 
 const Alert = ({ message }) => (
   <AlertContainer>
-    <div data-testid="alert" className="alert alert-light" role="alert">
+    <div
+      data-testid="alert"
+      className="alert alert-light"
+      role="alert"
+      style={{ borderWidth: 0 }}
+    >
       {message ? message : Assets.nonBreakingSpace}
     </div>
   </AlertContainer>

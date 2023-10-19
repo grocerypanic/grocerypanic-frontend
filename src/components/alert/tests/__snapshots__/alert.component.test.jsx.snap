@@ -29,6 +29,7 @@ exports[`Setup Environment when a message is not passed to the component should 
     class="alert alert-light"
     data-testid="alert"
     role="alert"
+    style="border-width: 0px;"
   >
      
   </div>
@@ -64,6 +65,7 @@ exports[`Setup Environment when a message is passed to the component should matc
     class="alert alert-light"
     data-testid="alert"
     role="alert"
+    style="border-width: 0px;"
   >
     Test Message
   </div>
