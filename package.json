@@ -10,7 +10,7 @@
     "url": "https://github.com/grocerypanic/grocerypanic-frontend"
   },
   "license": "MPL-2.0",
-  "version": "0.28.3",
+  "version": "0.28.4",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.4",
