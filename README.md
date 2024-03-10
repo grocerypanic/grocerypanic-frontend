@@ -1,7 +1,7 @@
 # panic-fe
 
-### Master (Staging Environment)
-[![panic_fe-Automation](https://github.com/grocerypanic/grocerypanic-frontend/workflows/panic_fe-Automation/badge.svg?branch=master)](https://github.com/grocerypanic/grocerypanic-frontend/actions)
+### Main (Staging Environment)
+[![panic_fe-Automation](https://github.com/grocerypanic/grocerypanic-frontend/workflows/panic_fe-Automation/badge.svg?branch=main)](https://github.com/grocerypanic/grocerypanic-frontend/actions)
 
 [Staging Deploy](https://demo.grocerypanic.com)
 

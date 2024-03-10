@@ -73,31 +73,31 @@ jobs:
           ./.github/workflows/scripts/notifications.sh ":x: Build has failed!"
 
       - name: CI -- Stage -- Configure Build 
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: |
           echo "${REACT_ENV}" > .env.production.local
         env:
           REACT_ENV: ${{ secrets.STAGE_REACT_ENV }}
 
       - name: CI -- Stage -- Toggle Maintenance Mode on Manual Dispatch
-        if: github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
         run: |
           echo "REACT_APP_MAINTENANCE=\"${MAINTENANCE}\"" >> .env.production.local
         env:
           MAINTENANCE: ${{ github.event.inputs.MAINTENANCE }}
 
       - name: CI -- Stage -- Shut off Maintenance Mode on Automated Push
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           echo "REACT_APP_MAINTENANCE=\"false\"" >> .env.production.local
 
       - name: CI -- Stage -- Build 
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: |
           npm run build
 
       - name: CI -- Stage -- Automated Deploy        
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         uses: w9jds/firebase-action@v11.22.0
         with:
           args: deploy --only hosting
@@ -106,12 +106,12 @@ jobs:
           PROJECT_ID: ${{ secrets.STAGE_FIREBASE_PROJECT }}        
 
       - name: CI -- Stage -- Report Success
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: |
           ./.github/workflows/scripts/notifications.sh ":white_check_mark: Deploy to stage was successful!"
 
       - name: CI -- Stage -- Report Failure
-        if: failure() && github.ref == 'refs/heads/master'
+        if: failure() && github.ref == 'refs/heads/main'
         run: |
           ./.github/workflows/scripts/notifications.sh ":x: Deploy to stage has failed!"          
    
